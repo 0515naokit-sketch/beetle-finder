@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>クワガタ採集スポット検索</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Helvetica Neue',Arial,sans-serif;background:#141e14;color:#dcedc8}
+    #app{display:flex;height:100vh;overflow:hidden}
+
+    /* ─ サイドバー ─ */
+    #sidebar{width:390px;min-width:300px;background:#1b2d1b;border-right:1px solid #2a3e2a;display:flex;flex-direction:column;overflow:hidden}
+    #header{padding:11px 15px 9px;background:#111d11;border-bottom:1px solid #2a3e2a;flex-shrink:0}
+    #header h1{font-size:1.05rem;color:#a5d6a7;letter-spacing:.02em}
+    #header p{font-size:.7rem;color:#81c784;opacity:.65;margin-top:2px}
+
+    /* ─ コントロール ─ */
+    #controls{padding:9px 14px 11px;border-bottom:1px solid #2a3e2a;flex-shrink:0;overflow-y:auto;max-height:65vh}
+    #controls::-webkit-scrollbar{width:3px}
+    #controls::-webkit-scrollbar-thumb{background:#2e4a2e}
+    .ctrl-label{font-size:.7rem;color:#81c784;opacity:.8;margin:9px 0 4px}
+    .ctrl-label:first-child{margin-top:0}
+    .btn-row{display:flex;gap:5px;flex-wrap:wrap}
+
+    /* 住所入力 */
+    .addr-row{display:flex;gap:6px}
+    #addr-input{flex:1;background:#1f321f;border:1px solid #2a3e2a;color:#dcedc8;
+      border-radius:6px;padding:6px 10px;font-size:.82rem;outline:none}
+    #addr-input:focus{border-color:#66bb6a}
+    #addr-btn{background:#2e7d32;color:#fff;border:none;border-radius:6px;
+      padding:6px 12px;font-size:.8rem;cursor:pointer;white-space:nowrap}
+    #addr-btn:hover{background:#388e3c}
+    #addr-result{font-size:.68rem;color:#81c784;margin-top:3px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    /* 種ボタン */
+    .sp-btn{border-radius:16px;font-size:.75rem;border:2px solid #2a3e2a;
+      padding:3px 11px;cursor:pointer;background:#1f321f;color:#a5d6a7;transition:all .15s}
+    .sp-btn:hover{border-color:#4a7c4a}
+    .sp-btn.active{border-color:#90caf9;background:#1a3a6e;color:#fff}
+    /* 種グループ */
+    .sp-group{margin-bottom:4px}
+    .sp-group-label{font-size:.65rem;color:#4a7c4e;margin-bottom:3px}
+
+    /* スライダー */
+    .slider-row{display:flex;align-items:center;gap:9px}
+    #hours-slider{flex:1;accent-color:#66bb6a;cursor:pointer}
+    #hours-label{font-size:.78rem;color:#a5d6a7;white-space:nowrap;min-width:115px;text-align:right}
+
+    /* 月ボタン */
+    .month-btn{border-radius:14px;font-size:.75rem;border:2px solid #2a3e2a;
+      padding:3px 9px;cursor:pointer;background:#1f321f;color:#a5d6a7;transition:all .15s}
+    .month-btn.active{background:#33691e;border-color:#8bc34a;color:#fff}
+
+    /* お気に入り */
+    #fav-toggle{font-size:.78rem;border:2px solid #2a3e2a;border-radius:14px;
+      padding:3px 11px;cursor:pointer;background:#1f321f;color:#a5d6a7;transition:all .15s}
+    #fav-toggle.active{background:#7b5c00;border-color:#ffd700;color:#fff}
+
+    /* 方向選択 */
+    .dir-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;max-width:144px}
+    .dir-btn{border-radius:5px;font-size:.72rem;border:2px solid #2a3e2a;padding:5px 2px;
+      cursor:pointer;background:#1f321f;color:#a5d6a7;transition:all .15s;text-align:center;line-height:1}
+    .dir-btn:hover{border-color:#4a7c4a}
+    .dir-btn.active{border-color:#ffb74d;background:#4e2b00;color:#ffe082}
+
+    /* 採集方法ボタン */
+    .method-btn{border-radius:14px;font-size:.75rem;border:2px solid #2a3e2a;
+      padding:4px 12px;cursor:pointer;background:#1f321f;color:#a5d6a7;transition:all .15s}
+    .method-btn:hover{border-color:#4a7c4a}
+    .method-btn[data-m="tree"].active  {border-color:#66bb6a;background:#1a3d1a;color:#fff}
+    .method-btn[data-m="light"].active {border-color:#9c27b0;background:#2a0040;color:#e1bee7}
+    .method-btn[data-m="street"].active{border-color:#ffc107;background:#3e2a00;color:#ffe082}
+    .method-desc{font-size:.66rem;color:#81c784;opacity:.75;margin-top:3px;line-height:1.5}
+
+    /* 夜間採集ボタン */
+    .night-btn{width:100%;font-size:.8rem;border-radius:7px;border:2px solid;
+      padding:7px;cursor:pointer;transition:all .15s;text-align:left;margin-bottom:5px}
+    .night-status{font-size:.67rem;margin-bottom:3px;color:#ffcc80}
+
+    /* 凡例 */
+    .layer-legend{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0 6px}
+    .ll{display:flex;align-items:center;gap:3px;font-size:.68rem}
+    .ll-sq{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+
+    /* 検索ボタン */
+    #search-btn{width:100%;background:#2e7d32;color:#fff;border:none;border-radius:7px;
+      padding:9px;font-size:.88rem;cursor:pointer;transition:background .2s;margin-top:8px}
+    #search-btn:hover:not(:disabled){background:#388e3c}
+    #search-btn:disabled{background:#1b3d1e;color:#4a7c4e;cursor:wait}
+
+    /* ─ プログレス ─ */
+    #progress-wrap{padding:6px 14px 3px;display:none;flex-shrink:0}
+    .prog-bg{height:5px;background:#2a3e2a;border-radius:3px}
+    .prog-fill{height:100%;border-radius:3px;background:#66bb6a;transition:width .4s ease}
+    #prog-msg{font-size:.71rem;color:#81c784;margin-top:3px}
+
+    /* ─ リスト ─ */
+    #spot-count{padding:4px 14px;font-size:.71rem;color:#81c784;opacity:.8;border-bottom:1px solid #2a3e2a;flex-shrink:0}
+    #spot-list{flex:1;overflow-y:auto}
+    #spot-list::-webkit-scrollbar{width:4px}
+    #spot-list::-webkit-scrollbar-thumb{background:#2e4a2e;border-radius:2px}
+    .spot-item{padding:9px 14px;cursor:pointer;border-bottom:1px solid #1f321f;transition:background .12s;position:relative}
+    .spot-item:hover{background:#213521}
+    .spot-item.active{background:#243e24;border-left:3px solid #66bb6a;padding-left:11px}
+    .spot-top{display:flex;justify-content:space-between;align-items:flex-start}
+    .spot-name{font-size:.84rem;font-weight:600;color:#c8e6c9;flex:1;padding-right:6px}
+    .spot-score{font-size:1.05rem;font-weight:700;flex-shrink:0}
+    .spot-meta{font-size:.71rem;color:#81c784;opacity:.8;margin-top:3px;line-height:1.6}
+    .badge{display:inline-block;font-size:.67rem;padding:1px 6px;border-radius:9px;margin-top:3px;margin-right:2px}
+    .badge-m{background:#0d47a1;color:#fff}
+    .badge-o{background:#4a148c;color:#fff}
+    .badge-n{background:#1b5e20;color:#fff}
+    .badge-k{background:#006064;color:#fff}
+    .badge-h{background:#880e4f;color:#fff}
+    .badge-a{background:#4a148c;color:#fff}
+    .badge-s{background:#1a237e;color:#fff}
+    .badge-kb{background:#4e342e;color:#fff}
+    .badge-t{background:#1a3a1a;border:1px solid #2e5e2e;color:#a5d6a7}
+    .sp-tag{display:inline-block;font-size:.67rem;padding:1px 6px;border-radius:9px;margin-top:3px;margin-right:2px;background:#1a3d1a;border:1px solid #2e5e2e;color:#a5d6a7}
+    .sp-tag.needle{background:#2d2000;border-color:#5d4000;color:#ffcc80}
+    .bar-wrap{margin-top:6px}
+    .bar-row{display:flex;justify-content:space-between;font-size:.68rem;color:#9e9e9e;margin-bottom:1px}
+    .bar-bg{height:4px;background:#1f321f;border-radius:2px}
+    .bar-fill{height:100%;border-radius:2px;transition:width .3s}
+    .fav-star{position:absolute;top:7px;right:9px;font-size:.95rem;cursor:pointer;opacity:.5;transition:all .15s}
+    .fav-star:hover{opacity:1;transform:scale(1.2)}
+    .fav-star.on{opacity:1}
+
+    /* ─ 地図 ─ */
+    #map{flex:1}
+
+    /* ─ ポップアップ ─ */
+    .leaflet-popup-content-wrapper{background:#1b2d1b;color:#dcedc8;border:1px solid #2a3e2a;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.6)}
+    .leaflet-popup-tip{background:#1b2d1b}
+    .leaflet-popup-content{margin:11px 15px;min-width:210px}
+    .pop-title{font-size:.92rem;font-weight:bold;color:#a5d6a7;margin-bottom:7px}
+    .pop-row{font-size:.78rem;margin:3px 0}
+    .pop-div{border:none;border-top:1px solid #2a3e2a;margin:7px 0}
+    .pop-link{color:#66bb6a;font-size:.75rem;text-decoration:none;margin-right:8px}
+    .pop-link:hover{color:#a5d6a7}
+    .ptag-m{background:#0d47a1;color:#fff;padding:1px 6px;border-radius:9px;font-size:.7rem}
+    .ptag-o{background:#4a148c;color:#fff;padding:1px 6px;border-radius:9px;font-size:.7rem}
+    .ptag-sp{background:#1a3d1a;border:1px solid #2e5e2e;color:#a5d6a7;padding:1px 6px;border-radius:9px;font-size:.7rem}
+    .res-ok{color:#66bb6a}
+    .res-warn{color:#ffb74d}
+
+    /* ─ コンディションパネル（コンパクト2行） ─ */
+    #cond-panel{padding:5px 14px 6px;background:#0d1a2a;border-bottom:1px solid #1a3a5e;display:none;flex-shrink:0}
+    .tonight-toggle{font-size:.7rem;border:1px solid #1a3a5e;border-radius:12px;
+      padding:2px 9px;cursor:pointer;background:#0d1a2a;color:#90caf9;transition:all .15s;white-space:nowrap}
+    .tonight-toggle.active{background:#0d2a4a;border-color:#42a5f5;color:#fff}
+
+    /* ─ 凡例 ─ */
+    .legend{background:rgba(27,45,27,.95);padding:8px 12px;border-radius:8px;border:1px solid #2a3e2a;font-size:.74rem;color:#c8e6c9;line-height:1.9}
+    .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:middle}
+
+    @media(max-width:680px){
+      #sidebar{width:100%;min-width:unset;max-height:50vh;border-right:none;border-bottom:1px solid #2a3e2a}
+      #app{flex-direction:column}
+      #map{flex:1;min-height:50vh}
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div id="sidebar">
+    <div id="header">
+      <h1>🦌 クワガタ採集スポット検索</h1>
+      <p>標高(国土地理院)・河川距離 グリッドスキャンで探索推奨ゾーンを提示</p>
+    </div>
+
+    <div id="controls">
+
+      <!-- 出発地 -->
+      <div class="ctrl-label">📍 出発地（住所・地名）</div>
+      <div class="addr-row">
+        <input id="addr-input" type="text" placeholder="例：葛飾区、宇都宮市、長野県諏訪市" value="葛飾区">
+        <button id="addr-btn" onclick="geocodeAddress()">設定</button>
+      </div>
+      <div id="addr-result">現在地：葛飾区（デフォルト）</div>
+
+      <!-- 種選択 -->
+      <div class="ctrl-label">🦌 ターゲット種</div>
+      <div class="sp-group">
+        <div class="sp-group-label">🏔 山岳種</div>
+        <div class="btn-row">
+          <button class="sp-btn active" data-sp="miyama"    onclick="setSpecies('miyama')">ミヤマ</button>
+          <button class="sp-btn"        data-sp="akaashi"   onclick="setSpecies('akaashi')">アカアシ</button>
+        </div>
+      </div>
+      <div class="sp-group">
+        <div class="sp-group-label">🌲 中山地種</div>
+        <div class="btn-row">
+          <button class="sp-btn" data-sp="okuwagata" onclick="setSpecies('okuwagata')">オオクワ</button>
+          <button class="sp-btn" data-sp="suji"      onclick="setSpecies('suji')">スジクワ</button>
+        </div>
+      </div>
+      <div class="sp-group">
+        <div class="sp-group-label">🌾 低地種</div>
+        <div class="btn-row">
+          <button class="sp-btn" data-sp="nokogiri"   onclick="setSpecies('nokogiri')">ノコギリ</button>
+          <button class="sp-btn" data-sp="kokuwagata" onclick="setSpecies('kokuwagata')">コクワ</button>
+          <button class="sp-btn" data-sp="hirata"     onclick="setSpecies('hirata')">ヒラタ</button>
+        </div>
+      </div>
+      <div class="sp-group">
+        <div class="sp-group-label">🦗 甲虫</div>
+        <div class="btn-row">
+          <button class="sp-btn" data-sp="kabuto" onclick="setSpecies('kabuto')">カブトムシ</button>
+        </div>
+      </div>
+
+      <!-- ドライブ時間 -->
+      <div class="ctrl-label">🚗 ドライブ時間</div>
+      <div class="slider-row">
+        <input type="range" id="hours-slider" min="1" max="8" step="0.5" value="3" oninput="onSliderChange(this.value)">
+        <span id="hours-label">3時間（約165km）</span>
+      </div>
+
+      <!-- 採集時期 -->
+      <div class="ctrl-label">📅 採集時期</div>
+      <div class="btn-row">
+        <button class="month-btn active" data-month="0" onclick="setMonth(0)">全期間</button>
+        <button class="month-btn" data-month="6" onclick="setMonth(6)">6月</button>
+        <button class="month-btn" data-month="7" onclick="setMonth(7)">7月</button>
+        <button class="month-btn" data-month="8" onclick="setMonth(8)">8月</button>
+        <button class="month-btn" data-month="9" onclick="setMonth(9)">9月</button>
+      </div>
+
+      <!-- 方向絞り込み -->
+      <div class="ctrl-label">🧭 方向絞り込み</div>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div class="dir-grid">
+          <button class="dir-btn" data-dir="NW" onclick="setDirection('NW')">北西</button>
+          <button class="dir-btn" data-dir="N"  onclick="setDirection('N')">北</button>
+          <button class="dir-btn" data-dir="NE" onclick="setDirection('NE')">北東</button>
+          <button class="dir-btn" data-dir="W"  onclick="setDirection('W')">西</button>
+          <button class="dir-btn active" data-dir="all" onclick="setDirection('all')">全</button>
+          <button class="dir-btn" data-dir="E"  onclick="setDirection('E')">東</button>
+          <button class="dir-btn" data-dir="SW" onclick="setDirection('SW')">南西</button>
+          <button class="dir-btn" data-dir="S"  onclick="setDirection('S')">南</button>
+          <button class="dir-btn" data-dir="SE" onclick="setDirection('SE')">南東</button>
+        </div>
+        <div style="font-size:.67rem;color:#81c784;opacity:.75;padding-top:2px;line-height:1.6">
+          方向を選ぶと<br>そのエリアを<br>重点検索<br><span style="color:#ffe082">絞込時60件</span>
+        </div>
+      </div>
+
+      <!-- お気に入り -->
+      <div class="ctrl-label">⭐ フィルタ</div>
+      <div class="btn-row">
+        <button id="fav-toggle" onclick="toggleFavFilter()">☆ お気に入りのみ</button>
+      </div>
+
+      <!-- 採集予定日 -->
+      <div class="ctrl-label">📅 採集予定日（月齢・気象計算）</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <input type="date" id="plan-date" onchange="onPlanDateChange()"
+          style="flex:1;background:#1f321f;border:1px solid #2a3e2a;color:#dcedc8;border-radius:6px;padding:5px 9px;font-size:.82rem;outline:none">
+        <button onclick="onPlanDateChange()" style="background:#2e4a2e;color:#a5d6a7;border:none;border-radius:6px;padding:5px 10px;font-size:.8rem;cursor:pointer">更新</button>
+      </div>
+      <div id="plan-date-label" style="font-size:.68rem;color:#81c784;margin-top:2px;opacity:.8"></div>
+
+      <!-- 採集方法 -->
+      <div class="ctrl-label">🎯 採集方法</div>
+      <div class="btn-row">
+        <button class="method-btn active" data-m="tree"   onclick="setMethod('tree')">🌳 樹木採集</button>
+        <button class="method-btn"        data-m="light"  onclick="setMethod('light')">🔦 ライト採集</button>
+        <button class="method-btn"        data-m="street" onclick="setMethod('street')">💡 街灯採集</button>
+      </div>
+      <div class="method-desc" id="method-desc">広葉樹林の標高・樹相を重視したランキング</div>
+
+      <!-- 夜間採集レイヤー -->
+      <div class="ctrl-label">🌙 周辺スポット</div>
+      <div style="font-size:.7rem;color:#81c784;opacity:.75;margin-bottom:4px">ゾーン選択で周辺のライト採集ポイント・道路データを自動表示</div>
+      <div class="layer-legend" id="light-legend" style="display:none">
+        <div class="ll"><div class="ll-sq" style="background:#ffc107"></div>駐車場</div>
+        <div class="ll"><div class="ll-sq" style="background:#4caf50"></div>キャンプ場</div>
+        <div class="ll"><div class="ll-sq" style="background:#1565c0"></div>ダム</div>
+        <div class="ll"><div class="ll-sq" style="background:#26c6da"></div>水辺</div>
+      </div>
+
+      <!-- 探索ゾーン検索 -->
+      <button id="search-btn" onclick="startSearch()">🔍 探索推奨ゾーンを検索（30〜60秒）</button>
+    </div>
+
+    <div id="progress-wrap">
+      <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      <div id="prog-msg"></div>
+    </div>
+    <div id="spot-count"></div>
+    <div id="cond-panel"></div>
+    <div id="nearby-light-status" class="night-status" style="padding:3px 14px;display:none"></div>
+    <div id="spot-list">
+      <div style="padding:18px 14px;color:#4a7c4e;font-size:.8rem;text-align:center;">
+        出発地・種・時間を設定して「森林スポットを検索」を押してください。<br>
+        夜間レイヤーは独立して切り替えできます。<br>
+        <span style="font-size:.68rem;opacity:.65">全国対応（最大8時間圏）</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="map"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ── 定数 ─────────────────────────────────────────────────────
+const DEFAULT_LAT = {{ default_lat }};
+const DEFAULT_LNG = {{ default_lng }};
+const KM_PER_HOUR = 55;
+
+const SPECIES_META = {
+  miyama:    { label:"ミヤマクワガタ",   color:"#1565c0", badge:"badge-m" },
+  okuwagata: { label:"オオクワガタ",     color:"#4a148c", badge:"badge-o" },
+  nokogiri:  { label:"ノコギリクワガタ", color:"#1b5e20", badge:"badge-n" },
+  kokuwagata:{ label:"コクワガタ",       color:"#006064", badge:"badge-k" },
+  hirata:    { label:"ヒラタクワガタ",   color:"#880e4f", badge:"badge-h" },
+  akaashi:   { label:"アカアシクワガタ", color:"#4a148c", badge:"badge-a" },
+  suji:      { label:"スジクワガタ",     color:"#1a237e", badge:"badge-s" },
+  kabuto:    { label:"カブトムシ",       color:"#4e342e", badge:"badge-kb" },
+};
+
+// 月別活性係数
+const MF = {
+  miyama:    {0:1, 6:.55, 7:1.0,  8:.80, 9:.20},
+  okuwagata: {0:1, 6:.60, 7:1.0,  8:.90, 9:.45},
+  nokogiri:  {0:1, 6:.50, 7:1.0,  8:.85, 9:.50},
+  kokuwagata:{0:1, 6:.40, 7:.85,  8:1.0, 9:.60},
+  hirata:    {0:1, 6:.50, 7:1.0,  8:.90, 9:.40},
+  akaashi:   {0:1, 6:.55, 7:1.0,  8:.75, 9:.20},
+  suji:      {0:1, 6:.55, 7:1.0,  8:.85, 9:.30},
+  kabuto:    {0:1, 6:.45, 7:1.0,  8:.95, 9:.15},
+};
+
+// ── 状態 ─────────────────────────────────────────────────────
+let centerLat = DEFAULT_LAT, centerLng = DEFAULT_LNG;
+let currentSp = 'miyama', currentMonth = 0, currentHours = 3, favFilterOn = false;
+let currentDirection = 'all', currentMethod = 'tree';
+let allSpots = [], markers = [], driveCircle = null, centerMarker = null;
+let currentFilteredSpots = [], lightNearbyMarkers = [], selectedSpotIdx = -1;
+let allZones = [], zoneCircles = [], zoneMarkers = [];
+let currentConditions = null, tonightModeOn = false;
+
+const DIR_ANGLES = {N:0,NE:45,E:90,SE:135,S:180,SW:225,W:270,NW:315};
+const DIR_JA = {N:'北',NE:'北東',E:'東',SE:'南東',S:'南',SW:'南西',W:'西',NW:'北西',all:'全方向'};
+
+// 種別の最適標高帯
+const ELEV_BANDS = {
+  miyama:    {best:[700,1400], ok:[500,1800], label:'ミヤマ最適700〜1400m'},
+  akaashi:   {best:[600,1400], ok:[400,1800], label:'アカアシ最適600〜1400m'},
+  suji:      {best:[300,900],  ok:[100,1300], label:'スジ最適300〜900m'},
+  okuwagata: {best:[100,700],  ok:[50,1000],  label:'オオクワ最適100〜700m'},
+  nokogiri:  {best:[50,700],   ok:[0,1100],   label:'ノコギリ最適50〜700m'},
+  kokuwagata:{best:[0,1000],   ok:[0,1500],   label:'コクワ最適0〜1000m'},
+  hirata:    {best:[0,200],    ok:[0,500],    label:'ヒラタ最適0〜200m'},
+  kabuto:    {best:[50,600],   ok:[0,900],    label:'カブト最適50〜600m'},
+};
+
+function getReasons(spot, sp) {
+  const reasons = [];
+  const elev = spot.elevation;
+  const band = ELEV_BANDS[sp];
+  if (elev != null && band) {
+    if (elev >= band.best[0] && elev <= band.best[1])
+      reasons.push(`⛰ 標高${elev}m ✓ ${band.label}`);
+    else if (elev >= band.ok[0] && elev <= band.ok[1])
+      reasons.push(`⛰ 標高${elev}m（準適正帯）`);
+    else
+      reasons.push(`⛰ 標高${elev}m（適正外）`);
+  } else if (elev == null) {
+    reasons.push('⛰ 標高未確認エリア（現地要確認）');
+  }
+  if (spot.broadleaf)
+    reasons.push(spot.bl_confirmed ? '🌿 広葉樹林（確認済）' : '🌿 広葉樹林帯と推定');
+  if (spot.river_dist_km != null && spot.river_dist_km <= 3)
+    reasons.push(`🌊 河川近接${spot.river_dist_km}km（腐植土・水分環境）`);
+  if (spot.temp != null) {
+    const tempOk = (sp==='miyama'||sp==='akaashi') ? spot.temp<=22 :
+                   sp==='kabuto' ? spot.temp>=25 : null;
+    if (tempOk === true)  reasons.push(`🌡️ 7月気温${spot.temp}°C（適正温度帯）`);
+    if (tempOk === false) reasons.push(`🌡️ 7月気温${spot.temp}°C（温度条件不利）`);
+  }
+  if (spot.obs && spot.obs.total > 0)
+    reasons.push(`📊 クワガタ記録${spot.obs.total}件（5km圏）`);
+  return reasons;
+}
+
+// ── マップ ───────────────────────────────────────────────────
+const map = L.map('map').setView([centerLat, centerLng], 8);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom:18
+}).addTo(map);
+
+function makeCenterIcon(){
+  return L.divIcon({html:'<div style="background:#ef5350;width:14px;height:14px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,.5)"></div>',className:'',iconAnchor:[7,7]});
+}
+centerMarker = L.marker([centerLat, centerLng], {icon:makeCenterIcon()}).addTo(map);
+
+function sectorLatLngs(cLat, cLng, radiusKm, centerBear, halfDeg=45, steps=48){
+  const R=6371, pts=[[cLat,cLng]];
+  for(let i=0;i<=steps;i++){
+    const b=((centerBear-halfDeg+2*halfDeg*i/steps)*Math.PI/180);
+    const d=radiusKm/R;
+    const lat1=cLat*Math.PI/180, lng1=cLng*Math.PI/180;
+    const lat2=Math.asin(Math.sin(lat1)*Math.cos(d)+Math.cos(lat1)*Math.sin(d)*Math.cos(b));
+    const lng2=lng1+Math.atan2(Math.sin(b)*Math.sin(d)*Math.cos(lat1),Math.cos(d)-Math.sin(lat1)*Math.sin(lat2));
+    pts.push([lat2*180/Math.PI,lng2*180/Math.PI]);
+  }
+  pts.push([cLat,cLng]);
+  return pts;
+}
+
+function updateCircle(){
+  if(driveCircle) map.removeLayer(driveCircle);
+  const r=currentHours*KM_PER_HOUR;
+  const style={color:'#66bb6a',fillColor:'#66bb6a',fillOpacity:.05,weight:1.5,dashArray:'7 5'};
+  if(currentDirection==='all'){
+    driveCircle=L.circle([centerLat,centerLng],{radius:r*1000,...style}).addTo(map);
+  } else {
+    const pts=sectorLatLngs(centerLat,centerLng,r,DIR_ANGLES[currentDirection]);
+    driveCircle=L.polygon(pts,{...style,fillOpacity:.08}).addTo(map);
+  }
+}
+updateCircle();
+
+// 凡例
+const legend = L.control({position:'bottomright'});
+legend.onAdd = ()=>{
+  const d = L.DomUtil.create('div','legend');
+  d.innerHTML=`<b style="color:#a5d6a7">スコア</b><br>
+    <span class="dot" style="background:#e53935"></span>80〜100<br>
+    <span class="dot" style="background:#fb8c00"></span>60〜79<br>
+    <span class="dot" style="background:#fdd835"></span>40〜59<br>
+    <span class="dot" style="background:#43a047"></span>20〜39<br>
+    <span class="dot" style="background:#607d8b"></span>〜19`;
+  return d;
+};
+legend.addTo(map);
+
+// ── ユーティリティ ────────────────────────────────────────────
+function scoreColor(s){ return s>=70?'#e53935':s>=55?'#fb8c00':s>=40?'#fdd835':s>=25?'#43a047':'#607d8b' }
+function scoreEmoji(s){ return s>=70?'🔥':s>=55?'⭐':s>=40?'🟡':s>=25?'🟢':'⚫' }
+function scoreGrade(s){
+  if(s>=70) return {g:'S', c:'#e53935', label:'最有望'};
+  if(s>=55) return {g:'A', c:'#fb8c00', label:'有望'};
+  if(s>=40) return {g:'B', c:'#fdd835', label:'可能性あり'};
+  if(s>=25) return {g:'C', c:'#81c784', label:'低め'};
+  return          {g:'D', c:'#607d8b', label:'不向き'};
+}
+function kmOfHours(h){ return Math.round(h * KM_PER_HOUR) }
+
+function displayScore(spot){
+  const base = spot[currentSp] ?? 0;
+  if(currentMonth===0) return base;
+  return Math.round(base * ((MF[currentSp]||{})[currentMonth] ?? 0.5));
+}
+
+function spotKey(s){ return `${s.lat.toFixed(4)}_${s.lng.toFixed(4)}` }
+function getFavs()  { return JSON.parse(localStorage.getItem('beetle_favs')||'[]') }
+function toggleFav(spot, e){
+  e.stopPropagation();
+  const favs=getFavs(), key=spotKey(spot), i=favs.indexOf(key);
+  if(i>=0) favs.splice(i,1); else favs.push(key);
+  localStorage.setItem('beetle_favs', JSON.stringify(favs));
+  renderSpots();
+}
+
+// ── 出発地 ────────────────────────────────────────────────────
+function geocodeAddress(){
+  const addr = document.getElementById('addr-input').value.trim();
+  if(!addr) return;
+  const btn = document.getElementById('addr-btn');
+  btn.disabled = true; btn.textContent = '検索中...';
+  fetch(`/api/geocode?address=${encodeURIComponent(addr)}`)
+    .then(r=>r.json())
+    .then(d=>{
+      if(d.error){ alert(d.error); return; }
+      setOrigin(d.lat, d.lng, d.display_name);
+    })
+    .catch(()=>alert('ジオコーディング失敗'))
+    .finally(()=>{ btn.disabled=false; btn.textContent='設定'; });
+}
+document.getElementById('addr-input').addEventListener('keydown', e=>{ if(e.key==='Enter') geocodeAddress(); });
+
+function setOrigin(lat, lng, label){
+  centerLat = lat; centerLng = lng;
+  document.getElementById('addr-result').textContent = '現在地：' + (label||'').split(',')[0];
+  centerMarker.setLatLng([lat, lng]);
+  map.setView([lat, lng], 8);
+  updateCircle();
+  // データをクリア（出発地変更で無効化）
+  allSpots=[]; markers.forEach(m=>map.removeLayer(m)); markers=[];
+  allZones=[]; clearZones();
+  document.getElementById('spot-list').innerHTML = '<div style="padding:14px;text-align:center;color:#4a7c4e;font-size:.8rem">出発地を変更しました。再検索してください。</div>';
+  document.getElementById('spot-count').textContent='';
+  clearNearbyLight();
+}
+
+// ── コントロール ──────────────────────────────────────────────
+function setSpecies(sp){
+  currentSp = sp;
+  document.querySelectorAll('.sp-btn').forEach(b=>b.classList.toggle('active', b.dataset.sp===sp));
+  if(allSpots.length) renderSpots();
+  if(allZones.length) renderZones();
+}
+
+function setMonth(m){
+  currentMonth = m;
+  document.querySelectorAll('.month-btn').forEach(b=>b.classList.toggle('active', +b.dataset.month===m));
+  if(allSpots.length) renderSpots();
+  if(allZones.length) renderZones();
+}
+
+function onSliderChange(val){
+  currentHours = parseFloat(val);
+  document.getElementById('hours-label').textContent = `${currentHours}時間（約${kmOfHours(currentHours)}km）`;
+  updateCircle();
+  if(allSpots.length) renderSpots();
+}
+
+function toggleFavFilter(){
+  favFilterOn = !favFilterOn;
+  const btn = document.getElementById('fav-toggle');
+  btn.classList.toggle('active', favFilterOn);
+  btn.textContent = favFilterOn ? '⭐ お気に入りのみ' : '☆ お気に入りのみ';
+  if(allSpots.length) renderSpots();
+}
+
+function setDirection(dir){
+  currentDirection = dir;
+  document.querySelectorAll('.dir-btn').forEach(b=>b.classList.toggle('active', b.dataset.dir===dir));
+  updateCircle();
+  allSpots=[]; markers.forEach(m=>map.removeLayer(m)); markers=[];
+  allZones=[]; clearZones();
+  currentFilteredSpots=[]; clearNearbyLight();
+  document.getElementById('spot-list').innerHTML='<div style="padding:14px;text-align:center;color:#4a7c4e;font-size:.8rem">方向を変更しました。再検索してください。</div>';
+  document.getElementById('spot-count').textContent='';
+}
+
+const METHOD_META = {
+  tree:   { label:'樹木採集',   icon:'🌳', color:'#66bb6a', desc:'広葉樹林の標高・樹相を重視したランキング', key: null },
+  light:  { label:'ライト採集', icon:'🔦', color:'#ce93d8', desc:'暗所の山地・水辺を重視（700〜1500m最適）', key: 'm_light' },
+  street: { label:'街灯採集',   icon:'💡', color:'#ffc107', desc:'低標高・河川沿い道路を重視。選択後に実データ取得', key: 'm_street' },
+};
+
+function methodScore(zone){
+  const m = METHOD_META[currentMethod];
+  if(m.key) return zone[m.key] ?? 0;
+  // tree = 種別スコア（月補正あり）
+  const mfVal = ((MF[currentSp]||{})[currentMonth] ?? 1);
+  return currentMonth === 0 ? zone[currentSp] ?? 0 : Math.round((zone[currentSp] ?? 0) * mfVal);
+}
+
+function setMethod(m){
+  currentMethod = m;
+  document.querySelectorAll('.method-btn').forEach(b=>b.classList.toggle('active', b.dataset.m===m));
+  const meta = METHOD_META[m];
+  document.getElementById('method-desc').textContent = meta.desc;
+  if(allZones.length) renderZones();
+}
+
+// ── 森林検索 ──────────────────────────────────────────────────
+function startSearch(){
+  const btn=document.getElementById('search-btn');
+  btn.disabled=true;
+  document.getElementById('progress-wrap').style.display='block';
+  document.getElementById('spot-count').textContent='';
+  document.getElementById('spot-list').innerHTML='';
+  markers.forEach(m=>map.removeLayer(m)); markers=[]; allSpots=[];
+  allZones=[]; clearZones();
+
+  const planDate=getPlanDate();
+  const url=`/api/spots?lat=${centerLat}&lng=${centerLng}&hours=${currentHours}&direction=${currentDirection}&date=${planDate}`;
+  const es=new EventSource(url);
+  es.onmessage=function(e){
+    const d=JSON.parse(e.data);
+    if(d.status==='progress'){
+      document.getElementById('prog-fill').style.width=d.pct+'%';
+      document.getElementById('prog-msg').textContent=d.message;
+    } else if(d.status==='done'){
+      es.close(); btn.disabled=false;
+      document.getElementById('prog-fill').style.width='100%';
+      document.getElementById('prog-msg').textContent='✅ 完了';
+      allSpots=d.spots||[]; allZones=d.zones||[];
+      currentConditions=d.conditions||null;
+      renderConditions();
+      renderZones();
+    } else if(d.status==='error'){
+      es.close(); btn.disabled=false;
+      document.getElementById('prog-msg').textContent='❌ '+d.message;
+    }
+  };
+  es.onerror=()=>{ es.close(); btn.disabled=false; document.getElementById('prog-msg').textContent='❌ 通信エラー'; };
+}
+
+// ── 森林スポット描画 ──────────────────────────────────────────
+function renderSpots(){
+  const km=kmOfHours(currentHours), favs=getFavs();
+  let filtered=allSpots.filter(s=>s.dist_km<=km);
+  if(favFilterOn) filtered=filtered.filter(s=>favs.includes(spotKey(s)));
+  filtered.sort((a,b)=>{
+    const af=favs.includes(spotKey(a))?1:0, bf=favs.includes(spotKey(b))?1:0;
+    return af!==bf ? bf-af : displayScore(b)-displayScore(a);
+  });
+
+  currentFilteredSpots = filtered;
+  markers.forEach(m=>map.removeLayer(m)); markers=[];
+  filtered.forEach((spot,idx)=>{
+    const sc=displayScore(spot);
+    let marker;
+    if(spot.is_grid){
+      // グリッドスキャン点：ひし形アイコン（未確認ゾーン）
+      const sz=sc>=70?16:sc>=50?13:11;
+      const icon=L.divIcon({
+        html:`<div style="width:${sz}px;height:${sz}px;background:${scoreColor(sc)};transform:rotate(45deg);border:2px solid rgba(255,255,255,.7);opacity:.85;box-shadow:0 1px 4px rgba(0,0,0,.4)"></div>`,
+        className:'', iconAnchor:[sz/2,sz/2]
+      });
+      marker=L.marker([spot.lat,spot.lng],{icon}).addTo(map);
+    } else {
+      // OSM森林：円マーカー（確認済データ）
+      marker=L.circleMarker([spot.lat,spot.lng],{
+        radius:sc>=80?11:sc>=60?9:7, fillColor:scoreColor(sc),
+        color:'rgba(255,255,255,.65)', weight:1.5, fillOpacity:.88
+      }).addTo(map);
+    }
+    marker.bindPopup(buildForestPopup(spot,idx+1),{maxWidth:300});
+    marker.on('click',()=>hlItem(idx,false));
+    markers.push(marker);
+  });
+
+  const list=document.getElementById('spot-list');
+  if(!filtered.length){
+    list.innerHTML='<div style="padding:16px;text-align:center;color:#4a7c4e;font-size:.8rem">該当スポットなし</div>';
+    document.getElementById('spot-count').textContent='';
+    return;
+  }
+
+  // 方向絞込時は全件、全方向時は上位30件
+  const listMax = currentDirection !== 'all' ? filtered.length : 30;
+  const listSpots = filtered.slice(0, listMax);
+  list.innerHTML=listSpots.map((spot,i)=>{
+    const sc=displayScore(spot), obs=spot.obs||{}, favd=favs.includes(spotKey(spot));
+    const isGrid = spot.is_grid;
+    const coordStr = `${spot.lat.toFixed(4)}, ${spot.lng.toFixed(4)}`;
+    const name = spot.name || (isGrid
+      ? `🔷 探索ゾーン ${coordStr}`
+      : spot.unnamed ? `🌲 未登録山林 ${coordStr}` : '名称不明の森');
+    const isNeedle=spot.species&&spot.species.includes('針葉樹');
+    const spTag=spot.species?`<span class="sp-tag${isNeedle?' needle':''}">${spot.species}</span>`:'';
+    const typeBadge = isGrid
+      ? '<span class="badge" style="background:#3e2a00;border:1px solid #8a6000;color:#ffe082">🔷 グリッドスキャン</span>'
+      : spot.unnamed ? '<span class="badge" style="background:#2e4a2e;border:1px solid #4a7c4e;color:#a5d6a7">🌲 未登録山林</span>' : '';
+    const grd=scoreGrade(sc);
+    const hasElev = spot.elevation != null;
+    const hasObs  = (obs.total||0) > 0;
+    const obsBadge=(()=>{
+      const sp=currentSp, cnt=obs[sp]||0;
+      if(cnt>0) return `<span class="badge ${SPECIES_META[sp].badge}">${SPECIES_META[sp].label.replace('クワガタ','').replace('ガタ','')} ${cnt}件</span>`;
+      if(obs.total>0) return `<span class="badge badge-t">クワガタ計 ${obs.total}件</span>`;
+      return '';
+    })();
+    const mfVal=((MF[currentSp]||{})[currentMonth]??1);
+    const barScore=currentMonth===0?spot[currentSp]??0:Math.round((spot[currentSp]??0)*mfVal);
+    // 未登録・グリッド点は高ポテンシャル理由を表示
+    const reasonsHtml = (spot.unnamed||isGrid)
+      ? getReasons(spot, currentSp).map(r=>`<div style="font-size:.64rem;color:#a5d6a7;line-height:1.5">▸ ${r}</div>`).join('')
+      : '';
+    return `
+<div class="spot-item" onclick="hlItem(${i},true)" id="item-${i}" style="${isGrid?'border-left:2px solid #8a6000;':''}">
+  <span class="fav-star ${favd?'on':''}" onclick='toggleFav(${JSON.stringify(spot)},event)'>${favd?'⭐':'☆'}</span>
+  <div class="spot-top">
+    <div class="spot-name" style="font-size:${isGrid?.78:.84}rem">${i+1}. ${name}</div>
+    <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
+      <span style="font-size:.75rem;font-weight:700;background:${grd.c};color:${grd.c==='#fdd835'?'#333':'#fff'};padding:1px 7px;border-radius:10px">${grd.g}</span>
+      <span class="spot-score" style="color:${scoreColor(sc)}">${sc}</span>
+    </div>
+  </div>
+  <div class="spot-meta">📍 ${spot.dist_km}km ｜ ⛰ ${spot.elevation??'不明'}m ｜ 🌿 ${spot.bl_confirmed?'広葉樹林✓':spot.broadleaf?'広葉樹林（推定）':'樹林'}${spot.temp!=null?' ｜ 🌡️ '+spot.temp+'°C':''}${spot.river_dist_km!=null?' ｜ 🌊 '+spot.river_dist_km+'km':''}</div>
+  ${typeBadge||spTag||obsBadge?`<div style="margin-top:3px">${typeBadge}${spTag}${obsBadge}</div>`:''}
+  ${reasonsHtml?`<div style="margin-top:3px;padding:3px 5px;background:#1a2a1a;border-radius:4px">${reasonsHtml}</div>`:''}
+  <div class="bar-wrap">
+    <div class="bar-row"><span>${SPECIES_META[currentSp].label} <span style="color:${grd.c};font-size:.7rem">${grd.label}</span></span><span>${barScore}点</span></div>
+    <div class="bar-bg"><div class="bar-fill" style="width:${barScore}%;background:${SPECIES_META[currentSp].color}"></div></div>
+  </div>
+</div>`;
+  }).join('')
+  + (filtered.length>listMax?`<div style="padding:10px 14px;text-align:center;color:#4a7c4e;font-size:.75rem">地図上には全${filtered.length}件表示。上位${listMax}件のみリスト表示。</div>`:'');
+
+  const note=currentMonth>0?`（${currentMonth}月補正）`:'';
+  const dirNote=currentDirection!=='all'?` ／ ${DIR_JA[currentDirection]}方向`:'';
+  document.getElementById('spot-count').textContent=`${filtered.length}件 ／ ${km}km以内${dirNote}${note} ー ${SPECIES_META[currentSp].label}`;
+}
+
+// ── 森林ポップアップ ──────────────────────────────────────────
+function buildForestPopup(spot, rank){
+  const isGrid = spot.is_grid;
+  const coordStr = `${spot.lat.toFixed(5)}, ${spot.lng.toFixed(5)}`;
+  const obs=spot.obs||{}, name=spot.name||(isGrid?`探索ゾーン ${coordStr}`:spot.unnamed?`未登録山林 ${coordStr}`:'名称不明の森');
+  const sp=currentSp, meta=SPECIES_META[sp];
+  const mfVal=((MF[sp]||{})[currentMonth]??1);
+  const sc=currentMonth===0?spot[sp]??0:Math.round((spot[sp]??0)*mfVal);
+  const spTag=spot.species?`<span class="ptag-sp">${spot.species}</span>`:'';
+  const inatTotal = obs.total - (obs.gbif_total||0);
+  const gbifTotal = obs.gbif_total || 0;
+  const obsLabel = obs.total>0
+    ? `iNat ${inatTotal}件 / GBIF ${gbifTotal}件（5km圏・直近10〜20年）`
+    : 'なし';
+  const obsPart=obs.total>0
+    ?`<div class="pop-row">📊 観察記録: ${obsLabel} ${obs[sp]>0?`<span class="ptag-m" style="background:${meta.color}">${meta.label} ${obs[sp]}件</span>`:''}</div>`
+    :'<div class="pop-row" style="opacity:.5">📊 観察記録: 5km圏内: なし</div>';
+  const tempPart = spot.temp!=null
+    ? `<div class="pop-row">🌡️ 7月平均気温: <b>${spot.temp}°C</b><span style="opacity:.6;font-size:.7rem"> (2018-2023平均)</span></div>`
+    : '';
+  const riverPart = spot.river_dist_km!=null
+    ? `<div class="pop-row">🌊 最寄り河川: <b>${spot.river_dist_km}km</b></div>`
+    : '';
+  const monthNote=currentMonth>0?`<div class="pop-row" style="opacity:.7;font-size:.72rem">※ ${currentMonth}月スコア適用</div>`:'';
+
+  // 未登録・グリッドスポットの高ポテンシャル理由セクション
+  const reasonsList = (spot.unnamed || isGrid) ? getReasons(spot, sp) : [];
+  const reasonsBlock = reasonsList.length
+    ? `<hr class="pop-div"><div style="font-size:.74rem;color:#ffe082;margin-bottom:3px">◆ 高ポテンシャル理由（${meta.label}）</div>`
+      + reasonsList.map(r=>`<div style="font-size:.71rem;color:#c8e6c9;margin:1px 0">▸ ${r}</div>`).join('')
+      + (isGrid ? `<div style="font-size:.65rem;color:#81c784;margin-top:4px;opacity:.7">🔷 グリッドスキャン点（20km格子）— 周辺を現地調査してください</div>` : '')
+    : '';
+  const unnamedNote = (spot.unnamed || isGrid)
+    ? `<div class="pop-row" style="color:#ffe082;font-size:.72rem">${isGrid?'🔷 グリッドスキャン探索ゾーン':'🌲 未登録山林'} — 座標: <b>${coordStr}</b></div>`
+    : '';
+  const nameEnc=encodeURIComponent(`クワガタ 採集 ${spot.lat.toFixed(4)} ${spot.lng.toFixed(4)}`);
+  const ytEnc=encodeURIComponent((spot.unnamed||isGrid)?`クワガタ採集 山林 ${spot.lat.toFixed(3)} ${spot.lng.toFixed(3)}`:`クワガタ採集 ${name}`);
+
+  // 全種スコア一覧
+  const allSc=Object.entries(SPECIES_META).map(([k,m])=>{
+    const v=currentMonth===0?spot[k]??0:Math.round((spot[k]??0)*((MF[k]||{})[currentMonth]??1));
+    return `<span style="font-size:.72rem;margin-right:6px">${m.label.replace('クワガタ','')}: <b style="color:${scoreColor(v)}">${v}</b></span>`;
+  }).join('');
+
+  return `
+<div class="pop-title">${isGrid?'🔷':'🏆'} #${rank}位 ${name}</div>
+${unnamedNote}<div class="pop-row">📍 ${spot.dist_km}km ｜ ⛰ ${spot.elevation??'不明'}m ｜ 🌿 ${spot.broadleaf?'広葉樹林（推定）':'樹林'} ${spTag}</div>
+${tempPart}${riverPart}${obsPart}
+${reasonsBlock}
+<hr class="pop-div">
+<div class="pop-row" style="font-size:.78rem;font-weight:bold;color:${meta.color}">${meta.label}: ${sc}点</div>
+<div style="margin:4px 0 2px">${allSc}</div>
+${monthNote}
+<hr class="pop-div">
+<a href="https://www.google.com/maps?q=${spot.lat},${spot.lng}" target="_blank" class="pop-link">📌 Gマップ</a>
+<a href="https://x.com/search?q=${nameEnc}" target="_blank" class="pop-link">🐦 X検索</a>
+<a href="https://www.youtube.com/results?search_query=${ytEnc}" target="_blank" class="pop-link">📺 YouTube</a>
+<a href="https://www.inaturalist.org/observations?taxon_id=47651&lat=${spot.lat}&lng=${spot.lng}&radius=15" target="_blank" class="pop-link">🔬 iNat</a>`;
+}
+
+
+function buildLightPopup(s){
+  const name=s.name||`${s.type_label}（名称不明）`;
+  const nameEnc=encodeURIComponent(`ライト採集 ${name} クワガタ`);
+  return `
+<div class="pop-title">🔦 ${name}</div>
+<div class="pop-row">🏷 ${s.type_label}</div>
+<div class="pop-row">📍 ${s.dist_km}km</div>
+${s.capacity?`<div class="pop-row">🚗 駐車台数: ${s.capacity}台</div>`:''}
+${s.fee?`<div class="pop-row">💰 ${s.fee==='yes'?'有料':s.fee==='no'?'無料':s.fee}</div>`:''}
+<hr class="pop-div">
+<a href="https://www.google.com/maps?q=${s.lat},${s.lng}" target="_blank" class="pop-link">📌 Gマップ</a>
+<a href="https://x.com/search?q=${nameEnc}" target="_blank" class="pop-link">🐦 X検索</a>`;
+}
+
+
+// ── 今夜コンディション ────────────────────────────────────────
+
+// 気温採集適正（夜間・種別）
+const NIGHT_OPTIMAL = {
+  miyama:    [14,22], akaashi:    [14,22],
+  okuwagata: [19,26], suji:       [17,24],
+  nokogiri:  [21,27], kokuwagata: [19,26],
+  hirata:    [22,29], kabuto:     [23,29],
+};
+function tempFactor(temp, sp){
+  if(temp==null) return 1.0;
+  const [lo,hi]=NIGHT_OPTIMAL[sp]||[18,26];
+  if(temp>=lo&&temp<=hi) return 1.20;
+  if(temp<lo-4) return 0.45; if(temp<lo) return 0.78;
+  if(temp<hi+3) return 1.05; return 0.72;
+}
+function humidityFactor(h){ return h==null?1.0:h>=75?1.14:h>=60?1.05:h>=45?0.93:0.78; }
+// 標高気温補正: 100mにつき-0.65℃
+function zoneNightTemp(baseTemp, elev){ return baseTemp==null||elev==null?null:Math.round((baseTemp-elev*0.0065)*10)/10; }
+
+function moonFactorForMethod(m){
+  if(!currentConditions) return 1.0;
+  return (currentConditions.moon_factor||{})[m]??1.0;
+}
+
+function tonightScore(zone){
+  const base = methodScore(zone);
+  if(!tonightModeOn||!currentConditions) return base;
+  const mf = moonFactorForMethod(currentMethod);
+  const w  = currentConditions.weather;
+  const zt = zoneNightTemp(w?.temp, zone.elevation);
+  const tf = tempFactor(zt, currentSp);
+  const hf = humidityFactor(w?.humidity);
+  return Math.min(Math.round(base * mf * tf * hf), 100);
+}
+
+function starsHtml(score){
+  const filled=Math.round(score/20); return '★'.repeat(filled)+'☆'.repeat(5-filled);
+}
+
+const GRADE_COLOR={S:'#e53935',A:'#fb8c00',B:'#fdd835',C:'#43a047',D:'#607d8b'};
+
+function renderConditions(){
+  const c=currentConditions;
+  const panel=document.getElementById('cond-panel');
+  if(!c){panel.style.display='none';return;}
+  panel.style.display='block';
+
+  const gc=GRADE_COLOR[c.grade]||'#607d8b';
+  const w=c.weather;
+  const mf=c.moon_factor||{};
+  const lightSc=Math.min(Math.round((mf.light||1)*60+(w?(w.humidity>=70?10:0)+(w.cloud<=25?8:0):0)),100);
+  const streetSc=Math.min(Math.round((mf.street||1)*55+(w?5:0)),100);
+
+  panel.innerHTML=`
+<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px">
+  <span style="background:${gc};color:${gc==='#fdd835'?'#333':'#fff'};font-weight:700;padding:1px 8px;border-radius:7px;font-size:.82rem">${c.grade}</span>
+  <span style="font-size:.71rem;color:#90caf9">${c.moon_emoji} ${c.moon_label}（${c.moon_age}日）</span>
+  ${w
+    ?`<span style="font-size:.71rem;color:#b3e5fc">🌡${w.temp}°C 💧${w.humidity}% ☁${w.cloud}%</span>`
+    :`<span style="font-size:.67rem;color:#546e7a">気象データなし</span>`}
+  <span style="font-size:.63rem;color:#4a7c4e;opacity:.7;margin-left:auto">${c.date}</span>
+  <button class="tonight-toggle${tonightModeOn?' active':''}" id="tonight-toggle" onclick="toggleTonightMode()">
+    🌙 ${tonightModeOn?'今夜モード✓':'今夜スコア'}
+  </button>
+</div>
+<div style="display:flex;gap:10px;font-size:.68rem;flex-wrap:wrap">
+  <span style="color:#ce93d8">🔦 ${starsHtml(lightSc)} ${lightSc}点</span>
+  <span style="color:#ffc107">💡 ${starsHtml(streetSc)} ${streetSc}点</span>
+  <span style="color:#66bb6a">🌳 ${starsHtml(50)} 天候依存なし</span>
+</div>`;
+}
+
+function getPlanDate(){
+  return document.getElementById('plan-date').value;
+}
+
+function onPlanDateChange(){
+  const d = getPlanDate();
+  if(!d) return;
+  const label = document.getElementById('plan-date-label');
+  // 月齢だけなら即時表示（気象は再取得）
+  if(allZones.length){
+    label.textContent = '⏳ コンディション再取得中...';
+    fetchConditions(d);
+  } else {
+    // 検索前でも月齢ラベルだけ更新
+    const age = calcMoonAgeJS(d);
+    label.textContent = moonLabelJS(age) + '（月齢 ' + age.toFixed(1) + '日）';
+  }
+}
+
+// JS側の月齢計算（サーバー呼び出し前にラベルを即表示するため）
+function calcMoonAgeJS(dateStr){
+  const knownNew = new Date('2000-01-06T00:00:00Z');
+  const target   = new Date(dateStr + 'T00:00:00Z');
+  const days = (target - knownNew) / 86400000;
+  return ((days % 29.53058867) + 29.53058867) % 29.53058867;
+}
+function moonLabelJS(age){
+  if(age < 1.5 || age > 28) return '🌑 新月';
+  if(age < 6)   return '🌒 三日月';
+  if(age < 8.5) return '🌓 上弦';
+  if(age < 13)  return '🌔 十三夜';
+  if(age < 16)  return '🌕 満月';
+  if(age < 21)  return '🌖 十六夜';
+  if(age < 23.5)return '🌗 下弦';
+  return '🌘 晦日月';
+}
+
+function fetchConditions(date){
+  fetch(`/api/conditions?lat=${centerLat}&lng=${centerLng}&date=${date}`)
+    .then(r=>r.json())
+    .then(d=>{
+      currentConditions = d;
+      renderConditions();
+      if(allZones.length) renderZones();
+      const label = document.getElementById('plan-date-label');
+      const wStr = d.weather ? `気温${d.weather.temp}°C 湿度${d.weather.humidity}%` : '気象データなし（14日超または過去日）';
+      label.textContent = `${d.moon_emoji} ${d.moon_label}（月齢${d.moon_age}日） — ${wStr}`;
+    })
+    .catch(()=>{
+      document.getElementById('plan-date-label').textContent = '取得失敗';
+    });
+}
+
+function toggleTonightMode(){
+  tonightModeOn=!tonightModeOn;
+  renderConditions();
+  if(allZones.length) renderZones();
+}
+
+// ── 探索推奨ゾーン ────────────────────────────────────────────
+function clearZones(){
+  zoneCircles.forEach(c=>map.removeLayer(c));
+  zoneMarkers.forEach(m=>map.removeLayer(m));
+  zoneCircles=[]; zoneMarkers=[];
+}
+
+function buildZonePopup(zone, rank, sc){
+  const mMeta = METHOD_META[currentMethod];
+  const spMeta = SPECIES_META[currentSp];
+  const grd = scoreGrade(sc);
+  const reasons = getReasons(zone, currentSp);
+  const coordStr = `${zone.lat.toFixed(5)}, ${zone.lng.toFixed(5)}`;
+  const allSc = Object.entries(SPECIES_META).map(([k,m])=>{
+    const v = zone[k] ?? 0;
+    return `<span style="font-size:.72rem;margin-right:6px">${m.label.replace('クワガタ','').replace('ムシ','')}: <b style="color:${scoreColor(v)}">${v}</b></span>`;
+  }).join('');
+  const mLight  = zone.m_light  ?? 0;
+  const mStreet = zone.m_street ?? 0;
+  const mTree   = zone[currentSp] ?? 0;
+  return `
+<div class="pop-title" style="color:${mMeta.color}">${mMeta.icon} 探索推奨ゾーン #${rank}位</div>
+<div class="pop-row" style="font-size:.72rem;color:#ccb060">座標: <b>${coordStr}</b>（半径3km圏）</div>
+<div class="pop-row">📍 ${zone.dist_km}km ｜ ⛰ ${zone.elevation??'不明'}m ｜ 🌿 ${zone.broadleaf?'広葉樹林推定':'樹林推定'}</div>
+${zone.river_dist_km!=null?`<div class="pop-row">🌊 最寄り河川: <b>${zone.river_dist_km}km</b></div>`:''}
+<hr class="pop-div">
+<div style="font-size:.72rem;color:${mMeta.color};margin-bottom:4px;font-weight:600">◆ 採集方法別スコア</div>
+<div class="pop-row">🌳 樹木採集（${spMeta.label}）: <b style="color:${scoreColor(mTree)}">${mTree}点</b></div>
+<div class="pop-row">🔦 ライト採集: <b style="color:${scoreColor(mLight)}">${mLight}点</b></div>
+<div class="pop-row">💡 街灯採集（推定）: <b style="color:${scoreColor(mStreet)}">${mStreet}点</b><span style="font-size:.67rem;opacity:.7"> ※ゾーン選択で実データ更新</span></div>
+<hr class="pop-div">
+<div style="font-size:.72rem;color:#ffe082;margin-bottom:3px">◆ ${spMeta.label} ポテンシャル理由</div>
+${reasons.map(r=>`<div style="font-size:.71rem;color:#c8e6c9;margin:1px 0">▸ ${r}</div>`).join('')}
+<hr class="pop-div">
+<div class="pop-row" style="font-weight:bold;color:${mMeta.color}">${mMeta.label}: ${sc}点 <span style="font-size:.8rem;background:${grd.c};color:${grd.c==='#fdd835'?'#333':'#fff'};padding:1px 7px;border-radius:10px">${grd.g}</span></div>
+<div style="margin:3px 0 2px;font-size:.7rem;color:#9e9e9e">全種スコア</div>
+<div style="margin:0 0 4px">${allSc}</div>
+<hr class="pop-div">
+${(()=>{
+  if(!currentConditions) return '';
+  const w = currentConditions.weather;
+  const zt = zoneNightTemp(w?.temp, zone.elevation);
+  const mf = (currentConditions.moon_factor||{})[currentMethod]??1;
+  const tf = zt!=null ? tempFactor(zt, currentSp) : 1;
+  const hf = humidityFactor(w?.humidity);
+  const ts = Math.min(Math.round(sc * mf * tf * hf), 100);
+  const tg = scoreGrade(ts);
+  const ztStr = zt!=null ? `🌡 現地推定${zt}°C` : '';
+  return `<div style="background:#0d1a2a;border-radius:6px;padding:5px 8px;margin-bottom:6px">
+<div style="font-size:.7rem;color:#90caf9;font-weight:600;margin-bottom:3px">🌙 今夜の条件</div>
+<div style="font-size:.7rem;color:#c8e6c9">${currentConditions.moon_emoji} ${currentConditions.moon_label}（月齢${currentConditions.moon_age}日）× ${ztStr}</div>
+<div style="font-size:.7rem;color:#90caf9;margin-top:2px">今夜スコア: <b style="color:${scoreColor(ts)}">${ts}点</b> <span style="font-size:.75rem;background:${tg.c};color:${tg.c==='#fdd835'?'#333':'#fff'};padding:1px 6px;border-radius:8px">${tg.g}</span></div>
+</div>`;
+})()}
+<a href="https://www.google.com/maps?q=${zone.lat},${zone.lng}" target="_blank" class="pop-link">📌 Gマップ</a>
+<a href="https://www.google.com/maps/search/クワガタ+採集/@${zone.lat},${zone.lng},11z" target="_blank" class="pop-link">🗺 周辺探索</a>
+<a href="https://www.inaturalist.org/observations?taxon_id=47651&lat=${zone.lat}&lng=${zone.lng}&radius=15" target="_blank" class="pop-link">🔬 iNat</a>`;
+}
+
+function renderZones(){
+  clearZones();
+  if(!allZones.length) return;
+  const meta = METHOD_META[currentMethod];
+
+  // 採集方法 or 今夜スコアで降順ソート（元配列は変えない）
+  const sorted = allZones.map((z,i)=>({zone:z, origIdx:i, sc:tonightScore(z)}))
+                         .sort((a,b)=>b.sc - a.sc);
+
+  sorted.forEach(({zone, origIdx, sc}, rank)=>{
+    const color = scoreColor(sc);
+    const circle = L.circle([zone.lat, zone.lng],{
+      radius:3000, color:color, fillColor:color,
+      fillOpacity:0.10, weight:2, dashArray:'7 5', interactive:true
+    }).addTo(map);
+    const popup = buildZonePopup(zone, rank+1, sc);
+    circle.bindPopup(popup,{maxWidth:320});
+    zoneCircles[origIdx] = circle;
+    const sz = sc>=70?18:sc>=50?15:12;
+    const icon = L.divIcon({
+      html:`<div style="width:${sz}px;height:${sz}px;background:${color};transform:rotate(45deg);border:2px solid rgba(255,255,255,.75);box-shadow:0 2px 6px rgba(0,0,0,.5)"></div>`,
+      className:'', iconAnchor:[sz/2, sz/2]
+    });
+    const marker = L.marker([zone.lat, zone.lng],{icon}).addTo(map);
+    marker.bindPopup(popup,{maxWidth:320});
+    zoneMarkers[origIdx] = marker;
+  });
+
+  const list = document.getElementById('spot-list');
+  const headerColor = meta.color;
+  const tonightLabel = tonightModeOn && currentConditions
+    ? `🌙今夜モード（${(currentConditions.moon_factor||{})[currentMethod]??1}×月齢）` : '';
+  const zoneHtml =`
+<div style="padding:8px 14px 6px;background:#1a1200;border-top:2px solid ${headerColor};font-size:.75rem;color:${headerColor};font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+  ${meta.icon} 探索推奨ゾーン ／ ${meta.label}ランキング ${allZones.length}件
+  ${tonightLabel?`<span style="font-size:.63rem;background:#0d1a2a;color:#90caf9;padding:1px 7px;border-radius:9px">${tonightLabel}</span>`:''}
+</div>
+${sorted.map(({zone, origIdx, sc}, rank)=>{
+  const baseScVal = methodScore(zone);
+  const grd = scoreGrade(sc);
+  const reasons = getReasons(zone, currentSp);
+  const coordStr = `${zone.lat.toFixed(4)}, ${zone.lng.toFixed(4)}`;
+  const mLight  = zone.m_light  ?? 0;
+  const mStreet = zone.m_street ?? 0;
+  const mTree   = zone[currentSp] ?? 0;
+  const subScores = `<span style="font-size:.63rem;color:#9e9e9e">🌳${mTree} 🔦${mLight} 💡${mStreet}</span>`;
+  // 今夜モード: ゾーン標高ベースの夜間気温を表示
+  const zt = tonightModeOn && currentConditions?.weather
+    ? zoneNightTemp(currentConditions.weather.temp, zone.elevation) : null;
+  const tonightBadge = tonightModeOn && sc !== baseScVal
+    ? `<span style="font-size:.68rem;background:#0d1a2a;color:#90caf9;padding:1px 6px;border-radius:8px;margin-left:4px">基本${baseScVal}→今夜${sc}</span>` : '';
+  const nightTempStr = zt!=null ? `｜ 🌙 ${zt}°C（現地推定）` : '';
+  return `
+<div class="spot-item" onclick="zoneClick(${origIdx})" style="background:#140e00;border-left:3px solid ${headerColor};cursor:pointer">
+  <div class="spot-top">
+    <div style="font-size:.78rem;color:${headerColor};font-weight:600;flex:1;padding-right:6px">
+      🔷 探索ゾーン ${rank+1}位<br>
+      <span style="font-size:.63rem;color:#ccb060;font-weight:400">${coordStr}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
+      <span style="font-size:.75rem;font-weight:700;background:${grd.c};color:${grd.c==='#fdd835'?'#333':'#fff'};padding:1px 7px;border-radius:10px">${grd.g}</span>
+      <span class="spot-score" style="color:${scoreColor(sc)}">${sc}</span>
+    </div>
+  </div>
+  <div class="spot-meta">📍 ${zone.dist_km}km ｜ ⛰ ${zone.elevation??'不明'}m${zone.river_dist_km!=null?' ｜ 🌊 '+zone.river_dist_km+'km':''}${nightTempStr}</div>
+  <div style="margin-top:2px;display:flex;align-items:center;gap:4px">${subScores}${tonightBadge}</div>
+  <div style="margin-top:3px;padding:3px 6px;background:#2a1a00;border-radius:4px">
+    ${reasons.map(r=>`<div style="font-size:.64rem;color:#e0c060;line-height:1.6">▸ ${r}</div>`).join('')}
+  </div>
+  <div class="bar-wrap">
+    <div class="bar-row">
+      <span>${meta.icon} ${meta.label} <span style="color:${grd.c};font-size:.7rem">${grd.label}</span></span>
+      <span>${sc}点</span>
+    </div>
+    <div class="bar-bg"><div class="bar-fill" style="width:${sc}%;background:${meta.color}"></div></div>
+  </div>
+</div>`; }).join('')}`;
+  list.innerHTML = zoneHtml;
+  const dirNote = currentDirection!=='all' ? ` ／ ${DIR_JA[currentDirection]}方向` : '';
+  document.getElementById('spot-count').textContent =
+    `${allZones.length}件 ／ ${kmOfHours(currentHours)}km以内${dirNote} — ${meta.label}ランキング`;
+}
+
+function zoneClick(idx){
+  if(!allZones[idx]) return;
+  const z=allZones[idx];
+  if(map.getZoom()<10) map.setView([z.lat,z.lng],10); else map.panTo([z.lat,z.lng]);
+  if(zoneCircles[idx]) zoneCircles[idx].openPopup();
+  if(currentMethod === 'street'){
+    fetchZoneRoads(z);
+  } else {
+    fetchNearbyLight({lat:z.lat, lng:z.lng});
+  }
+}
+
+function fetchZoneRoads(zone){
+  clearNearbyLight();
+  const st=document.getElementById('nearby-light-status');
+  st.style.display='block';
+  st.textContent='⏳ 道路・街灯データ取得中（3km圏）...';
+  fetch(`/api/zone-roads?lat=${zone.lat}&lng=${zone.lng}`)
+    .then(r=>r.json())
+    .then(d=>{
+      if(d.error) throw new Error(d.error);
+      const roadStr = d.road_summary.length ? d.road_summary.join('・') : 'なし';
+      const lampStr = d.lamp_count > 0 ? `${d.lamp_count}件` : '未確認';
+      st.innerHTML = `💡 3km圏 道路: ${roadStr} ｜ 街灯: ${lampStr}`
+        + (d.actual_score ? ` ｜ 実測スコア: <b style="color:${scoreColor(d.actual_score)}">${d.actual_score}</b>` : '');
+      // 実測スコアでゾーンのm_streetを更新しランキング再描画
+      if(d.actual_score !== undefined){
+        zone.m_street = d.actual_score;
+        if(currentMethod === 'street') renderZones();
+      }
+    })
+    .catch(()=>{ st.textContent='⚠ 道路データ取得できませんでした'; });
+}
+
+// ── ハイライト ────────────────────────────────────────────────
+function hlItem(idx, scroll){
+  selectedSpotIdx = idx;
+  document.querySelectorAll('.spot-item').forEach((el,i)=>el.classList.toggle('active',i===idx));
+  if(scroll){ const el=document.getElementById('item-'+idx); if(el) el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  if(markers[idx]){
+    markers[idx].openPopup();
+    const ll=markers[idx].getLatLng();
+    if(map.getZoom()<11) map.setView(ll,11); else map.panTo(ll);
+  }
+  const spot = currentFilteredSpots[idx];
+  if(spot) fetchNearbyLight(spot);
+}
+
+// ── 周辺ライト採集スポット ────────────────────────────────────
+function clearNearbyLight(){
+  lightNearbyMarkers.forEach(m=>map.removeLayer(m));
+  lightNearbyMarkers=[];
+  selectedSpotIdx=-1;
+  const st=document.getElementById('nearby-light-status');
+  if(st){ st.style.display='none'; st.textContent=''; }
+  document.getElementById('light-legend').style.display='none';
+}
+
+function fetchNearbyLight(spot){
+  lightNearbyMarkers.forEach(m=>map.removeLayer(m));
+  lightNearbyMarkers=[];
+  const st=document.getElementById('nearby-light-status');
+  st.style.display='block';
+  st.textContent='⏳ 周辺ライト採集スポット検索中...';
+
+  // 選択スポットから10km圏内（hours=0.18 ≒ 10km）
+  fetch(`/api/light-spots?lat=${spot.lat}&lng=${spot.lng}&hours=0.18`)
+    .then(r=>r.json())
+    .then(d=>{
+      if(d.error) throw new Error(d.error);
+      const items=d.spots||[];
+      items.forEach(item=>{
+        const icon=L.divIcon({
+          html:`<div style="background:${item.color};width:26px;height:26px;border-radius:5px;border:2px solid rgba(255,255,255,.8);display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 2px 5px rgba(0,0,0,.5)">${item.icon}</div>`,
+          className:'', iconAnchor:[13,13]
+        });
+        const m=L.marker([item.lat,item.lng],{icon}).addTo(map);
+        m.bindPopup(buildLightPopup(item),{maxWidth:270});
+        lightNearbyMarkers.push(m);
+      });
+      if(items.length>0){
+        st.textContent=`🔦 10km圏内 ${items.length}件のライト採集スポット`;
+        document.getElementById('light-legend').style.display='flex';
+      } else {
+        st.textContent='🔦 10km圏内にライト採集スポットなし';
+        document.getElementById('light-legend').style.display='none';
+      }
+    })
+    .catch(()=>{
+      st.style.display='none';
+      document.getElementById('light-legend').style.display='none';
+    });
+}
+
+// ── 採集予定日 初期化 ─────────────────────────────────────────
+(function initPlanDate(){
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('plan-date').value = today;
+  const a = calcMoonAgeJS(today);
+  document.getElementById('plan-date-label').textContent =
+    moonLabelJS(a) + '（月齢 ' + a.toFixed(1) + '日）';
+})();
+</script>
+</body>
+</html>
