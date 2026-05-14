@@ -539,6 +539,11 @@ def index():
     return render_template("index.html", default_lat=DEFAULT_LAT, default_lng=DEFAULT_LNG)
 
 
+@app.route("/guide")
+def guide():
+    return render_template("guide.html")
+
+
 @app.route("/sitemap.xml")
 def sitemap():
     xml = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -547,6 +552,11 @@ def sitemap():
     <loc>https://beetle-finder.onrender.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/guide</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>'''
     return Response(xml, mimetype="application/xml")
