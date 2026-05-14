@@ -544,6 +544,26 @@ def guide():
     return render_template("guide.html")
 
 
+@app.route("/guide/beginners")
+def guide_beginners():
+    return render_template("guide_beginners.html")
+
+
+@app.route("/guide/miyama")
+def guide_miyama():
+    return render_template("guide_miyama.html")
+
+
+@app.route("/guide/ookuwa")
+def guide_ookuwa():
+    return render_template("guide_ookuwa.html")
+
+
+@app.route("/guide/tools")
+def guide_tools():
+    return render_template("guide_tools.html")
+
+
 @app.route("/sitemap.xml")
 def sitemap():
     xml = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -557,6 +577,26 @@ def sitemap():
     <loc>https://beetle-finder.onrender.com/guide</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/guide/beginners</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/guide/miyama</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/guide/ookuwa</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/guide/tools</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>'''
     return Response(xml, mimetype="application/xml")
