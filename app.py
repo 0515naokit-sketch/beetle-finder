@@ -539,6 +539,19 @@ def index():
     return render_template("index.html", default_lat=DEFAULT_LAT, default_lng=DEFAULT_LNG)
 
 
+@app.route("/sitemap.xml")
+def sitemap():
+    xml = '''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://beetle-finder.onrender.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>'''
+    return Response(xml, mimetype="application/xml")
+
+
 @app.route("/api/geocode")
 def geocode():
     addr = request.args.get("address", "").strip()
