@@ -2,8 +2,17 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>クワガタ採集スポット検索</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>クワガタ採集スポット検索 | 今夜採れる場所を地図で表示</title>
+  <meta name="description" content="出発地と時間を入力するだけ。クワガタ・カブトムシが採れる山林ゾーンを地図に表示。標高・河川・月齢・気象データで採集スポットを本格スコアリング。全国対応・無料。">
+  <meta name="keywords" content="クワガタ 採集 スポット 場所 地図 ミヤマクワガタ オオクワガタ ノコギリクワガタ ヒラタクワガタ カブトムシ 採集場所 採集ポイント">
+  <meta property="og:title" content="🦌 クワガタ採集スポット検索">
+  <meta property="og:description" content="今夜クワガタが採れる場所を地図で表示。月齢・気象・標高データで採集スポットをスコアリング。出発地を入力するだけ、全国対応・無料。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="🦌 クワガタ採集スポット検索">
+  <meta name="twitter:description" content="出発地を入力するだけ。今夜クワガタが採れる場所を地図に表示します。月齢・気象・標高データ連動。全国対応・無料。">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
@@ -12,9 +21,31 @@
 
     /* ─ サイドバー ─ */
     #sidebar{width:390px;min-width:300px;background:#1b2d1b;border-right:1px solid #2a3e2a;display:flex;flex-direction:column;overflow:hidden}
-    #header{padding:11px 15px 9px;background:#111d11;border-bottom:1px solid #2a3e2a;flex-shrink:0}
+    #header{padding:10px 15px 8px;background:#111d11;border-bottom:1px solid #2a3e2a;flex-shrink:0}
     #header h1{font-size:1.05rem;color:#a5d6a7;letter-spacing:.02em}
-    #header p{font-size:.7rem;color:#81c784;opacity:.65;margin-top:2px}
+    .header-tagline{font-size:.78rem;color:#81c784;margin-top:2px;font-weight:500}
+    .header-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+    .header-badge{font-size:.62rem;background:#1f321f;border:1px solid #2e4a2e;color:#81c784;padding:2px 7px;border-radius:10px}
+
+    /* 詳細設定トグル */
+    #adv-toggle{
+      width:100%;margin-top:10px;padding:9px 14px;
+      background:#243e24;border:2px dashed #4a7a4a;border-radius:8px;
+      color:#a5d6a7;font-size:.8rem;font-weight:600;
+      cursor:pointer;user-select:none;text-align:left;
+      display:flex;justify-content:space-between;align-items:center;
+      transition:background .15s,border-color .15s;
+    }
+    #adv-toggle:hover{background:#2e4e2e;border-color:#66bb6a}
+    #adv-toggle.open{background:#2e4e2e;border-style:solid;border-color:#66bb6a;border-bottom-left-radius:0;border-bottom-right-radius:0}
+    .adv-badge{font-size:.72rem;padding:2px 10px;border-radius:10px;font-weight:700;
+      background:#388e3c;color:#fff;white-space:nowrap}
+    #adv-section{display:none;border:2px solid #66bb6a;border-top:none;
+      border-radius:0 0 8px 8px;padding:10px 6px 6px;margin-bottom:4px}
+
+    /* シェアボタン */
+    .share-btn{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;background:#1a1a2e;border:1px solid #3a3a5e;color:#90caf9;padding:4px 12px;border-radius:14px;cursor:pointer;text-decoration:none;transition:background .15s}
+    .share-btn:hover{background:#252545}
 
     /* ─ コントロール ─ */
     #controls{padding:9px 14px 11px;border-bottom:1px solid #2a3e2a;flex-shrink:0;overflow-y:auto;max-height:65vh}
@@ -157,9 +188,15 @@
     .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:middle}
 
     @media(max-width:680px){
-      #sidebar{width:100%;min-width:unset;max-height:50vh;border-right:none;border-bottom:1px solid #2a3e2a}
-      #app{flex-direction:column}
-      #map{flex:1;min-height:50vh}
+      #app{flex-direction:column-reverse}
+      #map{height:52vh;flex-shrink:0}
+      #sidebar{width:100%;min-width:unset;height:48vh;border-right:none;border-top:2px solid #2a3e2a}
+      #controls{max-height:none}
+      .sp-btn,.month-btn,.dir-btn,.method-btn{min-height:34px;font-size:.8rem}
+      #search-btn{padding:11px;font-size:.92rem}
+      #addr-input{font-size:.9rem}
+      .spot-item{padding:8px 12px}
+      .header-badges{display:none}
     }
   </style>
 </head>
@@ -168,7 +205,13 @@
   <div id="sidebar">
     <div id="header">
       <h1>🦌 クワガタ採集スポット検索</h1>
-      <p>標高(国土地理院)・河川距離 グリッドスキャンで探索推奨ゾーンを提示</p>
+      <div class="header-tagline">今夜クワガタが採れる場所を地図で表示</div>
+      <div class="header-badges">
+        <span class="header-badge">📍 全国対応</span>
+        <span class="header-badge">🌙 月齢・気象連動</span>
+        <span class="header-badge">⛰ 標高分析</span>
+        <span class="header-badge">🆓 無料</span>
+      </div>
     </div>
 
     <div id="controls">
@@ -181,37 +224,6 @@
       </div>
       <div id="addr-result">現在地：葛飾区（デフォルト）</div>
 
-      <!-- 種選択 -->
-      <div class="ctrl-label">🦌 ターゲット種</div>
-      <div class="sp-group">
-        <div class="sp-group-label">🏔 山岳種</div>
-        <div class="btn-row">
-          <button class="sp-btn active" data-sp="miyama"    onclick="setSpecies('miyama')">ミヤマ</button>
-          <button class="sp-btn"        data-sp="akaashi"   onclick="setSpecies('akaashi')">アカアシ</button>
-        </div>
-      </div>
-      <div class="sp-group">
-        <div class="sp-group-label">🌲 中山地種</div>
-        <div class="btn-row">
-          <button class="sp-btn" data-sp="okuwagata" onclick="setSpecies('okuwagata')">オオクワ</button>
-          <button class="sp-btn" data-sp="suji"      onclick="setSpecies('suji')">スジクワ</button>
-        </div>
-      </div>
-      <div class="sp-group">
-        <div class="sp-group-label">🌾 低地種</div>
-        <div class="btn-row">
-          <button class="sp-btn" data-sp="nokogiri"   onclick="setSpecies('nokogiri')">ノコギリ</button>
-          <button class="sp-btn" data-sp="kokuwagata" onclick="setSpecies('kokuwagata')">コクワ</button>
-          <button class="sp-btn" data-sp="hirata"     onclick="setSpecies('hirata')">ヒラタ</button>
-        </div>
-      </div>
-      <div class="sp-group">
-        <div class="sp-group-label">🦗 甲虫</div>
-        <div class="btn-row">
-          <button class="sp-btn" data-sp="kabuto" onclick="setSpecies('kabuto')">カブトムシ</button>
-        </div>
-      </div>
-
       <!-- ドライブ時間 -->
       <div class="ctrl-label">🚗 ドライブ時間</div>
       <div class="slider-row">
@@ -219,43 +231,8 @@
         <span id="hours-label">3時間（約165km）</span>
       </div>
 
-      <!-- 採集時期 -->
-      <div class="ctrl-label">📅 採集時期</div>
-      <div class="btn-row">
-        <button class="month-btn active" data-month="0" onclick="setMonth(0)">全期間</button>
-        <button class="month-btn" data-month="6" onclick="setMonth(6)">6月</button>
-        <button class="month-btn" data-month="7" onclick="setMonth(7)">7月</button>
-        <button class="month-btn" data-month="8" onclick="setMonth(8)">8月</button>
-        <button class="month-btn" data-month="9" onclick="setMonth(9)">9月</button>
-      </div>
-
-      <!-- 方向絞り込み -->
-      <div class="ctrl-label">🧭 方向絞り込み</div>
-      <div style="display:flex;align-items:flex-start;gap:10px">
-        <div class="dir-grid">
-          <button class="dir-btn" data-dir="NW" onclick="setDirection('NW')">北西</button>
-          <button class="dir-btn" data-dir="N"  onclick="setDirection('N')">北</button>
-          <button class="dir-btn" data-dir="NE" onclick="setDirection('NE')">北東</button>
-          <button class="dir-btn" data-dir="W"  onclick="setDirection('W')">西</button>
-          <button class="dir-btn active" data-dir="all" onclick="setDirection('all')">全</button>
-          <button class="dir-btn" data-dir="E"  onclick="setDirection('E')">東</button>
-          <button class="dir-btn" data-dir="SW" onclick="setDirection('SW')">南西</button>
-          <button class="dir-btn" data-dir="S"  onclick="setDirection('S')">南</button>
-          <button class="dir-btn" data-dir="SE" onclick="setDirection('SE')">南東</button>
-        </div>
-        <div style="font-size:.67rem;color:#81c784;opacity:.75;padding-top:2px;line-height:1.6">
-          方向を選ぶと<br>そのエリアを<br>重点検索<br><span style="color:#ffe082">絞込時60件</span>
-        </div>
-      </div>
-
-      <!-- お気に入り -->
-      <div class="ctrl-label">⭐ フィルタ</div>
-      <div class="btn-row">
-        <button id="fav-toggle" onclick="toggleFavFilter()">☆ お気に入りのみ</button>
-      </div>
-
       <!-- 採集予定日 -->
-      <div class="ctrl-label">📅 採集予定日（月齢・気象計算）</div>
+      <div class="ctrl-label">📅 採集予定日（月齢・気象連動）</div>
       <div style="display:flex;gap:6px;align-items:center">
         <input type="date" id="plan-date" onchange="onPlanDateChange()"
           style="flex:1;background:#1f321f;border:1px solid #2a3e2a;color:#dcedc8;border-radius:6px;padding:5px 9px;font-size:.82rem;outline:none">
@@ -263,27 +240,99 @@
       </div>
       <div id="plan-date-label" style="font-size:.68rem;color:#81c784;margin-top:2px;opacity:.8"></div>
 
-      <!-- 採集方法 -->
-      <div class="ctrl-label">🎯 採集方法</div>
-      <div class="btn-row">
-        <button class="method-btn active" data-m="tree"   onclick="setMethod('tree')">🌳 樹木採集</button>
-        <button class="method-btn"        data-m="light"  onclick="setMethod('light')">🔦 ライト採集</button>
-        <button class="method-btn"        data-m="street" onclick="setMethod('street')">💡 街灯採集</button>
-      </div>
-      <div class="method-desc" id="method-desc">広葉樹林の標高・樹相を重視したランキング</div>
+      <!-- 詳細設定トグル -->
+      <button id="adv-toggle" onclick="toggleAdvanced()">
+        <span>⚙ 詳細設定（種・方向・採集方法）</span>
+        <span class="adv-badge" id="adv-badge">＋ 開く</span>
+      </button>
 
-      <!-- 夜間採集レイヤー -->
-      <div class="ctrl-label">🌙 周辺スポット</div>
-      <div style="font-size:.7rem;color:#81c784;opacity:.75;margin-bottom:4px">ゾーン選択で周辺のライト採集ポイント・道路データを自動表示</div>
-      <div class="layer-legend" id="light-legend" style="display:none">
-        <div class="ll"><div class="ll-sq" style="background:#ffc107"></div>駐車場</div>
-        <div class="ll"><div class="ll-sq" style="background:#4caf50"></div>キャンプ場</div>
-        <div class="ll"><div class="ll-sq" style="background:#1565c0"></div>ダム</div>
-        <div class="ll"><div class="ll-sq" style="background:#26c6da"></div>水辺</div>
-      </div>
+      <div id="adv-section">
+        <!-- 種選択 -->
+        <div class="ctrl-label">🦌 ターゲット種</div>
+        <div class="sp-group">
+          <div class="sp-group-label">🏔 山岳種</div>
+          <div class="btn-row">
+            <button class="sp-btn active" data-sp="miyama"    onclick="setSpecies('miyama')">ミヤマ</button>
+            <button class="sp-btn"        data-sp="akaashi"   onclick="setSpecies('akaashi')">アカアシ</button>
+          </div>
+        </div>
+        <div class="sp-group">
+          <div class="sp-group-label">🌲 中山地種</div>
+          <div class="btn-row">
+            <button class="sp-btn" data-sp="okuwagata" onclick="setSpecies('okuwagata')">オオクワ</button>
+            <button class="sp-btn" data-sp="suji"      onclick="setSpecies('suji')">スジクワ</button>
+          </div>
+        </div>
+        <div class="sp-group">
+          <div class="sp-group-label">🌾 低地種</div>
+          <div class="btn-row">
+            <button class="sp-btn" data-sp="nokogiri"   onclick="setSpecies('nokogiri')">ノコギリ</button>
+            <button class="sp-btn" data-sp="kokuwagata" onclick="setSpecies('kokuwagata')">コクワ</button>
+            <button class="sp-btn" data-sp="hirata"     onclick="setSpecies('hirata')">ヒラタ</button>
+          </div>
+        </div>
+        <div class="sp-group">
+          <div class="sp-group-label">🦗 甲虫</div>
+          <div class="btn-row">
+            <button class="sp-btn" data-sp="kabuto" onclick="setSpecies('kabuto')">カブトムシ</button>
+          </div>
+        </div>
+
+        <!-- 採集時期 -->
+        <div class="ctrl-label">📅 採集時期</div>
+        <div class="btn-row">
+          <button class="month-btn active" data-month="0" onclick="setMonth(0)">全期間</button>
+          <button class="month-btn" data-month="6" onclick="setMonth(6)">6月</button>
+          <button class="month-btn" data-month="7" onclick="setMonth(7)">7月</button>
+          <button class="month-btn" data-month="8" onclick="setMonth(8)">8月</button>
+          <button class="month-btn" data-month="9" onclick="setMonth(9)">9月</button>
+        </div>
+
+        <!-- 方向絞り込み -->
+        <div class="ctrl-label">🧭 方向絞り込み</div>
+        <div style="display:flex;align-items:flex-start;gap:10px">
+          <div class="dir-grid">
+            <button class="dir-btn" data-dir="NW" onclick="setDirection('NW')">北西</button>
+            <button class="dir-btn" data-dir="N"  onclick="setDirection('N')">北</button>
+            <button class="dir-btn" data-dir="NE" onclick="setDirection('NE')">北東</button>
+            <button class="dir-btn" data-dir="W"  onclick="setDirection('W')">西</button>
+            <button class="dir-btn active" data-dir="all" onclick="setDirection('all')">全</button>
+            <button class="dir-btn" data-dir="E"  onclick="setDirection('E')">東</button>
+            <button class="dir-btn" data-dir="SW" onclick="setDirection('SW')">南西</button>
+            <button class="dir-btn" data-dir="S"  onclick="setDirection('S')">南</button>
+            <button class="dir-btn" data-dir="SE" onclick="setDirection('SE')">南東</button>
+          </div>
+          <div style="font-size:.67rem;color:#81c784;opacity:.75;padding-top:2px;line-height:1.6">
+            方向を選ぶと<br>そのエリアを<br>重点検索<br><span style="color:#ffe082">絞込時60件</span>
+          </div>
+        </div>
+
+        <!-- お気に入り -->
+        <div class="ctrl-label">⭐ フィルタ</div>
+        <div class="btn-row">
+          <button id="fav-toggle" onclick="toggleFavFilter()">☆ お気に入りのみ</button>
+        </div>
+
+        <!-- 採集方法 -->
+        <div class="ctrl-label">🎯 採集方法</div>
+        <div class="btn-row">
+          <button class="method-btn active" data-m="tree"   onclick="setMethod('tree')">🌳 樹木採集</button>
+          <button class="method-btn"        data-m="light"  onclick="setMethod('light')">🔦 ライト採集</button>
+          <button class="method-btn"        data-m="street" onclick="setMethod('street')">💡 街灯採集</button>
+        </div>
+        <div class="method-desc" id="method-desc">広葉樹林の標高・樹相を重視したランキング</div>
+
+        <!-- 周辺スポット凡例 -->
+        <div class="layer-legend" id="light-legend" style="display:none;margin-top:6px">
+          <div class="ll"><div class="ll-sq" style="background:#ffc107"></div>駐車場</div>
+          <div class="ll"><div class="ll-sq" style="background:#4caf50"></div>キャンプ場</div>
+          <div class="ll"><div class="ll-sq" style="background:#1565c0"></div>ダム</div>
+          <div class="ll"><div class="ll-sq" style="background:#26c6da"></div>水辺</div>
+        </div>
+      </div><!-- /adv-section -->
 
       <!-- 探索ゾーン検索 -->
-      <button id="search-btn" onclick="startSearch()">🔍 探索推奨ゾーンを検索（30〜60秒）</button>
+      <button id="search-btn" onclick="startSearch()">🔍 採集スポットを検索（30〜60秒）</button>
     </div>
 
     <div id="progress-wrap">
@@ -527,6 +576,17 @@ function toggleFavFilter(){
   btn.classList.toggle('active', favFilterOn);
   btn.textContent = favFilterOn ? '⭐ お気に入りのみ' : '☆ お気に入りのみ';
   if(allSpots.length) renderSpots();
+}
+
+function toggleAdvanced(){
+  const sec = document.getElementById('adv-section');
+  const btn = document.getElementById('adv-toggle');
+  const badge = document.getElementById('adv-badge');
+  const open = sec.style.display !== 'none';
+  sec.style.display = open ? 'none' : 'block';
+  btn.classList.toggle('open', !open);
+  badge.textContent = open ? '＋ 開く' : '✕ 閉じる';
+  badge.style.background = open ? '#388e3c' : '#555';
 }
 
 function setDirection(dir){
@@ -993,10 +1053,19 @@ function renderZones(){
   const headerColor = meta.color;
   const tonightLabel = tonightModeOn && currentConditions
     ? `🌙今夜モード（${(currentConditions.moon_factor||{})[currentMethod]??1}×月齢）` : '';
+
+  // Xシェア用テキスト生成
+  const top = sorted[0];
+  const shareText = top
+    ? `🦌クワガタ採集スポット検索で${DIR_JA[currentDirection]}${kmOfHours(currentHours)}km圏内を分析！${META_METHOD ? '' : ''}${SPECIES_META[currentSp].label}の最有望ゾーン発見（標高${top.zone.elevation??'?'}m・スコア${top.sc}点）🔦 #クワガタ採集 #クワガタ`
+    : '🦌クワガタ採集スポット検索 #クワガタ採集';
+  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+
   const zoneHtml =`
 <div style="padding:8px 14px 6px;background:#1a1200;border-top:2px solid ${headerColor};font-size:.75rem;color:${headerColor};font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-  ${meta.icon} 探索推奨ゾーン ／ ${meta.label}ランキング ${allZones.length}件
+  <span>${meta.icon} 探索推奨ゾーン ／ ${meta.label}ランキング ${allZones.length}件</span>
   ${tonightLabel?`<span style="font-size:.63rem;background:#0d1a2a;color:#90caf9;padding:1px 7px;border-radius:9px">${tonightLabel}</span>`:''}
+  <a href="${shareUrl}" target="_blank" class="share-btn" style="margin-left:auto">𝕏 結果をシェア</a>
 </div>
 ${sorted.map(({zone, origIdx, sc}, rank)=>{
   const baseScVal = methodScore(zone);
