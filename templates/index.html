@@ -551,24 +551,43 @@ legend.onAdd = ()=>{
 legend.addTo(map);
 
 // ── ユーティリティ ────────────────────────────────────────────
-// 絶対スコア → 色（広めに帯を取る）
-function scoreColor(s){ return s>=65?'#e53935':s>=50?'#fb8c00':s>=35?'#fdd835':s>=20?'#43a047':'#607d8b' }
-function scoreEmoji(s){ return s>=65?'🔥':s>=50?'⭐':s>=35?'🟡':s>=20?'🟢':'⚫' }
+// 採集方法別スコア閾値（実際のスコア分布に合わせて調整）
+// tree/species: 0-100点（季節補正後）
+// light: m_light → 0-200m=33, 200-400m=45, 400-700m=63, 700m+=80
+// street: m_street → 0-100点
+const SCORE_THRESH = {
+  tree:   [72, 55, 38, 22],   // S/A/B/C 閾値
+  light:  [75, 60, 44, 30],   // 高山=赤、中山=橙、低山=黄
+  street: [68, 52, 36, 20],
+};
+function getThresh(){ return SCORE_THRESH[currentMethod] || SCORE_THRESH.tree; }
+
+function scoreColor(s){
+  const [s1,s2,s3,s4] = getThresh();
+  return s>=s1?'#e53935': s>=s2?'#fb8c00': s>=s3?'#fdd835': s>=s4?'#43a047': '#607d8b';
+}
+function scoreEmoji(s){
+  const [s1,s2,s3,s4] = getThresh();
+  return s>=s1?'🔥': s>=s2?'⭐': s>=s3?'🟡': s>=s4?'🟢': '⚫';
+}
 function scoreGrade(s){
-  if(s>=65) return {g:'S', c:'#e53935', label:'最有望'};
-  if(s>=50) return {g:'A', c:'#fb8c00', label:'有望'};
-  if(s>=35) return {g:'B', c:'#fdd835', label:'可能性あり'};
-  if(s>=20) return {g:'C', c:'#81c784', label:'低め'};
+  const [s1,s2,s3,s4] = getThresh();
+  if(s>=s1) return {g:'S', c:'#e53935', label:'最有望'};
+  if(s>=s2) return {g:'A', c:'#fb8c00', label:'有望'};
+  if(s>=s3) return {g:'B', c:'#fdd835', label:'可能性あり'};
+  if(s>=s4) return {g:'C', c:'#81c784', label:'低め'};
   return          {g:'D', c:'#607d8b', label:'不向き'};
 }
-// ランク（0始まり）と総数から相対色。上位25%=赤、50%=橙、75%=黄、それ以下=緑
-function scoreColorByRank(rank, total){
-  const pct = rank / total;
-  if(pct < 0.15) return '#e53935';
-  if(pct < 0.35) return '#fb8c00';
-  if(pct < 0.60) return '#fdd835';
-  if(pct < 0.85) return '#43a047';
-  return '#607d8b';
+// 相対ランク色（最大スコアとの差分ベース — バランス重視版）
+// 最高スコアを100%として、各ゾーンの相対位置で色付け
+function scoreColorByRank(sc, maxSc, minSc){
+  if(maxSc === minSc) return '#fb8c00';  // 全部同じなら橙
+  const span = maxSc - minSc;
+  const pct  = (sc - minSc) / span;     // 0(最低)〜1(最高)
+  if(pct >= 0.75) return '#e53935';
+  if(pct >= 0.50) return '#fb8c00';
+  if(pct >= 0.25) return '#fdd835';
+  return '#43a047';
 }
 function kmOfHours(h){ return Math.round(h * KM_PER_HOUR) }
 
@@ -1152,10 +1171,13 @@ function renderZones(){
   const sorted = targetZones.map(z=>({zone:z, origIdx:allZones.indexOf(z), sc:tonightScore(z)}))
                             .sort((a,b)=>b.sc - a.sc);
   const total = sorted.length;
+  // min-max for relative coloring within this result set
+  const maxSc = sorted[0]?.sc ?? 100;
+  const minSc = sorted[sorted.length-1]?.sc ?? 0;
 
   sorted.forEach(({zone, origIdx, sc}, rank)=>{
-    // 相対ランクで色付け（常に色のバリエーションが出る）
-    const color = scoreColorByRank(rank, total);
+    // min-max正規化ベースの相対色（結果セット内で常に色幅が出る）
+    const color = scoreColorByRank(sc, maxSc, minSc);
     const circle = L.circle([zone.lat, zone.lng],{
       radius: currentMethod==='light' ? 4000 : 3000,
       color:color, fillColor:color,
@@ -1164,8 +1186,9 @@ function renderZones(){
     const popup = buildZonePopup(zone, rank+1, sc);
     circle.bindPopup(popup,{maxWidth:320});
     zoneCircles[origIdx] = circle;
-    // ダイヤモンドサイズも相対ランクで（上位ほど大きく）
-    const sz = rank < total*0.15 ? 20 : rank < total*0.4 ? 16 : 12;
+    // ダイヤモンドサイズもスコアの相対位置で（上位ほど大きく）
+    const pct = maxSc===minSc ? 0.5 : (sc-minSc)/(maxSc-minSc);
+    const sz = pct >= 0.75 ? 20 : pct >= 0.5 ? 16 : 12;
     const icon = L.divIcon({
       html:`<div style="width:${sz}px;height:${sz}px;background:${color};transform:rotate(45deg);border:2px solid rgba(255,255,255,.8);box-shadow:0 2px 8px rgba(0,0,0,.6)"></div>`,
       className:'', iconAnchor:[sz/2, sz/2]
@@ -1195,7 +1218,7 @@ function renderZones(){
 </div>
 ${sorted.map(({zone, origIdx, sc}, rank)=>{
   const baseScVal = methodScore(zone);
-  const relColor = scoreColorByRank(rank, total);
+  const relColor = scoreColorByRank(sc, maxSc, minSc);
   const grd = scoreGrade(sc);
   const reasons = getReasons(zone, currentSp);
   const coordStr = `${zone.lat.toFixed(4)}, ${zone.lng.toFixed(4)}`;
@@ -1220,7 +1243,7 @@ ${sorted.map(({zone, origIdx, sc}, rank)=>{
       <span style="font-size:.63rem;color:#ccb060;font-weight:400">${coordStr}</span>
     </div>
     <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
-      <span style="font-size:.75rem;font-weight:700;background:${relColor};color:${relColor==='#fdd835'?'#333':'#fff'};padding:1px 7px;border-radius:10px">${rank===0?'S':rank<total*0.35?'A':rank<total*0.6?'B':'C'}</span>
+      <span style="font-size:.75rem;font-weight:700;background:${relColor};color:${relColor==='#fdd835'?'#333':'#fff'};padding:1px 7px;border-radius:10px">${grd.g}</span>
       <span class="spot-score" style="color:${relColor}">${sc}</span>
     </div>
   </div>
