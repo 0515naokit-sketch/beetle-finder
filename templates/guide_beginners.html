@@ -14,6 +14,7 @@
     a:hover{text-decoration:underline}
     #site-header{background:#1b2d1b;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
     #site-header h1{color:#a5d6a7;font-size:1rem;font-weight:700}
+    .kw-i{height:1.1em;width:auto;vertical-align:-.18em;display:inline-block}
     .home-btn{background:#2e4e2e;color:#a5d6a7;padding:6px 14px;border-radius:6px;font-size:.82rem;border:1px solid #4a7a4a}
     .home-btn:hover{background:#388e3c;text-decoration:none;color:#a5d6a7}
     .hero{width:100%;height:280px;object-fit:cover;display:block}
@@ -51,7 +52,7 @@
 </head>
 <body>
 <header id="site-header">
-  <h1>🪲 クワガタ採集スポット検索</h1>
+  <h1><img src="/static/kwl.svg" class="kw-i" alt="クワガタ"> クワガタ採集スポット検索</h1>
   <a href="/" class="home-btn">🗺 スポット検索</a>
   <a href="/guide" class="home-btn">📖 ガイド一覧</a>
 </header>
@@ -158,11 +159,11 @@
   <h2 class="section">他の採集ガイドも読む</h2>
   <div class="guide-links">
     <div class="guide-link-card">
-      <a href="/guide/miyama">🪲 ミヤマクワガタ採集ガイド</a>
+      <a href="/guide/miyama"><img src="/static/kw.svg" class="kw-i" alt=""> ミヤマクワガタ採集ガイド</a>
       <p>標高600m以上の山地での採集テクニック</p>
     </div>
     <div class="guide-link-card">
-      <a href="/guide/ookuwa">🪲 オオクワガタ採集ガイド</a>
+      <a href="/guide/ookuwa"><img src="/static/kw.svg" class="kw-i" alt=""> オオクワガタ採集ガイド</a>
       <p>幻の黒いダイヤを探す上級者向けガイド</p>
     </div>
     <div class="guide-link-card">
@@ -174,7 +175,7 @@
   <div class="cta-box">
     <h2>🗺 今夜の採集スポットを検索する</h2>
     <p>出発地を入力するだけ。月齢・気象・標高データから最適スポットを地図に表示。</p>
-    <a href="/" class="cta-btn">🪲 無料でスポット検索</a>
+    <a href="/" class="cta-btn"><img src="/static/kw.svg" class="kw-i" alt=""> 無料でスポット検索</a>
   </div>
 </div>
 <footer>© 2026 クワガタ採集スポット検索 | <a href="/" style="color:#a5d6a7">トップ</a> | <a href="/guide" style="color:#a5d6a7">ガイド一覧</a></footer>
