@@ -218,10 +218,10 @@
         <span class="header-badge">⛰ 標高分析</span>
         <span class="header-badge">🆓 無料</span>
       </div>
-      <div style="margin-top:6px;font-size:.68rem;display:flex;gap:10px;flex-wrap:wrap">
-        <a href="/guide" style="color:#66bb6a">📖 採集ガイド</a>
-        <a href="/about" style="color:#66bb6a">ℹ サービスについて</a>
-        <a href="/privacy" style="color:#66bb6a">🔒 プライバシーポリシー</a>
+      <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap;align-items:center">
+        <a href="/guide" style="display:inline-flex;align-items:center;gap:4px;background:#2e4e2e;color:#a5d6a7;border:1px solid #4a7a4a;border-radius:6px;padding:4px 11px;font-size:.75rem;font-weight:700;text-decoration:none">📖 採集ガイド10本</a>
+        <a href="/about" style="color:#4a7c4e;font-size:.65rem;text-decoration:none">ℹ 概要</a>
+        <a href="/privacy" style="color:#4a7c4e;font-size:.65rem;text-decoration:none">🔒 規約</a>
       </div>
     </div>
 
@@ -264,30 +264,36 @@
         <div class="sp-group">
           <div class="sp-group-label">🏔 山岳種</div>
           <div class="btn-row">
-            <button class="sp-btn active" data-sp="miyama"    onclick="setSpecies('miyama')"><img src="/static/kw.svg" class="kw-i" alt=""> ミヤマ</button>
-            <button class="sp-btn"        data-sp="akaashi"   onclick="setSpecies('akaashi')"><img src="/static/kw.svg" class="kw-i" alt=""> アカアシ</button>
+            <button class="sp-btn active" data-sp="miyama"  data-guide="/guide/miyama"   onclick="setSpecies('miyama')"><img src="/static/kw.svg" class="kw-i" alt=""> ミヤマ</button>
+            <button class="sp-btn"        data-sp="akaashi" data-guide="/guide"           onclick="setSpecies('akaashi')"><img src="/static/kw.svg" class="kw-i" alt=""> アカアシ</button>
           </div>
         </div>
         <div class="sp-group">
           <div class="sp-group-label">🌲 中山地種</div>
           <div class="btn-row">
-            <button class="sp-btn" data-sp="okuwagata" onclick="setSpecies('okuwagata')"><img src="/static/kw.svg" class="kw-i" alt=""> オオクワ</button>
-            <button class="sp-btn" data-sp="suji"      onclick="setSpecies('suji')"><img src="/static/kw.svg" class="kw-i" alt=""> スジクワ</button>
+            <button class="sp-btn" data-sp="okuwagata" data-guide="/guide/ookuwa"  onclick="setSpecies('okuwagata')"><img src="/static/kw.svg" class="kw-i" alt=""> オオクワ</button>
+            <button class="sp-btn" data-sp="suji"      data-guide="/guide"         onclick="setSpecies('suji')"><img src="/static/kw.svg" class="kw-i" alt=""> スジクワ</button>
           </div>
         </div>
         <div class="sp-group">
           <div class="sp-group-label">🌾 低地種</div>
           <div class="btn-row">
-            <button class="sp-btn" data-sp="nokogiri"   onclick="setSpecies('nokogiri')"><img src="/static/kw.svg" class="kw-i" alt=""> ノコギリ</button>
-            <button class="sp-btn" data-sp="kokuwagata" onclick="setSpecies('kokuwagata')"><img src="/static/kw.svg" class="kw-i" alt=""> コクワ</button>
-            <button class="sp-btn" data-sp="hirata"     onclick="setSpecies('hirata')"><img src="/static/kw.svg" class="kw-i" alt=""> ヒラタ</button>
+            <button class="sp-btn" data-sp="nokogiri"   data-guide="/guide/nokogiri" onclick="setSpecies('nokogiri')"><img src="/static/kw.svg" class="kw-i" alt=""> ノコギリ</button>
+            <button class="sp-btn" data-sp="kokuwagata" data-guide="/guide"           onclick="setSpecies('kokuwagata')"><img src="/static/kw.svg" class="kw-i" alt=""> コクワ</button>
+            <button class="sp-btn" data-sp="hirata"     data-guide="/guide/hirata"   onclick="setSpecies('hirata')"><img src="/static/kw.svg" class="kw-i" alt=""> ヒラタ</button>
           </div>
         </div>
         <div class="sp-group">
           <div class="sp-group-label"><img src="/static/kw.svg" class="kw-i" alt=""> 甲虫</div>
           <div class="btn-row">
-            <button class="sp-btn" data-sp="kabuto" onclick="setSpecies('kabuto')"><img src="/static/kw.svg" class="kw-i" alt=""> カブトムシ</button>
+            <button class="sp-btn" data-sp="kabuto" data-guide="/guide/kabuto" onclick="setSpecies('kabuto')"><img src="/static/kw.svg" class="kw-i" alt=""> カブトムシ</button>
           </div>
+        </div>
+        <!-- 種別ガイドリンク -->
+        <div id="sp-guide-link" style="display:none;margin-top:4px">
+          <a id="sp-guide-anchor" href="/guide" style="font-size:.7rem;color:#66bb6a;text-decoration:none;display:inline-flex;align-items:center;gap:3px;border:1px solid #2e4e2e;border-radius:10px;padding:2px 10px;background:#1a3d1a">
+            📖 <span id="sp-guide-label">このクワガタの採集ガイドを読む →</span>
+          </a>
         </div>
 
         <!-- 採集時期 -->
@@ -355,10 +361,53 @@
     <div id="cond-panel"></div>
     <div id="nearby-light-status" class="night-status" style="padding:3px 14px;display:none"></div>
     <div id="spot-list">
-      <div style="padding:18px 14px;color:#4a7c4e;font-size:.8rem;text-align:center;">
-        出発地・種・時間を設定して「森林スポットを検索」を押してください。<br>
-        夜間レイヤーは独立して切り替えできます。<br>
-        <span style="font-size:.68rem;opacity:.65">全国対応（最大8時間圏）</span>
+      <div id="guide-empty-state" style="padding:12px 12px 16px">
+        <div style="color:#4a7c4e;font-size:.78rem;text-align:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #2a3e2a">
+          出発地と種を設定して検索してください<br>
+          <span style="font-size:.66rem;opacity:.65">全国対応（最大8時間圏）</span>
+        </div>
+        <!-- ガイド記事カード -->
+        <div style="font-size:.68rem;color:#66bb6a;margin-bottom:6px;font-weight:700;letter-spacing:.04em">📖 採集ガイド</div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <a href="/guide/beginners" style="display:flex;align-items:center;gap:8px;background:#1f321f;border:1px solid #2a3e2a;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#243e24'" onmouseout="this.style.background='#1f321f'">
+            <span style="font-size:1rem;flex-shrink:0">🔰</span>
+            <div>
+              <div style="font-size:.76rem;font-weight:700;color:#a5d6a7">初心者完全ガイド</div>
+              <div style="font-size:.64rem;color:#4a7c4e;margin-top:1px">道具・場所・時期・安全対策</div>
+            </div>
+          </a>
+          <a href="/guide/kabuto" style="display:flex;align-items:center;gap:8px;background:#1f321f;border:1px solid #2a3e2a;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#243e24'" onmouseout="this.style.background='#1f321f'">
+            <span style="font-size:1rem;flex-shrink:0">🦏</span>
+            <div>
+              <div style="font-size:.76rem;font-weight:700;color:#a5d6a7">カブトムシ採集ガイド</div>
+              <div style="font-size:.64rem;color:#4a7c4e;margin-top:1px">クヌギ林・朝採りのコツ</div>
+            </div>
+          </a>
+          <a href="/guide/nokogiri" style="display:flex;align-items:center;gap:8px;background:#1f321f;border:1px solid #2a3e2a;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#243e24'" onmouseout="this.style.background='#1f321f'">
+            <span style="font-size:1rem;flex-shrink:0"><img src="/static/kw.svg" style="height:1em;width:auto" alt=""></span>
+            <div>
+              <div style="font-size:.76rem;font-weight:700;color:#a5d6a7">ノコギリクワガタ採集</div>
+              <div style="font-size:.64rem;color:#4a7c4e;margin-top:1px">最も採集しやすい定番種</div>
+            </div>
+          </a>
+          <a href="/guide/light" style="display:flex;align-items:center;gap:8px;background:#1f321f;border:1px solid #2a3e2a;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#243e24'" onmouseout="this.style.background='#1f321f'">
+            <span style="font-size:1rem;flex-shrink:0">💡</span>
+            <div>
+              <div style="font-size:.76rem;font-weight:700;color:#a5d6a7">街灯・ライトトラップ採集</div>
+              <div style="font-size:.64rem;color:#4a7c4e;margin-top:1px">月齢と光を使った採集テクニック</div>
+            </div>
+          </a>
+          <a href="/guide/kids" style="display:flex;align-items:center;gap:8px;background:#1f321f;border:1px solid #2a3e2a;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#243e24'" onmouseout="this.style.background='#1f321f'">
+            <span style="font-size:1rem;flex-shrink:0">👨‍👧</span>
+            <div>
+              <div style="font-size:.76rem;font-weight:700;color:#a5d6a7">子供・家族で採集ガイド</div>
+              <div style="font-size:.64rem;color:#4a7c4e;margin-top:1px">安全な場所・準備・楽しみ方</div>
+            </div>
+          </a>
+          <a href="/guide" style="display:block;text-align:center;font-size:.7rem;color:#66bb6a;padding:5px;text-decoration:none;border:1px dashed #2e4e2e;border-radius:6px;margin-top:2px" onmouseover="this.style.background='#1a3d1a'" onmouseout="this.style.background='transparent'">
+            全10記事を見る →
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -586,6 +635,18 @@ function setOrigin(lat, lng, label){
 function setSpecies(sp){
   currentSp = sp;
   document.querySelectorAll('.sp-btn').forEach(b=>b.classList.toggle('active', b.dataset.sp===sp));
+  // 種別ガイドリンクを更新
+  const activeBtn = document.querySelector(`.sp-btn[data-sp="${sp}"]`);
+  const guideLink = document.getElementById('sp-guide-link');
+  const guideAnchor = document.getElementById('sp-guide-anchor');
+  const guideLabel = document.getElementById('sp-guide-label');
+  if(activeBtn && guideLink){
+    const href = activeBtn.dataset.guide || '/guide';
+    const label = SPECIES_META[sp]?.label || sp;
+    guideAnchor.href = href;
+    guideLabel.textContent = `${label}の採集ガイドを読む →`;
+    guideLink.style.display = 'block';
+  }
   if(allSpots.length) renderSpots();
   if(allZones.length) renderZones();
 }
@@ -663,6 +724,9 @@ function startSearch(){
   document.getElementById('progress-wrap').style.display='block';
   document.getElementById('spot-count').textContent='';
   document.getElementById('spot-list').innerHTML='';
+  // ガイドカードを非表示（検索結果が入るため）
+  const guideEmptyState = document.getElementById('guide-empty-state');
+  if(guideEmptyState) guideEmptyState.style.display='none';
   markers.forEach(m=>map.removeLayer(m)); markers=[]; allSpots=[];
   allZones=[]; clearZones();
 
@@ -1289,6 +1353,11 @@ function fetchNearbyLight(spot){
 </style>
 
 <script>
+// ページ読み込み時：初期種のガイドリンクを表示
+document.addEventListener('DOMContentLoaded', function(){
+  setSpecies('miyama');
+});
+
 function openFeedback(){
   document.getElementById('fb-overlay').style.display='block';
   document.getElementById('fb-modal').style.display='block';
