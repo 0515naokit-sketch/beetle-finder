@@ -529,27 +529,40 @@ function toggleFav(spot, e){
   renderSpots();
 }
 
-// ── 出発地 ────────────────────────────────────────────────────
-function geocodeAddress(retry=0){
+// ── 出発地（ブラウザから直接 Nominatim を呼ぶ → サーバー不要）────────────────
+function geocodeAddress(){
   const addr = document.getElementById('addr-input').value.trim();
   if(!addr) return;
   const btn = document.getElementById('addr-btn');
-  btn.disabled = true; btn.textContent = retry > 0 ? '再試行中...' : '検索中...';
-  fetch(`/api/geocode?address=${encodeURIComponent(addr)}`)
-    .then(r=>r.json())
-    .then(d=>{
-      if(d.error){
-        // サーバー内部エラーなら1回だけ自動リトライ
-        if(retry === 0 && d.error.includes('サーバー内部エラー')){
-          setTimeout(()=>geocodeAddress(1), 1200);
-          return;
-        }
-        alert(d.error); return;
+  btn.disabled = true; btn.textContent = '検索中...';
+
+  // ブラウザから Nominatim API を直接呼ぶ（CORS 対応済み）
+  const url = 'https://nominatim.openstreetmap.org/search?' +
+    new URLSearchParams({ q: addr, format: 'json', limit: '3',
+                          'accept-language': 'ja', countrycodes: 'jp' });
+  fetch(url, { headers: { 'Accept-Language': 'ja' } })
+    .then(r => r.json())
+    .then(hits => {
+      if (!hits || hits.length === 0) {
+        // 日本限定でヒットしない場合は制限なしで再検索
+        return fetch('https://nominatim.openstreetmap.org/search?' +
+          new URLSearchParams({ q: addr + ' 日本', format: 'json', limit: '1',
+                                'accept-language': 'ja' }),
+          { headers: { 'Accept-Language': 'ja' } })
+          .then(r2 => r2.json());
       }
-      setOrigin(d.lat, d.lng, d.display_name);
+      return hits;
     })
-    .catch(()=>{ if(retry===0) setTimeout(()=>geocodeAddress(1),1200); else alert('住所の検索に失敗しました。もう一度試してください。'); })
-    .finally(()=>{ if(retry===0 && !btn.disabled) return; btn.disabled=false; btn.textContent='設定'; });
+    .then(hits => {
+      if (!hits || hits.length === 0) {
+        alert(`「${addr}」が見つかりませんでした。\n市区町村名（例：幸手市、新宿区）や都道府県名で入力してください。`);
+        return;
+      }
+      const h = hits[0];
+      setOrigin(parseFloat(h.lat), parseFloat(h.lon), h.display_name);
+    })
+    .catch(() => alert('住所の検索に失敗しました。インターネット接続を確認して再度お試しください。'))
+    .finally(() => { btn.disabled = false; btn.textContent = '設定'; });
 }
 document.getElementById('addr-input').addEventListener('keydown', e=>{ if(e.key==='Enter') geocodeAddress(); });
 
