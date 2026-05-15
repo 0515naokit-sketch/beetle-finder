@@ -584,6 +584,16 @@ def guide_tools():
     return render_template("guide_tools.html")
 
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
+
+
 @app.route("/sitemap.xml")
 def sitemap():
     xml = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -617,6 +627,16 @@ def sitemap():
     <loc>https://beetle-finder.onrender.com/guide/tools</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/privacy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>'''
     return Response(xml, mimetype="application/xml")
