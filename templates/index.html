@@ -551,14 +551,24 @@ legend.onAdd = ()=>{
 legend.addTo(map);
 
 // ── ユーティリティ ────────────────────────────────────────────
-function scoreColor(s){ return s>=70?'#e53935':s>=55?'#fb8c00':s>=40?'#fdd835':s>=25?'#43a047':'#607d8b' }
-function scoreEmoji(s){ return s>=70?'🔥':s>=55?'⭐':s>=40?'🟡':s>=25?'🟢':'⚫' }
+// 絶対スコア → 色（広めに帯を取る）
+function scoreColor(s){ return s>=65?'#e53935':s>=50?'#fb8c00':s>=35?'#fdd835':s>=20?'#43a047':'#607d8b' }
+function scoreEmoji(s){ return s>=65?'🔥':s>=50?'⭐':s>=35?'🟡':s>=20?'🟢':'⚫' }
 function scoreGrade(s){
-  if(s>=70) return {g:'S', c:'#e53935', label:'最有望'};
-  if(s>=55) return {g:'A', c:'#fb8c00', label:'有望'};
-  if(s>=40) return {g:'B', c:'#fdd835', label:'可能性あり'};
-  if(s>=25) return {g:'C', c:'#81c784', label:'低め'};
+  if(s>=65) return {g:'S', c:'#e53935', label:'最有望'};
+  if(s>=50) return {g:'A', c:'#fb8c00', label:'有望'};
+  if(s>=35) return {g:'B', c:'#fdd835', label:'可能性あり'};
+  if(s>=20) return {g:'C', c:'#81c784', label:'低め'};
   return          {g:'D', c:'#607d8b', label:'不向き'};
+}
+// ランク（0始まり）と総数から相対色。上位25%=赤、50%=橙、75%=黄、それ以下=緑
+function scoreColorByRank(rank, total){
+  const pct = rank / total;
+  if(pct < 0.15) return '#e53935';
+  if(pct < 0.35) return '#fb8c00';
+  if(pct < 0.60) return '#fdd835';
+  if(pct < 0.85) return '#43a047';
+  return '#607d8b';
 }
 function kmOfHours(h){ return Math.round(h * KM_PER_HOUR) }
 
@@ -1124,22 +1134,40 @@ function renderZones(){
   if(!allZones.length) return;
   const meta = METHOD_META[currentMethod];
 
+  // ── ライト採集時：高標高・高m_lightゾーンだけに絞り込む ──────────
+  let targetZones = allZones;
+  if(currentMethod === 'light'){
+    const threshold = 38; // m_light最低閾値（標高400m超の山地＋広葉樹が基準）
+    const filtered = allZones.filter(z => (z.m_light ?? 0) >= threshold);
+    // フォールバック: 絞り込み後5件未満なら上位20件
+    targetZones = filtered.length >= 5 ? filtered
+      : allZones.slice().sort((a,b)=>(b.m_light??0)-(a.m_light??0)).slice(0,20);
+  } else if(currentMethod === 'street'){
+    // 街灯採集: 低標高（0-500m）に絞り込む
+    const filtered = allZones.filter(z => (z.elevation ?? 0) <= 500);
+    targetZones = filtered.length >= 5 ? filtered : allZones;
+  }
+
   // 採集方法 or 今夜スコアで降順ソート（元配列は変えない）
-  const sorted = allZones.map((z,i)=>({zone:z, origIdx:i, sc:tonightScore(z)}))
-                         .sort((a,b)=>b.sc - a.sc);
+  const sorted = targetZones.map(z=>({zone:z, origIdx:allZones.indexOf(z), sc:tonightScore(z)}))
+                            .sort((a,b)=>b.sc - a.sc);
+  const total = sorted.length;
 
   sorted.forEach(({zone, origIdx, sc}, rank)=>{
-    const color = scoreColor(sc);
+    // 相対ランクで色付け（常に色のバリエーションが出る）
+    const color = scoreColorByRank(rank, total);
     const circle = L.circle([zone.lat, zone.lng],{
-      radius:3000, color:color, fillColor:color,
-      fillOpacity:0.10, weight:2, dashArray:'7 5', interactive:true
+      radius: currentMethod==='light' ? 4000 : 3000,
+      color:color, fillColor:color,
+      fillOpacity:0.12, weight:2, dashArray:'7 5', interactive:true
     }).addTo(map);
     const popup = buildZonePopup(zone, rank+1, sc);
     circle.bindPopup(popup,{maxWidth:320});
     zoneCircles[origIdx] = circle;
-    const sz = sc>=70?18:sc>=50?15:12;
+    // ダイヤモンドサイズも相対ランクで（上位ほど大きく）
+    const sz = rank < total*0.15 ? 20 : rank < total*0.4 ? 16 : 12;
     const icon = L.divIcon({
-      html:`<div style="width:${sz}px;height:${sz}px;background:${color};transform:rotate(45deg);border:2px solid rgba(255,255,255,.75);box-shadow:0 2px 6px rgba(0,0,0,.5)"></div>`,
+      html:`<div style="width:${sz}px;height:${sz}px;background:${color};transform:rotate(45deg);border:2px solid rgba(255,255,255,.8);box-shadow:0 2px 8px rgba(0,0,0,.6)"></div>`,
       className:'', iconAnchor:[sz/2, sz/2]
     });
     const marker = L.marker([zone.lat, zone.lng],{icon}).addTo(map);
@@ -1161,18 +1189,22 @@ function renderZones(){
 
   const zoneHtml =`
 <div style="padding:8px 14px 6px;background:#1a1200;border-top:2px solid ${headerColor};font-size:.75rem;color:${headerColor};font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-  <span>${meta.icon} 探索推奨ゾーン ／ ${meta.label}ランキング ${allZones.length}件</span>
+  <span>${meta.icon} 探索推奨ゾーン ／ ${meta.label}ランキング ${total}件${total < allZones.length ? `<span style="font-size:.62rem;opacity:.7">（全${allZones.length}件中）</span>` : ''}</span>
   ${tonightLabel?`<span style="font-size:.63rem;background:#0d1a2a;color:#90caf9;padding:1px 7px;border-radius:9px">${tonightLabel}</span>`:''}
   <a href="${shareUrl}" target="_blank" class="share-btn" style="margin-left:auto">𝕏 結果をシェア</a>
 </div>
 ${sorted.map(({zone, origIdx, sc}, rank)=>{
   const baseScVal = methodScore(zone);
+  const relColor = scoreColorByRank(rank, total);
   const grd = scoreGrade(sc);
   const reasons = getReasons(zone, currentSp);
   const coordStr = `${zone.lat.toFixed(4)}, ${zone.lng.toFixed(4)}`;
   const mLight  = zone.m_light  ?? 0;
   const mStreet = zone.m_street ?? 0;
   const mTree   = zone[currentSp] ?? 0;
+  // ライト採集時: 標高・適性バッジ
+  const lightBadge = currentMethod==='light' && zone.elevation != null
+    ? `<span style="font-size:.62rem;background:${zone.elevation>=700?'#4a148c':zone.elevation>=400?'#1565c0':'#263238'};color:#fff;padding:1px 6px;border-radius:8px">⛰${zone.elevation}m ${zone.elevation>=700?'尾根帯':zone.elevation>=400?'山地帯':'低地'}</span>` : '';
   const subScores = `<span style="font-size:.63rem;color:#9e9e9e">🌳${mTree} 🔦${mLight} 💡${mStreet}</span>`;
   // 今夜モード: ゾーン標高ベースの夜間気温を表示
   const zt = tonightModeOn && currentConditions?.weather
@@ -1181,19 +1213,19 @@ ${sorted.map(({zone, origIdx, sc}, rank)=>{
     ? `<span style="font-size:.68rem;background:#0d1a2a;color:#90caf9;padding:1px 6px;border-radius:8px;margin-left:4px">基本${baseScVal}→今夜${sc}</span>` : '';
   const nightTempStr = zt!=null ? `｜ 🌙 ${zt}°C（現地推定）` : '';
   return `
-<div class="spot-item" onclick="zoneClick(${origIdx})" style="background:#140e00;border-left:3px solid ${headerColor};cursor:pointer">
+<div class="spot-item" onclick="zoneClick(${origIdx})" style="background:#140e00;border-left:3px solid ${relColor};cursor:pointer">
   <div class="spot-top">
-    <div style="font-size:.78rem;color:${headerColor};font-weight:600;flex:1;padding-right:6px">
+    <div style="font-size:.78rem;color:${relColor};font-weight:600;flex:1;padding-right:6px">
       🔷 探索ゾーン ${rank+1}位<br>
       <span style="font-size:.63rem;color:#ccb060;font-weight:400">${coordStr}</span>
     </div>
     <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
-      <span style="font-size:.75rem;font-weight:700;background:${grd.c};color:${grd.c==='#fdd835'?'#333':'#fff'};padding:1px 7px;border-radius:10px">${grd.g}</span>
-      <span class="spot-score" style="color:${scoreColor(sc)}">${sc}</span>
+      <span style="font-size:.75rem;font-weight:700;background:${relColor};color:${relColor==='#fdd835'?'#333':'#fff'};padding:1px 7px;border-radius:10px">${rank===0?'S':rank<total*0.35?'A':rank<total*0.6?'B':'C'}</span>
+      <span class="spot-score" style="color:${relColor}">${sc}</span>
     </div>
   </div>
   <div class="spot-meta">📍 ${zone.dist_km}km ｜ ⛰ ${zone.elevation??'不明'}m${zone.river_dist_km!=null?' ｜ 🌊 '+zone.river_dist_km+'km':''}${nightTempStr}</div>
-  <div style="margin-top:2px;display:flex;align-items:center;gap:4px">${subScores}${tonightBadge}</div>
+  <div style="margin-top:2px;display:flex;align-items:center;gap:4px">${lightBadge}${subScores}${tonightBadge}</div>
   <div style="margin-top:3px;padding:3px 6px;background:#2a1a00;border-radius:4px">
     ${reasons.map(r=>`<div style="font-size:.64rem;color:#e0c060;line-height:1.6">▸ ${r}</div>`).join('')}
   </div>
