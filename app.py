@@ -1,11 +1,21 @@
+import sys
+sys.setrecursionlimit(10000)   # gevent + SSL ハンドシェイクの深い再帰に対応
+
 from flask import Flask, render_template, Response, jsonify, request, stream_with_context
 import requests
+from requests.adapters import HTTPAdapter
 import math
 import json
 import hashlib
 import datetime
 
 app = Flask(__name__)
+
+# gevent 環境での requests セッション（接続プールを無効化してSSL再帰を回避）
+_session = requests.Session()
+_adapter = HTTPAdapter(pool_connections=1, pool_maxsize=1, max_retries=0)
+_session.mount("https://", _adapter)
+_session.mount("http://",  _adapter)
 
 DEFAULT_LAT  = 35.7447
 DEFAULT_LNG  = 139.8487
@@ -126,7 +136,7 @@ def overpass(query, timeout=120):
     last_err = None
     for endpoint in OVERPASS_ENDPOINTS:
         try:
-            r = requests.post(endpoint, data={"data": query}, headers=HEADERS, timeout=timeout)
+            r = _session.post(endpoint, data={"data": query}, headers=HEADERS, timeout=timeout)
             r.raise_for_status()
             return r.json().get("elements", [])
         except Exception as e:
@@ -137,7 +147,7 @@ def overpass(query, timeout=120):
 def get_elevation(lat, lng):
     """単点標高（Open-Topo-Data → GSI フォールバック）"""
     try:
-        r = requests.get(
+        r = _session.get(
             "https://api.opentopodata.org/v1/srtm30m",
             params={"locations": f"{lat},{lng}"},
             timeout=10,
@@ -148,7 +158,7 @@ def get_elevation(lat, lng):
         pass
     try:
         url = f"https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php?lon={lng}&lat={lat}&outtype=JSON"
-        r = requests.get(url, timeout=8)
+        r = _session.get(url, timeout=8)
         v = r.json().get("elevation")
         return float(v) if v is not None and v != "-----" else -1.0
     except Exception:
@@ -161,7 +171,7 @@ def get_elevations_batch(spots):
     for chunk in chunks:
         locs = "|".join(f"{s['lat']},{s['lng']}" for s in chunk)
         try:
-            r = requests.get(
+            r = _session.get(
                 "https://api.opentopodata.org/v1/srtm30m",
                 params={"locations": locs},
                 timeout=20,
@@ -493,7 +503,7 @@ def get_forecast_weather(lat, lng, target_date=None):
         return None  # 過去日または14日超は予報取得不可
     date_str = target_date.isoformat()
     try:
-        r = requests.get(
+        r = _session.get(
             "https://api.open-meteo.com/v1/forecast",
             params={
                 "latitude": lat, "longitude": lng,
@@ -646,17 +656,29 @@ def geocode():
     addr = request.args.get("address", "").strip()
     if not addr:
         return jsonify({"error": "住所を入力してください"}), 400
-    try:
-        r = requests.get("https://nominatim.openstreetmap.org/search",
-                         params={"q": addr, "format": "json", "limit": 1, "accept-language": "ja"},
-                         headers=HEADERS, timeout=10)
-        hits = r.json()
-        if not hits:
-            return jsonify({"error": f"「{addr}」が見つかりませんでした"}), 404
-        h = hits[0]
-        return jsonify({"lat": float(h["lat"]), "lng": float(h["lon"]), "display_name": h["display_name"]})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    # Nominatim にフォールバックするシンプルな実装
+    endpoints = [
+        ("https://nominatim.openstreetmap.org/search",
+         {"q": addr, "format": "json", "limit": 1, "accept-language": "ja"}),
+        ("https://nominatim.openstreetmap.org/search",
+         {"q": addr + " 日本", "format": "json", "limit": 1, "accept-language": "ja"}),
+    ]
+    last_err = "住所が見つかりませんでした"
+    for url, params in endpoints:
+        try:
+            r = _session.get(url, params=params, headers=HEADERS, timeout=15)
+            hits = r.json()
+            if hits:
+                h = hits[0]
+                return jsonify({"lat": float(h["lat"]), "lng": float(h["lon"]),
+                                "display_name": h["display_name"]})
+            last_err = f"「{addr}」が見つかりませんでした"
+        except RecursionError:
+            # gevent + SSL 深い再帰 → サーバーを再試行
+            return jsonify({"error": "サーバー内部エラーが発生しました。もう一度「設定」を押してください。"}), 500
+        except Exception as e:
+            last_err = str(e)
+    return jsonify({"error": last_err}), 404
 
 
 @app.route("/api/spots")
