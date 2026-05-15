@@ -593,6 +593,36 @@ def guide_tools():
     return render_template("guide_tools.html")
 
 
+@app.route("/guide/nokogiri")
+def guide_nokogiri():
+    return render_template("guide_nokogiri.html")
+
+
+@app.route("/guide/hirata")
+def guide_hirata():
+    return render_template("guide_hirata.html")
+
+
+@app.route("/guide/kabuto")
+def guide_kabuto():
+    return render_template("guide_kabuto.html")
+
+
+@app.route("/guide/kids")
+def guide_kids():
+    return render_template("guide_kids.html")
+
+
+@app.route("/guide/light")
+def guide_light():
+    return render_template("guide_light.html")
+
+
+@app.route("/guide/aftercare")
+def guide_aftercare():
+    return render_template("guide_aftercare.html")
+
+
 @app.route("/about")
 def about():
     return render_template("about.html")
@@ -634,6 +664,36 @@ def sitemap():
   </url>
   <url>
     <loc>https://beetle-finder.onrender.com/guide/tools</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/guide/nokogiri</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/guide/hirata</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/guide/kabuto</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/guide/kids</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/guide/light</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/guide/aftercare</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
