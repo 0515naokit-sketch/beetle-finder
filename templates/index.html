@@ -9,12 +9,12 @@
   <meta name="google-site-verification" content="XLkl57LhY07wsXb2WklVTY5dsrGXZm0vZrR4QE6mae8" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9675243685208925"
      crossorigin="anonymous"></script>
-  <meta property="og:title" content="🦌 クワガタ採集スポット検索">
+  <meta property="og:title" content="🪲 クワガタ採集スポット検索">
   <meta property="og:description" content="今夜クワガタが採れる場所を地図で表示。月齢・気象・標高データで採集スポットをスコアリング。出発地を入力するだけ、全国対応・無料。">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="🦌 クワガタ採集スポット検索">
+  <meta name="twitter:title" content="🪲 クワガタ採集スポット検索">
   <meta name="twitter:description" content="出発地を入力するだけ。今夜クワガタが採れる場所を地図に表示します。月齢・気象・標高データ連動。全国対応・無料。">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <style>
@@ -207,7 +207,7 @@
 <div id="app">
   <div id="sidebar">
     <div id="header">
-      <h1>🦌 クワガタ採集スポット検索</h1>
+      <h1>🪲 クワガタ採集スポット検索</h1>
       <div class="header-tagline">今夜クワガタが採れる場所を地図で表示</div>
       <div class="header-badges">
         <span class="header-badge">📍 全国対応</span>
@@ -256,33 +256,33 @@
 
       <div id="adv-section">
         <!-- 種選択 -->
-        <div class="ctrl-label">🦌 ターゲット種</div>
+        <div class="ctrl-label">🪲 ターゲット種</div>
         <div class="sp-group">
           <div class="sp-group-label">🏔 山岳種</div>
           <div class="btn-row">
-            <button class="sp-btn active" data-sp="miyama"    onclick="setSpecies('miyama')">ミヤマ</button>
-            <button class="sp-btn"        data-sp="akaashi"   onclick="setSpecies('akaashi')">アカアシ</button>
+            <button class="sp-btn active" data-sp="miyama"    onclick="setSpecies('miyama')">🪲 ミヤマ</button>
+            <button class="sp-btn"        data-sp="akaashi"   onclick="setSpecies('akaashi')">🪲 アカアシ</button>
           </div>
         </div>
         <div class="sp-group">
           <div class="sp-group-label">🌲 中山地種</div>
           <div class="btn-row">
-            <button class="sp-btn" data-sp="okuwagata" onclick="setSpecies('okuwagata')">オオクワ</button>
-            <button class="sp-btn" data-sp="suji"      onclick="setSpecies('suji')">スジクワ</button>
+            <button class="sp-btn" data-sp="okuwagata" onclick="setSpecies('okuwagata')">🪲 オオクワ</button>
+            <button class="sp-btn" data-sp="suji"      onclick="setSpecies('suji')">🪲 スジクワ</button>
           </div>
         </div>
         <div class="sp-group">
           <div class="sp-group-label">🌾 低地種</div>
           <div class="btn-row">
-            <button class="sp-btn" data-sp="nokogiri"   onclick="setSpecies('nokogiri')">ノコギリ</button>
-            <button class="sp-btn" data-sp="kokuwagata" onclick="setSpecies('kokuwagata')">コクワ</button>
-            <button class="sp-btn" data-sp="hirata"     onclick="setSpecies('hirata')">ヒラタ</button>
+            <button class="sp-btn" data-sp="nokogiri"   onclick="setSpecies('nokogiri')">🪲 ノコギリ</button>
+            <button class="sp-btn" data-sp="kokuwagata" onclick="setSpecies('kokuwagata')">🪲 コクワ</button>
+            <button class="sp-btn" data-sp="hirata"     onclick="setSpecies('hirata')">🪲 ヒラタ</button>
           </div>
         </div>
         <div class="sp-group">
-          <div class="sp-group-label">🦗 甲虫</div>
+          <div class="sp-group-label">🪲 甲虫</div>
           <div class="btn-row">
-            <button class="sp-btn" data-sp="kabuto" onclick="setSpecies('kabuto')">カブトムシ</button>
+            <button class="sp-btn" data-sp="kabuto" onclick="setSpecies('kabuto')">🪲 カブトムシ</button>
           </div>
         </div>
 
@@ -370,14 +370,14 @@ const DEFAULT_LNG = {{ default_lng }};
 const KM_PER_HOUR = 55;
 
 const SPECIES_META = {
-  miyama:    { label:"ミヤマクワガタ",   color:"#1565c0", badge:"badge-m" },
-  okuwagata: { label:"オオクワガタ",     color:"#4a148c", badge:"badge-o" },
-  nokogiri:  { label:"ノコギリクワガタ", color:"#1b5e20", badge:"badge-n" },
-  kokuwagata:{ label:"コクワガタ",       color:"#006064", badge:"badge-k" },
-  hirata:    { label:"ヒラタクワガタ",   color:"#880e4f", badge:"badge-h" },
-  akaashi:   { label:"アカアシクワガタ", color:"#4a148c", badge:"badge-a" },
-  suji:      { label:"スジクワガタ",     color:"#1a237e", badge:"badge-s" },
-  kabuto:    { label:"カブトムシ",       color:"#4e342e", badge:"badge-kb" },
+  miyama:    { label:"ミヤマクワガタ",   icon:"🪲", color:"#1565c0", badge:"badge-m" },
+  okuwagata: { label:"オオクワガタ",     icon:"🪲", color:"#4a148c", badge:"badge-o" },
+  nokogiri:  { label:"ノコギリクワガタ", icon:"🪲", color:"#1b5e20", badge:"badge-n" },
+  kokuwagata:{ label:"コクワガタ",       icon:"🪲", color:"#006064", badge:"badge-k" },
+  hirata:    { label:"ヒラタクワガタ",   icon:"🪲", color:"#880e4f", badge:"badge-h" },
+  akaashi:   { label:"アカアシクワガタ", icon:"🪲", color:"#4a148c", badge:"badge-a" },
+  suji:      { label:"スジクワガタ",     icon:"🪲", color:"#1a237e", badge:"badge-s" },
+  kabuto:    { label:"カブトムシ",       icon:"🪲", color:"#4e342e", badge:"badge-kb" },
 };
 
 // 月別活性係数
@@ -1065,8 +1065,8 @@ function renderZones(){
   // Xシェア用テキスト生成
   const top = sorted[0];
   const shareText = top
-    ? `🦌クワガタ採集スポット検索で${DIR_JA[currentDirection]}${kmOfHours(currentHours)}km圏内を分析！${META_METHOD ? '' : ''}${SPECIES_META[currentSp].label}の最有望ゾーン発見（標高${top.zone.elevation??'?'}m・スコア${top.sc}点）🔦 #クワガタ採集 #クワガタ`
-    : '🦌クワガタ採集スポット検索 #クワガタ採集';
+    ? `🪲クワガタ採集スポット検索で${DIR_JA[currentDirection]}${kmOfHours(currentHours)}km圏内を分析！${META_METHOD ? '' : ''}${SPECIES_META[currentSp].label}の最有望ゾーン発見（標高${top.zone.elevation??'?'}m・スコア${top.sc}点）🔦 #クワガタ採集 #クワガタ`
+    : '🪲クワガタ採集スポット検索 #クワガタ採集';
   const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
 
   const zoneHtml =`
