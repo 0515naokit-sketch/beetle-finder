@@ -4,7 +4,6 @@ import math
 import json
 import hashlib
 import datetime
-from concurrent.futures import ThreadPoolExecutor
 
 app = Flask(__name__)
 
@@ -697,11 +696,8 @@ def spots_stream():
             zones = []
             tonight_weather = None
             if grid_pts:
-                with ThreadPoolExecutor(max_workers=2) as ex_cond:
-                    elev_fut    = ex_cond.submit(get_elevations_batch, grid_pts)
-                    weather_fut = ex_cond.submit(get_forecast_weather, lat, lng, plan_date)
-                grid_elev_map  = elev_fut.result()
-                tonight_weather = weather_fut.result()
+                grid_elev_map   = get_elevations_batch(grid_pts)
+                tonight_weather = get_forecast_weather(lat, lng, plan_date)
                 plan_month = None
                 if plan_date:
                     try:
