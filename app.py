@@ -301,73 +301,92 @@ def _obs_bonus(obs, key, tiers=(5, 2, 1)):
     return 0
 
 def score_miyama(elev, bl, obs):
-    # 600〜1400m 冷涼山地広葉樹林
-    if   700 <= elev <= 1400: e = 50
-    elif 500 <= elev <   700 or 1400 < elev <= 1800: e = 35
-    elif 300 <= elev <   500: e = 16
-    else:                     e = 5   # 0-300m & 不明 どちらも低評価
-    return min(e + (25 if bl else 10) + _obs_bonus(obs, "miyama"), 100)
+    # 500〜1400m 冷涼山地広葉樹林 ★採集者視点で修正
+    if   700 <= elev <= 1400: e = 58   # 最良帯：大型個体が期待できる
+    elif 500 <= elev <   700: e = 42   # 好適帯：梅雨明け後〜7月に多い
+    elif 1400 < elev <= 1800: e = 36   # 高標高：個体数は減るが超大型も
+    elif 300 <= elev <   500: e = 24   # 可能帯：梅雨前線通過後の夜に出る
+    elif 150 <= elev <   300: e = 10   # 低標高：稀に飛来
+    else:                     e = 4    # 0-150m：ほぼ生息なし
+    return min(e + (28 if bl else 10) + _obs_bonus(obs, "miyama"), 100)
 
 def score_okuwagata(elev, bl, obs):
     # 100〜700m 低中山地 古木広葉樹林（希少）
-    if   100 <= elev <=  700: e = 50
-    elif  50 <= elev <   100 or 700 < elev <= 1000: e = 33
-    elif   0 <  elev <    50: e = 20
-    elif elev > 1000:         e = 10
-    else:                     e = 10   # 不明: 古木環境か不明なので低評価
-    return min(e + (25 if bl else 10) + _obs_bonus(obs, "okuwagata", (3,2,1)), 100)
+    if   150 <= elev <=  700: e = 52
+    elif  80 <= elev <   150 or 700 < elev <= 1000: e = 35
+    elif   0 <  elev <    80: e = 20
+    elif elev > 1000:         e = 12
+    else:                     e = 10
+    return min(e + (26 if bl else 10) + _obs_bonus(obs, "okuwagata", (3,2,1)), 100)
 
 def score_nokogiri(elev, bl, obs):
-    # 0〜700m 最もポピュラー
-    if    50 <= elev <=  700: e = 50
-    elif   0 <  elev <    50: e = 42
-    elif 700 < elev <= 1100:  e = 25
-    elif elev > 1100:         e = 8
-    else:                     e = 14   # 不明: 中程度に下げて都市部の誤上位を抑制
-    return min(e + (22 if bl else 8) + _obs_bonus(obs, "nokogiri"), 100)
+    # 30〜800m 最もポピュラー ★里山〜低山が主戦場
+    if    50 <= elev <=  700: e = 54
+    elif   0 <  elev <    50: e = 44
+    elif 700 < elev <= 1000:  e = 28
+    elif elev > 1000:         e = 10
+    else:                     e = 16
+    return min(e + (24 if bl else 8) + _obs_bonus(obs, "nokogiri"), 100)
 
 def score_kokuwagata(elev, bl, obs):
-    # 0〜1000m 最も環境を選ばない
-    if    0 <  elev <= 1000: e = 48
-    elif 1000 < elev <= 1500: e = 30
-    elif elev > 1500:         e = 12
-    else:                     e = 18   # 不明: コクワは広域だが不明は中低評価
-    return min(e + (22 if bl else 10) + _obs_bonus(obs, "kokuwagata"), 100)
+    # 0〜1000m 最も環境を選ばない ★全国どこでも
+    if    0 <  elev <= 1000:  e = 50
+    elif 1000 < elev <= 1500: e = 32
+    elif elev > 1500:         e = 14
+    else:                     e = 20
+    return min(e + (24 if bl else 10) + _obs_bonus(obs, "kokuwagata"), 100)
 
 def score_hirata(elev, bl, obs):
-    # 0〜300m 平地・河川沿い
-    if    0 <  elev <=  200: e = 50
-    elif 200 <  elev <=  500: e = 32
-    elif 500 <  elev <=  800: e = 14
-    elif elev > 800:          e = 4
-    else:                     e = 20   # 不明: 低地種だが不明は要注意
+    # 0〜300m 平地・河川沿い ★河川ボーナスで真価発揮
+    if    0 <  elev <=  200:  e = 54
+    elif 200 <  elev <=  500: e = 34
+    elif 500 <  elev <=  800: e = 16
+    elif elev > 800:          e = 5
+    else:                     e = 22
     return min(e + (22 if bl else 8) + _obs_bonus(obs, "hirata", (3,2,1)), 100)
 
 def score_akaashi(elev, bl, obs):
-    # 500〜1400m ミヤマ同様 冷涼山地
-    if   600 <= elev <= 1400: e = 50
-    elif 400 <= elev <   600 or 1400 < elev <= 1800: e = 33
-    elif 200 <= elev <   400: e = 14
-    else:                     e = 5   # 0-200m & 不明 どちらも低評価
-    return min(e + (25 if bl else 10) + _obs_bonus(obs, "akaashi"), 100)
+    # 400〜1400m ミヤマ同様 冷涼山地
+    if   600 <= elev <= 1400: e = 55
+    elif 400 <= elev <   600: e = 38
+    elif 1400 < elev <= 1800: e = 34
+    elif 200 <= elev <   400: e = 18
+    else:                     e = 5
+    return min(e + (28 if bl else 10) + _obs_bonus(obs, "akaashi"), 100)
 
 def score_suji(elev, bl, obs):
     # 300〜900m 中山地
-    if   300 <= elev <=  900: e = 50
-    elif 100 <= elev <   300 or 900 < elev <= 1300: e = 32
-    elif   0 <  elev <   100: e = 14
-    elif elev > 1300:         e = 8
-    else:                     e = 10
-    return min(e + (22 if bl else 10) + _obs_bonus(obs, "suji"), 100)
+    if   300 <= elev <=  900: e = 52
+    elif 100 <= elev <   300 or 900 < elev <= 1300: e = 34
+    elif   0 <  elev <   100: e = 16
+    elif elev > 1300:         e = 10
+    else:                     e = 12
+    return min(e + (24 if bl else 10) + _obs_bonus(obs, "suji"), 100)
 
 def score_kabuto(elev, bl, obs):
-    # 50〜600m 低地〜中山地の広葉樹林（クヌギ・コナラの樹液）
-    if    50 <= elev <=  600: e = 50
-    elif   0 <  elev <    50: e = 40
-    elif 600 < elev <=  900: e = 25
-    elif elev > 900:          e = 8
-    else:                     e = 22   # 不明: 低地種なので中程度
-    return min(e + (22 if bl else 8) + _obs_bonus(obs, "kabuto"), 100)
+    # 30〜700m 低地〜中山地の広葉樹林（クヌギ・コナラの樹液）
+    if    30 <= elev <=  700: e = 55
+    elif   0 <  elev <    30: e = 42
+    elif 700 < elev <= 1000:  e = 28
+    elif elev > 1000:         e = 8
+    else:                     e = 24
+    return min(e + (24 if bl else 8) + _obs_bonus(obs, "kabuto"), 100)
+
+# ── 季節補正 ─────────────────────────────────────────────────────────────────
+def season_multiplier(month, species):
+    """月別の採集活性補正。7-8月ピークを1.0基準とし、オフシーズンは大きく下げる。"""
+    TABLE = {
+        "miyama":    {1:.05,2:.05,3:.05,4:.15,5:.50,6:.85,7:1.25,8:1.10,9:.50,10:.15,11:.05,12:.05},
+        "akaashi":   {1:.05,2:.05,3:.05,4:.15,5:.50,6:.85,7:1.25,8:1.10,9:.50,10:.15,11:.05,12:.05},
+        "suji":      {1:.05,2:.05,3:.05,4:.15,5:.50,6:.85,7:1.20,8:1.05,9:.50,10:.15,11:.05,12:.05},
+        "okuwagata": {1:.05,2:.05,3:.05,4:.20,5:.60,6:.90,7:1.20,8:1.15,9:.80,10:.30,11:.05,12:.05},
+        "nokogiri":  {1:.05,2:.05,3:.05,4:.20,5:.55,6:.85,7:1.20,8:1.25,9:1.00,10:.40,11:.05,12:.05},
+        "kokuwagata":{1:.05,2:.05,3:.05,4:.20,5:.55,6:.85,7:1.10,8:1.15,9:1.00,10:.50,11:.05,12:.05},
+        "hirata":    {1:.05,2:.05,3:.05,4:.15,5:.45,6:.75,7:1.05,8:1.20,9:1.00,10:.60,11:.10,12:.05},
+        "kabuto":    {1:.05,2:.05,3:.05,4:.10,5:.40,6:.75,7:1.15,8:1.20,9:.80,10:.25,11:.05,12:.05},
+    }
+    default = {1:.05,2:.05,3:.05,4:.2,5:.5,6:.8,7:1.0,8:1.0,9:.7,10:.3,11:.05,12:.05}
+    return TABLE.get(species, default).get(month, default.get(month, 0.1))
 
 SCORERS = {
     "miyama":     score_miyama,
@@ -380,14 +399,15 @@ SCORERS = {
     "kabuto":     score_kabuto,
 }
 
-def all_final_scores(elev, bl, obs, temp, river_dist_km):
-    """気温乗数・河川ボーナス込みの最終スコアを全種分計算"""
+def all_final_scores(elev, bl, obs, temp, river_dist_km, month=None):
+    """季節補正・気温乗数・河川ボーナス込みの最終スコアを全種分計算"""
     scores = {}
     for sp, fn in SCORERS.items():
         base = fn(elev, bl, obs)
         tf   = get_temp_factor(temp, sp)
         rb   = get_river_bonus(river_dist_km, sp)
-        scores[sp] = min(round(base * tf) + rb, 100)
+        sm   = season_multiplier(month, sp) if month else 1.0
+        scores[sp] = min(round(base * tf * sm) + rb, 100)
     return scores
 
 def score_light_trap(elev, broadleaf, river_dist_km):
@@ -630,9 +650,9 @@ def spots_stream():
     radius    = min(hours * KM_PER_HOUR, MAX_RADIUS)
     dir_angle = DIRECTION_ANGLES.get(direction)  # None = 全方向
 
-    step_km   = 20 if dir_angle is not None else 25
-    max_zones = 30 if dir_angle is not None else 25
-    dedup_km  = 8.0 if dir_angle is not None else 10.0
+    step_km   = 18 if dir_angle is not None else 20
+    max_zones = 45 if dir_angle is not None else 40
+    dedup_km  = 6.0 if dir_angle is not None else 7.0
 
     def generate():
         try:
@@ -662,14 +682,24 @@ def spots_stream():
                     weather_fut = ex_cond.submit(get_forecast_weather, lat, lng, plan_date)
                 grid_elev_map  = elev_fut.result()
                 tonight_weather = weather_fut.result()
+                plan_month = None
+                if plan_date:
+                    try:
+                        plan_month = datetime.date.fromisoformat(plan_date).month
+                    except Exception:
+                        plan_month = datetime.date.today().month
+                else:
+                    plan_month = datetime.date.today().month
+
                 for gp in grid_pts:
                     gp["elevation"]     = grid_elev_map.get((gp["lat"], gp["lng"]), -1.0)
                     gp["river_dist_km"] = nearest_river_km(gp["lat"], gp["lng"], river_pts)
                     e_val = gp["elevation"]
-                    gp["broadleaf"] = (150 < e_val < 1800) if e_val > 0 else True
+                    # broadleaf: 標高80m以上は広葉樹林の可能性が高い（日本の里山）
+                    gp["broadleaf"] = (80 < e_val < 1800) if e_val > 0 else True
                     gp["obs"]  = dummy
                     gp["temp"] = None
-                    gp.update(all_final_scores(gp["elevation"], gp["broadleaf"], dummy, None, gp["river_dist_km"]))
+                    gp.update(all_final_scores(gp["elevation"], gp["broadleaf"], dummy, None, gp["river_dist_km"], month=plan_month))
                     gp["m_light"]  = score_light_trap(gp["elevation"], gp["broadleaf"], gp["river_dist_km"])
                     gp["m_street"] = score_street_heuristic(gp["elevation"], gp["river_dist_km"], gp["dist_km"])
                 grid_sorted = sorted(grid_pts, key=lambda x: max(x[sp] for sp in SCORERS), reverse=True)
