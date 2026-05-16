@@ -445,7 +445,6 @@
            data-ad-slot="auto"
            data-ad-format="horizontal"
            data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle=window.adsbygoogle||[]).push({});<\/script>
     </div>
     <div id="spot-list">
       <div id="guide-empty-state" style="padding:12px 12px 16px">
@@ -500,37 +499,29 @@
         </div>
       </div>
     </div>
-  </div>
-  <!-- サイドバー下部 固定広告バナー -->
-  <div style="flex-shrink:0;padding:6px 14px 8px;background:#0d150d;border-top:1px solid #1f2f1f;text-align:center">
-    <div style="font-size:.55rem;color:#3a5c3a;margin-bottom:3px">- スポンサー -</div>
-    <!-- Amazon アソシエイト採集グッズリンク -->
-    <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
-      <a href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E6%8D%95%E8%99%AB%E7%B6%B2&tag=beetlefinder-22"
-         target="_blank" rel="noopener"
-         style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600">
-        🛒 捕虫網
-      </a>
-      <a href="https://www.amazon.co.jp/s?k=%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+%E7%99%BB%E5%B1%B1&tag=beetlefinder-22"
-         target="_blank" rel="noopener"
-         style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600">
-        🔦 ヘッドライト
-      </a>
-      <a href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E9%A3%BC%E8%82%B2+%E3%82%BB%E3%83%83%E3%83%88&tag=beetlefinder-22"
-         target="_blank" rel="noopener"
-         style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600">
-        🐛 飼育セット
-      </a>
+    <!-- サイドバー下部 固定広告バナー（#sidebar 内に配置） -->
+    <div style="flex-shrink:0;padding:6px 14px 8px;background:#0d150d;border-top:1px solid #1f2f1f;text-align:center">
+      <div style="font-size:.55rem;color:#3a5c3a;margin-bottom:3px">- スポンサー -</div>
+      <!-- Amazon アソシエイト採集グッズリンク -->
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
+        <a href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E6%8D%95%E8%99%AB%E7%B6%B2&tag=beetlefinder-22"
+           target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600">
+          🛒 捕虫網
+        </a>
+        <a href="https://www.amazon.co.jp/s?k=%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+%E7%99%BB%E5%B1%B1&tag=beetlefinder-22"
+           target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600">
+          🔦 ヘッドライト
+        </a>
+        <a href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E9%A3%BC%E8%82%B2+%E3%82%BB%E3%83%83%E3%83%88&tag=beetlefinder-22"
+           target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600">
+          🐛 飼育セット
+        </a>
+      </div>
+      <div style="font-size:.55rem;color:#4a6c4a;margin-top:3px">Amazonアソシエイト参加中</div>
     </div>
-    <div style="font-size:.55rem;color:#4a6c4a;margin-top:3px">Amazonアソシエイト参加中</div>
-    <!-- AdSense 横長バナー -->
-    <ins class="adsbygoogle"
-         style="display:block;width:100%;height:50px;margin-top:5px"
-         data-ad-client="ca-pub-9675243685208925"
-         data-ad-slot="auto"
-         data-ad-format="horizontal"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle=window.adsbygoogle||[]).push({});<\/script>
   </div>
 
   <div id="map"></div>
@@ -585,15 +576,21 @@ function getNoteUrl(sp){
 
 // ── インライン広告ユニット（リスト途中に挿入） ─────────────────
 function inlineAdHtml(){
-  return `<div style="padding:7px 14px;background:#0d150d;border-top:1px solid #1a2a1a;border-bottom:1px solid #1a2a1a;text-align:center">
-  <div style="font-size:.58rem;color:#4a7c4e;margin-bottom:4px">- スポンサー -</div>
-  <ins class="adsbygoogle"
-       style="display:block;width:100%;height:90px"
-       data-ad-client="ca-pub-9675243685208925"
-       data-ad-slot="auto"
-       data-ad-format="horizontal"
-       data-full-width-responsive="false"></ins>
-  <script>(adsbygoogle=window.adsbygoogle||[]).push({});<\/script>
+  // Amazon アフィリエイトリンク（インライン挿入用・AdSenseはiframe経由のため割愛）
+  const items = [
+    ['捕虫網',    '%E6%8D%95%E8%99%AB%E7%B6%B2+%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF'],
+    ['ヘッドライト','%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED+%E7%99%BB%E5%B1%B1'],
+    ['飼育セット', '%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88'],
+  ];
+  const tag = 'beetlefinder-22';
+  const links = items.map(([label, kw])=>
+    `<a href="https://www.amazon.co.jp/s?k=${kw}&tag=${tag}" target="_blank" rel="noopener"
+       style="display:inline-flex;align-items:center;gap:3px;background:#1a0c00;border:1px solid #c47000;border-radius:6px;padding:4px 9px;text-decoration:none;font-size:.65rem;color:#ff9900;font-weight:600">
+       🛒 ${label}
+     </a>`).join('');
+  return `<div style="padding:6px 14px;background:#110a00;border-top:1px solid #2a1a00;border-bottom:1px solid #2a1a00;text-align:center">
+  <div style="font-size:.55rem;color:#5a3a00;margin-bottom:4px">- Amazon採集グッズ -</div>
+  <div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap">${links}</div>
 </div>`;
 }
 
@@ -2124,7 +2121,6 @@ function fetchNearbyLight(spot){
            data-ad-slot="auto"
            data-ad-format="horizontal"
            data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle=window.adsbygoogle||[]).push({});<\/script>
     </div>
     <!-- Amazon アフィリエイト採集グッズ -->
     <div style="background:#1a0c00;border:1px solid #5a3a00;border-radius:8px;padding:10px;text-align:center;margin-bottom:10px">
@@ -2212,6 +2208,14 @@ function closeFeedback(){
   document.getElementById('fb-form').style.display='block';
   document.getElementById('fb-thanks').style.display='none';
 }
+// 静的 AdSense ユニット（sidebar-top-ad・ad modal）を一括初期化
+window.addEventListener('load', function(){
+  try{
+    document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status])').forEach(function(){
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+  }catch(e){}
+});
 </script>
 </body>
 </html>
