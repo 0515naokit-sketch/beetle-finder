@@ -380,22 +380,22 @@
           <button class="month-btn" data-month="9" onclick="setMonth(9)">9月</button>
         </div>
 
-        <!-- 方向絞り込み -->
-        <div class="ctrl-label">🧭 方向絞り込み</div>
+        <!-- 方向絞り込み（検索必須条件） -->
+        <div class="ctrl-label">🧭 方向を選択 <span id="dir-required-badge" style="font-size:.65rem;background:#c62828;color:#fff;border-radius:10px;padding:1px 7px;margin-left:4px">選択してください</span></div>
         <div style="display:flex;align-items:flex-start;gap:10px">
           <div class="dir-grid">
             <button class="dir-btn" data-dir="NW" onclick="setDirection('NW')">北西</button>
             <button class="dir-btn" data-dir="N"  onclick="setDirection('N')">北</button>
             <button class="dir-btn" data-dir="NE" onclick="setDirection('NE')">北東</button>
             <button class="dir-btn" data-dir="W"  onclick="setDirection('W')">西</button>
-            <button class="dir-btn active" data-dir="all" onclick="setDirection('all')">全</button>
+            <button class="dir-btn" data-dir="all" onclick="setDirection('all')">全</button>
             <button class="dir-btn" data-dir="E"  onclick="setDirection('E')">東</button>
             <button class="dir-btn" data-dir="SW" onclick="setDirection('SW')">南西</button>
             <button class="dir-btn" data-dir="S"  onclick="setDirection('S')">南</button>
             <button class="dir-btn" data-dir="SE" onclick="setDirection('SE')">南東</button>
           </div>
           <div style="font-size:.67rem;color:#81c784;opacity:.75;padding-top:2px;line-height:1.6">
-            方向を選ぶと<br>そのエリアを<br>重点検索<br><span style="color:#ffe082">絞込時60件</span>
+            出発地から<br>どの方向へ<br>行くか選択<br><span style="color:#ffe082">必須項目</span>
           </div>
         </div>
 
@@ -439,8 +439,11 @@
     <div id="spot-list">
       <div id="guide-empty-state" style="padding:12px 12px 16px">
         <div style="color:#4a7c4e;font-size:.78rem;text-align:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #2a3e2a">
-          出発地と種を設定して検索してください<br>
-          <span style="font-size:.66rem;opacity:.65">全国対応（最大8時間圏）</span>
+          ① 出発地（郵便番号）を入力<br>
+          ② 種・採集方法を選択<br>
+          ③ <span style="color:#ffc107;font-weight:700">🧭 方向を選択</span>（必須）<br>
+          ④「検索」を押すと結果を表示<br>
+          <span style="font-size:.66rem;opacity:.65">検索結果の確認には広告視聴が必要です</span>
         </div>
         <!-- ガイド記事カード -->
         <div style="font-size:.68rem;color:#66bb6a;margin-bottom:6px;font-weight:700;letter-spacing:.04em">📖 採集ガイド</div>
@@ -524,14 +527,14 @@ const MF = {
 // ── 状態 ─────────────────────────────────────────────────────
 let centerLat = DEFAULT_LAT, centerLng = DEFAULT_LNG;
 let currentSp = 'miyama', currentMonth = 0, currentHours = 3, favFilterOn = false;
-let currentDirection = 'all', currentMethod = 'tree';
+let currentDirection = null;   // null = 未選択（方向選択が必須）
+let currentMethod = 'tree';
 let allSpots = [], markers = [], driveCircle = null, centerMarker = null;
 let currentFilteredSpots = [], lightNearbyMarkers = [], selectedSpotIdx = -1;
 let allZones = [], zoneCircles = [], zoneMarkers = [];
 let currentConditions = null, tonightModeOn = false;
 // ── モード管理 ────────────────────────────────────────────────
 let appMode = 'family';       // 'family' | 'expert'
-let expertUnlocked = false;   // 玄人モード解放済みか
 let expertRadius = 50;        // 玄人モードの検索半径(km)
 let familySpotMarkers = [];   // 家族モードのマーカー
 
@@ -865,15 +868,13 @@ function setSpecies(sp){
     guideLabel.textContent = `${label}の採集ガイドを読む →`;
     guideLink.style.display = 'block';
   }
-  if(allSpots.length) renderSpots();
-  if(allZones.length) renderZones();
+  clearResults('採集対象を変更しました');
 }
 
 function setMonth(m){
   currentMonth = m;
   document.querySelectorAll('.month-btn').forEach(b=>b.classList.toggle('active', +b.dataset.month===m));
-  if(allSpots.length) renderSpots();
-  if(allZones.length) renderZones();
+  clearResults('採集月を変更しました');
 }
 
 function onSliderChange(val){
@@ -902,15 +903,30 @@ function toggleAdvanced(){
   badge.style.background = open ? '#388e3c' : '#555';
 }
 
-function setDirection(dir){
-  currentDirection = dir;
-  document.querySelectorAll('.dir-btn').forEach(b=>b.classList.toggle('active', b.dataset.dir===dir));
-  updateCircle();
+// ── 条件変更時の共通クリア処理 ───────────────────────────────────────────────
+function clearResults(msg){
+  clearFamilyMarkers();
   allSpots=[]; markers.forEach(m=>map.removeLayer(m)); markers=[];
   allZones=[]; clearZones();
   currentFilteredSpots=[]; clearNearbyLight();
-  document.getElementById('spot-list').innerHTML='<div style="padding:14px;text-align:center;color:#4a7c4e;font-size:.8rem">方向を変更しました。再検索してください。</div>';
-  document.getElementById('spot-count').textContent='';
+  if(msg){
+    document.getElementById('spot-list').innerHTML=
+      `<div style="padding:16px;text-align:center;color:#ffc107;font-size:.8rem">
+        ⚙ ${msg}<br>
+        <span style="color:#81c784;font-size:.72rem">条件を確認して再度「検索」を押してください</span>
+      </div>`;
+    document.getElementById('spot-count').textContent='';
+  }
+}
+
+function setDirection(dir){
+  currentDirection = dir;
+  document.querySelectorAll('.dir-btn').forEach(b=>b.classList.toggle('active', b.dataset.dir===dir));
+  // バッジを非表示に
+  const badge = document.getElementById('dir-required-badge');
+  if(badge) badge.style.display = 'none';
+  updateCircle();
+  clearResults('方向を変更しました');
 }
 
 const METHOD_META = {
@@ -932,7 +948,7 @@ function setMethod(m){
   document.querySelectorAll('.method-btn').forEach(b=>b.classList.toggle('active', b.dataset.m===m));
   const meta = METHOD_META[m];
   document.getElementById('method-desc').textContent = meta.desc;
-  if(allZones.length) renderZones();
+  clearResults('採集方法を変更しました');
 }
 
 // ── モード管理 ────────────────────────────────────────────────
@@ -960,6 +976,7 @@ function setAppMode(mode){
     driveRow.style.display='none';
     label.textContent = '🔬 新ポイントを予測探索する';
   }
+  clearResults('モードを切り替えました');
 }
 
 function setExpertRadius(r){
@@ -967,18 +984,24 @@ function setExpertRadius(r){
   document.querySelectorAll('#expert-range-row .month-btn').forEach(b=>{
     b.classList.toggle('active', +b.dataset.r === r);
   });
+  clearResults('検索距離を変更しました');
 }
 
 function handleSearchBtn(){
-  if(appMode === 'expert' && !expertUnlocked){
-    showExpertAdModal();
+  if(!centerLat){ alert('出発地を先に設定してください'); return; }
+  if(!currentDirection){
+    // 方向バッジを点滅して注意を促す
+    const badge = document.getElementById('dir-required-badge');
+    if(badge){
+      badge.style.display='inline';
+      badge.style.animation='none';
+      setTimeout(()=>{ badge.style.animation=''; }, 10);
+    }
+    alert('🧭 方向を選択してから検索してください');
     return;
   }
-  if(appMode === 'family'){
-    startFamilySearch();
-  } else {
-    startSearch();
-  }
+  // 全モード共通：広告を表示してから検索
+  showAdModal();
 }
 
 // ── 家族モード検索 ────────────────────────────────────────────
@@ -990,7 +1013,8 @@ function startFamilySearch(){
 
   const date = getPlanDate();
   const month = date ? (new Date(date).getMonth()+1) : new Date().getMonth()+1;
-  const url = `/api/nearby-spots?lat=${centerLat}&lng=${centerLng}&mode=family&radius=50&species=${currentSp}&method=${currentMethod}&month=${month}&date=${date||''}`;
+  const dir = currentDirection || 'all';
+  const url = `/api/nearby-spots?lat=${centerLat}&lng=${centerLng}&mode=family&radius=50&species=${currentSp}&method=${currentMethod}&month=${month}&date=${date||''}&direction=${dir}`;
 
   fetch(url)
     .then(r=>r.json())
@@ -1083,34 +1107,56 @@ function familySpotClick(i){
   }
 }
 
-// ── 玄人モード 広告ゲート ─────────────────────────────────────
-function showExpertAdModal(){
+// ── 全モード共通 広告ゲート ──────────────────────────────────────
+function showAdModal(){
+  // モードに応じてモーダルのラベルを変更
+  const title = document.getElementById('ad-modal-title');
+  const sub   = document.getElementById('ad-modal-sub');
+  const unlockBtn = document.getElementById('ad-unlock-btn');
+  if(appMode === 'family'){
+    if(title) title.textContent = '📍 採集スポットを表示する';
+    if(sub)   sub.textContent   = '広告を視聴すると検索結果を確認できます';
+    if(unlockBtn) unlockBtn.textContent = '🔒 カウントダウン中...';
+  } else {
+    if(title) title.textContent = '🔬 予測ポイントを表示する';
+    if(sub)   sub.textContent   = '広域AI予測の結果を見るには広告視聴が必要です';
+    if(unlockBtn) unlockBtn.textContent = '🔒 カウントダウン中...';
+  }
+  unlockBtn.disabled = true;
+  const wrap = document.getElementById('ad-countdown-wrap');
+  if(wrap) wrap.style.display = 'block';
+  document.getElementById('ad-counter').textContent = 15;
   document.getElementById('expert-ad-overlay').style.display='flex';
   startAdCountdown();
 }
-function closeExpertAd(unlocked){
+function closeAdModal(confirmed){
   document.getElementById('expert-ad-overlay').style.display='none';
-  if(unlocked){
-    expertUnlocked = true;
-    startExpertSearch();
-  }
+  if(adTimer){ clearInterval(adTimer); adTimer=null; }
+  if(!confirmed) return;
+  // 検索実行
+  if(appMode === 'family') startFamilySearch();
+  else                     startExpertSearch();
 }
+// 旧名互換（外部から呼ばれる可能性のある参照を残す）
+function closeExpertAd(u){ closeAdModal(u); }
+
 let adTimer = null;
 function startAdCountdown(){
   let sec = 15;
-  const btn = document.getElementById('ad-unlock-btn');
+  const btn     = document.getElementById('ad-unlock-btn');
   const counter = document.getElementById('ad-counter');
-  btn.disabled = true;
+  btn.disabled  = true;
   counter.textContent = sec;
   if(adTimer) clearInterval(adTimer);
   adTimer = setInterval(()=>{
     sec--;
     counter.textContent = sec;
     if(sec <= 0){
-      clearInterval(adTimer);
+      clearInterval(adTimer); adTimer = null;
       btn.disabled = false;
-      btn.textContent = '🔓 玄人モードを解放する';
-      counter.parentElement.style.display='none';
+      btn.textContent = '✅ 結果を表示する';
+      const wrap = document.getElementById('ad-countdown-wrap');
+      if(wrap) wrap.style.display='none';
     }
   }, 1000);
 }
@@ -1123,7 +1169,8 @@ function startExpertSearch(){
 
   const date = getPlanDate();
   const month = date ? (new Date(date).getMonth()+1) : new Date().getMonth()+1;
-  const url = `/api/nearby-spots?lat=${centerLat}&lng=${centerLng}&mode=expert&radius=${expertRadius}&species=${currentSp}&method=${currentMethod}&month=${month}&date=${date||''}`;
+  const dir = currentDirection || 'all';
+  const url = `/api/nearby-spots?lat=${centerLat}&lng=${centerLng}&mode=expert&radius=${expertRadius}&species=${currentSp}&method=${currentMethod}&month=${month}&date=${date||''}&direction=${dir}`;
 
   fetch(url)
     .then(r=>r.json())
@@ -1929,11 +1976,11 @@ function fetchNearbyLight(spot){
 })();
 </script>
 
-<!-- 玄人モード 広告解放モーダル -->
-<div id="expert-ad-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9990;align-items:center;justify-content:center">
-  <div style="background:#1a0a2e;border:2px solid #7e57c2;border-radius:14px;padding:28px 24px;width:min(380px,90vw);box-shadow:0 8px 40px rgba(0,0,0,.7)">
-    <div style="font-size:1rem;font-weight:700;color:#ce93d8;margin-bottom:6px;text-align:center">🔬 玄人モードを解放する</div>
-    <div style="font-size:.75rem;color:#b39ddb;text-align:center;margin-bottom:18px;line-height:1.6">広域AI予測（未実績地点の探索）は<br>広告視聴後に解放されます</div>
+<!-- 検索結果表示 広告モーダル（家族・玄人共通） -->
+<div id="expert-ad-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9990;align-items:center;justify-content:center">
+  <div style="background:#0d1f0d;border:2px solid #2e7d32;border-radius:14px;padding:28px 24px;width:min(380px,90vw);box-shadow:0 8px 40px rgba(0,0,0,.7)">
+    <div id="ad-modal-title" style="font-size:1rem;font-weight:700;color:#a5d6a7;margin-bottom:6px;text-align:center">📍 採集スポットを表示する</div>
+    <div id="ad-modal-sub" style="font-size:.75rem;color:#81c784;text-align:center;margin-bottom:18px;line-height:1.6">広告を視聴すると検索結果を確認できます</div>
     <!-- 広告バナーエリア -->
     <div style="background:#0d0520;border:1px dashed #5e35b1;border-radius:8px;padding:20px;text-align:center;margin-bottom:16px;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center">
       <div style="font-size:.72rem;color:#9e9e9e;margin-bottom:8px">📢 おすすめ採集グッズ</div>
@@ -1948,12 +1995,12 @@ function fetchNearbyLight(spot){
     <div id="ad-countdown-wrap" style="text-align:center;margin-bottom:14px;font-size:.75rem;color:#9e9e9e">
       あと <span id="ad-counter" style="font-size:1.2rem;font-weight:700;color:#ce93d8">15</span> 秒後に解放
     </div>
-    <button id="ad-unlock-btn" onclick="closeExpertAd(true)" disabled
-      style="width:100%;padding:11px;background:#3d1a6e;color:#ce93d8;border:2px solid #7e57c2;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;opacity:.5">
+    <button id="ad-unlock-btn" onclick="closeAdModal(true)" disabled
+      style="width:100%;padding:11px;background:#1b5e20;color:#a5d6a7;border:2px solid #2e7d32;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;opacity:.5;transition:opacity .3s">
       🔒 カウントダウン中...
     </button>
-    <button onclick="closeExpertAd(false)" style="width:100%;margin-top:8px;padding:8px;background:none;border:none;color:#9e9e9e;font-size:.72rem;cursor:pointer">
-      × キャンセル（家族モードに戻る）
+    <button onclick="closeAdModal(false)" style="width:100%;margin-top:8px;padding:8px;background:none;border:none;color:#9e9e9e;font-size:.72rem;cursor:pointer">
+      × キャンセル
     </button>
   </div>
 </div>

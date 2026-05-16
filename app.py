@@ -1087,6 +1087,17 @@ def _calc_moon_age(date_str):
     return ((days % 29.53058867) + 29.53058867) % 29.53058867
 
 
+_DIR_ANGLES = {"N":0,"NE":45,"E":90,"SE":135,"S":180,"SW":225,"W":270,"NW":315}
+
+def _in_direction(lat1, lng1, lat2, lng2, direction, half_deg=67.5):
+    """指定方向 ±half_deg 以内かどうか判定 (direction='all' は常に True)"""
+    if direction not in _DIR_ANGLES:
+        return True
+    b = bearing(lat1, lng1, lat2, lng2)
+    diff = abs((b - _DIR_ANGLES[direction] + 180) % 360 - 180)
+    return diff <= half_deg
+
+
 @app.route("/api/nearby-spots")
 def nearby_spots():
     """家族用・玄人用 スポット検索API"""
@@ -1099,6 +1110,7 @@ def nearby_spots():
         method  = request.args.get("method", "tree")
         month   = int(request.args.get("month", datetime.date.today().month))
         date_str = request.args.get("date", datetime.date.today().isoformat())
+        direction = request.args.get("direction", "all")   # N/NE/E/SE/S/SW/W/NW/all
         moon_age = _calc_moon_age(date_str)
 
         if mode == "family":
@@ -1107,6 +1119,8 @@ def nearby_spots():
             for spot in db:
                 dist = haversine(lat, lng, spot["lat"], spot["lng"])
                 if dist > radius:
+                    continue
+                if not _in_direction(lat, lng, spot["lat"], spot["lng"], direction):
                     continue
                 sc = _family_score(spot, species, method, moon_age, month, lat, lng)
                 results.append({**spot, "dist_km": round(dist, 1), "score": sc})
@@ -1119,6 +1133,8 @@ def nearby_spots():
             for spot in db:
                 dist = haversine(lat, lng, spot["lat"], spot["lng"])
                 if dist > radius:
+                    continue
+                if not _in_direction(lat, lng, spot["lat"], spot["lng"], direction):
                     continue
                 sc = _expert_score(spot, species, method, moon_age, month)
                 results.append({**spot, "dist_km": round(dist, 1), "score": sc})
