@@ -637,6 +637,11 @@ def privacy():
     return render_template("privacy.html")
 
 
+@app.route("/terms")
+def terms():
+    return render_template("terms.html")
+
+
 @app.route("/robots.txt")
 def robots():
     from flask import send_from_directory
@@ -726,6 +731,11 @@ def sitemap():
   </url>
   <url>
     <loc>https://beetle-finder.onrender.com/privacy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/terms</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
