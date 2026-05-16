@@ -251,6 +251,7 @@
         <button onclick="onPlanDateChange()" style="background:#2e4a2e;color:#a5d6a7;border:none;border-radius:6px;padding:5px 10px;font-size:.8rem;cursor:pointer">更新</button>
       </div>
       <div id="plan-date-label" style="font-size:.68rem;color:#81c784;margin-top:2px;opacity:.8"></div>
+      <div id="plan-date-advice" style="display:none;margin-top:7px"></div>
 
       <!-- 詳細設定トグル -->
       <button id="adv-toggle" onclick="toggleAdvanced()">
@@ -1038,15 +1039,122 @@ function onPlanDateChange(){
   const d = getPlanDate();
   if(!d) return;
   const label = document.getElementById('plan-date-label');
-  // 月齢だけなら即時表示（気象は再取得）
+  const age = calcMoonAgeJS(d);
+  // 月齢ラベルを即時表示
+  label.textContent = moonLabelJS(age) + '（月齢 ' + age.toFixed(1) + '日）';
+  // アドバイスパネルを即時更新
+  showDateAdvice(age, d);
+  // 検索済みなら気象も再取得
   if(allZones.length){
     label.textContent = '⏳ コンディション再取得中...';
     fetchConditions(d);
-  } else {
-    // 検索前でも月齢ラベルだけ更新
-    const age = calcMoonAgeJS(d);
-    label.textContent = moonLabelJS(age) + '（月齢 ' + age.toFixed(1) + '日）';
   }
+}
+
+// ── 採集日アドバイスパネル ──────────────────────────────────────
+function showDateAdvice(age, dateStr){
+  const panel = document.getElementById('plan-date-advice');
+  if(!panel) return;
+
+  // ① 月齢スコア（ライト採集への影響）
+  let moonScore, moonRating, moonColor;
+  if(age < 2 || age > 27.5){
+    moonScore=5; moonRating='◎ 新月（暗夜）'; moonColor='#66bb6a';
+  } else if(age < 5 || age > 25){
+    moonScore=4; moonRating='○ 細い月';      moonColor='#8bc34a';
+  } else if(age < 8 || age > 22){
+    moonScore=3; moonRating='△ 半月前後';    moonColor='#ffc107';
+  } else if(age < 12 || age > 18){
+    moonScore=2; moonRating='▲ 月明るめ';   moonColor='#ff9800';
+  } else {
+    moonScore=1; moonRating='✕ 満月（月明）'; moonColor='#ef5350';
+  }
+
+  // ② 季節スコア
+  const month = new Date(dateStr + 'T00:00:00').getMonth() + 1;
+  let seasonScore, seasonLabel, seasonColor;
+  if(month===7){
+    seasonScore=5; seasonLabel='🔥 最盛期（7月）';      seasonColor='#e53935';
+  } else if(month===6){
+    seasonScore=4; seasonLabel='⭐ 活発期（6月）';      seasonColor='#fb8c00';
+  } else if(month===8){
+    seasonScore=4; seasonLabel='⭐ 活発期（8月）';      seasonColor='#fb8c00';
+  } else if(month===5){
+    seasonScore=2; seasonLabel='🌱 早め（5月下旬〜）';  seasonColor='#9ccc65';
+  } else if(month===9){
+    seasonScore=2; seasonLabel='🍂 終盤（9月）';        seasonColor='#ff7043';
+  } else {
+    seasonScore=0; seasonLabel='❄️ 採集シーズン外';     seasonColor='#78909c';
+  }
+
+  // ③ おすすめ採集方法
+  let bestMethod, bestMethodIcon, methodDetail, methodColor;
+  if(moonScore >= 4){
+    bestMethodIcon='🔦'; bestMethod='ライト採集';
+    methodColor='#ce93d8';
+    methodDetail='月が暗く灯火への誘引効果が最大。山頂・尾根付近の光源を狙う。日没後30分〜23時がピーク。';
+  } else if(moonScore === 3){
+    bestMethodIcon='🌳'; bestMethod='樹木採集 or 💡 街灯採集';
+    methodColor='#a5d6a7';
+    methodDetail='月の影響は中程度。クヌギ・コナラの樹液か、周辺に森がある街灯を狙うと効果的。';
+  } else {
+    bestMethodIcon='🌳'; bestMethod='樹木採集（朝採りも◎）';
+    methodColor='#81c784';
+    methodDetail='月が明るく灯火の誘引効果が低下。樹液採集に切り替えを。カブト狙いなら夜明け前4〜6時も有効。';
+  }
+
+  // ④ 総合評価
+  const total = moonScore + seasonScore;
+  let overallLabel, overallColor, overallBg;
+  if(total >= 9){
+    overallLabel='🔥 絶好日！';      overallColor='#e53935'; overallBg='#2a0000';
+  } else if(total >= 7){
+    overallLabel='⭐ 良い採集日';    overallColor='#fb8c00'; overallBg='#2a1400';
+  } else if(total >= 5){
+    overallLabel='🟡 まずまずの日';  overallColor='#fdd835'; overallBg='#1e1a00';
+  } else if(total >= 3){
+    overallLabel='🟢 やや不向き';   overallColor='#66bb6a'; overallBg='#0d1a0d';
+  } else {
+    overallLabel='⚫ 採集不向き';   overallColor='#78909c'; overallBg='#0d1010';
+  }
+
+  // ⑤ ベストタイム
+  let bestTime;
+  if(moonScore >= 4) bestTime = '日没30分後〜23時・翌朝4〜6時（カブト朝採り◎）';
+  else if(moonScore === 3) bestTime = '夜20〜23時（街灯採集は21〜0時）';
+  else bestTime = '夜20〜23時 ＋ 夜明け前4〜6時（朝採りおすすめ）';
+
+  panel.style.display = 'block';
+  panel.innerHTML = `
+<div style="background:${overallBg};border:1px solid ${overallColor}44;border-radius:9px;padding:9px 11px;font-size:.72rem">
+  <!-- 総合評価ヘッダー -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <span style="font-size:.88rem;font-weight:700;color:${overallColor}">${overallLabel}</span>
+    <span style="color:${seasonColor};font-size:.7rem">${seasonLabel}</span>
+  </div>
+  <!-- 月齢 × 採集方法 2カラム -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:7px">
+    <div style="background:#0d1a0d;border-radius:7px;padding:7px 9px">
+      <div style="font-size:.6rem;color:#4a7c4e;margin-bottom:3px">🌙 月の状態</div>
+      <div style="font-size:.8rem;color:${moonColor};font-weight:600">${moonLabelJS(age)}</div>
+      <div style="font-size:.63rem;color:${moonColor};margin-top:1px">${moonRating}</div>
+      <div style="font-size:.6rem;color:#4a7c4e;margin-top:4px">ライト採集への影響</div>
+      <div style="display:flex;gap:2px;margin-top:2px">
+        ${[1,2,3,4,5].map(i=>`<div style="width:16px;height:5px;border-radius:2px;background:${i<=moonScore?moonColor:'#1f321f'}"></div>`).join('')}
+      </div>
+    </div>
+    <div style="background:#0d1a0d;border-radius:7px;padding:7px 9px">
+      <div style="font-size:.6rem;color:#4a7c4e;margin-bottom:3px">🎯 おすすめ方法</div>
+      <div style="font-size:.78rem;color:${methodColor};font-weight:600">${bestMethodIcon} ${bestMethod}</div>
+      <div style="font-size:.6rem;color:#4a7c4e;margin-top:4px">⏰ ベストタイム</div>
+      <div style="font-size:.63rem;color:#a5d6a7;margin-top:1px;line-height:1.4">${bestTime}</div>
+    </div>
+  </div>
+  <!-- アドバイス文 -->
+  <div style="background:#0d1a0d;border-radius:6px;padding:6px 9px;font-size:.64rem;color:#81c784;line-height:1.6;border-left:3px solid ${methodColor}">
+    ${methodDetail}
+  </div>
+</div>`;
 }
 
 // JS側の月齢計算（サーバー呼び出し前にラベルを即表示するため）
@@ -1077,6 +1185,8 @@ function fetchConditions(date){
       const label = document.getElementById('plan-date-label');
       const wStr = d.weather ? `気温${d.weather.temp}°C 湿度${d.weather.humidity}%` : '気象データなし（14日超または過去日）';
       label.textContent = `${d.moon_emoji} ${d.moon_label}（月齢${d.moon_age}日） — ${wStr}`;
+      // アドバイスパネルも気象取得後に再表示（月齢を最新値で）
+      showDateAdvice(d.moon_age, getPlanDate());
     })
     .catch(()=>{
       document.getElementById('plan-date-label').textContent = '取得失敗';
@@ -1367,6 +1477,7 @@ function fetchNearbyLight(spot){
   const a = calcMoonAgeJS(today);
   document.getElementById('plan-date-label').textContent =
     moonLabelJS(a) + '（月齢 ' + a.toFixed(1) + '日）';
+  showDateAdvice(a, today);
 })();
 </script>
 
