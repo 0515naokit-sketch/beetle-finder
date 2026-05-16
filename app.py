@@ -1125,7 +1125,7 @@ def nearby_spots():
                 sc = _family_score(spot, species, method, moon_age, month, lat, lng)
                 results.append({**spot, "dist_km": round(dist, 1), "score": sc})
             results.sort(key=lambda x: -x["score"])
-            return jsonify({"mode":"family","spots": results[:10], "moon_age": round(moon_age,1)})
+            return jsonify({"mode":"family","spots": results[:60], "moon_age": round(moon_age,1)})
 
         else:  # expert
             db = _EXPERT_SPOTS
@@ -1139,7 +1139,7 @@ def nearby_spots():
                 sc = _expert_score(spot, species, method, moon_age, month)
                 results.append({**spot, "dist_km": round(dist, 1), "score": sc})
             results.sort(key=lambda x: -x["score"])
-            return jsonify({"mode":"expert","spots": results[:30], "moon_age": round(moon_age,1)})
+            return jsonify({"mode":"expert","spots": results[:120], "moon_age": round(moon_age,1)})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
