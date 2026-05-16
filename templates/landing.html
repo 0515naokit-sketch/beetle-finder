@@ -11,6 +11,7 @@
   <meta property="og:url" content="https://beetle-finder.onrender.com/">
   <meta property="og:image" content="https://beetle-finder.onrender.com/static/ogp.png">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" as="image" href="/static/img/hero.jpg">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9675243685208925" crossorigin="anonymous"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
@@ -59,9 +60,10 @@
     }
     #hero-bg{
       position:absolute;inset:0;
-      background-image:url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1400&q=80&fit=crop&crop=center');
-      background-size:cover;background-position:center;
-      filter:brightness(.45);
+      background-color:#0d2a0d;
+      background-image:url('/static/img/hero.jpg');
+      background-size:cover;background-position:center 40%;
+      filter:brightness(.42);
       z-index:0;
     }
     #hero > *{position:relative;z-index:1}
@@ -198,7 +200,7 @@
     .scene-photo{
       height:380px;overflow:hidden;position:relative;
     }
-    .scene-photo img{width:100%;height:100%;object-fit:cover}
+    .scene-photo img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
     .scene-text{
       display:flex;flex-direction:column;justify-content:center;
       padding:48px 44px;
@@ -388,10 +390,9 @@
 <div id="scene">
   <div class="scene-photo">
     <img
-      src="https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=800&q=80&fit=crop&crop=center"
+      src="/static/img/scene.jpg"
       alt="夏の雑木林で昆虫採集する親子"
       loading="lazy"
-      onerror="this.src='https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&q=80&fit=crop'"
     >
   </div>
   <div class="scene-text">
