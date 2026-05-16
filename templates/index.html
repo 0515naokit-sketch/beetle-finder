@@ -672,15 +672,15 @@ let familySpotMarkers = [];   // 家族モードのマーカー
 // ── もっと見る ページング管理 ──────────────────────────────────
 let _allFamilySpots = [];   // 家族モード全件キャッシュ
 let _familyMoonAge  = 0;
-let _familyLimit    = 10;   // 現在の表示件数（初期10件）
-const FAMILY_PAGE   = 10;   // 初期表示数
+let _familyLimit    = 5;    // 現在の表示件数（初期5件）
+const FAMILY_PAGE   = 5;    // 初期表示数
 
 let _allExpertSpots = [];   // 玄人モード全件キャッシュ
 let _expertMoonAge  = 0;
-let _expertLimit    = 15;   // 現在の表示件数（初期15件）
-const EXPERT_PAGE   = 15;   // 初期表示数
+let _expertLimit    = 8;    // 現在の表示件数（初期8件）
+const EXPERT_PAGE   = 8;    // 初期表示数
 
-const SHOW_MORE_ADD = 20;   // 追加ボタンで増やす件数（固定）
+const SHOW_MORE_ADD = 15;   // 追加ボタンで増やす件数（固定）
 
 let _adModalAction  = 'search'; // 'search' | 'more_family' | 'more_expert'
 
@@ -1226,26 +1226,40 @@ function _updateShowMoreBar(shown, total, action){
   const remaining = total - shown;
   const addCount  = Math.min(SHOW_MORE_ADD, remaining);
 
+  // ランダムで期待感を煽るコピーを選択
+  const teaser = [
+    `この条件、まだ${remaining}件の候補が眠っています`,
+    `穴場が見つかるかも。残り${remaining}件を確認する`,
+    `上位${shown}件の次に何が待っているか？`,
+    `採集者が見落としがちな穴場が残り${remaining}件`,
+    `地元民しか知らないポイントが隠れているかも`,
+  ][Math.floor(Date.now() / 60000) % 5];
+
   // サイドバー内バー（コンパクト版）
   if(bar){
     bar.style.display = 'block';
     bar.innerHTML = `
-<div style="display:flex;align-items:center;gap:10px;padding:8px 12px">
-  <div style="flex-shrink:0;text-align:center;background:#132213;border:1px solid #2e7d32;border-radius:8px;padding:5px 8px;min-width:54px">
-    <div style="font-size:.56rem;color:#66bb6a;line-height:1.2">まだ</div>
-    <div style="font-size:1rem;font-weight:700;color:#ffc107;line-height:1.2">${remaining}</div>
-    <div style="font-size:.56rem;color:#66bb6a;line-height:1.2">件あり</div>
+<div style="padding:8px 12px;background:linear-gradient(135deg,#0d1f0d,#132213);border-top:2px solid #2e7d32">
+  <div style="font-size:.65rem;color:#a5d6a7;margin-bottom:6px;line-height:1.5">
+    🗺 ${teaser}
   </div>
-  <div style="flex:1">
-    <button onclick="requestShowMore('${action}')"
-      style="width:100%;padding:8px 6px;
-             background:linear-gradient(135deg,#1b5e20,#2e7d32);
-             border:2px solid #4caf50;border-radius:8px;
-             color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;
-             box-shadow:0 2px 8px rgba(76,175,80,.4)">
-      🔍 さらに${addCount}件を表示する
-    </button>
-    <div style="font-size:.56rem;color:#3a6c3a;text-align:center;margin-top:3px">広告を見るだけで無料・再検索不要</div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <div style="flex-shrink:0;text-align:center;background:#0a1a0a;border:1px solid #ffc107;border-radius:8px;padding:4px 8px;min-width:50px">
+      <div style="font-size:.52rem;color:#ffc107;line-height:1.2">残り</div>
+      <div style="font-size:1.1rem;font-weight:700;color:#ffc107;line-height:1.2">${remaining}</div>
+      <div style="font-size:.52rem;color:#ffc107;line-height:1.2">件</div>
+    </div>
+    <div style="flex:1">
+      <button onclick="requestShowMore('${action}')"
+        style="width:100%;padding:9px 6px;
+               background:linear-gradient(135deg,#e65100,#f57c00);
+               border:none;border-radius:8px;
+               color:#fff;font-size:.8rem;font-weight:700;cursor:pointer;
+               box-shadow:0 2px 10px rgba(255,152,0,.45);letter-spacing:.02em">
+        👁 次の${addCount}件を見る →
+      </button>
+      <div style="font-size:.54rem;color:#4a6c3a;text-align:center;margin-top:3px">広告視聴のみ・無料・再検索不要</div>
+    </div>
   </div>
 </div>`;
   }
@@ -1253,7 +1267,7 @@ function _updateShowMoreBar(shown, total, action){
   // マップ上フローティングボタン
   if(mapBtn){
     mapBtn.style.display = 'block';
-    mapBtn.textContent   = `🔍 もっと見る（あと${remaining}件）`;
+    mapBtn.textContent   = `👁 まだ${remaining}件隠れています → 見る`;
   }
 }
 
