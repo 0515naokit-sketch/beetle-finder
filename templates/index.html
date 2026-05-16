@@ -499,6 +499,9 @@
         </div>
       </div>
     </div>
+    <!-- もっと見るバー（スクロール不要・常に見える位置に固定） -->
+    <div id="show-more-bar" style="display:none;flex-shrink:0;padding:10px 14px;background:#0d2a0d;border-top:3px solid #4caf50"></div>
+
     <!-- サイドバー下部 固定広告バナー（#sidebar 内に配置） -->
     <div style="flex-shrink:0;padding:6px 14px 8px;background:#0d150d;border-top:1px solid #1f2f1f;text-align:center">
       <div style="font-size:.55rem;color:#3a5c3a;margin-bottom:3px">- スポンサー -</div>
@@ -634,13 +637,15 @@ let familySpotMarkers = [];   // 家族モードのマーカー
 // ── もっと見る ページング管理 ──────────────────────────────────
 let _allFamilySpots = [];   // 家族モード全件キャッシュ
 let _familyMoonAge  = 0;
-let _familyLimit    = 5;    // 現在の表示件数
-const FAMILY_PAGE   = 5;    // 1ページ追加量（追加時は2倍=10件）
+let _familyLimit    = 10;   // 現在の表示件数（初期10件）
+const FAMILY_PAGE   = 10;   // 初期表示数
 
 let _allExpertSpots = [];   // 玄人モード全件キャッシュ
 let _expertMoonAge  = 0;
-let _expertLimit    = 10;   // 現在の表示件数
-const EXPERT_PAGE   = 10;   // 1ページ追加量（追加時は2倍=20件）
+let _expertLimit    = 15;   // 現在の表示件数（初期15件）
+const EXPERT_PAGE   = 15;   // 初期表示数
+
+const SHOW_MORE_ADD = 20;   // 追加ボタンで増やす件数（固定）
 
 let _adModalAction  = 'search'; // 'search' | 'more_family' | 'more_expert'
 
@@ -1016,6 +1021,8 @@ function clearResults(msg){
   allZones=[]; clearZones();
   currentFilteredSpots=[]; clearNearbyLight();
   document.getElementById('sidebar-top-ad').style.display = 'none';
+  const smb = document.getElementById('show-more-bar');
+  if(smb){ smb.style.display='none'; smb.innerHTML=''; }
   if(msg){
     document.getElementById('spot-list').innerHTML=
       `<div style="padding:16px;text-align:center;color:#ffc107;font-size:.8rem">
@@ -1141,42 +1148,43 @@ function clearFamilyMarkers(){
   familySpotMarkers = [];
 }
 
-// ── 「もっと見る」共通ボタン HTML ────────────────────────────────
-function _showMoreBtnHtml(shown, total, action){
-  if(shown >= total) return '';
+// ── 「もっと見る」固定バー 更新 ──────────────────────────────────
+function _updateShowMoreBar(shown, total, action){
+  const bar = document.getElementById('show-more-bar');
+  if(!bar) return;
+  if(shown >= total){
+    bar.style.display = 'none';
+    bar.innerHTML = '';
+    return;
+  }
   const remaining = total - shown;
-  const addCount = Math.min(shown, remaining); // 追加件数 = 現在表示数（=2倍効果）
-  return `
-<div style="padding:14px 16px 16px;background:linear-gradient(180deg,#0a1a0a,#0d1f0d);border-top:2px solid #2e5c2e">
-  <!-- 件数ティーザー -->
-  <div style="background:#132213;border:1px solid #2e5c2e;border-radius:8px;padding:10px 12px;margin-bottom:10px;text-align:center">
-    <div style="font-size:.72rem;color:#66bb6a;font-weight:700;margin-bottom:3px">
-      🗺 まだ見ていないポイントがあります
-    </div>
-    <div style="font-size:.82rem;color:#ffc107;font-weight:700">
-      同じ条件であと <span style="font-size:1.1rem">${remaining}</span> 件
-    </div>
-    <div style="font-size:.62rem;color:#4a7c4e;margin-top:3px">
-      距離・方向・樹種スコアが異なる候補地が非表示になっています
-    </div>
+  const addCount  = Math.min(SHOW_MORE_ADD, remaining);
+  bar.style.display = 'block';
+  bar.innerHTML = `
+<div style="display:flex;align-items:center;gap:10px">
+  <!-- 左：残り件数 -->
+  <div style="flex-shrink:0;text-align:center;background:#132213;border:1px solid #2e7d32;border-radius:8px;padding:6px 10px;min-width:62px">
+    <div style="font-size:.58rem;color:#66bb6a;line-height:1.2">まだ</div>
+    <div style="font-size:1.1rem;font-weight:700;color:#ffc107;line-height:1.2">${remaining}</div>
+    <div style="font-size:.58rem;color:#66bb6a;line-height:1.2">件あり</div>
   </div>
-  <!-- メインボタン -->
-  <button onclick="requestShowMore('${action}')"
-    style="width:100%;padding:13px 10px;
-           background:linear-gradient(135deg,#1b5e20,#2e7d32);
-           border:2px solid #4caf50;border-radius:10px;
-           color:#fff;font-size:.85rem;font-weight:700;cursor:pointer;
-           display:flex;align-items:center;justify-content:center;gap:8px;
-           box-shadow:0 3px 12px rgba(76,175,80,.3);
-           transition:all .15s"
-    onmouseover="this.style.background='linear-gradient(135deg,#2e7d32,#388e3c)';this.style.boxShadow='0 4px 18px rgba(76,175,80,.5)'"
-    onmouseout="this.style.background='linear-gradient(135deg,#1b5e20,#2e7d32)';this.style.boxShadow='0 3px 12px rgba(76,175,80,.3)'">
-    🔍 さらに${addCount}件を表示する
-  </button>
-  <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px">
-    <span style="font-size:.6rem;color:#3a5c3a">─────</span>
-    <span style="font-size:.62rem;color:#4a7c4e">広告を見るだけで無料・再検索不要</span>
-    <span style="font-size:.6rem;color:#3a5c3a">─────</span>
+  <!-- 右：ボタン+説明 -->
+  <div style="flex:1">
+    <div style="font-size:.62rem;color:#81c784;margin-bottom:5px;line-height:1.4">
+      同じ条件でスコアが異なるポイントが非表示になっています
+    </div>
+    <button onclick="requestShowMore('${action}')"
+      style="width:100%;padding:9px 8px;
+             background:linear-gradient(135deg,#1b5e20,#2e7d32);
+             border:2px solid #4caf50;border-radius:8px;
+             color:#fff;font-size:.8rem;font-weight:700;cursor:pointer;
+             box-shadow:0 2px 8px rgba(76,175,80,.4);
+             transition:all .15s"
+      onmouseover="this.style.background='linear-gradient(135deg,#2e7d32,#43a047)'"
+      onmouseout="this.style.background='linear-gradient(135deg,#1b5e20,#2e7d32)'">
+      🔍 さらに${addCount}件を表示する
+    </button>
+    <div style="font-size:.58rem;color:#3a6c3a;text-align:center;margin-top:4px">広告を見るだけで無料・再検索不要</div>
   </div>
 </div>`;
 }
@@ -1260,7 +1268,8 @@ function _renderFamilyList(){
     if((i+1)%3===0 && i<display.length-1) acc.push(inlineAdHtml());
     return acc;
   },[]).join('')
-  + _showMoreBtnHtml(_familyLimit, all.length, 'more_family');
+  ;
+  _updateShowMoreBar(_familyLimit, all.length, 'more_family');
 }
 
 function renderFamilyResults(spots, moonAge){
@@ -1326,12 +1335,12 @@ function closeAdModal(confirmed){
   if(!confirmed) return;
   if(_adModalAction === 'more_family'){
     const prev = _familyLimit;
-    _familyLimit = Math.min(_familyLimit + _familyLimit, _allFamilySpots.length); // 2倍追加
+    _familyLimit = Math.min(_familyLimit + SHOW_MORE_ADD, _allFamilySpots.length);
     _addFamilyMarkers(_allFamilySpots, prev);
     _renderFamilyList();
   } else if(_adModalAction === 'more_expert'){
     const prev = _expertLimit;
-    _expertLimit = Math.min(_expertLimit + EXPERT_PAGE * 2, _allExpertSpots.length); // 2倍追加
+    _expertLimit = Math.min(_expertLimit + SHOW_MORE_ADD, _allExpertSpots.length);
     _addExpertMarkers(_allExpertSpots, prev);
     _renderExpertList();
   } else if(appMode === 'family'){
@@ -1454,7 +1463,8 @@ function _renderExpertList(){
     if((i+1)%3===0 && i<display.length-1) acc.push(inlineAdHtml());
     return acc;
   },[]).join('')
-  + _showMoreBtnHtml(_expertLimit, all.length, 'more_expert');
+  ;
+  _updateShowMoreBar(_expertLimit, all.length, 'more_expert');
 }
 
 function renderExpertResults(spots, moonAge){
