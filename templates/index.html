@@ -187,7 +187,8 @@
     .fav-star.on{opacity:1}
 
     /* ─ 地図 ─ */
-    #map{flex:1}
+    #map-wrap{flex:1;position:relative}
+    #map{width:100%;height:100%}
 
     /* ─ ポップアップ ─ */
     .leaflet-popup-content-wrapper{background:#1b2d1b;color:#dcedc8;border:1px solid #2a3e2a;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.6)}
@@ -216,7 +217,8 @@
 
     @media(max-width:680px){
       #app{flex-direction:column-reverse}
-      #map{height:52vh;flex-shrink:0}
+      #map-wrap{height:52vh;flex-shrink:0}
+      #map{height:100%}
       #sidebar{width:100%;min-width:unset;height:48vh;border-right:none;border-top:2px solid #2a3e2a}
       #controls{max-height:none}
       .sp-btn,.month-btn,.dir-btn,.method-btn{min-height:34px;font-size:.8rem}
@@ -526,7 +528,18 @@
     </div>
   </div>
 
-  <div id="map"></div>
+  <div id="map-wrap" style="flex:1;position:relative;overflow:hidden">
+    <div id="map" style="width:100%;height:100%"></div>
+    <!-- マップ右下オーバーレイ広告 -->
+    <div id="map-overlay-ad" style="position:absolute;bottom:28px;right:8px;z-index:900;max-width:200px;pointer-events:auto">
+      <div style="font-size:.48rem;color:#aaa;text-align:right;line-height:1;margin-bottom:2px">スポンサー</div>
+      <ins class="adsbygoogle"
+           style="display:block;width:200px;height:60px"
+           data-ad-client="ca-pub-9675243685208925"
+           data-ad-slot="auto"
+           data-ad-format="fixed"></ins>
+    </div>
+  </div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
