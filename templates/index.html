@@ -634,13 +634,13 @@ let familySpotMarkers = [];   // 家族モードのマーカー
 // ── もっと見る ページング管理 ──────────────────────────────────
 let _allFamilySpots = [];   // 家族モード全件キャッシュ
 let _familyMoonAge  = 0;
-let _familyLimit    = 10;   // 現在の表示件数
-const FAMILY_PAGE   = 10;   // 1ページ追加量
+let _familyLimit    = 5;    // 現在の表示件数
+const FAMILY_PAGE   = 5;    // 1ページ追加量（追加時は2倍=10件）
 
 let _allExpertSpots = [];   // 玄人モード全件キャッシュ
 let _expertMoonAge  = 0;
-let _expertLimit    = 30;   // 現在の表示件数
-const EXPERT_PAGE   = 30;   // 1ページ追加量
+let _expertLimit    = 10;   // 現在の表示件数
+const EXPERT_PAGE   = 10;   // 1ページ追加量（追加時は2倍=20件）
 
 let _adModalAction  = 'search'; // 'search' | 'more_family' | 'more_expert'
 
@@ -1144,25 +1144,39 @@ function clearFamilyMarkers(){
 // ── 「もっと見る」共通ボタン HTML ────────────────────────────────
 function _showMoreBtnHtml(shown, total, action){
   if(shown >= total) return '';
-  const add = shown; // 追加件数 = 通常表示件数の2倍 = 現在表示数と同じ
   const remaining = total - shown;
-  const addCount = Math.min(add, remaining);
+  const addCount = Math.min(shown, remaining); // 追加件数 = 現在表示数（=2倍効果）
   return `
-<div style="padding:14px 16px 10px;background:linear-gradient(180deg,#0d1f0d 0%,#111a11 100%);border-top:2px dashed #2e4a2e">
-  <div style="font-size:.68rem;color:#81c784;text-align:center;margin-bottom:8px;opacity:.8">
-    🗺 この条件であと <b style="color:#ffc107">${remaining}件</b> の候補が見つかっています
+<div style="padding:14px 16px 16px;background:linear-gradient(180deg,#0a1a0a,#0d1f0d);border-top:2px solid #2e5c2e">
+  <!-- 件数ティーザー -->
+  <div style="background:#132213;border:1px solid #2e5c2e;border-radius:8px;padding:10px 12px;margin-bottom:10px;text-align:center">
+    <div style="font-size:.72rem;color:#66bb6a;font-weight:700;margin-bottom:3px">
+      🗺 まだ見ていないポイントがあります
+    </div>
+    <div style="font-size:.82rem;color:#ffc107;font-weight:700">
+      同じ条件であと <span style="font-size:1.1rem">${remaining}</span> 件
+    </div>
+    <div style="font-size:.62rem;color:#4a7c4e;margin-top:3px">
+      距離・方向・樹種スコアが異なる候補地が非表示になっています
+    </div>
   </div>
+  <!-- メインボタン -->
   <button onclick="requestShowMore('${action}')"
-    style="width:100%;padding:12px 10px;background:#1b3d1b;border:2px solid #4caf50;border-radius:10px;
-           color:#a5d6a7;font-size:.82rem;font-weight:700;cursor:pointer;
+    style="width:100%;padding:13px 10px;
+           background:linear-gradient(135deg,#1b5e20,#2e7d32);
+           border:2px solid #4caf50;border-radius:10px;
+           color:#fff;font-size:.85rem;font-weight:700;cursor:pointer;
            display:flex;align-items:center;justify-content:center;gap:8px;
-           transition:background .15s,border-color .15s"
-    onmouseover="this.style.background='#234e23';this.style.borderColor='#66bb6a'"
-    onmouseout="this.style.background='#1b3d1b';this.style.borderColor='#4caf50'">
-    🔍 同じ条件でさらに${addCount}件を探す
+           box-shadow:0 3px 12px rgba(76,175,80,.3);
+           transition:all .15s"
+    onmouseover="this.style.background='linear-gradient(135deg,#2e7d32,#388e3c)';this.style.boxShadow='0 4px 18px rgba(76,175,80,.5)'"
+    onmouseout="this.style.background='linear-gradient(135deg,#1b5e20,#2e7d32)';this.style.boxShadow='0 3px 12px rgba(76,175,80,.3)'">
+    🔍 さらに${addCount}件を表示する
   </button>
-  <div style="font-size:.62rem;color:#4a7c4e;text-align:center;margin-top:6px">
-    ※ 広告を見るだけで無料で確認できます
+  <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px">
+    <span style="font-size:.6rem;color:#3a5c3a">─────</span>
+    <span style="font-size:.62rem;color:#4a7c4e">広告を見るだけで無料・再検索不要</span>
+    <span style="font-size:.6rem;color:#3a5c3a">─────</span>
   </div>
 </div>`;
 }
