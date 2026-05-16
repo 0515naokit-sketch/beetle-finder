@@ -489,8 +489,8 @@
   </div>
 </section>
 
-<!-- 広告 -->
-<div class="lp-ad-wrap">
+<!-- 広告（AdSense審査通過後に有効化） -->
+<div class="lp-ad-wrap" style="display:none" id="lp-ad-1">
   <div class="lp-ad-label">スポンサー</div>
   <div style="max-width:600px;margin:0 auto">
     <ins class="adsbygoogle"
@@ -622,8 +622,8 @@
   </div>
 </section>
 
-<!-- ガイドと最終CTAの間の広告 -->
-<div class="lp-ad-wrap" style="padding:24px 24px">
+<!-- ガイドと最終CTAの間の広告（AdSense審査通過後に有効化） -->
+<div class="lp-ad-wrap" style="display:none;padding:24px 24px" id="lp-ad-2">
   <div class="lp-ad-label">スポンサー</div>
   <div style="max-width:728px;margin:0 auto">
     <ins class="adsbygoogle"
@@ -653,15 +653,8 @@
   <div class="footer-copy">© 2026 クワガタ採集スポット検索</div>
 </footer>
 
-<!-- モバイル固定下部広告バー -->
-<div id="lp-anchor-ad" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#fff;border-top:1px solid #e0e0e0;padding:4px 0 env(safe-area-inset-bottom,0px);text-align:center">
-  <div style="font-size:.48rem;color:#bbb;margin-bottom:2px">スポンサー</div>
-  <ins class="adsbygoogle"
-       style="display:inline-block;width:320px;height:50px"
-       data-ad-client="ca-pub-9675243685208925"
-       data-ad-slot="auto"
-       data-ad-format="auto"></ins>
-</div>
+<!-- モバイル固定下部広告バー（AdSense審査通過後に有効化） -->
+<div id="lp-anchor-ad" style="display:none"></div>
 
 <script>
 // AdSenseユニットを全て初期化
@@ -671,12 +664,6 @@ window.addEventListener('load',function(){
       (adsbygoogle = window.adsbygoogle || []).push({});
     });
   }catch(e){}
-  // モバイルのみアンカー広告を表示
-  if(window.innerWidth <= 640){
-    document.getElementById('lp-anchor-ad').style.display = 'block';
-    // フッターの下に余白
-    document.querySelector('footer').style.paddingBottom = '68px';
-  }
 });
 </script>
 </body>

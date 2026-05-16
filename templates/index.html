@@ -61,8 +61,20 @@
     #controls::-webkit-scrollbar{width:3px}
     #controls::-webkit-scrollbar-thumb{background:#2e4a2e}
     /* 検索後に表示する折りたたみトグルバー */
-    #ctrl-toggle{display:none;flex-shrink:0;padding:5px 14px;background:#0d1f0d;border-bottom:1px solid #2a3e2a;cursor:pointer;font-size:.72rem;color:#66bb6a;text-align:center;user-select:none}
-    #ctrl-toggle:hover{background:#132213}
+    #ctrl-toggle{
+      display:none;flex-shrink:0;
+      padding:10px 16px;
+      background:#1b3d1b;
+      border-bottom:2px solid #4caf50;
+      border-top:1px solid #2e5e2e;
+      cursor:pointer;
+      font-size:.82rem;font-weight:700;
+      color:#c8e6c9;
+      text-align:center;
+      user-select:none;
+      letter-spacing:.02em;
+    }
+    #ctrl-toggle:hover{background:#243e24;color:#fff}
     /* マップ上に浮かせた「もっと見る」ボタン */
     #map-more-btn{
       display:none;position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
@@ -285,7 +297,7 @@
         max-height:none; flex:1;
         overflow-y:auto; -webkit-overflow-scrolling:touch;
       }
-      #ctrl-toggle{ font-size:.8rem; padding:9px 14px; min-height:42px; }
+      #ctrl-toggle{ font-size:.88rem; padding:12px 14px; min-height:48px; }
 
       /* ── タッチフレンドリー（最小44px） ── */
       .sp-btn{ min-height:42px; font-size:.85rem; padding:6px 12px; }
@@ -530,16 +542,8 @@
     <div id="show-more-bar" style="display:none;flex-shrink:0;border-bottom:1px solid #1a3a1a"></div>
     <div id="cond-panel"></div>
     <div id="nearby-light-status" class="night-status" style="padding:3px 14px;display:none"></div>
-    <!-- 横バナー広告（スポット一覧上部） -->
-    <div id="sidebar-top-ad" style="display:none;padding:4px 14px;background:#0d150d;border-bottom:1px solid #1a2a1a;text-align:center">
-      <div style="font-size:.55rem;color:#3a5c3a;margin-bottom:2px">- スポンサー -</div>
-      <ins class="adsbygoogle"
-           style="display:block;width:100%;height:60px"
-           data-ad-client="ca-pub-9675243685208925"
-           data-ad-slot="auto"
-           data-ad-format="horizontal"
-           data-full-width-responsive="true"></ins>
-    </div>
+    <!-- sidebar-top-ad: AdSense審査通過後に有効化 -->
+    <div id="sidebar-top-ad" style="display:none"></div>
     <div id="spot-list">
       <div id="guide-empty-state" style="padding:12px 12px 16px">
         <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #2a3e2a">
@@ -654,15 +658,8 @@
     <div id="map" style="width:100%;height:100%"></div>
     <!-- マップ中央下：もっと見るフローティングボタン -->
     <button id="map-more-btn" onclick="_mapMoreBtnClick()">🔍 もっと見る</button>
-    <!-- マップ右下オーバーレイ広告 -->
-    <div id="map-overlay-ad" style="position:absolute;bottom:28px;right:8px;z-index:900;max-width:200px;pointer-events:auto">
-      <div style="font-size:.48rem;color:#aaa;text-align:right;line-height:1;margin-bottom:2px">スポンサー</div>
-      <ins class="adsbygoogle"
-           style="display:block;width:200px;height:60px"
-           data-ad-client="ca-pub-9675243685208925"
-           data-ad-slot="auto"
-           data-ad-format="fixed"></ins>
-    </div>
+    <!-- マップ右下オーバーレイ広告（AdSense審査通過後に有効化） -->
+    <div id="map-overlay-ad" style="display:none"></div>
   </div>
 </div>
 
@@ -713,54 +710,37 @@ function getNoteUrl(sp){
   return { url: NOTE_LINKS[reg] || '', region: reg, label: REGION_LABEL[reg] || reg };
 }
 
-// ── インライン広告ユニット（リスト途中に挿入） ─────────────────
-// 交互に AdSense ↔ Amazon を表示してバリエーションを持たせる
+// ── インライン広告ユニット（リスト途中に挿入・Amazon固定） ─────────────────
+// ※ AdSenseは審査通過後に追加予定。現在はAmazonアフィリエイトのみ表示して空白を防ぐ
 let _inlineAdCount = 0;
 function inlineAdHtml(){
   _inlineAdCount++;
-  // 奇数回 = AdSense、偶数回 = Amazon
-  if(_inlineAdCount % 2 === 1){
-    // AdSense インライン
-    const uid = 'iad_' + Date.now() + '_' + _inlineAdCount;
-    setTimeout(()=>{
-      try{
-        const el = document.getElementById(uid);
-        if(el && !el.dataset.adsbygoogleStatus){
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        }
-      }catch(e){}
-    }, 300);
-    return `<div style="padding:6px 14px;background:#0d150d;border-top:1px solid #1a2a1a;border-bottom:1px solid #1a2a1a;text-align:center">
-  <div style="font-size:.52rem;color:#3a5c3a;margin-bottom:3px">- スポンサー -</div>
-  <ins id="${uid}" class="adsbygoogle"
-       style="display:block;min-height:60px"
-       data-ad-client="ca-pub-9675243685208925"
-       data-ad-slot="auto"
-       data-ad-format="fluid"
-       data-ad-layout="in-article"
-       data-full-width-responsive="true"></ins>
+  const sp = currentSp || 'miyama';
+  const isKabuto = sp === 'kabuto';
+  const tag = 'beetlefinder-22';
+  // 交互に異なる商品セットを表示
+  const sets = [
+    isKabuto
+      ? [['🦏 カブト飼育セット','%E3%82%AB%E3%83%96%E3%83%88%E3%83%A0%E3%82%B7+%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88'],
+         ['🔦 ヘッドライト','%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED'],
+         ['🕸 捕虫網','%E6%8D%95%E8%99%AB%E7%B6%B2']]
+      : [['🪲 飼育セット','%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88'],
+         ['🔦 ヘッドライト','%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED+%E7%99%BB%E5%B1%B1'],
+         ['🕸 捕虫網','%E6%8D%95%E8%99%AB%E7%B6%B2']],
+    [['🥾 登山靴','%E7%99%BB%E5%B1%B1%E9%9D%B4+%E3%83%88%E3%83%AC%E3%83%83%E3%82%AD%E3%83%B3%E3%82%B0'],
+     ['🦟 防虫スプレー','%E9%98%B2%E8%99%AB%E3%82%B9%E3%83%97%E3%83%AC%E3%83%BC+%E9%87%8E%E5%A4%96'],
+     ['🎒 デイパック','%E3%83%87%E3%82%A4%E3%83%91%E3%83%83%E3%82%AF+%E7%99%BB%E5%B1%B1']],
+  ];
+  const items = sets[(_inlineAdCount - 1) % sets.length];
+  const links = items.map(([label, kw])=>
+    `<a href="https://www.amazon.co.jp/s?k=${kw}&tag=${tag}" target="_blank" rel="noopener"
+       style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #b36a00;border-radius:7px;padding:6px 11px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600;white-space:nowrap">
+       ${label}
+     </a>`).join('');
+  return `<div style="padding:8px 14px;background:#110a00;border-top:1px solid #2a1a00;border-bottom:1px solid #2a1a00">
+  <div style="font-size:.56rem;color:#7a4a00;margin-bottom:5px;font-weight:600">🛒 採集グッズ — Amazon</div>
+  <div style="display:flex;gap:5px;flex-wrap:wrap">${links}</div>
 </div>`;
-  } else {
-    // Amazon アフィリエイト（種に応じて商品を変える）
-    const sp = currentSp || 'miyama';
-    const items = sp === 'kabuto'
-      ? [['カブト飼育セット','%E3%82%AB%E3%83%96%E3%83%88%E3%83%A0%E3%82%B7+%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88'],
-         ['ヘッドライト','%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED'],
-         ['捕虫網','%E6%8D%95%E8%99%AB%E7%B6%B2']]
-      : [['クワガタ飼育セット','%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88'],
-         ['ヘッドライト','%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED+%E7%99%BB%E5%B1%B1'],
-         ['捕虫網','%E6%8D%95%E8%99%AB%E7%B6%B2+%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF']];
-    const tag = 'beetlefinder-22';
-    const links = items.map(([label, kw])=>
-      `<a href="https://www.amazon.co.jp/s?k=${kw}&tag=${tag}" target="_blank" rel="noopener"
-         style="display:inline-flex;align-items:center;gap:3px;background:#1a0c00;border:1px solid #c47000;border-radius:6px;padding:5px 10px;text-decoration:none;font-size:.66rem;color:#ff9900;font-weight:600">
-         🛒 ${label}
-       </a>`).join('');
-    return `<div style="padding:7px 14px;background:#110a00;border-top:1px solid #2a1a00;border-bottom:1px solid #2a1a00;text-align:center">
-  <div style="font-size:.52rem;color:#5a3a00;margin-bottom:5px">🛒 採集グッズをAmazonでチェック</div>
-  <div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap">${links}</div>
-</div>`;
-  }
 }
 
 // ── スポットリスト末尾に表示するAmazon採集グッズバー ─────────────
@@ -1286,7 +1266,7 @@ function collapseControls(){
   if(!ctrl || !toggle) return;
   ctrl.classList.add('collapsed');
   toggle.style.display = 'block';
-  toggle.innerHTML = '🔍 検索条件を変更する';
+  toggle.innerHTML = '⚙ 検索条件を変更する ▼';
   _ctrlCollapsed = true;
   // モバイル：results-shown を付与してレイアウト切替
   document.body.classList.add('results-shown');
@@ -1301,7 +1281,7 @@ function toggleControls(){
     document.body.classList.remove('results-shown');
     document.body.classList.remove('map-focus');
     ctrl.classList.remove('collapsed');
-    toggle.innerHTML = '▲ 検索条件を閉じる';
+    toggle.innerHTML = '⚙ 検索条件を閉じる ▲';
     _ctrlCollapsed   = false;
     ctrl.scrollTop   = 0;
     setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 50);
@@ -2551,14 +2531,7 @@ window.addEventListener('load', function(){
 });
 </script>
 
-<!-- モバイル専用 固定下部広告バー（アンカー広告） -->
-<div id="mobile-anchor-ad">
-  <div style="font-size:.48rem;color:#3a5c3a;line-height:1;margin-bottom:2px">スポンサー</div>
-  <ins class="adsbygoogle"
-       style="display:inline-block;width:320px;height:50px"
-       data-ad-client="ca-pub-9675243685208925"
-       data-ad-slot="auto"
-       data-ad-format="auto"></ins>
-</div>
+<!-- モバイル専用 固定下部広告バー（AdSense審査通過後に有効化） -->
+<div id="mobile-anchor-ad" style="display:none"></div>
 </body>
 </html>
