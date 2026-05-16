@@ -231,17 +231,100 @@
     .legend{background:rgba(27,45,27,.95);padding:8px 12px;border-radius:8px;border:1px solid #2a3e2a;font-size:.74rem;color:#c8e6c9;line-height:1.9}
     .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:middle}
 
+    /* ══════════════════════════════════════════
+       モバイル完全リデザイン（≤680px）
+       ══════════════════════════════════════════ */
     @media(max-width:680px){
-      #app{flex-direction:column-reverse}
-      #map-wrap{height:52vh;flex-shrink:0}
-      #map{height:100%}
-      #sidebar{width:100%;min-width:unset;height:48vh;border-right:none;border-top:2px solid #2a3e2a}
-      #controls{max-height:none}
-      .sp-btn,.month-btn,.dir-btn,.method-btn{min-height:34px;font-size:.8rem}
-      #search-btn{padding:11px;font-size:.92rem}
-      #addr-input{font-size:.9rem}
-      .spot-item{padding:8px 12px}
-      .header-badges{display:none}
+
+      /* ── ベースレイアウト ── */
+      #app{ flex-direction:column; height:100dvh; overflow:hidden; }
+
+      /* ── 初期状態：マップ非表示・サイドバー全画面 ── */
+      #map-wrap{ display:none; order:1; flex-shrink:0; height:40dvh; }
+      #mobile-tab-bar{ order:2; display:none; }
+      #sidebar{
+        order:3; width:100%; min-width:unset;
+        height:100dvh; border-right:none; border-top:none;
+        flex-shrink:0;
+      }
+
+      /* ── 検索後（body.results-shown）: 上部マップ＋タブ＋下部リスト ── */
+      body.results-shown #map-wrap{ display:block; }
+      body.results-shown #mobile-tab-bar{ display:flex; }
+      body.results-shown #sidebar{ height:calc(60dvh - 48px); }
+
+      /* ── マップフォーカス（body.map-focus）── */
+      body.map-focus #map-wrap{ height:calc(100dvh - 48px); }
+      body.map-focus #sidebar{ height:0; overflow:hidden; min-height:0; }
+      body.map-focus #map-overlay-ad{ display:none; }
+
+      /* ── モバイルタブバー ── */
+      #mobile-tab-bar{
+        height:48px; flex-shrink:0;
+        background:#111d11;
+        border-top:1px solid #2e7d32;
+        border-bottom:1px solid #2a3e2a;
+      }
+      .mob-tab{
+        flex:1; border:none; background:none;
+        color:#66bb6a; font-size:.72rem; font-weight:600;
+        cursor:pointer; display:flex; flex-direction:column;
+        align-items:center; justify-content:center; gap:1px;
+        padding:4px; transition:background .15s; -webkit-tap-highlight-color:transparent;
+      }
+      .mob-tab.active{
+        background:#1b3d1b; color:#a5d6a7;
+        border-top:2px solid #4caf50; padding-top:2px;
+      }
+      .mob-tab-icon{ font-size:1.3rem; line-height:1; }
+      .mob-tab-label{ font-size:.62rem; line-height:1; }
+
+      /* ── ヘッダー：コンパクト化 ── */
+      #header{ padding:8px 12px 6px; }
+      #header h1{ font-size:.9rem; }
+      .header-tagline{ display:none; }
+      .header-badges{ display:none; }
+      #header > div:last-child{ margin-top:4px; }
+
+      /* ── コントロール：スムーズスクロール ── */
+      #controls{
+        max-height:none; flex:1;
+        overflow-y:auto; -webkit-overflow-scrolling:touch;
+      }
+      #ctrl-toggle{ font-size:.8rem; padding:9px 14px; min-height:42px; }
+
+      /* ── タッチフレンドリー（最小44px） ── */
+      .sp-btn{ min-height:42px; font-size:.85rem; padding:6px 12px; }
+      .month-btn{ min-height:38px; font-size:.82rem; padding:5px 10px; }
+      .dir-btn{ min-height:42px; font-size:.85rem; }
+      .method-btn{ min-height:42px; font-size:.85rem; padding:6px 14px; }
+
+      /* ── 入力フォーム（iOS ズーム防止：16px必須） ── */
+      .loc-input, #addr-input, #zip-input{
+        font-size:16px !important; padding:11px 12px; min-height:46px;
+      }
+      #zip-btn, #addr-btn{
+        padding:11px 16px; font-size:.9rem; min-height:46px;
+      }
+      #gps-btn{ padding:13px; font-size:.85rem; min-height:46px; }
+
+      /* ── 検索ボタン：大きく目立つ ── */
+      #search-btn{
+        padding:16px; font-size:1rem; font-weight:700;
+        margin-top:14px; border-radius:10px;
+        min-height:54px;
+      }
+
+      /* ── スポットカード ── */
+      .spot-item{ padding:12px 14px; }
+
+      /* ── もっと見るボタン（地図上）：位置調整 ── */
+      #map-more-btn{ bottom:60px; font-size:.88rem; padding:12px 24px; }
+
+      /* ── モード切替ボタン ── */
+      #mode-family-btn, #mode-expert-btn{
+        padding:12px 6px; font-size:.82rem; min-height:60px;
+      }
     }
   </style>
 </head>
@@ -547,6 +630,18 @@
       </div>
       <div style="font-size:.55rem;color:#4a6c4a;margin-top:3px">Amazonアソシエイト参加中</div>
     </div>
+  </div>
+
+  <!-- モバイル専用タブバー（検索後に表示） -->
+  <div id="mobile-tab-bar">
+    <button class="mob-tab active" id="mob-tab-list" onclick="setMobileTab('list')">
+      <span class="mob-tab-icon">📋</span>
+      <span class="mob-tab-label" id="mob-list-label">スポット</span>
+    </button>
+    <button class="mob-tab" id="mob-tab-map" onclick="setMobileTab('map')">
+      <span class="mob-tab-icon">🗺</span>
+      <span class="mob-tab-label">地図</span>
+    </button>
   </div>
 
   <div id="map-wrap" style="flex:1;position:relative;overflow:hidden">
@@ -1207,22 +1302,42 @@ function collapseControls(){
   if(!ctrl || !toggle) return;
   ctrl.classList.add('collapsed');
   toggle.style.display = 'block';
-  toggle.innerHTML     = '▼ 検索条件を変更する';
+  toggle.innerHTML = '🔍 検索条件を変更する';
   _ctrlCollapsed = true;
+  // モバイル：results-shown を付与してレイアウト切替
+  document.body.classList.add('results-shown');
+  setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 350);
 }
 function toggleControls(){
   const ctrl   = document.getElementById('controls');
   const toggle = document.getElementById('ctrl-toggle');
   if(!ctrl || !toggle) return;
   if(_ctrlCollapsed){
+    // モバイルでは検索画面に戻る
+    document.body.classList.remove('results-shown');
+    document.body.classList.remove('map-focus');
     ctrl.classList.remove('collapsed');
     toggle.innerHTML = '▲ 検索条件を閉じる';
     _ctrlCollapsed   = false;
-    // 検索フォームへスクロール
-    ctrl.scrollTop = 0;
+    ctrl.scrollTop   = 0;
+    setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 50);
   } else {
     collapseControls();
   }
+}
+
+// ── モバイルタブ切替 ──────────────────────────────────────────
+function setMobileTab(tab){
+  const listBtn = document.getElementById('mob-tab-list');
+  const mapBtn  = document.getElementById('mob-tab-map');
+  if(listBtn) listBtn.classList.toggle('active', tab==='list');
+  if(mapBtn)  mapBtn.classList.toggle('active',  tab==='map');
+  if(tab==='map'){
+    document.body.classList.add('map-focus');
+  } else {
+    document.body.classList.remove('map-focus');
+  }
+  setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 300);
 }
 
 // ── 「もっと見る」固定バー + マップフローティングボタン 更新 ──
@@ -1324,6 +1439,10 @@ function _renderFamilyList(){
   document.getElementById('spot-count').textContent =
     `実績スポット ${_familyLimit}件表示 ／ 全${all.length}件 ／ 50km以内`;
   document.getElementById('sidebar-top-ad').style.display = 'block';
+  // モバイルタブラベル更新
+  const mll = document.getElementById('mob-list-label');
+  if(mll) mll.textContent = `スポット ${_familyLimit}件`;
+  setMobileTab('list');
 
   list.innerHTML = display.map((sp,i)=>{
     const rank = i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}位`;
@@ -1530,6 +1649,10 @@ function _renderExpertList(){
   document.getElementById('spot-count').textContent =
     `予測ポイント ${_expertLimit}件表示 ／ 全${all.length}件 ／ ${expertRadius}km以内（玄人モード）`;
   document.getElementById('sidebar-top-ad').style.display = 'block';
+  // モバイルタブラベル更新
+  const mll2 = document.getElementById('mob-list-label');
+  if(mll2) mll2.textContent = `スポット ${_expertLimit}件`;
+  setMobileTab('list');
 
   list.innerHTML = '<div style="padding:6px 14px;background:#1a0a2e;border-top:2px solid #7e57c2;font-size:.72rem;color:#ce93d8;font-weight:600">🔬 予測ポイント（玄人モード） ※未確認地点</div>'
   + display.map((sp,i)=>{
