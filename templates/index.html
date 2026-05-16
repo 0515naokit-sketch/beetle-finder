@@ -94,18 +94,11 @@
     #addr-btn{background:#2e7d32;color:#fff;border:none;border-radius:6px;
       padding:6px 12px;font-size:.8rem;cursor:pointer;white-space:nowrap}
     #addr-btn:hover{background:#388e3c}
-    #zip-btn{background:#2e7d32;color:#fff;border:none;border-radius:6px;
-      padding:6px 12px;font-size:.8rem;cursor:pointer;white-space:nowrap}
-    #zip-btn:hover{background:#388e3c}
     #gps-btn{display:flex;align-items:center;gap:5px;width:100%;justify-content:center;
       background:#1f2f1f;border:1px solid #2e7d32;color:#81c784;border-radius:6px;
       padding:7px;font-size:.78rem;cursor:pointer;margin-top:5px;transition:background .15s}
     #gps-btn:hover{background:#243e24}
     #gps-btn:disabled{opacity:.5;cursor:not-allowed}
-    .loc-tabs{display:flex;gap:0;margin-bottom:5px;border-radius:6px;overflow:hidden;border:1px solid #2a3e2a}
-    .loc-tab{flex:1;padding:5px;font-size:.72rem;border:none;cursor:pointer;transition:background .15s;text-align:center}
-    .loc-tab.active{background:#2e7d32;color:#fff}
-    .loc-tab:not(.active){background:#1a2e1a;color:#81c784}
     #addr-result{font-size:.68rem;color:#81c784;margin-top:3px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
     /* 種ボタン */
@@ -300,10 +293,10 @@
       .method-btn{ min-height:42px; font-size:.85rem; padding:6px 14px; }
 
       /* ── 入力フォーム（iOS ズーム防止：16px必須） ── */
-      .loc-input, #addr-input, #zip-input{
+      .loc-input, #addr-input{
         font-size:16px !important; padding:11px 12px; min-height:46px;
       }
-      #zip-btn, #addr-btn{
+      #addr-btn{
         padding:11px 16px; font-size:.9rem; min-height:46px;
       }
       #gps-btn{ padding:13px; font-size:.85rem; min-height:46px; }
@@ -369,33 +362,20 @@
       <!-- 出発地（共通） -->
       <div class="ctrl-label">📍 出発地</div>
 
-      <!-- タブ切替 -->
-      <div class="loc-tabs">
-        <button class="loc-tab active" id="tab-zip" onclick="switchLocTab('zip')">〒 郵便番号</button>
-        <button class="loc-tab"        id="tab-addr" onclick="switchLocTab('addr')">🏙 住所・市区町村</button>
-      </div>
-
-      <!-- 郵便番号入力（デフォルト） -->
-      <div id="loc-zip-row" class="addr-row">
-        <input id="zip-input" class="loc-input" type="text" inputmode="numeric"
-               maxlength="8" placeholder="例：1600023 または 160-0023"
-               oninput="autoHyphenZip(this)" onkeydown="if(event.key==='Enter')geocodeZip()">
-        <button id="zip-btn" onclick="geocodeZip()">検索</button>
-      </div>
-
-      <!-- 住所テキスト入力（タブ切替後） -->
-      <div id="loc-addr-row" class="addr-row" style="display:none">
+      <!-- 住所入力 -->
+      <div id="loc-addr-row" class="addr-row">
         <input id="addr-input" class="loc-input" type="text"
-               placeholder="例：新宿区 / 横浜市 / 長野県諏訪市" value="">
+               placeholder="例：新宿区 / 横浜市 / 長野県諏訪市" value=""
+               onkeydown="if(event.key==='Enter')geocodeAddress()">
         <button id="addr-btn" onclick="geocodeAddress()">設定</button>
       </div>
 
-      <!-- GPS ボタン（共通） -->
+      <!-- GPS ボタン -->
       <button id="gps-btn" onclick="useGPS()">
         <span id="gps-icon">📡</span> 現在地を使う
       </button>
 
-      <div id="addr-hint" style="font-size:.65rem;color:#66bb6a;margin-top:4px">↑ 郵便番号7桁を入力して検索、または現在地を使ってください</div>
+      <div id="addr-hint" style="font-size:.65rem;color:#66bb6a;margin-top:4px">↑ 市区町村名や住所を入力して「設定」を押すか、現在地を使ってください</div>
       <div id="addr-result" style="font-size:.68rem;color:#81c784;margin-top:3px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
 
       <!-- 採集範囲（family=固定50km / expert=選択式） -->
@@ -547,7 +527,7 @@
     <div id="spot-list">
       <div id="guide-empty-state" style="padding:12px 12px 16px">
         <div style="color:#4a7c4e;font-size:.78rem;text-align:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #2a3e2a">
-          ① 出発地（郵便番号）を入力<br>
+          ① 出発地（住所・現在地）を入力<br>
           ② 種・採集方法を選択<br>
           ③ <span style="color:#ffc107;font-weight:700">🧭 方向を選択</span>（必須）<br>
           ④「検索」を押すと結果を表示<br>
@@ -948,80 +928,10 @@ function toggleFav(spot, e){
   renderSpots();
 }
 
-// ── 出発地：タブ切替 ────────────────────────────────────────────────────────
-function switchLocTab(tab){
-  const isZip = tab === 'zip';
-  document.getElementById('loc-zip-row').style.display  = isZip ? 'flex' : 'none';
-  document.getElementById('loc-addr-row').style.display = isZip ? 'none' : 'flex';
-  document.getElementById('tab-zip').classList.toggle('active', isZip);
-  document.getElementById('tab-addr').classList.toggle('active', !isZip);
-  const hint = document.getElementById('addr-hint');
-  if(hint) hint.textContent = isZip
-    ? '↑ 郵便番号7桁を入力して検索、または現在地を使ってください'
-    : '↑ 市区町村名や住所を入力して「設定」を押してください';
-}
-
-// ── 郵便番号 ハイフン自動挿入 ───────────────────────────────────────────────
-function autoHyphenZip(el){
-  let v = el.value.replace(/[^0-9]/g,'');
-  if(v.length > 3) v = v.slice(0,3) + '-' + v.slice(3,7);
-  el.value = v;
-}
-
-// ── 郵便番号 → 住所取得 → 座標変換 ─────────────────────────────────────────
-function geocodeZip(){
-  const raw  = document.getElementById('zip-input').value.replace(/[^0-9]/g,'');
-  if(raw.length !== 7){
-    alert('郵便番号は7桁で入力してください（例：1600023）');
-    return;
-  }
-  const btn = document.getElementById('zip-btn');
-  btn.disabled = true; btn.textContent = '検索中...';
-
-  // zipcloud で番地なしの住所文字列を取得
-  fetch(`https://zipcloud.ibsnet.co.jp/api/search?zipcode=${raw}`)
-    .then(r => r.json())
-    .then(data => {
-      if(!data.results || data.results.length === 0){
-        alert('その郵便番号の住所が見つかりませんでした。');
-        btn.disabled = false; btn.textContent = '検索';
-        return;
-      }
-      const r = data.results[0];
-      const addr = r.address1 + r.address2 + (r.address3 || '');
-      // 取得した住所を Nominatim でジオコーディング
-      return fetch('https://nominatim.openstreetmap.org/search?' +
-        new URLSearchParams({ q: addr, format:'json', limit:'1',
-                              'accept-language':'ja', countrycodes:'jp' }),
-        { headers:{'Accept-Language':'ja'} })
-        .then(r2 => r2.json())
-        .then(hits => {
-          if(!hits || hits.length === 0){
-            // フォールバック: 郵便番号をそのまま検索
-            return fetch('https://nominatim.openstreetmap.org/search?' +
-              new URLSearchParams({ q: raw.slice(0,3)+'-'+raw.slice(3)+' 日本',
-                format:'json', limit:'1', 'accept-language':'ja' }),
-              { headers:{'Accept-Language':'ja'} }).then(r3 => r3.json());
-          }
-          return hits;
-        })
-        .then(hits => {
-          if(!hits || hits.length === 0){
-            alert('座標の取得に失敗しました。住所タブで直接入力してください。');
-            return;
-          }
-          setOrigin(parseFloat(hits[0].lat), parseFloat(hits[0].lon),
-                    `〒${raw.slice(0,3)}-${raw.slice(3)} ${addr}`);
-        });
-    })
-    .catch(() => alert('通信エラーが発生しました。しばらく待ってから再試行してください。'))
-    .finally(() => { btn.disabled = false; btn.textContent = '検索'; });
-}
-
 // ── GPS 現在地取得 ──────────────────────────────────────────────────────────
 function useGPS(){
   if(!navigator.geolocation){
-    alert('このブラウザはGPSに対応していません。住所または郵便番号で入力してください。');
+    alert('このブラウザはGPSに対応していません。住所を入力して設定してください。');
     return;
   }
   const btn  = document.getElementById('gps-btn');
