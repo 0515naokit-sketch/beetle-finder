@@ -232,7 +232,7 @@
   <div id="sidebar">
     <div id="header">
       <h1><img src="/static/kwl.svg" class="kw-i" alt="クワガタ"> クワガタ採集スポット検索</h1>
-      <div class="header-tagline">今夜クワガタが採れる場所を地図で表示</div>
+      <div class="header-tagline">採集予定日・出発地を入力して採れる場所を地図表示</div>
       <div class="header-badges">
         <span class="header-badge">📍 全国対応</span>
         <span class="header-badge">🌙 月齢・気象連動</span>
@@ -370,16 +370,6 @@
           </a>
         </div>
 
-        <!-- 採集時期 -->
-        <div class="ctrl-label">📅 採集時期</div>
-        <div class="btn-row">
-          <button class="month-btn active" data-month="0" onclick="setMonth(0)">全期間</button>
-          <button class="month-btn" data-month="6" onclick="setMonth(6)">6月</button>
-          <button class="month-btn" data-month="7" onclick="setMonth(7)">7月</button>
-          <button class="month-btn" data-month="8" onclick="setMonth(8)">8月</button>
-          <button class="month-btn" data-month="9" onclick="setMonth(9)">9月</button>
-        </div>
-
         <!-- 方向絞り込み（検索必須条件） -->
         <div class="ctrl-label">🧭 方向を選択 <span id="dir-required-badge" style="font-size:.65rem;background:#c62828;color:#fff;border-radius:10px;padding:1px 7px;margin-left:4px">選択してください</span></div>
         <div style="display:flex;align-items:flex-start;gap:10px">
@@ -434,6 +424,8 @@
       <div id="prog-msg"></div>
     </div>
     <div id="spot-count"></div>
+    <!-- もっと見るバー：spot-count直下に固定 → スクロール不要で常に見える -->
+    <div id="show-more-bar" style="display:none;flex-shrink:0;border-bottom:1px solid #1a3a1a"></div>
     <div id="cond-panel"></div>
     <div id="nearby-light-status" class="night-status" style="padding:3px 14px;display:none"></div>
     <!-- 横バナー広告（スポット一覧上部） -->
@@ -499,9 +491,6 @@
         </div>
       </div>
     </div>
-    <!-- もっと見るバー（スクロール不要・常に見える位置に固定） -->
-    <div id="show-more-bar" style="display:none;flex-shrink:0;padding:10px 14px;background:#0d2a0d;border-top:3px solid #4caf50"></div>
-
     <!-- サイドバー下部 固定広告バナー（#sidebar 内に配置） -->
     <div style="flex-shrink:0;padding:6px 14px 8px;background:#0d150d;border-top:1px solid #1f2f1f;text-align:center">
       <div style="font-size:.55rem;color:#3a5c3a;margin-bottom:3px">- スポンサー -</div>
@@ -1204,9 +1193,10 @@ function requestShowMore(action){
 }
 
 // ── 家族モード 描画ヘルパー ───────────────────────────────────────
-function _addFamilyMarkers(spots, fromIdx){
+function _addFamilyMarkers(spots, fromIdx, toIdx){
+  toIdx = toIdx ?? spots.length;
   const SPEC = {miyama:'ミヤマ',akaashi:'アカアシ',okuwagata:'オオクワ',nokogiri:'ノコギリ',hirata:'ヒラタ',kokuwagata:'コクワ',kabuto:'カブト',suji:'スジクワ'};
-  spots.slice(fromIdx).forEach((sp, j)=>{
+  spots.slice(fromIdx, toIdx).forEach((sp, j)=>{
     const i = fromIdx + j;
     const color = i===0?'#e53935':i<3?'#fb8c00':'#4caf50';
     const sz = i===0?22:i<3?16:12;
@@ -1284,7 +1274,7 @@ function renderFamilyResults(spots, moonAge){
   _familyLimit    = FAMILY_PAGE;
   // 最初のN件だけマーカー追加
   clearFamilyMarkers();
-  _addFamilyMarkers(spots, 0);
+  _addFamilyMarkers(spots, 0, _familyLimit);
   if(spots[0]) map.setView([spots[0].lat, spots[0].lng], 11);
   _renderFamilyList();
 }
@@ -1336,12 +1326,12 @@ function closeAdModal(confirmed){
   if(_adModalAction === 'more_family'){
     const prev = _familyLimit;
     _familyLimit = Math.min(_familyLimit + SHOW_MORE_ADD, _allFamilySpots.length);
-    _addFamilyMarkers(_allFamilySpots, prev);
+    _addFamilyMarkers(_allFamilySpots, prev, _familyLimit);
     _renderFamilyList();
   } else if(_adModalAction === 'more_expert'){
     const prev = _expertLimit;
     _expertLimit = Math.min(_expertLimit + SHOW_MORE_ADD, _allExpertSpots.length);
-    _addExpertMarkers(_allExpertSpots, prev);
+    _addExpertMarkers(_allExpertSpots, prev, _expertLimit);
     _renderExpertList();
   } else if(appMode === 'family'){
     startFamilySearch();
@@ -1396,11 +1386,12 @@ function startExpertSearch(){
 }
 
 // ── 玄人モード 描画ヘルパー ───────────────────────────────────────
-function _addExpertMarkers(spots, fromIdx){
+function _addExpertMarkers(spots, fromIdx, toIdx){
+  toIdx = toIdx ?? spots.length;
   const maxSc = _allExpertSpots[0]?.score ?? 100;
   const minSc = _allExpertSpots[_allExpertSpots.length-1]?.score ?? 0;
   const TREE_JA={konara:'コナラ',kunugi:'クヌギ',mizunara:'ミズナラ',buna:'ブナ',yanagi:'ヤナギ',hannoki:'ハンノキ',sugi:'スギ',other:'他'};
-  spots.slice(fromIdx).forEach((sp, j)=>{
+  spots.slice(fromIdx, toIdx).forEach((sp, j)=>{
     const i = fromIdx + j;
     const pct = maxSc===minSc?0.5:(sp.score-minSc)/(maxSc-minSc);
     const color = pct>=0.75?'#e53935':pct>=0.5?'#fb8c00':pct>=0.25?'#fdd835':'#43a047';
@@ -1477,7 +1468,7 @@ function renderExpertResults(spots, moonAge){
   _expertMoonAge  = moonAge;
   _expertLimit    = EXPERT_PAGE;
   clearFamilyMarkers();
-  _addExpertMarkers(spots, 0);
+  _addExpertMarkers(spots, 0, _expertLimit);
   if(spots[0]) map.setView([spots[0].lat, spots[0].lng], 10);
   _renderExpertList();
 }
@@ -1778,13 +1769,12 @@ function getPlanDate(){
 function onPlanDateChange(){
   const d = getPlanDate();
   if(!d) return;
+  // 予定日の月を currentMonth に自動反映
+  currentMonth = new Date(d).getMonth() + 1;
   const label = document.getElementById('plan-date-label');
   const age = calcMoonAgeJS(d);
-  // 月齢ラベルを即時表示
   label.textContent = moonLabelJS(age) + '（月齢 ' + age.toFixed(1) + '日）';
-  // アドバイスパネルを即時更新
   showDateAdvice(age, d);
-  // 検索済みなら気象も再取得
   if(allZones.length){
     label.textContent = '⏳ コンディション再取得中...';
     fetchConditions(d);
@@ -2224,6 +2214,10 @@ function fetchNearbyLight(spot){
 // ── アプリ初期化（家族モードで起動） ──────────────────────────
 (function initAppMode(){
   setAppMode('family');
+  // 採集予定日から currentMonth を自動設定（月ボタン廃止に伴い）
+  const d = getPlanDate();
+  if(d) currentMonth = new Date(d).getMonth() + 1;
+  else  currentMonth = new Date().getMonth() + 1;
 })();
 </script>
 
