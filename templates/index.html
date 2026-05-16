@@ -436,6 +436,17 @@
     <div id="spot-count"></div>
     <div id="cond-panel"></div>
     <div id="nearby-light-status" class="night-status" style="padding:3px 14px;display:none"></div>
+    <!-- 横バナー広告（スポット一覧上部） -->
+    <div id="sidebar-top-ad" style="display:none;padding:4px 14px;background:#0d150d;border-bottom:1px solid #1a2a1a;text-align:center">
+      <div style="font-size:.55rem;color:#3a5c3a;margin-bottom:2px">- スポンサー -</div>
+      <ins class="adsbygoogle"
+           style="display:block;width:100%;height:60px"
+           data-ad-client="ca-pub-9675243685208925"
+           data-ad-slot="auto"
+           data-ad-format="horizontal"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});<\/script>
+    </div>
     <div id="spot-list">
       <div id="guide-empty-state" style="padding:12px 12px 16px">
         <div style="color:#4a7c4e;font-size:.78rem;text-align:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #2a3e2a">
@@ -490,6 +501,37 @@
       </div>
     </div>
   </div>
+  <!-- サイドバー下部 固定広告バナー -->
+  <div style="flex-shrink:0;padding:6px 14px 8px;background:#0d150d;border-top:1px solid #1f2f1f;text-align:center">
+    <div style="font-size:.55rem;color:#3a5c3a;margin-bottom:3px">- スポンサー -</div>
+    <!-- Amazon アソシエイト採集グッズリンク -->
+    <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
+      <a href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E6%8D%95%E8%99%AB%E7%B6%B2&tag=beetlefinder-22"
+         target="_blank" rel="noopener"
+         style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600">
+        🛒 捕虫網
+      </a>
+      <a href="https://www.amazon.co.jp/s?k=%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+%E7%99%BB%E5%B1%B1&tag=beetlefinder-22"
+         target="_blank" rel="noopener"
+         style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600">
+        🔦 ヘッドライト
+      </a>
+      <a href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E9%A3%BC%E8%82%B2+%E3%82%BB%E3%83%83%E3%83%88&tag=beetlefinder-22"
+         target="_blank" rel="noopener"
+         style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600">
+        🐛 飼育セット
+      </a>
+    </div>
+    <div style="font-size:.55rem;color:#4a6c4a;margin-top:3px">Amazonアソシエイト参加中</div>
+    <!-- AdSense 横長バナー -->
+    <ins class="adsbygoogle"
+         style="display:block;width:100%;height:50px;margin-top:5px"
+         data-ad-client="ca-pub-9675243685208925"
+         data-ad-slot="auto"
+         data-ad-format="horizontal"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});<\/script>
+  </div>
 
   <div id="map"></div>
 </div>
@@ -500,6 +542,60 @@
 const DEFAULT_LAT = {{ default_lat }};
 const DEFAULT_LNG = {{ default_lng }};
 const KM_PER_HOUR = 55;
+
+// ── Note.com エリア別記事リンク ────────────────────────────────
+// Note記事が公開されたらURLをセット。空文字 = 準備中バッジを表示
+const NOTE_LINKS = {
+  kanto:          '',   // 関東（奥多摩・秩父・丹沢 etc.）
+  kinki:          '',   // 近畿（六甲・金剛山・吉野 etc.）
+  chubu:          '',   // 中部（南アルプス・木曽・伊吹 etc.）
+  tohoku:         '',   // 東北（奥羽山脈・白神・蔵王 etc.）
+  kyushu:         '',   // 九州（英彦山・九重・祖母 etc.）
+  chugoku_shikoku:'',   // 中国四国（石鎚・大山 etc.）
+  hokkaido:       '',   // 北海道（日高・知床・道東 etc.）
+  okinawa:        '',   // 沖縄・南西諸島
+};
+// 都道府県 → regionキー マッピング
+const PREF_REGION = {
+  '北海道':'hokkaido',
+  '青森県':'tohoku','岩手県':'tohoku','宮城県':'tohoku','秋田県':'tohoku',
+  '山形県':'tohoku','福島県':'tohoku',
+  '茨城県':'kanto','栃木県':'kanto','群馬県':'kanto','埼玉県':'kanto',
+  '千葉県':'kanto','東京都':'kanto','神奈川県':'kanto','山梨県':'kanto',
+  '長野県':'chubu','新潟県':'chubu','富山県':'chubu','石川県':'chubu',
+  '福井県':'chubu','静岡県':'chubu','愛知県':'chubu','岐阜県':'chubu',
+  '三重県':'kinki','滋賀県':'kinki','京都府':'kinki','大阪府':'kinki',
+  '兵庫県':'kinki','奈良県':'kinki','和歌山県':'kinki',
+  '鳥取県':'chugoku_shikoku','島根県':'chugoku_shikoku','岡山県':'chugoku_shikoku',
+  '広島県':'chugoku_shikoku','山口県':'chugoku_shikoku','徳島県':'chugoku_shikoku',
+  '香川県':'chugoku_shikoku','愛媛県':'chugoku_shikoku','高知県':'chugoku_shikoku',
+  '福岡県':'kyushu','佐賀県':'kyushu','長崎県':'kyushu','熊本県':'kyushu',
+  '大分県':'kyushu','宮崎県':'kyushu','鹿児島県':'kyushu','沖縄県':'okinawa',
+};
+const REGION_LABEL = {
+  kanto:'関東',kinki:'近畿',chubu:'中部',tohoku:'東北',
+  kyushu:'九州',chugoku_shikoku:'中国四国',hokkaido:'北海道',okinawa:'沖縄',
+};
+
+function getNoteUrl(sp){
+  // spot オブジェクトから region を取得（family/expert共通）
+  const reg = sp.region || PREF_REGION[sp.prefecture] || '';
+  return { url: NOTE_LINKS[reg] || '', region: reg, label: REGION_LABEL[reg] || reg };
+}
+
+// ── インライン広告ユニット（リスト途中に挿入） ─────────────────
+function inlineAdHtml(){
+  return `<div style="padding:7px 14px;background:#0d150d;border-top:1px solid #1a2a1a;border-bottom:1px solid #1a2a1a;text-align:center">
+  <div style="font-size:.58rem;color:#4a7c4e;margin-bottom:4px">- スポンサー -</div>
+  <ins class="adsbygoogle"
+       style="display:block;width:100%;height:90px"
+       data-ad-client="ca-pub-9675243685208925"
+       data-ad-slot="auto"
+       data-ad-format="horizontal"
+       data-full-width-responsive="false"></ins>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({});<\/script>
+</div>`;
+}
 
 const SPECIES_META = {
   miyama:    { label:"ミヤマクワガタ",   icon:'<img src="/static/kw.svg" class="kw-i" alt="">', color:"#1565c0", badge:"badge-m" },
@@ -909,6 +1005,7 @@ function clearResults(msg){
   allSpots=[]; markers.forEach(m=>map.removeLayer(m)); markers=[];
   allZones=[]; clearZones();
   currentFilteredSpots=[]; clearNearbyLight();
+  document.getElementById('sidebar-top-ad').style.display = 'none';
   if(msg){
     document.getElementById('spot-list').innerHTML=
       `<div style="padding:16px;text-align:center;color:#ffc107;font-size:.8rem">
@@ -1041,6 +1138,7 @@ function renderFamilyResults(spots, moonAge){
     return;
   }
   document.getElementById('spot-count').textContent = `実績スポット ${spots.length}件 ／ 50km以内`;
+  document.getElementById('sidebar-top-ad').style.display = spots.length ? 'block' : 'none';
 
   // 地図マーカー
   spots.forEach((sp, i)=>{
@@ -1067,6 +1165,16 @@ function renderFamilyResults(spots, moonAge){
     const spLabels = (sp.species||[]).map(s=>SPEC[s]||s).join('・');
     const diffLabel = sp.difficulty===1?'★☆☆':sp.difficulty===2?'★★☆':'★★★';
     const famOk = sp.family_ok ? '<span style="color:#66bb6a">👨‍👩‍👧 ファミリー向け◎</span>' : '<span style="color:#ff9800">⚠ 大人向け</span>';
+    const noteInfo = getNoteUrl(sp);
+    const noteBtnHtml = noteInfo.url
+      ? `<a href="${noteInfo.url}" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:5px 11px;background:#1a0a26;border:1px solid #7e57c2;border-radius:8px;text-decoration:none;font-size:.68rem;color:#ce93d8;font-weight:600;transition:background .15s"
+           onmouseover="this.style.background='#2a1040'" onmouseout="this.style.background='#1a0a26'">
+           📖 Note でエリア詳細を見る（${noteInfo.label}）<span style="background:#7e57c2;color:#fff;border-radius:5px;padding:0 6px;font-size:.65rem">¥100</span>
+         </a>`
+      : `<div style="margin-top:5px;padding:4px 10px;background:#1a1a1a;border:1px dashed #3a3a3a;border-radius:7px;font-size:.63rem;color:#5a5a5a;display:inline-block">
+           📝 ${noteInfo.label||'このエリア'}の詳細記事 準備中...
+         </div>`;
     return `<div class="spot-item" onclick="familySpotClick(${i})" style="background:${bg};border-left:3px solid ${color}">
   <div class="spot-top">
     <div style="flex:1">
@@ -1082,8 +1190,14 @@ function renderFamilyResults(spots, moonAge){
   <div style="font-size:.7rem;color:#a5d6a7;margin-top:2px">🦌 ${spLabels}</div>
   <div style="font-size:.68rem;color:#81c784;margin-top:2px">🌙 ${sp.best_time} ／ 🚗 ${sp.access}</div>
   ${sp.notes?`<div style="font-size:.63rem;color:#ccb060;margin-top:3px;padding:3px 6px;background:#2a1a00;border-radius:4px">📝 ${sp.notes}</div>`:''}
+  ${noteBtnHtml}
 </div>`;
-  }).join('');
+  }).reduce((acc, html, i)=>{
+    acc.push(html);
+    // 3件ごとにインライン広告を挿入
+    if((i+1)%3===0 && i<spots.length-1) acc.push(inlineAdHtml());
+    return acc;
+  },[]).join('');
 }
 
 function buildFamilyPopup(sp, rank){
@@ -1191,6 +1305,7 @@ function renderExpertResults(spots, moonAge){
     return;
   }
   document.getElementById('spot-count').textContent = `予測ポイント ${spots.length}件 ／ ${expertRadius}km以内（玄人モード）`;
+  document.getElementById('sidebar-top-ad').style.display = spots.length ? 'block' : 'none';
 
   const maxSc = spots[0]?.score ?? 100;
   const minSc = spots[spots.length-1]?.score ?? 0;
@@ -1223,6 +1338,14 @@ function renderExpertResults(spots, moonAge){
     const color = pct>=0.75?'#e53935':pct>=0.5?'#fb8c00':pct>=0.25?'#fdd835':'#43a047';
     const TREE_JA={konara:'コナラ',kunugi:'クヌギ',mizunara:'ミズナラ',buna:'ブナ',yanagi:'ヤナギ',hannoki:'ハンノキ',sugi:'スギ',other:'他'};
     const treeStr = Object.entries(sp.trees||{}).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>`${TREE_JA[k]||k}${v}%`).join('・');
+    const noteInfo = getNoteUrl(sp);
+    const noteBtnHtml = noteInfo.url
+      ? `<a href="${noteInfo.url}" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:5px 11px;background:#1a0a26;border:1px solid #7e57c2;border-radius:8px;text-decoration:none;font-size:.68rem;color:#ce93d8;font-weight:600"
+           onmouseover="this.style.background='#2a1040'" onmouseout="this.style.background='#1a0a26'">
+           📖 Note でエリア詳細を見る（${noteInfo.label}）<span style="background:#7e57c2;color:#fff;border-radius:5px;padding:0 6px;font-size:.65rem">¥100</span>
+         </a>`
+      : `<div style="margin-top:4px;font-size:.62rem;color:#4a3a5a">📝 エリア詳細記事 準備中</div>`;
     return `<div class="spot-item" onclick="familySpotClick(${i})" style="background:#140a1e;border-left:3px solid ${color}">
   <div class="spot-top">
     <div style="flex:1">
@@ -1233,8 +1356,13 @@ function renderExpertResults(spots, moonAge){
   </div>
   <div style="font-size:.65rem;color:#b39ddb;margin-top:3px">🌳 ${treeStr} ／ 🌊水場${sp.water_m}m ／ 光害Lv${sp.light_pollution}</div>
   <div style="font-size:.63rem;color:#9e9e9e;margin-top:1px">※採集実績のない予測地点です</div>
+  ${noteBtnHtml}
 </div>`;
-  }).join('');
+  }).reduce((acc, html, i)=>{
+    acc.push(html);
+    if((i+1)%3===0 && i<spots.length-1) acc.push(inlineAdHtml());
+    return acc;
+  },[]).join('');
 }
 
 // ── 森林検索 ──────────────────────────────────────────────────
@@ -1364,12 +1492,17 @@ function renderSpots(){
     <div class="bar-bg"><div class="bar-fill" style="width:${barScore}%;background:${SPECIES_META[currentSp].color}"></div></div>
   </div>
 </div>`;
-  }).join('')
+  }).reduce((acc, html, i)=>{
+    acc.push(html);
+    if((i+1)%4===0 && i<listSpots.length-1) acc.push(inlineAdHtml());
+    return acc;
+  },[]).join('')
   + (filtered.length>listMax?`<div style="padding:10px 14px;text-align:center;color:#4a7c4e;font-size:.75rem">地図上には全${filtered.length}件表示。上位${listMax}件のみリスト表示。</div>`:'');
 
   const note=currentMonth>0?`（${currentMonth}月補正）`:'';
   const dirNote=currentDirection!=='all'?` ／ ${DIR_JA[currentDirection]}方向`:'';
   document.getElementById('spot-count').textContent=`${filtered.length}件 ／ ${km}km以内${dirNote}${note} ー ${SPECIES_META[currentSp].label}`;
+  document.getElementById('sidebar-top-ad').style.display = filtered.length ? 'block' : 'none';
 }
 
 // ── 森林ポップアップ ──────────────────────────────────────────
@@ -1859,11 +1992,12 @@ ${sorted.map(({zone, origIdx, sc}, rank)=>{
     </div>
     <div class="bar-bg"><div class="bar-fill" style="width:${sc}%;background:${meta.color}"></div></div>
   </div>
-</div>`; }).join('')}`;
+</div>`; }).reduce((acc,html,i,arr)=>{ acc.push(html); if((i+1)%4===0&&i<arr.length-1) acc.push(inlineAdHtml()); return acc; },[]).join('')}`;
   list.innerHTML = zoneHtml;
   const dirNote = currentDirection!=='all' ? ` ／ ${DIR_JA[currentDirection]}方向` : '';
   document.getElementById('spot-count').textContent =
     `${allZones.length}件 ／ ${kmOfHours(currentHours)}km以内${dirNote} — ${meta.label}ランキング`;
+  document.getElementById('sidebar-top-ad').style.display = allZones.length ? 'block' : 'none';
 }
 
 function zoneClick(idx){
@@ -1981,15 +2115,35 @@ function fetchNearbyLight(spot){
   <div style="background:#0d1f0d;border:2px solid #2e7d32;border-radius:14px;padding:28px 24px;width:min(380px,90vw);box-shadow:0 8px 40px rgba(0,0,0,.7)">
     <div id="ad-modal-title" style="font-size:1rem;font-weight:700;color:#a5d6a7;margin-bottom:6px;text-align:center">📍 採集スポットを表示する</div>
     <div id="ad-modal-sub" style="font-size:.75rem;color:#81c784;text-align:center;margin-bottom:18px;line-height:1.6">広告を視聴すると検索結果を確認できます</div>
-    <!-- 広告バナーエリア -->
-    <div style="background:#0d0520;border:1px dashed #5e35b1;border-radius:8px;padding:20px;text-align:center;margin-bottom:16px;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center">
-      <div style="font-size:.72rem;color:#9e9e9e;margin-bottom:8px">📢 おすすめ採集グッズ</div>
-      <!-- アフィリエイトバナー（後でもしもアフィリエイトに差し替え） -->
-      <a href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E6%8D%95%E8%99%AB%E7%B6%B2&tag=beetlefinder-22" target="_blank" rel="noopener"
-        style="display:inline-block;background:#ff9900;color:#111;font-size:.78rem;font-weight:700;padding:10px 20px;border-radius:8px;text-decoration:none">
-        🛒 Amazon で採集グッズを見る
-      </a>
-      <div style="font-size:.62rem;color:#5e35b1;margin-top:8px">（Amazonアソシエイト）</div>
+    <!-- AdSense バナー -->
+    <div style="background:#0d0d0d;border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;margin-bottom:10px;min-height:80px;text-align:center">
+      <div style="font-size:.55rem;color:#3a3a3a;padding-top:4px">- スポンサー -</div>
+      <ins class="adsbygoogle"
+           style="display:block;width:100%;height:70px"
+           data-ad-client="ca-pub-9675243685208925"
+           data-ad-slot="auto"
+           data-ad-format="horizontal"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});<\/script>
+    </div>
+    <!-- Amazon アフィリエイト採集グッズ -->
+    <div style="background:#1a0c00;border:1px solid #5a3a00;border-radius:8px;padding:10px;text-align:center;margin-bottom:10px">
+      <div style="font-size:.68rem;color:#ff9900;font-weight:700;margin-bottom:7px">🛒 採集グッズをチェック</div>
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
+        <a href="https://www.amazon.co.jp/s?k=%E6%8D%95%E8%99%AB%E7%B6%B2+%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF&tag=beetlefinder-22" target="_blank" rel="noopener"
+           style="background:#ff9900;color:#111;font-size:.72rem;font-weight:700;padding:6px 12px;border-radius:6px;text-decoration:none">🪲 捕虫網</a>
+        <a href="https://www.amazon.co.jp/s?k=%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+%E7%99%BB%E5%B1%B1+LED&tag=beetlefinder-22" target="_blank" rel="noopener"
+           style="background:#ff9900;color:#111;font-size:.72rem;font-weight:700;padding:6px 12px;border-radius:6px;text-decoration:none">🔦 ライト</a>
+        <a href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88&tag=beetlefinder-22" target="_blank" rel="noopener"
+           style="background:#ff9900;color:#111;font-size:.72rem;font-weight:700;padding:6px 12px;border-radius:6px;text-decoration:none">🐛 飼育用品</a>
+      </div>
+      <div style="font-size:.55rem;color:#5a3a00;margin-top:5px">Amazonアソシエイト参加中</div>
+    </div>
+    <!-- Note 記事予告ティーザー -->
+    <div style="background:#1a0a26;border:1px solid #5e35b1;border-radius:8px;padding:10px;text-align:center;margin-bottom:10px">
+      <div style="font-size:.72rem;color:#ce93d8;font-weight:700;margin-bottom:4px">📖 採集エリア詳細レポート（Note）</div>
+      <div style="font-size:.65rem;color:#9e9e9e;line-height:1.6">各エリアの具体的なポイント・木の見分け方・<br>採集実績データをNote記事で公開中</div>
+      <div style="margin-top:6px;font-size:.68rem;color:#b39ddb">関東 / 近畿 / 中部 など各地域版 ¥100〜</div>
     </div>
     <!-- カウントダウン -->
     <div id="ad-countdown-wrap" style="text-align:center;margin-bottom:14px;font-size:.75rem;color:#9e9e9e">
