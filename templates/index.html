@@ -672,17 +672,33 @@ let familySpotMarkers = [];   // 家族モードのマーカー
 // ── もっと見る ページング管理 ──────────────────────────────────
 let _allFamilySpots = [];   // 家族モード全件キャッシュ
 let _familyMoonAge  = 0;
-let _familyLimit    = 5;    // 現在の表示件数（初期5件）
-const FAMILY_PAGE   = 5;    // 初期表示数
+let _familyLimit    = 10;   // 現在の表示件数（初期10件）
+const FAMILY_PAGE   = 10;   // 初期表示数
+const FAMILY_TOP    = 3;    // 初期表示のうち真のトップ件数
 
 let _allExpertSpots = [];   // 玄人モード全件キャッシュ
 let _expertMoonAge  = 0;
-let _expertLimit    = 8;    // 現在の表示件数（初期8件）
-const EXPERT_PAGE   = 8;    // 初期表示数
+let _expertLimit    = 15;   // 現在の表示件数（初期15件）
+const EXPERT_PAGE   = 15;   // 初期表示数
+const EXPERT_TOP    = 4;    // 初期表示のうち真のトップ件数
 
 const SHOW_MORE_ADD = 15;   // 追加ボタンで増やす件数（固定）
 
 let _adModalAction  = 'search'; // 'search' | 'more_family' | 'more_expert'
+
+/**
+ * 表示順を操作して「もっと見る」に良ポイントを温存する
+ * 構造: [上位topN件] + [末尾の低スコア(initLimit-topN)件] + [中位の良ポイント群]
+ *   → 初期表示はトップとボトムが混在、中位の良スポットはもっと見るで出現
+ */
+function _reorderForDisplay(spots, topN, initLimit){
+  if(spots.length <= initLimit) return spots;
+  const fillCount = initLimit - Math.min(topN, spots.length);
+  const top    = spots.slice(0, topN);                        // 真のトップ
+  const filler = spots.slice(spots.length - fillCount);       // 末尾の低スコア
+  const hidden = spots.slice(topN, spots.length - fillCount); // 中位の良ポイント（温存）
+  return [...top, ...filler, ...hidden];
+}
 
 const DIR_ANGLES = {N:0,NE:45,E:90,SE:135,S:180,SW:225,W:270,NW:315};
 const DIR_JA = {N:'北',NE:'北東',E:'東',SE:'南東',S:'南',SW:'南西',W:'西',NW:'北西',all:'全方向'};
@@ -1230,10 +1246,7 @@ function _updateShowMoreBar(shown, total, action){
   const teaser = [
     `この条件、まだ${remaining}件の候補が眠っています`,
     `穴場が見つかるかも。残り${remaining}件を確認する`,
-    `上位${shown}件の次に何が待っているか？`,
-    `採集者が見落としがちな穴場が残り${remaining}件`,
-    `地元民しか知らないポイントが隠れているかも`,
-  ][Math.floor(Date.now() / 60000) % 5];
+  ][Math.floor(Date.now() / 60000) % 2];
 
   // サイドバー内バー（コンパクト版）
   if(bar){
@@ -1361,15 +1374,15 @@ function renderFamilyResults(spots, moonAge){
       '<div style="padding:20px;color:#81c784;font-size:.8rem;text-align:center">⚠ 50km以内に実績スポットが見つかりませんでした。<br>出発地を変えるか、玄人モードで広域予測を試してください。</div>';
     return;
   }
-  // 全件キャッシュ・表示件数リセット
-  _allFamilySpots = spots;
-  _familyMoonAge  = moonAge;
-  _familyLimit    = FAMILY_PAGE;
-  // 最初のN件だけマーカー追加
+  // 表示順を操作：トップFAMILY_TOP件＋末尾の低スコア件を先頭に並べ
+  // 高スコアの中位を「もっと見る」の中に温存する
+  _allFamilySpots  = _reorderForDisplay(spots, FAMILY_TOP, FAMILY_PAGE);
+  _familyMoonAge   = moonAge;
+  _familyLimit     = FAMILY_PAGE;
   clearFamilyMarkers();
-  _addFamilyMarkers(spots, 0, _familyLimit);
-  if(spots[0]) map.setView([spots[0].lat, spots[0].lng], 11);
-  collapseControls(); // 検索後は結果を優先表示
+  _addFamilyMarkers(_allFamilySpots, 0, _familyLimit);
+  if(_allFamilySpots[0]) map.setView([_allFamilySpots[0].lat, _allFamilySpots[0].lng], 11);
+  collapseControls();
   _renderFamilyList();
 }
 
@@ -1558,13 +1571,14 @@ function renderExpertResults(spots, moonAge){
       '<div style="padding:20px;color:#ce93d8;font-size:.8rem;text-align:center">⚠ 指定範囲内に候補が見つかりませんでした。<br>距離を広げて再試行してください。</div>';
     return;
   }
-  _allExpertSpots = spots;
-  _expertMoonAge  = moonAge;
-  _expertLimit    = EXPERT_PAGE;
+  // 表示順を操作：トップEXPERT_TOP件＋末尾の低スコア件を先頭に並べ
+  _allExpertSpots  = _reorderForDisplay(spots, EXPERT_TOP, EXPERT_PAGE);
+  _expertMoonAge   = moonAge;
+  _expertLimit     = EXPERT_PAGE;
   clearFamilyMarkers();
-  _addExpertMarkers(spots, 0, _expertLimit);
-  if(spots[0]) map.setView([spots[0].lat, spots[0].lng], 10);
-  collapseControls(); // 検索後は結果を優先表示
+  _addExpertMarkers(_allExpertSpots, 0, _expertLimit);
+  if(_allExpertSpots[0]) map.setView([_allExpertSpots[0].lat, _allExpertSpots[0].lng], 10);
+  collapseControls();
   _renderExpertList();
 }
 
