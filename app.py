@@ -642,6 +642,12 @@ def terms():
     return render_template("terms.html")
 
 
+@app.route("/health")
+def health():
+    """ヘルスチェック用エンドポイント（UptimeRobotなどの死活監視から定期ping）"""
+    return "OK", 200
+
+
 @app.route("/robots.txt")
 def robots():
     from flask import send_from_directory
