@@ -131,6 +131,7 @@
       cursor:pointer;background:#1f321f;color:#a5d6a7;transition:all .15s;text-align:center;line-height:1}
     .dir-btn:hover{border-color:#4a7c4a}
     .dir-btn.active{border-color:#ffb74d;background:#4e2b00;color:#ffe082}
+    .dir-btn-all.active{border-color:#66bb6a;background:#1b3d1b;color:#a5d6a7}
 
     /* 採集方法ボタン */
     .method-btn{border-radius:14px;font-size:.75rem;border:2px solid #2a3e2a;
@@ -456,22 +457,22 @@
           </a>
         </div>
 
-        <!-- 方向絞り込み（検索必須条件） -->
-        <div class="ctrl-label">🧭 方向を選択 <span id="dir-required-badge" style="font-size:.65rem;background:#c62828;color:#fff;border-radius:10px;padding:1px 7px;margin-left:4px">選択してください</span></div>
+        <!-- 方向絞り込み（任意） -->
+        <div class="ctrl-label">🧭 方向を絞り込む <span style="font-size:.65rem;color:#81c784;opacity:.8">（任意・デフォルト：全方向）</span></div>
         <div style="display:flex;align-items:flex-start;gap:10px">
           <div class="dir-grid">
             <button class="dir-btn" data-dir="NW" onclick="setDirection('NW')">北西</button>
             <button class="dir-btn" data-dir="N"  onclick="setDirection('N')">北</button>
             <button class="dir-btn" data-dir="NE" onclick="setDirection('NE')">北東</button>
             <button class="dir-btn" data-dir="W"  onclick="setDirection('W')">西</button>
-            <div style="display:flex;align-items:center;justify-content:center;font-size:.9rem;opacity:.3">🧭</div>
+            <button class="dir-btn dir-btn-all active" data-dir="all" onclick="setDirection('all')" style="font-size:.62rem">全方向</button>
             <button class="dir-btn" data-dir="E"  onclick="setDirection('E')">東</button>
             <button class="dir-btn" data-dir="SW" onclick="setDirection('SW')">南西</button>
             <button class="dir-btn" data-dir="S"  onclick="setDirection('S')">南</button>
             <button class="dir-btn" data-dir="SE" onclick="setDirection('SE')">南東</button>
           </div>
           <div style="font-size:.67rem;color:#81c784;opacity:.75;padding-top:2px;line-height:1.6">
-            出発地から<br>どの方向へ<br>行くか選択<br><span style="color:#ffe082">必須項目</span>
+            出発地から<br>どの方向か<br>選んで絞り込み<br><span style="color:#9e9e9e">省略可</span>
           </div>
         </div>
 
@@ -733,7 +734,7 @@ const MF = {
 // ── 状態 ─────────────────────────────────────────────────────
 let centerLat = DEFAULT_LAT, centerLng = DEFAULT_LNG;
 let currentSp = 'miyama', currentMonth = 0, currentHours = 3, favFilterOn = false;
-let currentDirection = null;   // null = 未選択（方向選択が必須）
+let currentDirection = 'all';  // デフォルト：全方向（任意選択）
 let currentMethod = 'tree';
 let allSpots = [], markers = [], driveCircle = null, centerMarker = null;
 let currentFilteredSpots = [], lightNearbyMarkers = [], selectedSpotIdx = -1;
@@ -1090,11 +1091,10 @@ function clearResults(msg){
 }
 
 function setDirection(dir){
+  // 同じ方向を再クリックしたら全方向に戻す（トグル）
+  if(dir !== 'all' && currentDirection === dir){ dir = 'all'; }
   currentDirection = dir;
   document.querySelectorAll('.dir-btn').forEach(b=>b.classList.toggle('active', b.dataset.dir===dir));
-  // バッジを非表示に
-  const badge = document.getElementById('dir-required-badge');
-  if(badge) badge.style.display = 'none';
   updateCircle();
   clearResults('方向を変更しました');
 }
@@ -1159,19 +1159,12 @@ function setExpertRadius(r){
 
 function handleSearchBtn(){
   if(!centerLat){ alert('出発地を先に設定してください'); return; }
-  if(!currentDirection){
-    // 方向バッジを点滅して注意を促す
-    const badge = document.getElementById('dir-required-badge');
-    if(badge){
-      badge.style.display='inline';
-      badge.style.animation='none';
-      setTimeout(()=>{ badge.style.animation=''; }, 10);
-    }
-    alert('🧭 方向を選択してから検索してください');
-    return;
+  // 初回検索は広告なしで直接実行（もっと見るのみ広告ゲート）
+  if(appMode === 'family'){
+    startFamilySearch();
+  } else {
+    startExpertSearch();
   }
-  // 全モード共通：広告を表示してから検索
-  showAdModal();
 }
 
 // ── 家族モード検索 ────────────────────────────────────────────
