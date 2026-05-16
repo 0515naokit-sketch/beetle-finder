@@ -926,6 +926,196 @@ def zone_roads():
 
 
 
+# ── スポットDB読み込み ────────────────────────────────────────────────────
+import os as _os
+
+def _load_spots_db(filename):
+    path = _os.path.join(_os.path.dirname(__file__), "static", filename)
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f).get("spots", [])
+    except Exception:
+        return []
+
+_FAMILY_SPOTS = _load_spots_db("family_spots.json")
+_EXPERT_SPOTS = _load_spots_db("expert_spots.json")
+
+# 樹種スコア重み（種別×樹種）
+_TREE_WEIGHT = {
+    "miyama":     {"konara":0.45,"kunugi":0.25,"mizunara":0.20,"buna":0.05,"other":0.05},
+    "akaashi":    {"buna":0.50,"mizunara":0.30,"konara":0.15,"other":0.05},
+    "okuwagata":  {"kunugi":0.50,"konara":0.30,"other":0.20},
+    "nokogiri":   {"kunugi":0.40,"konara":0.30,"yanagi":0.15,"hannoki":0.10,"other":0.05},
+    "hirata":     {"kunugi":0.35,"yanagi":0.35,"hannoki":0.15,"konara":0.10,"other":0.05},
+    "kokuwagata": {"kunugi":0.40,"konara":0.35,"other":0.25},
+    "kabuto":     {"kunugi":0.50,"konara":0.35,"other":0.15},
+    "suji":       {"buna":0.60,"mizunara":0.30,"other":0.10},
+}
+# 最適標高（種別）
+_ELEV_OPT = {
+    "miyama":700,"akaashi":900,"okuwagata":300,"nokogiri":250,
+    "hirata":150,"kokuwagata":300,"kabuto":200,"suji":800,
+}
+# 最適月（種別）
+_BEST_MONTHS = {
+    "miyama":[6,7],"akaashi":[6,7],"okuwagata":[7,8],
+    "nokogiri":[6,7,8],"hirata":[7,8],"kokuwagata":[6,7,8],
+    "kabuto":[7],"suji":[6,7],
+}
+
+def _expert_score(spot, species, method, moon_age, month):
+    """研究ベースの9軸スコアリング（0〜100点）"""
+    s = 0
+    trees = spot.get("trees", {})
+    tw = _TREE_WEIGHT.get(species, _TREE_WEIGHT["nokogiri"])
+
+    # A. 樹種マッチ（最大18点）
+    tree_match = sum(trees.get(t, 0) * w for t, w in tw.items()) / 100.0
+    s += tree_match * 18
+
+    # B. 標高適性（最大10点）
+    elev_opt = _ELEV_OPT.get(species, 400)
+    elev = spot.get("elevation", 400)
+    elev_diff = abs(elev - elev_opt)
+    s += max(0, 10 - elev_diff / 60)
+
+    # C. 水場スコア（最大7点）
+    water_m = spot.get("water_m", 500)
+    if species == "hirata":
+        s += 7 if water_m < 50 else (5 if water_m < 150 else (3 if water_m < 300 else 0))
+    else:
+        s += 4 if water_m < 100 else (2 if water_m < 300 else 0)
+
+    # D. 採集方法別（最大25点）
+    if method == "light":
+        lp = spot.get("light_pollution", 3)
+        s += (5 - lp) * 5  # 光害なし=25点、最悪=0点
+    elif method == "street":
+        lp = spot.get("light_pollution", 3)
+        s += lp * 4  # 街灯が多い=高点
+    else:  # tree
+        tree_score = min(25, tree_match * 28)
+        s += tree_score
+
+    # E. 気温スコア（今月の気温は取得困難なので月×標高で推定）
+    # 夏(7-8月)の平地気温27℃ - (標高/150)℃ が夜間気温の目安
+    est_night_temp = 27 - (elev / 150) + (1 if month == 7 else 0)
+    if est_night_temp >= 25:
+        s += 10
+    elif est_night_temp >= 22:
+        s += 6
+    elif est_night_temp >= 19:
+        s += 3
+    else:
+        s += 0
+
+    # F. 月齢スコア（ライト採集のみ2倍効果, 最大8点通常・15点ライト）
+    if moon_age < 2 or moon_age > 27.5:
+        moon_s = 8
+    elif moon_age < 5 or moon_age > 25:
+        moon_s = 6
+    elif moon_age < 8 or moon_age > 22:
+        moon_s = 4
+    elif moon_age < 12 or moon_age > 18:
+        moon_s = 2
+    else:
+        moon_s = 0
+    s += moon_s * (1.9 if method == "light" else 1.0)
+
+    # G. 季節スコア（最大7点）
+    best_m = _BEST_MONTHS.get(species, [7])
+    s += 7 if month in best_m else (3 if abs(month - best_m[0]) <= 1 else 0)
+
+    # H. 採集圧補正（access_hardが高い=穴場=+5点）
+    ah = spot.get("access_hard", 2)
+    s += (ah - 1) * 2.5  # 難易度1=0点、3=+5点
+
+    return max(0, min(100, round(s)))
+
+
+def _family_score(spot, species, method, moon_age, month, origin_lat, origin_lng):
+    """家族用スコア（距離・難易度・ファミリー適性を重視）"""
+    dist = haversine(origin_lat, origin_lng, spot["lat"], spot["lng"])
+    dist_s = max(0, 30 - dist * 0.5)  # 0km=30点、60km=0点
+
+    # 種マッチ
+    sp_match = 15 if species in spot.get("species", []) else 0
+
+    # 季節
+    best_m = spot.get("best_months", [7])
+    month_s = 8 if month in best_m else (3 if any(abs(month - m) <= 1 for m in best_m) else 0)
+
+    # ファミリー適性
+    fam_s = 10 if spot.get("family_ok") else 0
+
+    # 難易度（低いほど高得点、家族向け）
+    diff = spot.get("difficulty", 2)
+    diff_s = (3 - diff) * 5  # 難易度1=10点、2=5点、3=0点
+
+    # 駐車場
+    park_s = 5 if spot.get("parking") else 0
+
+    # 月齢（ライト採集のみ考慮）
+    moon_s = 0
+    if method == "light":
+        moon_s = 8 if (moon_age < 3 or moon_age > 27) else 4 if (moon_age < 6 or moon_age > 24) else 0
+
+    total = dist_s + sp_match + month_s + fam_s + diff_s + park_s + moon_s
+    return max(0, min(100, round(total)))
+
+
+def _calc_moon_age(date_str):
+    known_new = datetime.date(2000, 1, 6)
+    try:
+        target = datetime.date.fromisoformat(date_str)
+    except Exception:
+        target = datetime.date.today()
+    days = (target - known_new).days
+    return ((days % 29.53058867) + 29.53058867) % 29.53058867
+
+
+@app.route("/api/nearby-spots")
+def nearby_spots():
+    """家族用・玄人用 スポット検索API"""
+    try:
+        lat    = float(request.args.get("lat", DEFAULT_LAT))
+        lng    = float(request.args.get("lng", DEFAULT_LNG))
+        mode   = request.args.get("mode", "family")       # family / expert
+        radius = float(request.args.get("radius", 50))    # km
+        species = request.args.get("species", "nokogiri")
+        method  = request.args.get("method", "tree")
+        month   = int(request.args.get("month", datetime.date.today().month))
+        date_str = request.args.get("date", datetime.date.today().isoformat())
+        moon_age = _calc_moon_age(date_str)
+
+        if mode == "family":
+            db = _FAMILY_SPOTS
+            results = []
+            for spot in db:
+                dist = haversine(lat, lng, spot["lat"], spot["lng"])
+                if dist > radius:
+                    continue
+                sc = _family_score(spot, species, method, moon_age, month, lat, lng)
+                results.append({**spot, "dist_km": round(dist, 1), "score": sc})
+            results.sort(key=lambda x: -x["score"])
+            return jsonify({"mode":"family","spots": results[:10], "moon_age": round(moon_age,1)})
+
+        else:  # expert
+            db = _EXPERT_SPOTS
+            results = []
+            for spot in db:
+                dist = haversine(lat, lng, spot["lat"], spot["lng"])
+                if dist > radius:
+                    continue
+                sc = _expert_score(spot, species, method, moon_age, month)
+                results.append({**spot, "dist_km": round(dist, 1), "score": sc})
+            results.sort(key=lambda x: -x["score"])
+            return jsonify({"mode":"expert","spots": results[:30], "moon_age": round(moon_age,1)})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5000))

@@ -227,7 +227,19 @@
 
     <div id="controls">
 
-      <!-- 出発地 -->
+      <!-- ───── モード切替 ───── -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
+        <button id="mode-family-btn" onclick="setAppMode('family')"
+          style="padding:10px 6px;border-radius:8px;border:2px solid #4a7a4a;background:#1a3d1a;color:#a5d6a7;font-size:.78rem;font-weight:700;cursor:pointer;text-align:center;line-height:1.4">
+          👨‍👩‍👧 かんたん検索<br><span style="font-size:.62rem;font-weight:400;opacity:.8">実績スポットから選ぶ</span>
+        </button>
+        <button id="mode-expert-btn" onclick="setAppMode('expert')"
+          style="padding:10px 6px;border-radius:8px;border:2px solid #2a2a2a;background:#1a1a1a;color:#9e9e9e;font-size:.78rem;font-weight:700;cursor:pointer;text-align:center;line-height:1.4">
+          🔬 新ポイント探索<br><span style="font-size:.62rem;font-weight:400;opacity:.8">広域AI予測（玄人用）</span>
+        </button>
+      </div>
+
+      <!-- 出発地（共通） -->
       <div class="ctrl-label">📍 出発地（市区町村名または住所を入力）</div>
       <div class="addr-row">
         <input id="addr-input" type="text" placeholder="例：新宿区 / 横浜市 / 長野県諏訪市" value="">
@@ -236,11 +248,28 @@
       <div id="addr-hint" style="font-size:.65rem;color:#66bb6a;margin-top:2px">↑ 市区町村名や住所を入力して「設定」を押してください</div>
       <div id="addr-result" style="font-size:.68rem;color:#81c784;margin-top:3px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
 
-      <!-- ドライブ時間 -->
-      <div class="ctrl-label">🚗 ドライブ時間</div>
-      <div class="slider-row">
-        <input type="range" id="hours-slider" min="1" max="8" step="0.5" value="3" oninput="onSliderChange(this.value)">
-        <span id="hours-label">3時間（約165km）</span>
+      <!-- 採集範囲（family=固定50km / expert=選択式） -->
+      <div id="family-range-row">
+        <div class="ctrl-label">📍 検索範囲：自宅から <b style="color:#66bb6a">50km以内</b>の実績スポットを表示</div>
+      </div>
+      <div id="expert-range-row" style="display:none">
+        <div class="ctrl-label">🚗 採集に行ける距離</div>
+        <div class="btn-row" style="flex-wrap:wrap">
+          <button class="month-btn" data-r="20"  onclick="setExpertRadius(20)">20km</button>
+          <button class="month-btn active" data-r="50" onclick="setExpertRadius(50)">50km</button>
+          <button class="month-btn" data-r="100" onclick="setExpertRadius(100)">100km</button>
+          <button class="month-btn" data-r="200" onclick="setExpertRadius(200)">200km</button>
+          <button class="month-btn" data-r="300" onclick="setExpertRadius(300)">300km</button>
+        </div>
+      </div>
+
+      <!-- ドライブ時間（旧来の玄人ゾーン予測用、expert時は非表示） -->
+      <div id="drive-time-row" style="display:none">
+        <div class="ctrl-label">🚗 ドライブ時間</div>
+        <div class="slider-row">
+          <input type="range" id="hours-slider" min="1" max="8" step="0.5" value="3" oninput="onSliderChange(this.value)">
+          <span id="hours-label">3時間（約165km）</span>
+        </div>
       </div>
 
       <!-- 採集予定日 -->
@@ -350,8 +379,10 @@
         </div>
       </div><!-- /adv-section -->
 
-      <!-- 探索ゾーン検索 -->
-      <button id="search-btn" onclick="startSearch()">🔍 採集スポットを検索（30〜60秒）</button>
+      <!-- 探索ゾーン検索（モード別） -->
+      <button id="search-btn" onclick="handleSearchBtn()">
+        <span id="search-btn-label">👨‍👩‍👧 近くの採集スポットを検索</span>
+      </button>
     </div>
 
     <div id="progress-wrap">
@@ -454,6 +485,11 @@ let allSpots = [], markers = [], driveCircle = null, centerMarker = null;
 let currentFilteredSpots = [], lightNearbyMarkers = [], selectedSpotIdx = -1;
 let allZones = [], zoneCircles = [], zoneMarkers = [];
 let currentConditions = null, tonightModeOn = false;
+// ── モード管理 ────────────────────────────────────────────────
+let appMode = 'family';       // 'family' | 'expert'
+let expertUnlocked = false;   // 玄人モード解放済みか
+let expertRadius = 50;        // 玄人モードの検索半径(km)
+let familySpotMarkers = [];   // 家族モードのマーカー
 
 const DIR_ANGLES = {N:0,NE:45,E:90,SE:135,S:180,SW:225,W:270,NW:315};
 const DIR_JA = {N:'北',NE:'北東',E:'東',SE:'南東',S:'南',SW:'南西',W:'西',NW:'北西',all:'全方向'};
@@ -745,6 +781,261 @@ function setMethod(m){
   const meta = METHOD_META[m];
   document.getElementById('method-desc').textContent = meta.desc;
   if(allZones.length) renderZones();
+}
+
+// ── モード管理 ────────────────────────────────────────────────
+function setAppMode(mode){
+  appMode = mode;
+  const fb = document.getElementById('mode-family-btn');
+  const eb = document.getElementById('mode-expert-btn');
+  const familyRange = document.getElementById('family-range-row');
+  const expertRange = document.getElementById('expert-range-row');
+  const driveRow   = document.getElementById('drive-time-row');
+  const label = document.getElementById('search-btn-label');
+
+  if(mode === 'family'){
+    fb.style.borderColor='#66bb6a'; fb.style.background='#1a3d1a'; fb.style.color='#a5d6a7';
+    eb.style.borderColor='#2a2a2a'; eb.style.background='#1a1a1a'; eb.style.color='#9e9e9e';
+    familyRange.style.display='block';
+    expertRange.style.display='none';
+    driveRow.style.display='none';
+    label.textContent = '👨‍👩‍👧 近くの採集スポットを検索';
+  } else {
+    eb.style.borderColor='#7e57c2'; eb.style.background='#1a0a2e'; eb.style.color='#ce93d8';
+    fb.style.borderColor='#2a2a2a'; fb.style.background='#1a1a1a'; fb.style.color='#9e9e9e';
+    familyRange.style.display='none';
+    expertRange.style.display='block';
+    driveRow.style.display='none';
+    label.textContent = '🔬 新ポイントを予測探索する';
+  }
+}
+
+function setExpertRadius(r){
+  expertRadius = r;
+  document.querySelectorAll('#expert-range-row .month-btn').forEach(b=>{
+    b.classList.toggle('active', +b.dataset.r === r);
+  });
+}
+
+function handleSearchBtn(){
+  if(appMode === 'expert' && !expertUnlocked){
+    showExpertAdModal();
+    return;
+  }
+  if(appMode === 'family'){
+    startFamilySearch();
+  } else {
+    startSearch();
+  }
+}
+
+// ── 家族モード検索 ────────────────────────────────────────────
+function startFamilySearch(){
+  if(!centerLat){ alert('出発地を先に設定してください'); return; }
+  const btn = document.getElementById('search-btn');
+  btn.disabled = true;
+  document.getElementById('spot-list').innerHTML = '<div style="padding:16px;color:#81c784;font-size:.8rem;text-align:center">🔍 近くの採集スポットを検索中...</div>';
+
+  const date = getPlanDate();
+  const month = date ? (new Date(date).getMonth()+1) : new Date().getMonth()+1;
+  const url = `/api/nearby-spots?lat=${centerLat}&lng=${centerLng}&mode=family&radius=50&species=${currentSp}&method=${currentMethod}&month=${month}&date=${date||''}`;
+
+  fetch(url)
+    .then(r=>r.json())
+    .then(data=>{
+      btn.disabled = false;
+      clearFamilyMarkers();
+      renderFamilyResults(data.spots || [], data.moon_age || 0);
+    })
+    .catch(e=>{
+      btn.disabled = false;
+      document.getElementById('spot-list').innerHTML = '<div style="padding:16px;color:#ef5350;font-size:.8rem">取得失敗：'+e.message+'</div>';
+    });
+}
+
+function clearFamilyMarkers(){
+  familySpotMarkers.forEach(m=>map.removeLayer(m));
+  familySpotMarkers = [];
+}
+
+function renderFamilyResults(spots, moonAge){
+  const list = document.getElementById('spot-list');
+  if(!spots.length){
+    list.innerHTML = '<div style="padding:20px;color:#81c784;font-size:.8rem;text-align:center">⚠ 50km以内に実績スポットが見つかりませんでした。<br>出発地を変えるか、玄人モードで広域予測を試してください。</div>';
+    return;
+  }
+  document.getElementById('spot-count').textContent = `実績スポット ${spots.length}件 ／ 50km以内`;
+
+  // 地図マーカー
+  spots.forEach((sp, i)=>{
+    const color = i===0?'#e53935':i<3?'#fb8c00':'#4caf50';
+    const sz = i===0?22:i<3?16:12;
+    const icon = L.divIcon({
+      html:`<div style="width:${sz}px;height:${sz}px;background:${color};transform:rotate(45deg);border:2px solid rgba(255,255,255,.9);box-shadow:0 2px 8px rgba(0,0,0,.6)"></div>`,
+      className:'', iconAnchor:[sz/2,sz/2]
+    });
+    const m = L.marker([sp.lat, sp.lng],{icon}).addTo(map);
+    m.bindPopup(buildFamilyPopup(sp,i));
+    familySpotMarkers.push(m);
+  });
+
+  // 1位スポットにズーム
+  if(spots[0]) map.setView([spots[0].lat, spots[0].lng], 11);
+
+  // リスト表示
+  const SPEC = {miyama:'ミヤマ',akaashi:'アカアシ',okuwagata:'オオクワ',nokogiri:'ノコギリ',hirata:'ヒラタ',kokuwagata:'コクワ',kabuto:'カブト',suji:'スジクワ'};
+  list.innerHTML = spots.map((sp,i)=>{
+    const rank = i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}位`;
+    const color = i===0?'#e53935':i<3?'#fb8c00':i<6?'#66bb6a':'#607d8b';
+    const bg    = i===0?'#2a0000':i<3?'#2a1400':'#140e00';
+    const spLabels = (sp.species||[]).map(s=>SPEC[s]||s).join('・');
+    const diffLabel = sp.difficulty===1?'★☆☆':sp.difficulty===2?'★★☆':'★★★';
+    const famOk = sp.family_ok ? '<span style="color:#66bb6a">👨‍👩‍👧 ファミリー向け◎</span>' : '<span style="color:#ff9800">⚠ 大人向け</span>';
+    return `<div class="spot-item" onclick="familySpotClick(${i})" style="background:${bg};border-left:3px solid ${color}">
+  <div class="spot-top">
+    <div style="flex:1">
+      <div style="font-size:.82rem;color:${color};font-weight:700">${rank} ${sp.name}</div>
+      <div style="font-size:.68rem;color:#81c784;opacity:.8">${sp.prefecture} / ${sp.area||''}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+      <span style="font-size:.78rem;font-weight:700;background:${color};color:${color==='#fdd835'?'#333':'#fff'};padding:1px 8px;border-radius:10px">${sp.score}点</span>
+      <span style="font-size:.63rem;color:#9e9e9e">${sp.dist_km}km先</span>
+    </div>
+  </div>
+  <div style="font-size:.7rem;color:#9e9e9e;margin-top:3px">⛰ ${sp.elevation}m ／ 難易度 ${diffLabel} ／ ${famOk}</div>
+  <div style="font-size:.7rem;color:#a5d6a7;margin-top:2px">🦌 ${spLabels}</div>
+  <div style="font-size:.68rem;color:#81c784;margin-top:2px">🌙 ${sp.best_time} ／ 🚗 ${sp.access}</div>
+  ${sp.notes?`<div style="font-size:.63rem;color:#ccb060;margin-top:3px;padding:3px 6px;background:#2a1a00;border-radius:4px">📝 ${sp.notes}</div>`:''}
+</div>`;
+  }).join('');
+}
+
+function buildFamilyPopup(sp, rank){
+  const SPEC = {miyama:'ミヤマ',akaashi:'アカアシ',okuwagata:'オオクワ',nokogiri:'ノコギリ',hirata:'ヒラタ',kokuwagata:'コクワ',kabuto:'カブト',suji:'スジクワ'};
+  const spLabels = (sp.species||[]).map(s=>SPEC[s]||s).join('・');
+  return `<div class="pop-title">${rank===0?'🥇':rank===1?'🥈':rank===2?'🥉':'📍'} ${sp.name}</div>
+<div class="pop-row">📍 ${sp.prefecture}</div>
+<div class="pop-row">⛰ 標高 ${sp.elevation}m ／ 🚗 ${sp.dist_km}km先</div>
+<div class="pop-row">🦌 採れる種：${spLabels}</div>
+<div class="pop-row">📅 ベスト月：${(sp.best_months||[]).map(m=>m+'月').join('・')}</div>
+<div class="pop-row">🌙 ${sp.best_time}</div>
+<div class="pop-row">🚌 ${sp.access}</div>
+${sp.notes?`<div class="pop-row" style="color:#ccb060">📝 ${sp.notes}</div>`:''}
+<div class="pop-row">スコア: <b style="color:#66bb6a">${sp.score}点</b></div>`;
+}
+
+function familySpotClick(i){
+  if(familySpotMarkers[i]){
+    map.setView(familySpotMarkers[i].getLatLng(), 13);
+    familySpotMarkers[i].openPopup();
+  }
+}
+
+// ── 玄人モード 広告ゲート ─────────────────────────────────────
+function showExpertAdModal(){
+  document.getElementById('expert-ad-overlay').style.display='flex';
+  startAdCountdown();
+}
+function closeExpertAd(unlocked){
+  document.getElementById('expert-ad-overlay').style.display='none';
+  if(unlocked){
+    expertUnlocked = true;
+    startExpertSearch();
+  }
+}
+let adTimer = null;
+function startAdCountdown(){
+  let sec = 15;
+  const btn = document.getElementById('ad-unlock-btn');
+  const counter = document.getElementById('ad-counter');
+  btn.disabled = true;
+  counter.textContent = sec;
+  if(adTimer) clearInterval(adTimer);
+  adTimer = setInterval(()=>{
+    sec--;
+    counter.textContent = sec;
+    if(sec <= 0){
+      clearInterval(adTimer);
+      btn.disabled = false;
+      btn.textContent = '🔓 玄人モードを解放する';
+      counter.parentElement.style.display='none';
+    }
+  }, 1000);
+}
+
+function startExpertSearch(){
+  document.getElementById('spot-list').innerHTML = '<div style="padding:16px;color:#ce93d8;font-size:.8rem;text-align:center">🔬 広域予測中... スコアリング実行中</div>';
+  const btn = document.getElementById('search-btn');
+  btn.disabled = true;
+  clearFamilyMarkers();
+
+  const date = getPlanDate();
+  const month = date ? (new Date(date).getMonth()+1) : new Date().getMonth()+1;
+  const url = `/api/nearby-spots?lat=${centerLat}&lng=${centerLng}&mode=expert&radius=${expertRadius}&species=${currentSp}&method=${currentMethod}&month=${month}&date=${date||''}`;
+
+  fetch(url)
+    .then(r=>r.json())
+    .then(data=>{
+      btn.disabled = false;
+      renderExpertResults(data.spots||[], data.moon_age||0);
+    })
+    .catch(e=>{
+      btn.disabled = false;
+      document.getElementById('spot-list').innerHTML='<div style="padding:16px;color:#ef5350;font-size:.8rem">取得失敗：'+e.message+'</div>';
+    });
+}
+
+function renderExpertResults(spots, moonAge){
+  const list = document.getElementById('spot-list');
+  if(!spots.length){
+    list.innerHTML='<div style="padding:20px;color:#ce93d8;font-size:.8rem;text-align:center">⚠ 指定範囲内に候補が見つかりませんでした。<br>距離を広げて再試行してください。</div>';
+    return;
+  }
+  document.getElementById('spot-count').textContent = `予測ポイント ${spots.length}件 ／ ${expertRadius}km以内（玄人モード）`;
+
+  const maxSc = spots[0]?.score ?? 100;
+  const minSc = spots[spots.length-1]?.score ?? 0;
+
+  spots.forEach((sp,i)=>{
+    const pct = maxSc===minSc?0.5:(sp.score-minSc)/(maxSc-minSc);
+    const color = pct>=0.75?'#e53935':pct>=0.5?'#fb8c00':pct>=0.25?'#fdd835':'#43a047';
+    const sz = pct>=0.75?20:pct>=0.5?16:12;
+    const icon = L.divIcon({
+      html:`<div style="width:${sz}px;height:${sz}px;background:${color};transform:rotate(45deg);border:2px solid rgba(255,255,255,.8);box-shadow:0 2px 8px rgba(0,0,0,.6)"></div>`,
+      className:'',iconAnchor:[sz/2,sz/2]
+    });
+    const m = L.marker([sp.lat,sp.lng],{icon}).addTo(map);
+    const TREE_JA={konara:'コナラ',kunugi:'クヌギ',mizunara:'ミズナラ',buna:'ブナ',yanagi:'ヤナギ',hannoki:'ハンノキ',sugi:'スギ',other:'他'};
+    const treeStr = Object.entries(sp.trees||{}).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>`${TREE_JA[k]||k}${v}%`).join('・');
+    m.bindPopup(`<div class="pop-title">🔬 予測ポイント ${i+1}位</div>
+<div class="pop-row" style="color:#ce93d8;font-size:.65rem">※未確認予測地点（実績なし）</div>
+<div class="pop-row">⛰ 標高 ${sp.elevation}m ／ 斜面 ${sp.slope||'不明'}向き</div>
+<div class="pop-row">🌳 樹種: ${treeStr||'不明'}</div>
+<div class="pop-row">🌊 水場: ${sp.water_m}m ／ 光害: Lv${sp.light_pollution}</div>
+<div class="pop-row">🚗 ${sp.dist_km}km先</div>
+<div class="pop-row">スコア: <b style="color:${color}">${sp.score}点</b></div>`);
+    familySpotMarkers.push(m);
+  });
+  if(spots[0]) map.setView([spots[0].lat, spots[0].lng], 10);
+
+  list.innerHTML = '<div style="padding:6px 14px;background:#1a0a2e;border-top:2px solid #7e57c2;font-size:.72rem;color:#ce93d8;font-weight:600">🔬 予測ポイント（玄人モード） ※未確認地点</div>'
+  + spots.map((sp,i)=>{
+    const pct = maxSc===minSc?0.5:(sp.score-minSc)/(maxSc-minSc);
+    const color = pct>=0.75?'#e53935':pct>=0.5?'#fb8c00':pct>=0.25?'#fdd835':'#43a047';
+    const TREE_JA={konara:'コナラ',kunugi:'クヌギ',mizunara:'ミズナラ',buna:'ブナ',yanagi:'ヤナギ',hannoki:'ハンノキ',sugi:'スギ',other:'他'};
+    const treeStr = Object.entries(sp.trees||{}).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>`${TREE_JA[k]||k}${v}%`).join('・');
+    return `<div class="spot-item" onclick="familySpotClick(${i})" style="background:#140a1e;border-left:3px solid ${color}">
+  <div class="spot-top">
+    <div style="flex:1">
+      <div style="font-size:.8rem;color:${color};font-weight:700">${i+1}位 ${sp.name}</div>
+      <div style="font-size:.65rem;color:#9e9e9e">${sp.prefecture} ／ ⛰${sp.elevation}m ／ ${sp.dist_km}km先</div>
+    </div>
+    <span style="font-size:.88rem;font-weight:700;color:${color}">${sp.score}点</span>
+  </div>
+  <div style="font-size:.65rem;color:#b39ddb;margin-top:3px">🌳 ${treeStr} ／ 🌊水場${sp.water_m}m ／ 光害Lv${sp.light_pollution}</div>
+  <div style="font-size:.63rem;color:#9e9e9e;margin-top:1px">※採集実績のない予測地点です</div>
+</div>`;
+  }).join('');
 }
 
 // ── 森林検索 ──────────────────────────────────────────────────
@@ -1479,7 +1770,41 @@ function fetchNearbyLight(spot){
     moonLabelJS(a) + '（月齢 ' + a.toFixed(1) + '日）';
   showDateAdvice(a, today);
 })();
+
+// ── アプリ初期化（家族モードで起動） ──────────────────────────
+(function initAppMode(){
+  setAppMode('family');
+})();
 </script>
+
+<!-- 玄人モード 広告解放モーダル -->
+<div id="expert-ad-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9990;align-items:center;justify-content:center">
+  <div style="background:#1a0a2e;border:2px solid #7e57c2;border-radius:14px;padding:28px 24px;width:min(380px,90vw);box-shadow:0 8px 40px rgba(0,0,0,.7)">
+    <div style="font-size:1rem;font-weight:700;color:#ce93d8;margin-bottom:6px;text-align:center">🔬 玄人モードを解放する</div>
+    <div style="font-size:.75rem;color:#b39ddb;text-align:center;margin-bottom:18px;line-height:1.6">広域AI予測（未実績地点の探索）は<br>広告視聴後に解放されます</div>
+    <!-- 広告バナーエリア -->
+    <div style="background:#0d0520;border:1px dashed #5e35b1;border-radius:8px;padding:20px;text-align:center;margin-bottom:16px;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+      <div style="font-size:.72rem;color:#9e9e9e;margin-bottom:8px">📢 おすすめ採集グッズ</div>
+      <!-- アフィリエイトバナー（後でもしもアフィリエイトに差し替え） -->
+      <a href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E6%8D%95%E8%99%AB%E7%B6%B2&tag=beetlefinder-22" target="_blank" rel="noopener"
+        style="display:inline-block;background:#ff9900;color:#111;font-size:.78rem;font-weight:700;padding:10px 20px;border-radius:8px;text-decoration:none">
+        🛒 Amazon で採集グッズを見る
+      </a>
+      <div style="font-size:.62rem;color:#5e35b1;margin-top:8px">（Amazonアソシエイト）</div>
+    </div>
+    <!-- カウントダウン -->
+    <div id="ad-countdown-wrap" style="text-align:center;margin-bottom:14px;font-size:.75rem;color:#9e9e9e">
+      あと <span id="ad-counter" style="font-size:1.2rem;font-weight:700;color:#ce93d8">15</span> 秒後に解放
+    </div>
+    <button id="ad-unlock-btn" onclick="closeExpertAd(true)" disabled
+      style="width:100%;padding:11px;background:#3d1a6e;color:#ce93d8;border:2px solid #7e57c2;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;opacity:.5">
+      🔒 カウントダウン中...
+    </button>
+    <button onclick="closeExpertAd(false)" style="width:100%;margin-top:8px;padding:8px;background:none;border:none;color:#9e9e9e;font-size:.72rem;cursor:pointer">
+      × キャンセル（家族モードに戻る）
+    </button>
+  </div>
+</div>
 
 <!-- フィードバックボタン -->
 <button id="fb-btn" onclick="openFeedback()" title="ご意見・ご要望はこちら">
