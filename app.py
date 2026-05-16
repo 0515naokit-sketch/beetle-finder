@@ -633,6 +633,19 @@ def privacy():
     return render_template("privacy.html")
 
 
+@app.route("/robots.txt")
+def robots():
+    from flask import send_from_directory
+    return send_from_directory("static", "robots.txt", mimetype="text/plain")
+
+
+@app.route("/ogp.png")
+def ogp_png():
+    """OGP画像を /ogp.png でも配信（SNSクローラー向け短縮URL）"""
+    from flask import send_from_directory
+    return send_from_directory("static", "ogp.png", mimetype="image/png")
+
+
 @app.route("/sitemap.xml")
 def sitemap():
     xml = '''<?xml version="1.0" encoding="UTF-8"?>

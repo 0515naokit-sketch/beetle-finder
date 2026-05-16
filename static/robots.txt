@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://beetle-finder.onrender.com/sitemap.xml
