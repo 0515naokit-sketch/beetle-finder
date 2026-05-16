@@ -25,34 +25,31 @@
       position:sticky;top:0;z-index:100;
       background:rgba(255,255,255,.97);
       backdrop-filter:blur(8px);
-      border-bottom:1px solid #d4ecd4;
-      padding:0 24px;height:60px;
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      box-shadow:0 1px 6px rgba(0,0,0,.06);
+      border-bottom:1px solid #e0e0e0;
+      padding:0 32px;height:58px;
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
     }
     .lp-logo{
-      font-size:.95rem;font-weight:800;color:#1b5e20;
-      display:flex;align-items:center;gap:7px;
+      font-size:.9rem;font-weight:700;color:#1b5e20;
+      display:flex;align-items:center;gap:8px;letter-spacing:.01em;
     }
-    .lp-logo-icon{font-size:1.4rem}
-    nav{display:flex;gap:4px;align-items:center}
+    nav{display:flex;gap:2px;align-items:center}
     nav a{
-      font-size:.82rem;color:#4a7c4e;padding:5px 12px;
-      border-radius:20px;transition:background .15s;font-weight:500;
+      font-size:.82rem;color:#555;padding:6px 14px;
+      border-radius:6px;transition:background .15s;
     }
-    nav a:hover{background:#f1f8f1;color:#2e7d32}
+    nav a:hover{background:#f5f5f5;color:#1a2e1a}
     .btn-header{
-      background:#2e7d32;color:#fff;
-      padding:9px 20px;border-radius:20px;
-      font-size:.82rem;font-weight:700;
-      border:none;cursor:pointer;white-space:nowrap;
-      transition:background .15s;display:inline-flex;align-items:center;gap:5px;
+      background:#1b5e20;color:#fff;
+      padding:8px 20px;border-radius:6px;
+      font-size:.82rem;font-weight:600;
+      transition:background .15s;
     }
-    .btn-header:hover{background:#1b5e20}
+    .btn-header:hover{background:#2e7d32}
 
     /* ── ヒーロー ── */
     #hero{
-      position:relative;min-height:88svh;
+      position:relative;min-height:86svh;
       display:flex;flex-direction:column;
       align-items:center;justify-content:center;
       text-align:center;padding:80px 20px 60px;
@@ -66,241 +63,184 @@
     #hero-bg img{
       width:100%;height:100%;
       object-fit:cover;object-position:center 40%;
-      filter:brightness(.42);
+      filter:brightness(.38);
       display:block;
     }
     #hero > *{position:relative;z-index:1}
-    .hero-badge{
-      display:inline-flex;align-items:center;gap:6px;
-      background:rgba(255,255,255,.15);
-      border:1px solid rgba(255,255,255,.3);
-      backdrop-filter:blur(4px);
-      color:#fff;font-size:.78rem;font-weight:600;
-      padding:5px 16px;border-radius:20px;margin-bottom:20px;
-    }
     #hero h1{
-      font-size:clamp(1.75rem,6vw,3.2rem);
+      font-size:clamp(1.9rem,6vw,3.4rem);
       font-weight:900;line-height:1.2;
-      color:#fff;margin-bottom:16px;
+      color:#fff;margin-bottom:20px;
       letter-spacing:-.02em;
-      text-shadow:0 2px 12px rgba(0,0,0,.4);
     }
     #hero h1 em{color:#a5d6a7;font-style:normal}
     .hero-sub{
-      font-size:clamp(.9rem,2.5vw,1.1rem);
-      color:rgba(255,255,255,.9);max-width:540px;
-      margin:0 auto 36px;line-height:1.8;
-      text-shadow:0 1px 6px rgba(0,0,0,.4);
+      font-size:clamp(.9rem,2.5vw,1.05rem);
+      color:rgba(255,255,255,.82);max-width:480px;
+      margin:0 auto 40px;line-height:1.9;
     }
     .hero-cta{
-      display:inline-flex;align-items:center;gap:10px;
+      display:inline-block;
       background:#fff;color:#1b5e20;
-      font-size:1rem;font-weight:800;
-      padding:16px 40px;border-radius:32px;
-      box-shadow:0 6px 24px rgba(0,0,0,.25);
-      transition:all .2s;cursor:pointer;border:none;
+      font-size:.98rem;font-weight:800;
+      padding:16px 44px;border-radius:6px;
+      box-shadow:0 4px 20px rgba(0,0,0,.2);
+      transition:all .2s;
     }
-    .hero-cta:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.3);background:#f1f8f1}
-    .hero-cta-note{font-size:.72rem;color:rgba(255,255,255,.7);margin-top:10px}
+    .hero-cta:hover{background:#f1f8f1;transform:translateY(-1px)}
+    .hero-note{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:12px}
     .hero-stats{
-      display:flex;gap:0;margin-top:48px;
-      background:rgba(255,255,255,.12);
-      backdrop-filter:blur(6px);
-      border:1px solid rgba(255,255,255,.2);
-      border-radius:16px;overflow:hidden;
+      display:flex;gap:48px;margin-top:56px;
     }
-    .hero-stat{
-      padding:16px 28px;text-align:center;
-      border-right:1px solid rgba(255,255,255,.15);
-    }
-    .hero-stat:last-child{border-right:none}
-    .hero-stat-num{font-size:1.5rem;font-weight:800;color:#a5d6a7;line-height:1}
-    .hero-stat-label{font-size:.68rem;color:rgba(255,255,255,.8);margin-top:4px}
+    .hero-stat-num{font-size:1.6rem;font-weight:800;color:#a5d6a7;line-height:1}
+    .hero-stat-label{font-size:.66rem;color:rgba(255,255,255,.6);margin-top:4px;letter-spacing:.04em}
 
-    /* ── セクション共通 ── */
-    section{padding:72px 24px}
-    .section-inner{max-width:900px;margin:0 auto}
-    .section-eyebrow{
-      display:inline-flex;align-items:center;gap:6px;
-      font-size:.72rem;font-weight:700;letter-spacing:.1em;
-      color:#2e7d32;margin-bottom:10px;
-      background:#e8f5e9;padding:3px 12px;border-radius:20px;
+    /* ── 使い方 ── */
+    #how{background:#fafafa;padding:80px 24px}
+    .section-inner{max-width:860px;margin:0 auto}
+    #how h2{
+      font-size:clamp(1.3rem,4vw,1.8rem);font-weight:800;
+      color:#1a2e1a;margin-bottom:10px;
     }
-    .section-title{
-      font-size:clamp(1.4rem,4vw,2.1rem);font-weight:800;
-      color:#1a2e1a;margin-bottom:12px;line-height:1.3;
-    }
-    .section-desc{font-size:.92rem;color:#4a6741;max-width:560px;line-height:1.8}
-
-    /* ── 使い方 3ステップ ── */
-    #how{background:#f9fff9}
+    #how .lead{font-size:.9rem;color:#666;margin-bottom:48px;line-height:1.8}
     .steps{
-      display:grid;
-      grid-template-columns:1fr auto 1fr auto 1fr;
-      align-items:start;gap:0;margin-top:44px;
+      display:grid;grid-template-columns:repeat(3,1fr);gap:32px;
     }
-    .step{
-      background:#fff;border:1.5px solid #c8e6c9;border-radius:18px;
-      padding:28px 22px;text-align:center;
-    }
+    .step{padding:4px 0}
     .step-num{
-      width:32px;height:32px;border-radius:50%;
-      background:#2e7d32;color:#fff;
-      font-size:.82rem;font-weight:800;
-      display:inline-flex;align-items:center;justify-content:center;
-      margin-bottom:14px;
+      font-size:.75rem;font-weight:700;color:#2e7d32;
+      margin-bottom:12px;letter-spacing:.06em;
     }
-    .step-icon{font-size:2.4rem;margin-bottom:10px}
-    .step h3{font-size:.95rem;font-weight:700;color:#1a2e1a;margin-bottom:6px}
-    .step p{font-size:.82rem;color:#4a6741;line-height:1.7}
-    .step-arrow{
-      display:flex;align-items:center;justify-content:center;
-      padding:0 12px;color:#a5d6a7;font-size:1.6rem;margin-top:60px;
-    }
+    .step h3{font-size:1rem;font-weight:700;color:#1a2e1a;margin-bottom:8px}
+    .step p{font-size:.85rem;color:#555;line-height:1.75}
 
-    /* ── 特徴 ── */
-    #features{background:#fff}
-    .features{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:16px;margin-top:44px;
-    }
-    .feat{
-      background:#f9fff9;border:1.5px solid #d4ecd4;border-radius:16px;
-      padding:24px 22px;display:flex;gap:16px;align-items:flex-start;
-      transition:border-color .15s,box-shadow .15s;
-    }
-    .feat:hover{border-color:#66bb6a;box-shadow:0 4px 16px rgba(76,175,80,.1)}
-    .feat-icon{
-      font-size:1.8rem;flex-shrink:0;line-height:1;
-      width:52px;height:52px;
-      background:#e8f5e9;border-radius:12px;
-      display:flex;align-items:center;justify-content:center;
-    }
-    .feat h3{font-size:.92rem;font-weight:700;color:#1a2e1a;margin-bottom:5px}
-    .feat p{font-size:.8rem;color:#4a6741;line-height:1.7}
-
-    /* ── こんな人に ── */
-    #for-who{background:#f9fff9}
-    .who-cards{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-      gap:14px;margin-top:40px;
-    }
-    .who-card{
-      background:#fff;border:1.5px solid #c8e6c9;border-radius:16px;
-      padding:26px 18px;text-align:center;
-      transition:box-shadow .15s,border-color .15s;
-    }
-    .who-card:hover{box-shadow:0 4px 18px rgba(46,125,50,.1);border-color:#66bb6a}
-    .who-icon{font-size:2.4rem;margin-bottom:12px}
-    .who-card h3{font-size:.92rem;font-weight:700;color:#1a2e1a;margin-bottom:6px}
-    .who-card p{font-size:.78rem;color:#4a6741;line-height:1.6}
-
-    /* ── 採集photo ── */
+    /* ── シーン（写真） ── */
     #scene{
-      background:#1b2d1b;padding:0;overflow:hidden;
       display:grid;grid-template-columns:1fr 1fr;
     }
-    .scene-photo{
-      height:380px;overflow:hidden;position:relative;
-    }
+    .scene-photo{height:400px;overflow:hidden}
     .scene-photo img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
     .scene-text{
+      background:#1b2d1b;
       display:flex;flex-direction:column;justify-content:center;
-      padding:48px 44px;
+      padding:56px 52px;
     }
-    .scene-eyebrow{
-      font-size:.72rem;font-weight:700;color:#81c784;
-      letter-spacing:.1em;margin-bottom:14px;
-    }
+    .scene-label{font-size:.72rem;color:#81c784;letter-spacing:.08em;margin-bottom:16px}
     .scene-title{
-      font-size:1.5rem;font-weight:800;color:#fff;
-      margin-bottom:16px;line-height:1.4;
+      font-size:1.4rem;font-weight:800;color:#fff;
+      margin-bottom:16px;line-height:1.5;
     }
-    .scene-desc{font-size:.88rem;color:#a5d6a7;line-height:1.8;margin-bottom:24px}
+    .scene-desc{font-size:.86rem;color:#a5d6a7;line-height:1.85;margin-bottom:28px}
     .scene-cta{
-      display:inline-flex;align-items:center;gap:8px;
+      display:inline-block;
       background:#2e7d32;color:#fff;
-      padding:12px 28px;border-radius:24px;font-weight:700;
-      font-size:.88rem;transition:background .15s;align-self:flex-start;
+      padding:11px 26px;border-radius:6px;font-weight:600;
+      font-size:.86rem;transition:background .15s;align-self:flex-start;
     }
     .scene-cta:hover{background:#43a047}
 
-    /* ── ガイド記事 ── */
-    #guides{background:#fff}
-    .guide-grid{
-      display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-      gap:14px;margin-top:40px;
+    /* ── 特徴 ── */
+    #features{padding:80px 24px;background:#fff}
+    #features h2{
+      font-size:clamp(1.3rem,4vw,1.8rem);font-weight:800;
+      color:#1a2e1a;margin-bottom:48px;
     }
-    .guide-card{
-      background:#fff;border:1.5px solid #d4ecd4;border-radius:14px;
-      padding:18px;display:flex;gap:14px;align-items:flex-start;
-      transition:border-color .15s,box-shadow .15s;
+    .feat-list{
+      display:grid;grid-template-columns:repeat(3,1fr);
+      gap:40px 48px;
     }
-    .guide-card:hover{border-color:#43a047;box-shadow:0 4px 16px rgba(67,160,71,.1)}
-    .guide-icon{
-      font-size:1.5rem;flex-shrink:0;
-      width:44px;height:44px;background:#e8f5e9;border-radius:10px;
-      display:flex;align-items:center;justify-content:center;
+    .feat h3{font-size:.95rem;font-weight:700;color:#1a2e1a;margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid #c8e6c9}
+    .feat p{font-size:.83rem;color:#555;line-height:1.75}
+
+    /* ── ガイド ── */
+    #guides{padding:80px 24px;background:#fafafa}
+    #guides h2{
+      font-size:clamp(1.3rem,4vw,1.8rem);font-weight:800;
+      color:#1a2e1a;margin-bottom:8px;
     }
-    .guide-card h3{font-size:.88rem;font-weight:700;color:#1a2e1a;margin-bottom:3px}
-    .guide-card p{font-size:.75rem;color:#4a6741;line-height:1.5}
+    #guides .lead{font-size:.9rem;color:#666;margin-bottom:36px;line-height:1.8}
+    .guide-list{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:2px;
+      border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;
+    }
+    .guide-item{
+      display:block;padding:16px 20px;background:#fff;
+      border-bottom:1px solid #f0f0f0;
+      transition:background .12s;
+    }
+    .guide-item:hover{background:#f9fff9}
+    .guide-item h3{font-size:.9rem;font-weight:600;color:#1b5e20;margin-bottom:2px}
+    .guide-item p{font-size:.78rem;color:#777;line-height:1.5}
 
     /* ── 広告 ── */
-    .lp-ad-wrap{background:#f9fff9;padding:20px 24px;text-align:center}
+    .lp-ad-wrap{background:#f9f9f9;padding:20px 24px;text-align:center}
     .lp-ad-label{font-size:.6rem;color:#aaa;margin-bottom:4px}
+
+    /* ── Amazon ── */
+    #tools{padding:56px 24px;background:#fff}
+    #tools h2{font-size:1.2rem;font-weight:700;color:#1a2e1a;margin-bottom:6px}
+    #tools .lead{font-size:.85rem;color:#666;margin-bottom:28px}
+    .tool-row{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;
+    }
+    .tool-item{
+      display:block;padding:14px 16px;border:1px solid #e0e0e0;border-radius:6px;
+      transition:border-color .12s;
+    }
+    .tool-item:hover{border-color:#2e7d32}
+    .tool-item .t-name{font-size:.88rem;font-weight:600;color:#1a2e1a;margin-bottom:4px}
+    .tool-item .t-desc{font-size:.75rem;color:#666;line-height:1.5;margin-bottom:8px}
+    .tool-item .t-link{font-size:.72rem;font-weight:700;color:#e65100}
 
     /* ── 最終CTA ── */
     #final-cta{
-      background:linear-gradient(135deg,#1b5e20 0%,#2e7d32 50%,#388e3c 100%);
+      background:#1b2d1b;
       text-align:center;padding:80px 24px;
     }
     .final-cta-title{
-      font-size:clamp(1.4rem,5vw,2.2rem);font-weight:800;color:#fff;
-      margin-bottom:10px;line-height:1.3;
+      font-size:clamp(1.3rem,4vw,2rem);font-weight:800;color:#fff;
+      margin-bottom:10px;line-height:1.4;
     }
-    .final-cta-sub{font-size:.92rem;color:#a5d6a7;margin-bottom:32px}
+    .final-cta-sub{font-size:.88rem;color:#81c784;margin-bottom:32px}
     .final-cta-btn{
-      display:inline-flex;align-items:center;gap:10px;
+      display:inline-block;
       background:#fff;color:#1b5e20;
-      font-size:1rem;font-weight:800;
-      padding:18px 44px;border-radius:32px;
-      box-shadow:0 6px 24px rgba(0,0,0,.2);
+      font-size:.98rem;font-weight:800;
+      padding:16px 44px;border-radius:6px;
+      box-shadow:0 4px 20px rgba(0,0,0,.2);
       transition:all .2s;
     }
-    .final-cta-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,.3)}
+    .final-cta-btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,0,0,.3)}
 
     /* ── フッター ── */
     footer{
-      background:#f9fff9;border-top:1px solid #d4ecd4;
-      padding:28px 24px;text-align:center;
+      background:#fff;border-top:1px solid #e0e0e0;
+      padding:24px;text-align:center;
     }
     .footer-links{
-      display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;
+      display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;
     }
-    .footer-links a{font-size:.78rem;color:#4a7c4e;transition:color .15s}
-    .footer-links a:hover{color:#2e7d32}
-    .footer-copy{font-size:.72rem;color:#9e9e9e}
+    .footer-links a{font-size:.78rem;color:#666;transition:color .12s}
+    .footer-links a:hover{color:#1b5e20}
+    .footer-copy{font-size:.7rem;color:#aaa}
 
-    /* ── モバイル対応 ── */
+    /* ── モバイル ── */
     @media(max-width:640px){
-      #lp-header{padding:0 14px}
+      #lp-header{padding:0 16px}
       nav{display:none}
-      #hero{min-height:80svh;padding:60px 16px 48px}
-      .hero-stats{
-        flex-wrap:wrap;border-radius:12px;
-        width:100%;
-      }
-      .hero-stat{flex:1 1 calc(50% - 1px);padding:12px 10px}
-      .hero-stat:nth-child(2){border-right:none}
-      .hero-stat:nth-child(3){border-top:1px solid rgba(255,255,255,.15);border-right:1px solid rgba(255,255,255,.15)}
-      .hero-stat:nth-child(4){border-top:1px solid rgba(255,255,255,.15)}
-      section{padding:48px 16px}
-      .steps{grid-template-columns:1fr;gap:14px}
-      .step-arrow{display:none}
+      #hero{min-height:78svh;padding:56px 16px 44px}
+      .hero-stats{gap:28px}
+      #how{padding:56px 16px}
+      .steps{grid-template-columns:1fr;gap:24px}
       #scene{grid-template-columns:1fr}
-      .scene-photo{height:240px}
-      .scene-text{padding:32px 20px}
-      .scene-title{font-size:1.2rem}
+      .scene-photo{height:220px}
+      .scene-text{padding:36px 20px}
+      #features{padding:56px 16px}
+      .feat-list{grid-template-columns:1fr;gap:28px}
+      #guides{padding:56px 16px}
+      #tools{padding:40px 16px}
+      #final-cta{padding:60px 16px}
     }
   </style>
 </head>
@@ -309,7 +249,6 @@
 <!-- ヘッダー -->
 <header id="lp-header">
   <div class="lp-logo">
-    <span class="lp-logo-icon">🪲</span>
     クワガタ採集スポット検索
   </div>
   <nav>
@@ -317,40 +256,31 @@
     <a href="#features">特徴</a>
     <a href="/guide">採集ガイド</a>
   </nav>
-  <a href="/app" class="btn-header">🗺 スポットを探す</a>
+  <a href="/app" class="btn-header">スポットを探す</a>
 </header>
 
 <!-- ヒーロー -->
 <section id="hero">
   <div id="hero-bg"><img src="/static/img/hero.jpg" alt="" aria-hidden="true"></div>
 
-  <div class="hero-badge">🆓 登録不要・完全無料</div>
-
   <h1>家族でクワガタ採集。<br><em>採れる場所</em>を地図で探そう。</h1>
   <p class="hero-sub">
     出発地を入力するだけ。標高・月齢・気象データで<br>
-    近くの採集スポットをスコアリングして地図に表示します。
+    近くの採集スポットを地図に表示します。
   </p>
-
-  <a href="/app" class="hero-cta">
-    🗺 近くのスポットを探す
-  </a>
-  <p class="hero-cta-note">登録不要・無料で今すぐ使える</p>
+  <a href="/app" class="hero-cta">近くのスポットを探す</a>
+  <p class="hero-note">登録不要・完全無料</p>
 
   <div class="hero-stats">
-    <div class="hero-stat">
+    <div>
       <div class="hero-stat-num">416</div>
-      <div class="hero-stat-label">実績採集スポット</div>
+      <div class="hero-stat-label">実績スポット</div>
     </div>
-    <div class="hero-stat">
+    <div>
       <div class="hero-stat-num">8,700+</div>
-      <div class="hero-stat-label">AI予測ポイント</div>
+      <div class="hero-stat-label">全国カバー</div>
     </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">全国</div>
-      <div class="hero-stat-label">都道府県対応</div>
-    </div>
-    <div class="hero-stat">
+    <div>
       <div class="hero-stat-num">8種</div>
       <div class="hero-stat-label">クワガタ・カブト</div>
     </div>
@@ -360,136 +290,148 @@
 <!-- 使い方 -->
 <section id="how">
   <div class="section-inner">
-    <div class="section-eyebrow">✅ 使い方</div>
-    <h2 class="section-title">3ステップで採集スポットがわかる</h2>
-    <p class="section-desc">難しい設定は不要。出発地を入力して「探す」を押すだけで、近くの採集スポットが地図に表示されます。</p>
-
+    <h2>3ステップで採集スポットがわかる</h2>
+    <p class="lead">難しい設定は一切不要。出発地を入力して種を選んで探すだけ。</p>
     <div class="steps">
       <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-icon">📍</div>
+        <div class="step-num">STEP 1</div>
         <h3>出発地を入力</h3>
-        <p>住所・市区町村名を入力するか、「現在地を使う」ボタンを押すだけ。</p>
+        <p>住所・市区町村名を入力するか、「現在地を使う」を押すだけ。</p>
       </div>
-      <div class="step-arrow">→</div>
       <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-icon">🪲</div>
+        <div class="step-num">STEP 2</div>
         <h3>種を選んで検索</h3>
-        <p>ミヤマ・ノコギリ・カブトムシなど、狙いたい種を選んで「探す」を押す。</p>
+        <p>ミヤマ・ノコギリ・カブトムシなど、狙いたい種を選んで探す。</p>
       </div>
-      <div class="step-arrow">→</div>
       <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-icon">🗺</div>
+        <div class="step-num">STEP 3</div>
         <h3>地図でスポット確認</h3>
-        <p>スコア順にスポットが表示。ピンをタップして詳細・アクセス方法を確認。</p>
+        <p>スコア順にスポットが地図表示。詳細・アクセス方法を確認できる。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 採集シーン（写真＋説明） -->
+<!-- シーン写真 -->
 <div id="scene">
   <div class="scene-photo">
-    <img
-      src="/static/img/scene.jpg"
-      alt="夏の雑木林で昆虫採集する親子"
-      loading="lazy"
-    >
+    <img src="/static/img/scene.jpg" alt="夏の雑木林で昆虫採集する親子" loading="lazy">
   </div>
   <div class="scene-text">
-    <div class="scene-eyebrow">🌲 夏の思い出づくりに</div>
+    <div class="scene-label">ABOUT</div>
     <h2 class="scene-title">「どこへ行けばいるの？」<br>その悩みを解決します</h2>
     <p class="scene-desc">
-      クワガタ採集で一番難しいのは「場所探し」。<br>
-      このサービスは標高・植生・月齢・気象データを組み合わせて、採集可能性の高いスポットを自動でランキング。初めての方でも迷わず行ける場所がわかります。
+      クワガタ採集で一番難しいのは場所探しです。<br>
+      このサービスは標高・植生・月齢・気象データを組み合わせて、
+      採集可能性の高いスポットを自動でランキングします。
+      初めての方でも迷わず行ける場所がわかります。
     </p>
-    <a href="/app" class="scene-cta">🗺 スポットを探してみる</a>
+    <a href="/app" class="scene-cta">スポットを探してみる</a>
   </div>
 </div>
 
 <!-- 特徴 -->
 <section id="features">
   <div class="section-inner">
-    <div class="section-eyebrow">⭐ 特徴</div>
-    <h2 class="section-title">データで探すから、外れが少ない</h2>
-
-    <div class="features">
+    <h2>データで探すから、外れが少ない</h2>
+    <div class="feat-list">
       <div class="feat">
-        <div class="feat-icon">⛰</div>
-        <div>
-          <h3>標高×植生で本格スコアリング</h3>
-          <p>各種の最適標高・広葉樹林の有無・河川距離を組み合わせてポイントをスコア化。勘ではなくデータで探せる。</p>
-        </div>
+        <h3>標高×植生でスコアリング</h3>
+        <p>各種の最適標高・広葉樹林の有無・河川距離を組み合わせてポイントをスコア化。勘ではなくデータで探せる。</p>
       </div>
       <div class="feat">
-        <div class="feat-icon">🌙</div>
-        <div>
-          <h3>月齢・気象データ連動</h3>
-          <p>採集予定日を入力すると、その日の月齢・気温を反映したスコアで表示。新月前後の好条件を逃さない。</p>
-        </div>
+        <h3>月齢・気象データ連動</h3>
+        <p>採集予定日を入力すると、その日の月齢・気温を反映したスコアで表示。新月前後の好条件を逃さない。</p>
       </div>
       <div class="feat">
-        <div class="feat-icon">📍</div>
-        <div>
-          <h3>実績スポット416件収録</h3>
-          <p>採集経験者が確認した実績スポットをファミリーモードで表示。初心者でも安心して行ける場所がわかる。</p>
-        </div>
+        <h3>実績スポット416件収録</h3>
+        <p>採集経験者が確認した実績スポットを収録。初心者でも安心して行ける場所が一目でわかる。</p>
       </div>
       <div class="feat">
-        <div class="feat-icon">🔬</div>
-        <div>
-          <h3>AI予測で新ポイントを発見</h3>
-          <p>8,700件超の予測ポイントで全国をカバー。実績のない穴場候補を探したいベテラン向けの玄人モードも搭載。</p>
-        </div>
+        <h3>穴場を探す玄人モード</h3>
+        <p>8,700件超のAI予測ポイントで全国をカバー。実績のない穴場候補を探したいベテラン向け。</p>
       </div>
       <div class="feat">
-        <div class="feat-icon">👨‍👩‍👧</div>
-        <div>
-          <h3>家族向け情報も充実</h3>
-          <p>難易度・駐車場有無・ファミリー適性を表示。子どもと一緒に行ける安全なスポットを優先できる。</p>
-        </div>
+        <h3>ファミリー向け情報も充実</h3>
+        <p>難易度・駐車場の有無・子ども適性を表示。子どもと一緒に行ける安全なスポットを優先できる。</p>
       </div>
       <div class="feat">
-        <div class="feat-icon">🆓</div>
-        <div>
-          <h3>登録不要・完全無料</h3>
-          <p>アカウント作成なし。アプリのインストールなし。ブラウザを開いて出発地を入力するだけですぐ使える。</p>
-        </div>
+        <h3>登録不要・完全無料</h3>
+        <p>アカウント作成なし。アプリのインストールなし。ブラウザを開いてすぐ使える。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- こんな人に -->
-<section id="for-who">
+<!-- 採集ガイド -->
+<section id="guides">
   <div class="section-inner">
-    <div class="section-eyebrow">👤 こんな方に</div>
-    <h2 class="section-title">初心者からベテランまで</h2>
-
-    <div class="who-cards">
-      <div class="who-card">
-        <div class="who-icon">👨‍👩‍👧</div>
-        <h3>子連れファミリー</h3>
-        <p>駐車場ありで難易度低め、安全な実績スポットを優先表示。子どもとの初採集に。</p>
-      </div>
-      <div class="who-card">
-        <div class="who-icon">🔰</div>
-        <h3>採集初心者</h3>
-        <p>場所がわからない方に。10本の採集ガイド記事と一緒に使えばゼロから始められる。</p>
-      </div>
-      <div class="who-card">
-        <div class="who-icon">🏕</div>
-        <h3>旅行・お出かけ先で</h3>
-        <p>旅先でクワガタを探したい時に。GPSで現在地から即座に近くのスポットを検索。</p>
-      </div>
-      <div class="who-card">
-        <div class="who-icon">🔬</div>
-        <h3>採集ベテラン</h3>
-        <p>行き慣れた場所を超える穴場を発見したい方に。玄人モードで未開のポイントを探索。</p>
-      </div>
+    <h2>採集ガイドも無料公開中</h2>
+    <p class="lead">初心者から上級者まで役立つ採集ガイドを10本公開。スポット検索と合わせて使えばさらに採れる確率が上がります。</p>
+    <div class="guide-list">
+      <a href="/guide/beginners" class="guide-item">
+        <h3>初心者完全ガイド</h3>
+        <p>道具・場所・時期・安全対策まで全部わかる</p>
+      </a>
+      <a href="/guide/kabuto" class="guide-item">
+        <h3>カブトムシ採集ガイド</h3>
+        <p>クヌギ林・朝採りのコツを徹底解説</p>
+      </a>
+      <a href="/guide/nokogiri" class="guide-item">
+        <h3>ノコギリクワガタ採集ガイド</h3>
+        <p>最も採集しやすい定番種の狙い方</p>
+      </a>
+      <a href="/guide/miyama" class="guide-item">
+        <h3>ミヤマクワガタ採集ガイド</h3>
+        <p>高標高の涼しい山地で狙う方法</p>
+      </a>
+      <a href="/guide/hirata" class="guide-item">
+        <h3>ヒラタクワガタ採集ガイド</h3>
+        <p>河川沿いの低地で採れる強力な種</p>
+      </a>
+      <a href="/guide/light" class="guide-item">
+        <h3>ライト・街灯採集ガイド</h3>
+        <p>月齢と光を使った採集テクニック</p>
+      </a>
+      <a href="/guide/kids" class="guide-item">
+        <h3>子供・家族で採集ガイド</h3>
+        <p>安全な場所選びと準備・楽しみ方</p>
+      </a>
+      <a href="/guide" class="guide-item" style="color:#2e7d32;font-weight:600;font-size:.88rem">
+        全10記事のガイド一覧を見る →
+      </a>
     </div>
+  </div>
+</section>
+
+<!-- 採集道具 Amazon アフィリエイト -->
+<section id="tools">
+  <div class="section-inner">
+    <h2>採集に必要な道具</h2>
+    <p class="lead">場所が決まったら道具を揃えましょう。Amazonで確認できます。</p>
+    <div class="tool-row">
+      <a href="https://www.amazon.co.jp/s?k=ヘッドライト+LED+登山&tag=beetlefinder-22" target="_blank" rel="noopener" class="tool-item">
+        <div class="t-name">ヘッドライト</div>
+        <div class="t-desc">夜間採集の必需品。両手が空くLEDタイプがおすすめ。</div>
+        <div class="t-link">Amazonで見る →</div>
+      </a>
+      <a href="https://www.amazon.co.jp/s?k=クワガタ+飼育セット&tag=beetlefinder-22" target="_blank" rel="noopener" class="tool-item">
+        <div class="t-name">飼育セット</div>
+        <div class="t-desc">採集後すぐ使える。ケース・マット・エサがセット。</div>
+        <div class="t-link">Amazonで見る →</div>
+      </a>
+      <a href="https://www.amazon.co.jp/s?k=野外用+防虫スプレー&tag=beetlefinder-22" target="_blank" rel="noopener" class="tool-item">
+        <div class="t-name">防虫スプレー</div>
+        <div class="t-desc">山林での採集には必須。子ども用・長時間タイプも。</div>
+        <div class="t-link">Amazonで見る →</div>
+      </a>
+      <a href="https://www.amazon.co.jp/s?k=モバイルバッテリー+10000mAh&tag=beetlefinder-22" target="_blank" rel="noopener" class="tool-item">
+        <div class="t-name">モバイルバッテリー</div>
+        <div class="t-desc">深夜の採集中に電池切れ防止。緊急連絡にも必要。</div>
+        <div class="t-link">Amazonで見る →</div>
+      </a>
+    </div>
+    <div style="margin-top:10px;font-size:.65rem;color:#bbb">Amazonアソシエイト・プログラム参加中</div>
   </div>
 </section>
 
@@ -497,144 +439,9 @@
 <div class="lp-ad-wrap" style="display:none" id="lp-ad-1">
   <div class="lp-ad-label">スポンサー</div>
   <div style="max-width:600px;margin:0 auto">
-    <ins class="adsbygoogle"
-         style="display:block"
+    <ins class="adsbygoogle" style="display:block"
          data-ad-client="ca-pub-9675243685208925"
-         data-ad-slot="auto"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-  </div>
-</div>
-
-<!-- 採集ガイド -->
-<section id="guides">
-  <div class="section-inner">
-    <div class="section-eyebrow">📖 採集ガイド</div>
-    <h2 class="section-title">場所だけでなく、採集の知識も</h2>
-    <p class="section-desc">初心者から上級者まで役立つ採集ガイドを10本無料公開。スポット検索と合わせて使えばさらに採れる。</p>
-
-    <div class="guide-grid">
-      <a href="/guide/beginners" class="guide-card">
-        <div class="guide-icon">🔰</div>
-        <div>
-          <h3>初心者完全ガイド</h3>
-          <p>道具・場所・時期・安全対策まで全部わかる</p>
-        </div>
-      </a>
-      <a href="/guide/kabuto" class="guide-card">
-        <div class="guide-icon">🦏</div>
-        <div>
-          <h3>カブトムシ採集ガイド</h3>
-          <p>クヌギ林・朝採りのコツを徹底解説</p>
-        </div>
-      </a>
-      <a href="/guide/nokogiri" class="guide-card">
-        <div class="guide-icon">🪲</div>
-        <div>
-          <h3>ノコギリクワガタ採集</h3>
-          <p>最も採集しやすい定番種の狙い方</p>
-        </div>
-      </a>
-      <a href="/guide/miyama" class="guide-card">
-        <div class="guide-icon">⛰</div>
-        <div>
-          <h3>ミヤマクワガタ採集</h3>
-          <p>高標高の涼しい山地で狙う方法</p>
-        </div>
-      </a>
-      <a href="/guide/light" class="guide-card">
-        <div class="guide-icon">💡</div>
-        <div>
-          <h3>ライト・街灯採集</h3>
-          <p>月齢と光を使った採集テクニック</p>
-        </div>
-      </a>
-      <a href="/guide/kids" class="guide-card">
-        <div class="guide-icon">👨‍👧</div>
-        <div>
-          <h3>子供・家族で採集</h3>
-          <p>安全な場所選びと準備・楽しみ方</p>
-        </div>
-      </a>
-      <a href="/guide/tools" class="guide-card">
-        <div class="guide-icon">🎒</div>
-        <div>
-          <h3>採集道具ガイド</h3>
-          <p>必要な道具と選び方・おすすめ商品</p>
-        </div>
-      </a>
-      <a href="/guide" class="guide-card" style="border-style:dashed;align-items:center;justify-content:center;text-align:center;flex-direction:column;gap:8px">
-        <div style="font-size:1.4rem">📖</div>
-        <div>
-          <h3 style="color:#2e7d32">全10記事を見る</h3>
-          <p>ガイド一覧ページへ →</p>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- 採集道具 Amazonアフィリエイトセクション -->
-<section id="tools" style="background:#fff;padding:56px 24px">
-  <div class="section-inner">
-    <div class="section-eyebrow">🛒 採集の準備</div>
-    <h2 class="section-title">場所が決まったら、道具を揃えよう</h2>
-    <p class="section-desc" style="margin-bottom:36px">初めての採集でも安心。必要な道具をAmazonでまとめて確認できます。</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px">
-      <a href="https://www.amazon.co.jp/s?k=%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED+%E7%99%BB%E5%B1%B1&tag=beetlefinder-22" target="_blank" rel="noopener"
-         style="display:flex;gap:14px;align-items:flex-start;background:#fffbf0;border:1.5px solid #ffe082;border-radius:14px;padding:16px;text-decoration:none;transition:box-shadow .15s"
-         onmouseover="this.style.boxShadow='0 4px 16px rgba(255,160,0,.2)'" onmouseout="this.style.boxShadow='none'">
-        <div style="font-size:2rem;width:48px;height:48px;background:#fff8e1;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🔦</div>
-        <div>
-          <div style="font-size:.9rem;font-weight:700;color:#1a2e1a;margin-bottom:4px">ヘッドライト</div>
-          <div style="font-size:.76rem;color:#6d4c41;line-height:1.5">夜間採集の必需品。両手が空くLEDタイプがおすすめ。</div>
-          <div style="margin-top:8px;font-size:.72rem;font-weight:700;color:#e65100">Amazon で見る →</div>
-        </div>
-      </a>
-      <a href="https://www.amazon.co.jp/s?k=%E6%8D%95%E8%99%AB%E7%B6%B2+%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF&tag=beetlefinder-22" target="_blank" rel="noopener"
-         style="display:flex;gap:14px;align-items:flex-start;background:#fffbf0;border:1.5px solid #ffe082;border-radius:14px;padding:16px;text-decoration:none;transition:box-shadow .15s"
-         onmouseover="this.style.boxShadow='0 4px 16px rgba(255,160,0,.2)'" onmouseout="this.style.boxShadow='none'">
-        <div style="font-size:2rem;width:48px;height:48px;background:#fff8e1;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🕸</div>
-        <div>
-          <div style="font-size:.9rem;font-weight:700;color:#1a2e1a;margin-bottom:4px">捕虫網</div>
-          <div style="font-size:.76rem;color:#6d4c41;line-height:1.5">折りたたみ式なら持ち運びに便利。子どもも使いやすい。</div>
-          <div style="margin-top:8px;font-size:.72rem;font-weight:700;color:#e65100">Amazon で見る →</div>
-        </div>
-      </a>
-      <a href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88&tag=beetlefinder-22" target="_blank" rel="noopener"
-         style="display:flex;gap:14px;align-items:flex-start;background:#fffbf0;border:1.5px solid #ffe082;border-radius:14px;padding:16px;text-decoration:none;transition:box-shadow .15s"
-         onmouseover="this.style.boxShadow='0 4px 16px rgba(255,160,0,.2)'" onmouseout="this.style.boxShadow='none'">
-        <div style="font-size:2rem;width:48px;height:48px;background:#fff8e1;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🪲</div>
-        <div>
-          <div style="font-size:.9rem;font-weight:700;color:#1a2e1a;margin-bottom:4px">飼育セット</div>
-          <div style="font-size:.76rem;color:#6d4c41;line-height:1.5">採集後すぐに使える。ケース・マット・エサがセットに。</div>
-          <div style="margin-top:8px;font-size:.72rem;font-weight:700;color:#e65100">Amazon で見る →</div>
-        </div>
-      </a>
-      <a href="https://www.amazon.co.jp/s?k=%E9%87%8E%E5%A4%96%E7%94%A8+%E9%98%B2%E8%99%AB%E3%82%B9%E3%83%97%E3%83%AC%E3%83%BC&tag=beetlefinder-22" target="_blank" rel="noopener"
-         style="display:flex;gap:14px;align-items:flex-start;background:#fffbf0;border:1.5px solid #ffe082;border-radius:14px;padding:16px;text-decoration:none;transition:box-shadow .15s"
-         onmouseover="this.style.boxShadow='0 4px 16px rgba(255,160,0,.2)'" onmouseout="this.style.boxShadow='none'">
-        <div style="font-size:2rem;width:48px;height:48px;background:#fff8e1;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🦟</div>
-        <div>
-          <div style="font-size:.9rem;font-weight:700;color:#1a2e1a;margin-bottom:4px">防虫スプレー</div>
-          <div style="font-size:.76rem;color:#6d4c41;line-height:1.5">山林での採集には必須。子ども用・長時間タイプがおすすめ。</div>
-          <div style="margin-top:8px;font-size:.72rem;font-weight:700;color:#e65100">Amazon で見る →</div>
-        </div>
-      </a>
-    </div>
-    <div style="text-align:center;margin-top:10px;font-size:.65rem;color:#bbb">Amazonアソシエイト・プログラム参加中</div>
-  </div>
-</section>
-
-<!-- ガイドと最終CTAの間の広告（AdSense審査通過後に有効化） -->
-<div class="lp-ad-wrap" style="display:none;padding:24px 24px" id="lp-ad-2">
-  <div class="lp-ad-label">スポンサー</div>
-  <div style="max-width:728px;margin:0 auto">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-9675243685208925"
-         data-ad-slot="auto"
-         data-ad-format="auto"
+         data-ad-slot="auto" data-ad-format="auto"
          data-full-width-responsive="true"></ins>
   </div>
 </div>
@@ -643,7 +450,7 @@
 <section id="final-cta">
   <div class="final-cta-title">今夜、採れる場所を探しに行こう</div>
   <p class="final-cta-sub">登録不要・無料・今すぐ使える</p>
-  <a href="/app" class="final-cta-btn">🗺 スポットを探す（無料）</a>
+  <a href="/app" class="final-cta-btn">スポットを探す（無料）</a>
 </section>
 
 <!-- フッター -->
@@ -658,15 +465,12 @@
   <div class="footer-copy">© 2026 クワガタ採集スポット検索</div>
 </footer>
 
-<!-- モバイル固定下部広告バー（AdSense審査通過後に有効化） -->
 <div id="lp-anchor-ad" style="display:none"></div>
-
 <script>
-// AdSenseユニットを全て初期化
 window.addEventListener('load',function(){
   try{
     document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status])').forEach(function(){
-      (adsbygoogle = window.adsbygoogle || []).push({});
+      (adsbygoogle=window.adsbygoogle||[]).push({});
     });
   }catch(e){}
 });
