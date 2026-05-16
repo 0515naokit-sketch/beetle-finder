@@ -56,9 +56,25 @@
     .share-btn:hover{background:#252545}
 
     /* ─ コントロール ─ */
-    #controls{padding:9px 14px 11px;border-bottom:1px solid #2a3e2a;flex-shrink:0;overflow-y:auto;max-height:65vh}
+    #controls{padding:9px 14px 11px;border-bottom:1px solid #2a3e2a;flex-shrink:0;overflow-y:auto;max-height:65vh;transition:max-height .3s ease}
+    #controls.collapsed{max-height:0;padding:0;overflow:hidden;border-bottom:none}
     #controls::-webkit-scrollbar{width:3px}
     #controls::-webkit-scrollbar-thumb{background:#2e4a2e}
+    /* 検索後に表示する折りたたみトグルバー */
+    #ctrl-toggle{display:none;flex-shrink:0;padding:5px 14px;background:#0d1f0d;border-bottom:1px solid #2a3e2a;cursor:pointer;font-size:.72rem;color:#66bb6a;text-align:center;user-select:none}
+    #ctrl-toggle:hover{background:#132213}
+    /* マップ上に浮かせた「もっと見る」ボタン */
+    #map-more-btn{
+      display:none;position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+      z-index:950;white-space:nowrap;
+      background:linear-gradient(135deg,#1b5e20,#2e7d32);
+      border:2px solid #4caf50;border-radius:24px;
+      color:#fff;font-size:.82rem;font-weight:700;
+      padding:10px 22px;cursor:pointer;
+      box-shadow:0 4px 16px rgba(76,175,80,.55);
+      transition:all .15s;pointer-events:auto;
+    }
+    #map-more-btn:hover{background:linear-gradient(135deg,#2e7d32,#43a047);transform:translateX(-50%) scale(1.04)}
     .ctrl-label{font-size:.7rem;color:#81c784;opacity:.8;margin:9px 0 4px}
     .ctrl-label:first-child{margin-top:0}
     .btn-row{display:flex;gap:5px;flex-wrap:wrap}
@@ -246,6 +262,11 @@
         <a href="/about" style="color:#4a7c4e;font-size:.65rem;text-decoration:none">ℹ 概要</a>
         <a href="/privacy" style="color:#4a7c4e;font-size:.65rem;text-decoration:none">🔒 規約</a>
       </div>
+    </div>
+
+    <!-- 検索後に表示：条件折りたたみトグル -->
+    <div id="ctrl-toggle" onclick="toggleControls()">
+      ▼ 検索条件を変更する
     </div>
 
     <div id="controls">
@@ -530,6 +551,8 @@
 
   <div id="map-wrap" style="flex:1;position:relative;overflow:hidden">
     <div id="map" style="width:100%;height:100%"></div>
+    <!-- マップ中央下：もっと見るフローティングボタン -->
+    <button id="map-more-btn" onclick="_mapMoreBtnClick()">🔍 もっと見る</button>
     <!-- マップ右下オーバーレイ広告 -->
     <div id="map-overlay-ad" style="position:absolute;bottom:28px;right:8px;z-index:900;max-width:200px;pointer-events:auto">
       <div style="font-size:.48rem;color:#aaa;text-align:right;line-height:1;margin-bottom:2px">スポンサー</div>
@@ -1160,45 +1183,78 @@ function clearFamilyMarkers(){
   familySpotMarkers = [];
 }
 
-// ── 「もっと見る」固定バー 更新 ──────────────────────────────────
+// ── コントロール折りたたみ ──────────────────────────────────────
+let _ctrlCollapsed = false;
+function collapseControls(){
+  const ctrl   = document.getElementById('controls');
+  const toggle = document.getElementById('ctrl-toggle');
+  if(!ctrl || !toggle) return;
+  ctrl.classList.add('collapsed');
+  toggle.style.display = 'block';
+  toggle.innerHTML     = '▼ 検索条件を変更する';
+  _ctrlCollapsed = true;
+}
+function toggleControls(){
+  const ctrl   = document.getElementById('controls');
+  const toggle = document.getElementById('ctrl-toggle');
+  if(!ctrl || !toggle) return;
+  if(_ctrlCollapsed){
+    ctrl.classList.remove('collapsed');
+    toggle.innerHTML = '▲ 検索条件を閉じる';
+    _ctrlCollapsed   = false;
+    // 検索フォームへスクロール
+    ctrl.scrollTop = 0;
+  } else {
+    collapseControls();
+  }
+}
+
+// ── 「もっと見る」固定バー + マップフローティングボタン 更新 ──
+let _mapMoreAction = 'more_family';
+function _mapMoreBtnClick(){ requestShowMore(_mapMoreAction); }
+
 function _updateShowMoreBar(shown, total, action){
-  const bar = document.getElementById('show-more-bar');
-  if(!bar) return;
+  _mapMoreAction = action;
+  const bar    = document.getElementById('show-more-bar');
+  const mapBtn = document.getElementById('map-more-btn');
+
   if(shown >= total){
-    bar.style.display = 'none';
-    bar.innerHTML = '';
+    if(bar){ bar.style.display='none'; bar.innerHTML=''; }
+    if(mapBtn) mapBtn.style.display = 'none';
     return;
   }
   const remaining = total - shown;
   const addCount  = Math.min(SHOW_MORE_ADD, remaining);
-  bar.style.display = 'block';
-  bar.innerHTML = `
-<div style="display:flex;align-items:center;gap:10px">
-  <!-- 左：残り件数 -->
-  <div style="flex-shrink:0;text-align:center;background:#132213;border:1px solid #2e7d32;border-radius:8px;padding:6px 10px;min-width:62px">
-    <div style="font-size:.58rem;color:#66bb6a;line-height:1.2">まだ</div>
-    <div style="font-size:1.1rem;font-weight:700;color:#ffc107;line-height:1.2">${remaining}</div>
-    <div style="font-size:.58rem;color:#66bb6a;line-height:1.2">件あり</div>
+
+  // サイドバー内バー（コンパクト版）
+  if(bar){
+    bar.style.display = 'block';
+    bar.innerHTML = `
+<div style="display:flex;align-items:center;gap:10px;padding:8px 12px">
+  <div style="flex-shrink:0;text-align:center;background:#132213;border:1px solid #2e7d32;border-radius:8px;padding:5px 8px;min-width:54px">
+    <div style="font-size:.56rem;color:#66bb6a;line-height:1.2">まだ</div>
+    <div style="font-size:1rem;font-weight:700;color:#ffc107;line-height:1.2">${remaining}</div>
+    <div style="font-size:.56rem;color:#66bb6a;line-height:1.2">件あり</div>
   </div>
-  <!-- 右：ボタン+説明 -->
   <div style="flex:1">
-    <div style="font-size:.62rem;color:#81c784;margin-bottom:5px;line-height:1.4">
-      同じ条件でスコアが異なるポイントが非表示になっています
-    </div>
     <button onclick="requestShowMore('${action}')"
-      style="width:100%;padding:9px 8px;
+      style="width:100%;padding:8px 6px;
              background:linear-gradient(135deg,#1b5e20,#2e7d32);
              border:2px solid #4caf50;border-radius:8px;
-             color:#fff;font-size:.8rem;font-weight:700;cursor:pointer;
-             box-shadow:0 2px 8px rgba(76,175,80,.4);
-             transition:all .15s"
-      onmouseover="this.style.background='linear-gradient(135deg,#2e7d32,#43a047)'"
-      onmouseout="this.style.background='linear-gradient(135deg,#1b5e20,#2e7d32)'">
+             color:#fff;font-size:.78rem;font-weight:700;cursor:pointer;
+             box-shadow:0 2px 8px rgba(76,175,80,.4)">
       🔍 さらに${addCount}件を表示する
     </button>
-    <div style="font-size:.58rem;color:#3a6c3a;text-align:center;margin-top:4px">広告を見るだけで無料・再検索不要</div>
+    <div style="font-size:.56rem;color:#3a6c3a;text-align:center;margin-top:3px">広告を見るだけで無料・再検索不要</div>
   </div>
 </div>`;
+  }
+
+  // マップ上フローティングボタン
+  if(mapBtn){
+    mapBtn.style.display = 'block';
+    mapBtn.textContent   = `🔍 もっと見る（あと${remaining}件）`;
+  }
 }
 
 function requestShowMore(action){
@@ -1299,6 +1355,7 @@ function renderFamilyResults(spots, moonAge){
   clearFamilyMarkers();
   _addFamilyMarkers(spots, 0, _familyLimit);
   if(spots[0]) map.setView([spots[0].lat, spots[0].lng], 11);
+  collapseControls(); // 検索後は結果を優先表示
   _renderFamilyList();
 }
 
@@ -1493,6 +1550,7 @@ function renderExpertResults(spots, moonAge){
   clearFamilyMarkers();
   _addExpertMarkers(spots, 0, _expertLimit);
   if(spots[0]) map.setView([spots[0].lat, spots[0].lng], 10);
+  collapseControls(); // 検索後は結果を優先表示
   _renderExpertList();
 }
 
