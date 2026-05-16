@@ -48,7 +48,7 @@
     #adv-toggle.open{background:#2e4e2e;border-style:solid;border-color:#66bb6a;border-bottom-left-radius:0;border-bottom-right-radius:0}
     .adv-badge{font-size:.72rem;padding:2px 10px;border-radius:10px;font-weight:700;
       background:#388e3c;color:#fff;white-space:nowrap}
-    #adv-section{display:none;border:2px solid #66bb6a;border-top:none;
+    #adv-section{display:block;border:2px solid #66bb6a;border-top:none;
       border-radius:0 0 8px 8px;padding:10px 6px 6px;margin-bottom:4px}
 
     /* シェアボタン */
@@ -327,9 +327,9 @@
       <div id="plan-date-advice" style="display:none;margin-top:7px"></div>
 
       <!-- 詳細設定トグル -->
-      <button id="adv-toggle" onclick="toggleAdvanced()">
+      <button id="adv-toggle" onclick="toggleAdvanced()" class="open">
         <span>⚙ 詳細設定（種・方向・採集方法）</span>
-        <span class="adv-badge" id="adv-badge">＋ 開く</span>
+        <span class="adv-badge" id="adv-badge" style="background:#555">✕ 閉じる</span>
       </button>
 
       <div id="adv-section">
@@ -388,7 +388,7 @@
             <button class="dir-btn" data-dir="N"  onclick="setDirection('N')">北</button>
             <button class="dir-btn" data-dir="NE" onclick="setDirection('NE')">北東</button>
             <button class="dir-btn" data-dir="W"  onclick="setDirection('W')">西</button>
-            <button class="dir-btn" data-dir="all" onclick="setDirection('all')">全</button>
+            <div style="display:flex;align-items:center;justify-content:center;font-size:.9rem;opacity:.3">🧭</div>
             <button class="dir-btn" data-dir="E"  onclick="setDirection('E')">東</button>
             <button class="dir-btn" data-dir="SW" onclick="setDirection('SW')">南西</button>
             <button class="dir-btn" data-dir="S"  onclick="setDirection('S')">南</button>
@@ -704,7 +704,7 @@ function updateCircle(){
   if(driveCircle) map.removeLayer(driveCircle);
   const r=currentHours*KM_PER_HOUR;
   const style={color:'#66bb6a',fillColor:'#66bb6a',fillOpacity:.05,weight:1.5,dashArray:'7 5'};
-  if(currentDirection==='all'){
+  if(!currentDirection || currentDirection==='all'){
     driveCircle=L.circle([centerLat,centerLng],{radius:r*1000,...style}).addTo(map);
   } else {
     const pts=sectorLatLngs(centerLat,centerLng,r,DIR_ANGLES[currentDirection]);
@@ -1442,7 +1442,7 @@ function renderSpots(){
   }
 
   // 方向絞込時は全件、全方向時は上位30件
-  const listMax = currentDirection !== 'all' ? filtered.length : 30;
+  const listMax = (currentDirection && currentDirection !== 'all') ? filtered.length : 30;
   const listSpots = filtered.slice(0, listMax);
   list.innerHTML=listSpots.map((spot,i)=>{
     const sc=displayScore(spot), obs=spot.obs||{}, favd=favs.includes(spotKey(spot));
