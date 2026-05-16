@@ -564,6 +564,10 @@ def sse(data):
 # ── ルート ────────────────────────────────────────────────────────────────
 
 @app.route("/")
+def landing():
+    return render_template("landing.html")
+
+@app.route("/app")
 def index():
     return render_template("index.html", default_lat=DEFAULT_LAT, default_lng=DEFAULT_LNG)
 
@@ -654,6 +658,11 @@ def sitemap():
     <loc>https://beetle-finder.onrender.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://beetle-finder.onrender.com/app</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://beetle-finder.onrender.com/guide</loc>

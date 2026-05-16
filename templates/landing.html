@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>クワガタ採集スポット検索 | 採れる場所を地図で探せる無料サービス</title>
+  <meta name="description" content="出発地を入力するだけ。クワガタ・カブトムシが採れる採集スポットを地図で表示。標高・月齢・気象データで全国の採集ポイントをランキング。全国対応・完全無料。">
+  <meta property="og:title" content="クワガタ採集スポット検索">
+  <meta property="og:description" content="出発地を入力するだけ。クワガタ・カブトムシが採れる採集スポットを地図で表示。全国対応・完全無料。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://beetle-finder.onrender.com/">
+  <meta property="og:image" content="https://beetle-finder.onrender.com/static/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9675243685208925" crossorigin="anonymous"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#0d1a0d;color:#dcedc8;line-height:1.7}
+    a{text-decoration:none;color:inherit}
+
+    /* ── ヘッダー ── */
+    #lp-header{
+      position:sticky;top:0;z-index:100;
+      background:rgba(13,26,13,.95);
+      backdrop-filter:blur(8px);
+      border-bottom:1px solid #2a3e2a;
+      padding:12px 20px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+    }
+    .lp-logo{font-size:.95rem;font-weight:700;color:#a5d6a7;display:flex;align-items:center;gap:6px}
+    .lp-logo img{height:1.2em;width:auto}
+    .lp-nav{display:flex;gap:8px;align-items:center}
+    .lp-nav a{font-size:.78rem;color:#81c784;padding:4px 10px;border-radius:12px;border:1px solid #2a3e2a;transition:background .15s}
+    .lp-nav a:hover{background:#1f321f}
+    .lp-cta-header{
+      background:#2e7d32;color:#fff;
+      padding:8px 18px;border-radius:20px;
+      font-size:.82rem;font-weight:700;
+      border:none;cursor:pointer;
+      transition:background .15s;white-space:nowrap;
+    }
+    .lp-cta-header:hover{background:#388e3c}
+
+    /* ── ヒーロー ── */
+    #hero{
+      min-height:90svh;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      text-align:center;
+      padding:60px 20px 40px;
+      background:radial-gradient(ellipse at 50% 0%, #1a3d1a 0%, #0d1a0d 60%);
+      position:relative;overflow:hidden;
+    }
+    #hero::before{
+      content:'';position:absolute;inset:0;
+      background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232e7d32' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity:.5;
+    }
+    .hero-badge{
+      display:inline-flex;align-items:center;gap:6px;
+      background:#1b3d1b;border:1px solid #2e7d32;
+      color:#66bb6a;font-size:.78rem;font-weight:600;
+      padding:5px 14px;border-radius:20px;margin-bottom:20px;
+    }
+    #hero h1{
+      font-size:clamp(1.7rem,6vw,3rem);
+      font-weight:900;line-height:1.25;
+      color:#ffffff;
+      margin-bottom:16px;
+      letter-spacing:-.02em;
+    }
+    #hero h1 span{color:#4caf50}
+    .hero-sub{
+      font-size:clamp(.88rem,2.5vw,1.1rem);
+      color:#a5d6a7;max-width:520px;
+      margin:0 auto 32px;line-height:1.8;
+    }
+    .hero-cta{
+      display:inline-flex;align-items:center;gap:10px;
+      background:linear-gradient(135deg,#2e7d32,#43a047);
+      color:#fff;font-size:1.05rem;font-weight:700;
+      padding:16px 36px;border-radius:32px;
+      box-shadow:0 6px 24px rgba(76,175,80,.4);
+      transition:all .2s;cursor:pointer;border:none;
+    }
+    .hero-cta:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(76,175,80,.5)}
+    .hero-cta-icon{font-size:1.3rem}
+    .hero-free{font-size:.72rem;color:#66bb6a;margin-top:10px;opacity:.8}
+    .hero-stats{
+      display:flex;gap:24px;flex-wrap:wrap;justify-content:center;
+      margin-top:44px;
+    }
+    .hero-stat{text-align:center}
+    .hero-stat-num{font-size:1.6rem;font-weight:800;color:#66bb6a;line-height:1}
+    .hero-stat-label{font-size:.72rem;color:#81c784;margin-top:3px}
+
+    /* ── セクション共通 ── */
+    section{padding:70px 20px}
+    .section-inner{max-width:880px;margin:0 auto}
+    .section-label{
+      font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+      color:#4caf50;margin-bottom:10px;
+    }
+    .section-title{
+      font-size:clamp(1.3rem,4vw,2rem);font-weight:800;
+      color:#fff;margin-bottom:12px;line-height:1.3;
+    }
+    .section-desc{font-size:.92rem;color:#a5d6a7;max-width:560px;line-height:1.8}
+
+    /* ── 使い方 3ステップ ── */
+    #how{background:#111d11}
+    .steps{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:20px;margin-top:40px;
+    }
+    .step{
+      background:#1b2d1b;border:1px solid #2a3e2a;border-radius:16px;
+      padding:28px 24px;position:relative;
+    }
+    .step-num{
+      width:36px;height:36px;border-radius:50%;
+      background:#2e7d32;color:#fff;
+      font-size:.9rem;font-weight:800;
+      display:flex;align-items:center;justify-content:center;
+      margin-bottom:14px;
+    }
+    .step-icon{font-size:2rem;margin-bottom:10px}
+    .step h3{font-size:1rem;font-weight:700;color:#a5d6a7;margin-bottom:6px}
+    .step p{font-size:.84rem;color:#81c784;line-height:1.7}
+    .step-arrow{
+      display:none;
+      position:absolute;top:50%;right:-16px;transform:translateY(-50%);
+      font-size:1.2rem;color:#2e7d32;z-index:1;
+    }
+
+    /* ── 特徴 ── */
+    #features{background:#0d1a0d}
+    .features{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:16px;margin-top:40px;
+    }
+    .feat{
+      background:#111d11;border:1px solid #1f321f;border-radius:14px;
+      padding:22px 20px;display:flex;gap:14px;align-items:flex-start;
+    }
+    .feat-icon{font-size:1.8rem;flex-shrink:0;line-height:1}
+    .feat h3{font-size:.92rem;font-weight:700;color:#a5d6a7;margin-bottom:4px}
+    .feat p{font-size:.8rem;color:#66bb6a;line-height:1.6}
+
+    /* ── こんな人に ── */
+    #for-who{background:#111d11}
+    .who-cards{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:14px;margin-top:36px;
+    }
+    .who-card{
+      background:linear-gradient(135deg,#1b2d1b,#162616);
+      border:1px solid #2a3e2a;border-radius:14px;
+      padding:22px 18px;text-align:center;
+    }
+    .who-icon{font-size:2.2rem;margin-bottom:10px}
+    .who-card h3{font-size:.9rem;font-weight:700;color:#a5d6a7;margin-bottom:6px}
+    .who-card p{font-size:.78rem;color:#66bb6a;line-height:1.6}
+
+    /* ── ガイド記事 ── */
+    #guides{background:#0d1a0d}
+    .guide-grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+      gap:14px;margin-top:36px;
+    }
+    .guide-card{
+      background:#111d11;border:1px solid #1f321f;border-radius:12px;
+      padding:18px;display:flex;gap:12px;align-items:flex-start;
+      transition:border-color .15s,background .15s;
+    }
+    .guide-card:hover{background:#1b2d1b;border-color:#2e7d32}
+    .guide-icon{font-size:1.6rem;flex-shrink:0}
+    .guide-card h3{font-size:.88rem;font-weight:700;color:#a5d6a7;margin-bottom:3px}
+    .guide-card p{font-size:.74rem;color:#66bb6a;line-height:1.5}
+
+    /* ── CTA ── */
+    #final-cta{
+      background:radial-gradient(ellipse at 50% 100%,#1a3d1a 0%,#0d1a0d 70%);
+      text-align:center;padding:80px 20px;
+    }
+    .final-cta-title{
+      font-size:clamp(1.4rem,5vw,2.2rem);font-weight:800;color:#fff;
+      margin-bottom:12px;line-height:1.3;
+    }
+    .final-cta-sub{font-size:.92rem;color:#a5d6a7;margin-bottom:32px}
+    .final-cta-btn{
+      display:inline-flex;align-items:center;gap:10px;
+      background:linear-gradient(135deg,#2e7d32,#43a047);
+      color:#fff;font-size:1.1rem;font-weight:700;
+      padding:18px 44px;border-radius:32px;
+      box-shadow:0 6px 28px rgba(76,175,80,.45);
+      transition:all .2s;
+    }
+    .final-cta-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(76,175,80,.55)}
+
+    /* ── フッター ── */
+    footer{
+      background:#0a140a;border-top:1px solid #1f321f;
+      padding:28px 20px;text-align:center;
+    }
+    .footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{font-size:.78rem;color:#4a7c4e;transition:color .15s}
+    .footer-links a:hover{color:#81c784}
+    .footer-copy{font-size:.72rem;color:#2e4a2e}
+
+    /* ── モバイル ── */
+    @media(max-width:600px){
+      #lp-header{padding:10px 14px}
+      .lp-nav{display:none}
+      #hero{min-height:85svh;padding:50px 16px 36px}
+      section{padding:50px 16px}
+      .step-arrow{display:none}
+      .hero-stats{gap:16px;margin-top:32px}
+      .hero-stat-num{font-size:1.3rem}
+    }
+
+    /* ── 広告エリア ── */
+    .lp-ad{text-align:center;padding:20px 0;max-width:600px;margin:0 auto}
+    .lp-ad-label{font-size:.6rem;color:#2e4a2e;margin-bottom:4px}
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header id="lp-header">
+  <div class="lp-logo">
+    🪲 クワガタ採集スポット検索
+  </div>
+  <nav class="lp-nav">
+    <a href="#how">使い方</a>
+    <a href="#features">特徴</a>
+    <a href="/guide">採集ガイド</a>
+  </nav>
+  <a href="/app" class="lp-cta-header">スポットを探す →</a>
+</header>
+
+<!-- ヒーロー -->
+<section id="hero">
+  <div class="hero-badge">🆓 完全無料 ・ 全国対応</div>
+  <h1>クワガタ・カブトムシが<br><span>採れる場所</span>を地図で探せる</h1>
+  <p class="hero-sub">
+    出発地を入力するだけ。標高・月齢・気象データで<br>
+    全国の採集スポットをスコアリングして表示します。
+  </p>
+  <a href="/app" class="hero-cta">
+    <span class="hero-cta-icon">🗺</span>
+    スポットを探す
+  </a>
+  <p class="hero-free">登録不要・完全無料</p>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">416</div>
+      <div class="hero-stat-label">実績採集スポット</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">8,700<span style="font-size:1rem">+</span></div>
+      <div class="hero-stat-label">AI予測ポイント</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">全国</div>
+      <div class="hero-stat-label">都道府県対応</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">8</div>
+      <div class="hero-stat-label">対応種（クワ・カブト）</div>
+    </div>
+  </div>
+</section>
+
+<!-- 使い方 -->
+<section id="how">
+  <div class="section-inner">
+    <div class="section-label">How to use</div>
+    <h2 class="section-title">3ステップで採集スポットがわかる</h2>
+    <p class="section-desc">難しい設定は不要。出発地を入力するだけで、近くの採集スポットを地図に表示します。</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-icon">📍</div>
+        <h3>出発地を入力</h3>
+        <p>住所・市区町村名を入力するか、GPS現在地ボタンを押すだけ。</p>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-icon">🪲</div>
+        <h3>狙う種を選んで検索</h3>
+        <p>ミヤマ・ノコギリ・カブトムシなど狙いたい種を選んで「探す」を押す。</p>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-icon">🗺</div>
+        <h3>地図でスポット確認</h3>
+        <p>スコア順に採集スポットが表示。地図上でピンをタップして詳細を確認。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 特徴 -->
+<section id="features">
+  <div class="section-inner">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">なぜこのサービスが選ばれるのか</h2>
+
+    <div class="features">
+      <div class="feat">
+        <div class="feat-icon">⛰</div>
+        <div>
+          <h3>標高×植生で本格スコアリング</h3>
+          <p>各種の最適標高・広葉樹林の有無・河川距離を組み合わせてポイントをスコア化。勘ではなくデータで探せる。</p>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🌙</div>
+        <div>
+          <h3>月齢・気象データ連動</h3>
+          <p>採集予定日を入力すると、その日の月齢・気温・湿度を反映したスコアで表示。新月前後の好条件を逃さない。</p>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">📍</div>
+        <div>
+          <h3>実績スポット416件収録</h3>
+          <p>採集経験者が確認した実績スポットをファミリーモードで表示。初心者でも安心して行ける場所がわかる。</p>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🔬</div>
+        <div>
+          <h3>AI予測で新ポイントを発見</h3>
+          <p>8,700件超のAI予測ポイントを全国をカバー。実績のない穴場候補を探したいベテラン向けの玄人モードも搭載。</p>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">👨‍👩‍👧</div>
+        <div>
+          <h3>家族向け情報も充実</h3>
+          <p>難易度・駐車場有無・ファミリー適性を表示。小さな子どもと一緒に行ける安全なスポットを優先表示できる。</p>
+        </div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🆓</div>
+        <div>
+          <h3>登録不要・完全無料</h3>
+          <p>アカウント作成なし。アプリのインストールなし。ブラウザを開いて出発地を入力するだけで今すぐ使える。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- こんな人に -->
+<section id="for-who">
+  <div class="section-inner">
+    <div class="section-label">For who</div>
+    <h2 class="section-title">こんな方におすすめ</h2>
+
+    <div class="who-cards">
+      <div class="who-card">
+        <div class="who-icon">👨‍👩‍👧</div>
+        <h3>子連れファミリー</h3>
+        <p>駐車場ありで難易度低め、安全な実績スポットを優先表示。子どもと一緒の初採集に。</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">🔰</div>
+        <h3>採集初心者</h3>
+        <p>採集場所がわからない方に。10本の採集ガイド記事と一緒に使えばゼロから始められる。</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">🏕</div>
+        <h3>旅行・お出かけ先で</h3>
+        <p>旅先でクワガタを探したい時に。GPSで現在地から即座に近くのスポットを検索。</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">🔬</div>
+        <h3>採集ベテラン</h3>
+        <p>行き慣れた場所を超える穴場を発見したい方に。玄人モードで未開の予測ポイントを探索。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 広告 -->
+<div style="padding:20px 16px;background:#0d1a0d">
+  <div class="lp-ad">
+    <div class="lp-ad-label">スポンサー</div>
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-9675243685208925"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
+</div>
+
+<!-- 採集ガイド -->
+<section id="guides">
+  <div class="section-inner">
+    <div class="section-label">Guide</div>
+    <h2 class="section-title">採集ガイド記事 10本</h2>
+    <p class="section-desc">場所を探すだけでなく、採集を成功させるための知識も。初心者から上級者まで役立つ記事を無料公開。</p>
+
+    <div class="guide-grid">
+      <a href="/guide/beginners" class="guide-card">
+        <div class="guide-icon">🔰</div>
+        <div>
+          <h3>初心者完全ガイド</h3>
+          <p>道具・場所・時期・安全対策まで全部わかる</p>
+        </div>
+      </a>
+      <a href="/guide/kabuto" class="guide-card">
+        <div class="guide-icon">🦏</div>
+        <div>
+          <h3>カブトムシ採集ガイド</h3>
+          <p>クヌギ林・朝採りのコツを徹底解説</p>
+        </div>
+      </a>
+      <a href="/guide/nokogiri" class="guide-card">
+        <div class="guide-icon">🪲</div>
+        <div>
+          <h3>ノコギリクワガタ採集</h3>
+          <p>最も採集しやすい定番種の狙い方</p>
+        </div>
+      </a>
+      <a href="/guide/miyama" class="guide-card">
+        <div class="guide-icon">⛰</div>
+        <div>
+          <h3>ミヤマクワガタ採集</h3>
+          <p>高標高の涼しい山地で狙う方法</p>
+        </div>
+      </a>
+      <a href="/guide/light" class="guide-card">
+        <div class="guide-icon">💡</div>
+        <div>
+          <h3>ライト・街灯採集</h3>
+          <p>月齢と光を使った採集テクニック</p>
+        </div>
+      </a>
+      <a href="/guide/kids" class="guide-card">
+        <div class="guide-icon">👨‍👧</div>
+        <div>
+          <h3>子供・家族で採集</h3>
+          <p>安全な場所選びと準備・楽しみ方</p>
+        </div>
+      </a>
+      <a href="/guide/tools" class="guide-card">
+        <div class="guide-icon">🎒</div>
+        <div>
+          <h3>採集道具ガイド</h3>
+          <p>必要な道具と選び方・おすすめ商品</p>
+        </div>
+      </a>
+      <a href="/guide" class="guide-card" style="border-style:dashed;justify-content:center;align-items:center;text-align:center">
+        <div>
+          <div style="font-size:1.4rem;margin-bottom:6px">📖</div>
+          <h3 style="color:#66bb6a">全10記事を見る</h3>
+          <p>ガイド一覧ページへ →</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 最終CTA -->
+<section id="final-cta">
+  <div class="final-cta-title">さあ、採れる場所を探しに行こう</div>
+  <p class="final-cta-sub">登録不要・無料・今すぐ使える</p>
+  <a href="/app" class="final-cta-btn">
+    🗺 スポットを探す
+  </a>
+</section>
+
+<!-- フッター -->
+<footer>
+  <div class="footer-links">
+    <a href="/app">スポット検索</a>
+    <a href="/guide">採集ガイド</a>
+    <a href="/about">サイトについて</a>
+    <a href="/privacy">プライバシーポリシー</a>
+  </div>
+  <div class="footer-copy">© 2026 クワガタ採集スポット検索</div>
+</footer>
+
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</body>
+</html>
