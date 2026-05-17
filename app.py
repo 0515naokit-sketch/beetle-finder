@@ -663,89 +663,31 @@ def ogp_png():
 
 @app.route("/sitemap.xml")
 def sitemap():
-    xml = '''<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://beetle-finder.onrender.com/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/app</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/guide</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/guide/beginners</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/guide/miyama</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/guide/ookuwa</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/guide/tools</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/guide/nokogiri</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/guide/hirata</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/guide/kabuto</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/guide/kids</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/guide/light</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/guide/aftercare</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/about</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/privacy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://beetle-finder.onrender.com/terms</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-</urlset>'''
+    from datetime import date
+    today = date.today().isoformat()
+    urls = [
+        ("https://beetle-finder.onrender.com/",                "weekly",  "1.0", today),
+        ("https://beetle-finder.onrender.com/app",             "weekly",  "0.9", today),
+        ("https://beetle-finder.onrender.com/guide",           "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/beginners", "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/miyama",    "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/nokogiri",  "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/hirata",    "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/ookuwa",    "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/kabuto",    "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/kids",      "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/light",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/tools",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/aftercare", "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/about",           "monthly", "0.5", today),
+        ("https://beetle-finder.onrender.com/privacy",         "yearly",  "0.3", today),
+        ("https://beetle-finder.onrender.com/terms",           "yearly",  "0.3", today),
+    ]
+    entries = "\n".join(
+        f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lmod}</lastmod>\n    <changefreq>{freq}</changefreq>\n    <priority>{pri}</priority>\n  </url>"
+        for loc, freq, pri, lmod in urls
+    )
+    xml = f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{entries}\n</urlset>'
     return Response(xml, mimetype="application/xml")
 
 
