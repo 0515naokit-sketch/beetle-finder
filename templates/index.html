@@ -56,8 +56,12 @@
     #adv-toggle.open{background:#2e4e2e;border-style:solid;border-color:#66bb6a;border-bottom-left-radius:0;border-bottom-right-radius:0}
     .adv-badge{font-size:.72rem;padding:2px 10px;border-radius:10px;font-weight:700;
       background:#388e3c;color:#fff;white-space:nowrap}
-    #adv-section{display:block;border:2px solid #66bb6a;border-top:none;
-      border-radius:0 0 8px 8px;padding:10px 6px 6px;margin-bottom:4px}
+    #adv-section{
+      border:1px solid #3a5e3a;border-top:none;
+      border-radius:0 0 8px 8px;
+      padding:10px 6px 6px;margin-bottom:4px;
+      background:#161e16;
+    }
 
     /* シェアボタン */
     .share-btn{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;background:#1a1a2e;border:1px solid #3a3a5e;color:#90caf9;padding:4px 12px;border-radius:14px;cursor:pointer;text-decoration:none;transition:background .15s}
@@ -245,6 +249,64 @@
     .legend{background:rgba(27,45,27,.95);padding:8px 12px;border-radius:8px;border:1px solid #2a3e2a;font-size:.74rem;color:#c8e6c9;line-height:1.9}
     .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:middle}
 
+    /* ── 案B：1行検索バー ── */
+    .search-bar-wrap{
+      padding:10px 0 6px;
+    }
+    .search-bar-row{
+      display:flex;align-items:center;gap:0;
+      background:#1f321f;
+      border:2px solid #4caf50;border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 2px 10px rgba(76,175,80,.25);
+    }
+    .search-bar-pin{
+      padding:0 8px 0 12px;font-size:1.1rem;flex-shrink:0;
+      display:flex;align-items:center;
+    }
+    .search-bar-input{
+      flex:1;background:transparent;border:none;outline:none;
+      color:#dcedc8;font-size:16px;padding:11px 6px;
+      min-height:46px;
+    }
+    .search-bar-input::placeholder{color:#4a7c4e;opacity:1}
+    .search-bar-btn{
+      background:linear-gradient(135deg,#2e7d32,#43a047);
+      color:#fff;border:none;border-radius:0 8px 8px 0;
+      padding:0 18px;font-size:.9rem;font-weight:700;
+      height:100%;min-height:46px;cursor:pointer;
+      white-space:nowrap;flex-shrink:0;
+      transition:background .15s;
+    }
+    .search-bar-btn:hover{background:linear-gradient(135deg,#388e3c,#4caf50)}
+    .gps-bar-btn{
+      display:flex;align-items:center;justify-content:center;gap:5px;
+      width:100%;margin-top:6px;
+      background:#1a2a1a;border:1px solid #2e7d32;
+      color:#81c784;border-radius:8px;
+      padding:9px;font-size:.8rem;cursor:pointer;
+      transition:background .15s;
+    }
+    .gps-bar-btn:hover{background:#243e24}
+    .gps-bar-btn:disabled{opacity:.5;cursor:not-allowed}
+    .search-bar-result{
+      font-size:.68rem;color:#81c784;margin-top:4px;
+      opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      min-height:1em;
+    }
+
+    /* ── 詳細設定トグル（案B） ── */
+    .detail-toggle{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:9px 12px;margin-top:6px;
+      background:#1a2a1a;border:1px dashed #3a5e3a;border-radius:8px;
+      color:#81c784;font-size:.78rem;font-weight:600;
+      cursor:pointer;user-select:none;
+      transition:background .15s,border-color .15s;
+    }
+    .detail-toggle:hover{background:#243e24;border-color:#66bb6a}
+    .detail-toggle.open{background:#243e24;border-color:#66bb6a;border-bottom-left-radius:0;border-bottom-right-radius:0;border-style:solid}
+
     /* ══════════════════════════════════════════
        モバイル完全リデザイン（≤680px）
        ══════════════════════════════════════════ */
@@ -401,45 +463,50 @@
       </div>
     </div>
 
-    <!-- 検索後に表示：条件折りたたみトグル -->
+    <!-- 検索後：条件変更トグル -->
     <div id="ctrl-toggle" onclick="toggleControls()">
       ▼ 検索条件を変更する
     </div>
 
     <div id="controls">
 
-      <!-- モード切替（コンパクト） -->
-      <div class="mode-switch-row">
-        <button id="mode-family-btn" class="mode-btn active" onclick="setAppMode('family')">
-          かんたん検索<span class="mode-sub">実績スポットから選ぶ</span>
-        </button>
-        <button id="mode-expert-btn" class="mode-btn" onclick="setAppMode('expert')">
-          新ポイント探索<span class="mode-sub">AI予測（玄人用）</span>
-        </button>
-      </div>
-
-      <!-- STEP 1: 出発地 -->
-      <div class="step-card">
-        <div class="step-card-label"><span class="step-circle">1</span>出発地を設定する</div>
-        <div id="loc-addr-row" class="addr-row">
-          <input id="addr-input" class="loc-input" type="text"
-                 placeholder="市区町村名・住所を入力" value=""
-                 onkeydown="if(event.key==='Enter')geocodeAddress()">
-          <button id="addr-btn" onclick="geocodeAddress()">設定</button>
+      <!-- ── 1行検索バー ── -->
+      <div class="search-bar-wrap">
+        <div class="search-bar-row">
+          <span class="search-bar-pin">📍</span>
+          <input id="addr-input" class="search-bar-input" type="text"
+                 placeholder="出発地を入力（市区町村・住所）" value=""
+                 onkeydown="if(event.key==='Enter')handleSearchBtn()">
+          <button class="search-bar-btn" onclick="handleSearchBtn()">検索</button>
         </div>
-        <button id="gps-btn" onclick="useGPS()">
+        <button id="gps-btn" class="gps-bar-btn" onclick="useGPS()">
           <span id="gps-icon">📡</span> 現在地を使う
         </button>
-        <div id="addr-result" style="font-size:.72rem;color:#66bb6a;margin-top:5px;min-height:1.2em"></div>
+        <div id="addr-result" class="search-bar-result"></div>
       </div>
 
-      <!-- STEP 2: 種を選ぶ（フラット表示・デフォルト表示） -->
-      <div class="step-card">
-        <div class="step-card-label">
-          <span class="step-circle">2</span>狙う種を選ぶ
-          <span class="step-opt">省略可</span>
+      <!-- ── 詳細設定（折りたたみ） ── -->
+      <div class="detail-toggle" onclick="toggleAdvanced()">
+        <span>⚙ 種・日付・範囲など詳細設定</span>
+        <span id="adv-badge">＋</span>
+      </div>
+
+      <div id="adv-section" style="display:none;padding:0 2px 4px">
+
+        <!-- モード切替 -->
+        <div class="ctrl-label" style="margin-top:8px">🗂 検索モード</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+          <button id="mode-family-btn" class="mode-btn active" onclick="setAppMode('family')">
+            かんたん検索<span class="mode-sub">実績スポットから選ぶ</span>
+          </button>
+          <button id="mode-expert-btn" class="mode-btn" onclick="setAppMode('expert')">
+            新ポイント探索<span class="mode-sub">AI予測（玄人用）</span>
+          </button>
         </div>
-        <div class="sp-flat-row">
+
+        <!-- 種選択 -->
+        <div class="ctrl-label">🪲 狙う種</div>
+        <div class="btn-row" style="flex-wrap:wrap;gap:6px;margin-bottom:4px">
           <button class="sp-btn active" data-sp="miyama"     data-guide="/guide/miyama"   onclick="setSpecies('miyama')">ミヤマ</button>
           <button class="sp-btn"        data-sp="nokogiri"   data-guide="/guide/nokogiri" onclick="setSpecies('nokogiri')">ノコギリ</button>
           <button class="sp-btn"        data-sp="hirata"     data-guide="/guide/hirata"   onclick="setSpecies('hirata')">ヒラタ</button>
@@ -447,24 +514,13 @@
           <button class="sp-btn"        data-sp="kokuwagata" data-guide="/guide"           onclick="setSpecies('kokuwagata')">コクワ</button>
           <button class="sp-btn"        data-sp="akaashi"    data-guide="/guide"           onclick="setSpecies('akaashi')">アカアシ</button>
           <button class="sp-btn"        data-sp="suji"       data-guide="/guide"           onclick="setSpecies('suji')">スジクワ</button>
-          <button class="sp-btn"        data-sp="kabuto"     data-guide="/guide/kabuto"    onclick="setSpecies('kabuto')"><img src="/static/img/icon-kabuto.jpg" class="kw-i" alt=""> カブト</button>
+          <button class="sp-btn"        data-sp="kabuto"     data-guide="/guide/kabuto"    onclick="setSpecies('kabuto')">カブトムシ</button>
         </div>
-        <div id="sp-guide-link" style="display:none;margin-top:8px">
-          <a id="sp-guide-anchor" href="/guide" style="font-size:.7rem;color:#66bb6a;text-decoration:none;display:inline-flex;align-items:center;gap:3px;border:1px solid #2e4e2e;border-radius:10px;padding:3px 10px;background:#1a3d1a">
+        <div id="sp-guide-link" style="display:none;margin-bottom:6px">
+          <a id="sp-guide-anchor" href="/guide" style="font-size:.7rem;color:#66bb6a;text-decoration:none;display:inline-flex;align-items:center;gap:3px;border:1px solid #2e4e2e;border-radius:10px;padding:2px 10px;background:#1a3d1a">
             📖 <span id="sp-guide-label">採集ガイドを読む →</span>
           </a>
         </div>
-      </div>
-
-      <!-- 検索ボタン（大・目立つ） -->
-      <button id="search-btn" onclick="handleSearchBtn()">🔍 スポットを検索する</button>
-
-      <!-- 詳細設定（折りたたみ） -->
-      <div class="detail-toggle" onclick="toggleAdvanced()">
-        <span>📅 日付・方向など詳細設定</span>
-        <span id="adv-badge">＋ 開く</span>
-      </div>
-      <div id="adv-section" style="display:none">
 
         <!-- 採集範囲 -->
         <div id="family-range-row">
@@ -487,6 +543,7 @@
             <span id="hours-label">3時間（約165km）</span>
           </div>
         </div>
+
         <!-- 採集予定日 -->
         <div class="ctrl-label">📅 採集予定日（月齢・気象連動）</div>
         <div style="display:flex;gap:6px;align-items:center">
@@ -496,45 +553,9 @@
         </div>
         <div id="plan-date-label" style="font-size:.68rem;color:#81c784;margin-top:2px;opacity:.8"></div>
         <div id="plan-date-advice" style="display:none;margin-top:7px"></div>
-        <!-- 種選択 -->
-        <div class="ctrl-label"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> ターゲット種</div>
-        <div class="sp-group">
-          <div class="sp-group-label">🏔 山岳種</div>
-          <div class="btn-row">
-            <button class="sp-btn active" data-sp="miyama"  data-guide="/guide/miyama"   onclick="setSpecies('miyama')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> ミヤマ</button>
-            <button class="sp-btn"        data-sp="akaashi" data-guide="/guide"           onclick="setSpecies('akaashi')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> アカアシ</button>
-          </div>
-        </div>
-        <div class="sp-group">
-          <div class="sp-group-label">🌲 中山地種</div>
-          <div class="btn-row">
-            <button class="sp-btn" data-sp="okuwagata" data-guide="/guide/ookuwa"  onclick="setSpecies('okuwagata')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> オオクワ</button>
-            <button class="sp-btn" data-sp="suji"      data-guide="/guide"         onclick="setSpecies('suji')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> スジクワ</button>
-          </div>
-        </div>
-        <div class="sp-group">
-          <div class="sp-group-label">🌾 低地種</div>
-          <div class="btn-row">
-            <button class="sp-btn" data-sp="nokogiri"   data-guide="/guide/nokogiri" onclick="setSpecies('nokogiri')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> ノコギリ</button>
-            <button class="sp-btn" data-sp="kokuwagata" data-guide="/guide"           onclick="setSpecies('kokuwagata')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> コクワ</button>
-            <button class="sp-btn" data-sp="hirata"     data-guide="/guide/hirata"   onclick="setSpecies('hirata')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> ヒラタ</button>
-          </div>
-        </div>
-        <div class="sp-group">
-          <div class="sp-group-label"><img src="/static/img/icon-kabuto.jpg" class="kw-i" alt="カブトムシ"> 甲虫</div>
-          <div class="btn-row">
-            <button class="sp-btn" data-sp="kabuto" data-guide="/guide/kabuto" onclick="setSpecies('kabuto')"><img src="/static/img/icon-kabuto.jpg" class="kw-i" alt="カブトムシ"> カブトムシ</button>
-          </div>
-        </div>
-        <!-- 種別ガイドリンク -->
-        <div id="sp-guide-link" style="display:none;margin-top:4px">
-          <a id="sp-guide-anchor" href="/guide" style="font-size:.7rem;color:#66bb6a;text-decoration:none;display:inline-flex;align-items:center;gap:3px;border:1px solid #2e4e2e;border-radius:10px;padding:2px 10px;background:#1a3d1a">
-            📖 <span id="sp-guide-label">このクワガタの採集ガイドを読む →</span>
-          </a>
-        </div>
 
-        <!-- 方向絞り込み（任意） -->
-        <div class="ctrl-label">🧭 方向を絞り込む <span style="font-size:.65rem;color:#81c784;opacity:.8">（任意・デフォルト：全方向）</span></div>
+        <!-- 方向絞り込み -->
+        <div class="ctrl-label">🧭 方向 <span style="font-size:.62rem;opacity:.7">（任意）</span></div>
         <div style="display:flex;align-items:flex-start;gap:10px">
           <div class="dir-grid">
             <button class="dir-btn" data-dir="NW" onclick="setDirection('NW')">北西</button>
@@ -547,15 +568,6 @@
             <button class="dir-btn" data-dir="S"  onclick="setDirection('S')">南</button>
             <button class="dir-btn" data-dir="SE" onclick="setDirection('SE')">南東</button>
           </div>
-          <div style="font-size:.67rem;color:#81c784;opacity:.75;padding-top:2px;line-height:1.6">
-            出発地から<br>どの方向か<br>選んで絞り込み<br><span style="color:#9e9e9e">省略可</span>
-          </div>
-        </div>
-
-        <!-- お気に入り -->
-        <div class="ctrl-label">⭐ フィルタ</div>
-        <div class="btn-row">
-          <button id="fav-toggle" onclick="toggleFavFilter()">☆ お気に入りのみ</button>
         </div>
 
         <!-- 採集方法 -->
@@ -566,17 +578,23 @@
           <button class="method-btn"        data-m="street" onclick="setMethod('street')">💡 街灯採集</button>
         </div>
         <div class="method-desc" id="method-desc">広葉樹林の標高・樹相を重視したランキング</div>
-
-        <!-- 周辺スポット凡例 -->
         <div class="layer-legend" id="light-legend" style="display:none;margin-top:6px">
           <div class="ll"><div class="ll-sq" style="background:#ffc107"></div>駐車場</div>
           <div class="ll"><div class="ll-sq" style="background:#4caf50"></div>キャンプ場</div>
           <div class="ll"><div class="ll-sq" style="background:#1565c0"></div>ダム</div>
           <div class="ll"><div class="ll-sq" style="background:#26c6da"></div>水辺</div>
         </div>
+
+        <!-- お気に入り -->
+        <div class="ctrl-label">⭐ フィルタ</div>
+        <div class="btn-row">
+          <button id="fav-toggle" onclick="toggleFavFilter()">☆ お気に入りのみ</button>
+        </div>
       </div><!-- /adv-section -->
 
       <span id="search-btn-label" style="display:none"></span>
+      <!-- 隠しsearch-btn（JS互換） -->
+      <button id="search-btn" style="display:none" onclick="handleSearchBtn()"></button>
     </div>
 
     <div id="progress-wrap">
@@ -1175,13 +1193,12 @@ function toggleFavFilter(){
 
 function toggleAdvanced(){
   const sec = document.getElementById('adv-section');
-  const btn = document.getElementById('adv-toggle');
+  const btn = document.querySelector('.detail-toggle');
   const badge = document.getElementById('adv-badge');
   const open = sec.style.display !== 'none';
   sec.style.display = open ? 'none' : 'block';
-  btn.classList.toggle('open', !open);
-  badge.textContent = open ? '＋ 開く' : '✕ 閉じる';
-  badge.style.background = open ? '#388e3c' : '#555';
+  if(btn) btn.classList.toggle('open', !open);
+  if(badge) badge.textContent = open ? '＋' : '－';
 }
 
 // ── 条件変更時の共通クリア処理 ───────────────────────────────────────────────
