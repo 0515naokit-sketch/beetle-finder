@@ -104,7 +104,11 @@
     .btn-row{display:flex;gap:5px;flex-wrap:wrap}
 
     /* クワガタアイコン */
-    .kw-i{height:1.1em;width:auto;vertical-align:-.18em;display:inline-block;mix-blend-mode:multiply}
+    .kw-i{height:1.2em;width:auto;vertical-align:-.2em;display:inline-block;object-fit:contain}
+    /* アプリのダーク背景ではinvertで虫を白く */
+    #header .kw-i{filter:invert(1) brightness(1.1);mix-blend-mode:normal}
+    /* ポップアップ（白背景）ではmultiplyで白背景透過 */
+    .leaflet-popup-content .kw-i{mix-blend-mode:multiply}
 
     /* 出発地入力 */
     .addr-row{display:flex;gap:6px}
@@ -1533,7 +1537,7 @@ function _renderFamilyList(){
     </div>
   </div>
   <div style="font-size:.7rem;color:#9e9e9e;margin-top:3px">⛰ ${sp.elevation}m ／ 難易度 ${diffLabel} ／ ${famOk}</div>
-  <div style="font-size:.7rem;color:#a5d6a7;margin-top:2px">🦌 ${spLabels}</div>
+  <div style="font-size:.7rem;color:#a5d6a7;margin-top:2px">🪲 ${spLabels}</div>
   <div style="font-size:.68rem;color:#81c784;margin-top:2px">🌙 ${sp.best_time} ／ 🚗 ${sp.access}</div>
   ${sp.notes?`<div style="font-size:.63rem;color:#ccb060;margin-top:3px;padding:3px 6px;background:#2a1a00;border-radius:4px">📝 ${sp.notes}</div>`:''}
   ${noteBtnHtml}
@@ -1573,7 +1577,7 @@ function buildFamilyPopup(sp, rank){
   return `<div class="pop-title">${rank===0?'🥇':rank===1?'🥈':rank===2?'🥉':'📍'} ${sp.name}</div>
 <div class="pop-row">📍 ${sp.prefecture}</div>
 <div class="pop-row">⛰ 標高 ${sp.elevation}m ／ 🚗 ${sp.dist_km}km先</div>
-<div class="pop-row">🦌 採れる種：${spLabels}</div>
+<div class="pop-row">🪲 採れる種：${spLabels}</div>
 <div class="pop-row">📅 ベスト月：${(sp.best_months||[]).map(m=>m+'月').join('・')}</div>
 <div class="pop-row">🌙 ${sp.best_time}</div>
 <div class="pop-row">🚌 ${sp.access}</div>

@@ -20,7 +20,11 @@
     a{color:#388e3c}
     #site-header{background:#1b2d1b;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
     #site-header h1{color:#a5d6a7;font-size:1rem;font-weight:700}
-    .kw-i{height:1.1em;width:auto;vertical-align:-.18em;display:inline-block;mix-blend-mode:multiply}
+    .kw-i{height:1.2em;width:auto;vertical-align:-.2em;display:inline-block;object-fit:contain}
+    /* 暗いヘッダー内：白反転で虫を白く表示 */
+    #site-header .kw-i{filter:invert(1) brightness(1.1);mix-blend-mode:normal}
+    /* ライト背景（本文）：multiply で白背景を透過 */
+    .page-title .kw-i, .cta-btn .kw-i, .spec-box .kw-i, h3 .kw-i, li .kw-i, a .kw-i{mix-blend-mode:multiply}
     .home-btn{background:#2e4e2e;color:#a5d6a7;padding:6px 14px;border-radius:6px;font-size:.82rem;border:1px solid #4a7a4a;text-decoration:none}
     .home-btn:hover{background:#388e3c}
     .hero{background:linear-gradient(135deg,#1b2d1b 0%,#2e4e2e 100%);padding:40px 20px;text-align:center;color:#a5d6a7}
