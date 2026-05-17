@@ -23,10 +23,13 @@
     #site-header{background:#1b2d1b;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
     #site-header h1{color:#a5d6a7;font-size:1rem;font-weight:700}
     .kw-i{height:1.2em;width:auto;vertical-align:-.2em;display:inline-block;object-fit:contain}
+    /* 実写アイコン：正方形クロップ */
+    .kw-i.sp-i{height:1.6em;width:1.6em;object-fit:cover;border-radius:4px;vertical-align:-.4em}
     /* 暗いヘッダー内：白反転で虫を白く表示 */
     #site-header .kw-i{filter:invert(1) brightness(1.1);mix-blend-mode:normal}
     /* ライト背景（本文）：multiply で白背景を透過 */
     .page-title .kw-i, .cta-btn .kw-i, .spec-box .kw-i, h3 .kw-i, li .kw-i, a .kw-i{mix-blend-mode:multiply}
+    .page-title .kw-i.sp-i, .cta-btn .kw-i.sp-i, .spec-box .kw-i.sp-i, h3 .kw-i.sp-i, a .kw-i.sp-i{mix-blend-mode:normal}
     .home-btn{background:#2e4e2e;color:#a5d6a7;padding:6px 14px;border-radius:6px;font-size:.82rem;border:1px solid #4a7a4a}
     .home-btn:hover{background:#388e3c;text-decoration:none;color:#a5d6a7}
     .hero{width:100%;height:300px;object-fit:cover;display:block}
@@ -130,11 +133,11 @@
 
 <div class="container">
   <div class="breadcrumb"><a href="/">トップ</a> &gt; <a href="/guide">採集ガイド</a> &gt; ヒラタクワガタ採集ガイド</div>
-  <h1 class="page-title"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt=""> ヒラタクワガタ採集ガイド</h1>
+  <h1 class="page-title"><img src="/static/img/icon-hirata.jpg" class="kw-i sp-i" alt="ヒラタクワガタ"> ヒラタクワガタ採集ガイド</h1>
   <p class="page-subtitle">河川沿いの低地に生息する「扁鍬形」— 圧倒的な顎の力を持つ人気種の採集ポイントを徹底解説</p>
 
   <div class="spec-box">
-    <h3><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt=""> ヒラタクワガタ 基本データ</h3>
+    <h3><img src="/static/img/icon-hirata.jpg" class="kw-i sp-i" alt="ヒラタクワガタ"> ヒラタクワガタ 基本データ</h3>
     <div class="spec-grid">
       <div class="spec-item"><span>学名</span>Dorcus titanus pilifer</div>
       <div class="spec-item"><span>体長（オス）</span>25〜76mm</div>
@@ -314,7 +317,7 @@
   <h2 class="section">他の採集ガイドも読む</h2>
   <div class="guide-links">
     <div class="guide-link-card">
-      <a href="/guide/nokogiri"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt=""> ノコギリクワガタ採集ガイド</a>
+      <a href="/guide/nokogiri"><img src="/static/img/icon-nokogiri.jpg" class="kw-i sp-i" alt="ノコギリクワガタ"> ノコギリクワガタ採集ガイド</a>
       <p>最も一般的なクワガタの採集法</p>
     </div>
     <div class="guide-link-card">
@@ -340,7 +343,7 @@
   <div class="cta-box">
     <h2>🗺 ヒラタクワガタのスポットを検索する</h2>
     <p>「ヒラタクワガタ」を選択すると、河川沿いの低地を優先したスポットが表示されます。</p>
-    <a href="/app" class="cta-btn"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt=""> 無料でスポット検索</a>
+    <a href="/app" class="cta-btn"><img src="/static/img/icon-hirata.jpg" class="kw-i sp-i" alt=""> 無料でスポット検索</a>
   </div>
 </div>
 <footer>
