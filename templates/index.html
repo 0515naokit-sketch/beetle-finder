@@ -313,41 +313,48 @@
 
     /* ══════════════════════════════════════════
        モバイル完全リデザイン（≤680px）
+       ★ display:none を使わない設計
+         Leaflet は display:none コンテナでサイズ0×0になるため
+         position:fixed + z-index でサイドバーの裏に地図を常に描画する
        ══════════════════════════════════════════ */
     @media(max-width:680px){
 
       /* ── ベースレイアウト ── */
-      #app{ flex-direction:column; height:100dvh; overflow:hidden; }
+      #app{ display:block; height:100dvh; overflow:hidden; position:relative; }
 
-      /* ── 初期状態：マップ非表示・サイドバー全画面 ── */
-      #map-wrap{ display:none; order:1; flex-shrink:0; height:100dvh; }
-      #mobile-tab-bar{ display:none !important; }
-      #sidebar{
-        order:2; width:100%; min-width:unset;
-        height:100dvh; border-right:none; border-top:none;
-        flex-shrink:0;
+      /* ── 地図：常にfull-screenで裏に描画（z-index低い） ── */
+      #map-wrap{
+        position:fixed; inset:0; z-index:1;
       }
+      #mobile-tab-bar{ display:none !important; }
 
-      /* ── 検索後（body.results-shown）: 地図フルスクリーン ── */
-      body.results-shown #map-wrap{ display:block; height:100dvh; }
-      body.results-shown #sidebar{ display:none; }
-
-      /* ── 条件変更（body.ctrl-open）: サイドバーを上に重ねる ── */
-      body.ctrl-open #map-wrap{ display:block; height:100dvh; }
-      body.ctrl-open #sidebar{
-        display:flex; position:fixed; top:0; left:0; right:0; bottom:0;
-        z-index:1000; height:100dvh; overflow-y:auto;
+      /* ── サイドバー：地図の上に重なる（初期状態） ── */
+      #sidebar{
+        position:fixed; inset:0; z-index:100;
+        width:100%; height:100dvh;
+        border-right:none; border-top:none;
+        overflow-y:auto; -webkit-overflow-scrolling:touch;
         background:#1b2d1b;
       }
+
+      /* ── 検索後（body.results-shown）: 地図を前面に ── */
+      body.results-shown #sidebar{ display:none; }
+      body.results-shown #map-wrap{ z-index:100; }
+
+      /* ── 条件変更（body.ctrl-open）: サイドバーを前面に ── */
+      body.ctrl-open #sidebar{
+        display:flex; z-index:200;
+      }
+      body.ctrl-open #map-wrap{ z-index:1; }
       body.ctrl-open #ctrl-toggle{ display:block !important; }
 
       /* ── スポット数フローティングバッジ（地図左上） ── */
       #map-spot-badge{
-        display:none;position:absolute;top:12px;left:12px;z-index:900;
+        display:none; position:fixed; top:12px; left:12px; z-index:900;
         background:rgba(17,29,17,.92);
-        border:1px solid #4caf50;border-radius:24px;
+        border:1px solid #4caf50; border-radius:24px;
         padding:7px 14px;
-        font-size:.8rem;font-weight:700;color:#a5d6a7;
+        font-size:.8rem; font-weight:700; color:#a5d6a7;
         box-shadow:0 2px 12px rgba(0,0,0,.4);
         pointer-events:none;
         backdrop-filter:blur(6px);
@@ -356,10 +363,10 @@
 
       /* ── 条件変更ボタン（地図右上） ── */
       #map-list-btn{
-        display:none;position:absolute;top:12px;right:12px;z-index:900;
-        background:#1b2d1b;border:1px solid #4caf50;border-radius:24px;
+        display:none; position:fixed; top:12px; right:12px; z-index:900;
+        background:#1b2d1b; border:1px solid #4caf50; border-radius:24px;
         padding:7px 16px;
-        font-size:.8rem;font-weight:700;color:#a5d6a7;
+        font-size:.8rem; font-weight:700; color:#a5d6a7;
         box-shadow:0 2px 12px rgba(0,0,0,.4);
         cursor:pointer;
         backdrop-filter:blur(6px);
@@ -423,7 +430,7 @@
       .spot-item{ padding:12px 14px; }
 
       /* ── もっと見るボタン（地図上）：位置調整 ── */
-      #map-more-btn{ bottom:60px; font-size:.88rem; padding:12px 24px; }
+      #map-more-btn{ position:fixed; bottom:24px; font-size:.88rem; padding:12px 24px; }
 
       /* ── モード切替ボタン ── */
       .mode-btn{ padding:10px 6px; font-size:.82rem; min-height:52px; }
@@ -1571,15 +1578,9 @@ function renderFamilyResults(spots, moonAge){
   _familyMoonAge   = moonAge;
   _familyLimit     = FAMILY_PAGE;
 
-  // ② ブラウザの描画が完了してからマーカーを追加・setView
-  //    （display:none→block 直後は Leaflet がサイズを取得できないため）
-  requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{
-      map.invalidateSize({animate:false, pan:false});
-      _addFamilyMarkers(_allFamilySpots, 0, _familyLimit);
-      if(_allFamilySpots[0]) map.setView([_allFamilySpots[0].lat, _allFamilySpots[0].lng], 11);
-    });
-  });
+  // マーカー追加・setView（地図は常にレンダリング済みのため即時反映可）
+  _addFamilyMarkers(_allFamilySpots, 0, _familyLimit);
+  if(_allFamilySpots[0]) map.setView([_allFamilySpots[0].lat, _allFamilySpots[0].lng], 11);
 
   _renderFamilyList();
 }
@@ -1784,13 +1785,8 @@ function renderExpertResults(spots, moonAge){
   _expertMoonAge   = moonAge;
   _expertLimit     = EXPERT_PAGE;
 
-  requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{
-      map.invalidateSize({animate:false, pan:false});
-      _addExpertMarkers(_allExpertSpots, 0, _expertLimit);
-      if(_allExpertSpots[0]) map.setView([_allExpertSpots[0].lat, _allExpertSpots[0].lng], 10);
-    });
-  });
+  _addExpertMarkers(_allExpertSpots, 0, _expertLimit);
+  if(_allExpertSpots[0]) map.setView([_allExpertSpots[0].lat, _allExpertSpots[0].lng], 10);
 
   _renderExpertList();
 }
