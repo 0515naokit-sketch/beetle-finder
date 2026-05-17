@@ -79,8 +79,27 @@
     .prod-card .prod-btn:hover{background:#e68900 !important}
     .amz-note2{font-size:.68rem;color:#aaa;margin-top:4px}
     footer{background:#1b2d1b;color:#81c784;text-align:center;padding:16px;font-size:.78rem;margin-top:40px}
+    /* 印刷前モーダル */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:16px}
+    .modal-overlay.active{display:flex}
+    .modal-box{background:#fff;border-radius:14px;padding:22px 20px;max-width:480px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.3);animation:fadeUp .25s ease}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-head{font-size:1rem;font-weight:700;color:#bf360c;margin-bottom:4px;text-align:center}
+    .modal-sub{font-size:.8rem;color:#666;text-align:center;margin-bottom:14px}
+    .modal-prod-row{display:flex;gap:10px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}
+    .modal-prod-row::-webkit-scrollbar{display:none}
+    .modal-prod-card{flex:0 0 110px;background:#f9f9f9;border:1px solid #e0e0e0;border-radius:10px;padding:8px 6px;text-align:center}
+    .modal-prod-card img{width:80px;height:80px;object-fit:contain;display:block;margin:0 auto 5px}
+    .modal-prod-card .mpname{font-size:.68rem;color:#333;line-height:1.3;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+    .modal-prod-card .mpbtn{display:block;background:#ff9900;color:#fff !important;font-size:.68rem;font-weight:700;padding:4px 3px;border-radius:5px;text-decoration:none !important}
+    .modal-actions{display:flex;gap:10px;margin-top:14px}
+    .modal-print-btn{flex:1;background:#ff6d00;color:#fff;border:none;padding:11px;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer}
+    .modal-print-btn:hover{background:#e65100}
+    .modal-skip{flex:0 0 auto;background:none;border:1px solid #ccc;color:#888;padding:11px 14px;border-radius:8px;font-size:.82rem;cursor:pointer}
+    .modal-skip:hover{background:#f5f5f5}
+    .modal-count{font-size:.78rem;color:#aaa;text-align:center;margin-top:8px}
     @media print {
-      #site-header, .home-btn, .cta-box, .amz-section, footer, .guide-links, .print-btn { display: none !important; }
+      #site-header, .home-btn, .cta-box, .amz-section, footer, .guide-links, .print-btn, .modal-overlay { display: none !important; }
       body { background: #fff; }
       .sheet-wrap { border: 2px solid #333; }
       .container { padding: 0; }
@@ -321,7 +340,7 @@
     <div class="sheet-row"><div class="sheet-label">気づいたこと</div><div class="sheet-val" style="min-height:48px">（自由に書こう）</div></div>
     <p class="sheet-note">※ このシートを毎日1枚ずつ使って、夏休みの終わりにまとめよう</p>
   </div>
-  <button class="print-btn" onclick="window.print()">🖨️ この観察シートを印刷する</button>
+  <button class="print-btn" onclick="showPrintModal()">🖨️ この観察シートを印刷する</button>
 
   <!-- STEP 4 まとめ -->
   <h2 class="section">STEP 4｜自由研究をまとめよう</h2>
@@ -403,5 +422,79 @@
   <a href="/terms">利用規約</a>
 </footer>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+
+<!-- 印刷前モーダル -->
+<div class="modal-overlay" id="printModal">
+  <div class="modal-box">
+    <div class="modal-head">🛒 印刷前に、飼育グッズはそろっていますか？</div>
+    <div class="modal-sub">カブトムシの観察に必要なものをチェック！Amazonで揃えられます</div>
+    <div class="modal-prod-row">
+      <div class="modal-prod-card">
+        <a href="https://www.amazon.co.jp/dp/B0G37NQ5YK?tag=beetlefinder-22&linkCode=ogi&th=1&psc=1" target="_blank" rel="noopener sponsored">
+          <img src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B0G37NQ5YK&Format=_SL200_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=beetlefinder-22" alt="飼育ケース">
+          <p class="mpname">昆虫 飼育ケース 大型</p>
+        </a>
+        <a class="mpbtn" href="https://www.amazon.co.jp/dp/B0G37NQ5YK?tag=beetlefinder-22&linkCode=ogi&th=1&psc=1" target="_blank" rel="noopener sponsored">見る</a>
+        <img src="https://ir-jp.amazon-adsystem.com/e/ir?t=beetlefinder-22&language=ja_JP&l=li3&o=9&a=B0G37NQ5YK" width="1" height="1" border="0" alt="" style="border:none!important;margin:0!important;">
+      </div>
+      <div class="modal-prod-card">
+        <a href="https://www.amazon.co.jp/dp/B004GBMSOK?tag=beetlefinder-22&linkCode=ogi&th=1&psc=1" target="_blank" rel="noopener sponsored">
+          <img src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B004GBMSOK&Format=_SL200_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=beetlefinder-22" alt="昆虫ゼリー">
+          <p class="mpname">プロゼリー 昆虫ゼリー 100個</p>
+        </a>
+        <a class="mpbtn" href="https://www.amazon.co.jp/dp/B004GBMSOK?tag=beetlefinder-22&linkCode=ogi&th=1&psc=1" target="_blank" rel="noopener sponsored">見る</a>
+        <img src="https://ir-jp.amazon-adsystem.com/e/ir?t=beetlefinder-22&language=ja_JP&l=li3&o=9&a=B004GBMSOK" width="1" height="1" border="0" alt="" style="border:none!important;margin:0!important;">
+      </div>
+      <div class="modal-prod-card">
+        <a href="https://www.amazon.co.jp/dp/B0CPLKTM29?tag=beetlefinder-22&linkCode=ogi&th=1&psc=1" target="_blank" rel="noopener sponsored">
+          <img src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B0CPLKTM29&Format=_SL200_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=beetlefinder-22" alt="昆虫マット">
+          <p class="mpname">発酵クヌギマット カブトムシ産卵用</p>
+        </a>
+        <a class="mpbtn" href="https://www.amazon.co.jp/dp/B0CPLKTM29?tag=beetlefinder-22&linkCode=ogi&th=1&psc=1" target="_blank" rel="noopener sponsored">見る</a>
+        <img src="https://ir-jp.amazon-adsystem.com/e/ir?t=beetlefinder-22&language=ja_JP&l=li3&o=9&a=B0CPLKTM29" width="1" height="1" border="0" alt="" style="border:none!important;margin:0!important;">
+      </div>
+      <div class="modal-prod-card">
+        <a href="https://www.amazon.co.jp/dp/B0CDCQ4X8Y?tag=beetlefinder-22&linkCode=ogi&th=1&psc=1" target="_blank" rel="noopener sponsored">
+          <img src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B0CDCQ4X8Y&Format=_SL200_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=beetlefinder-22" alt="虫かごセット">
+          <p class="mpname">昆虫採集ケース 虫かごセット</p>
+        </a>
+        <a class="mpbtn" href="https://www.amazon.co.jp/dp/B0CDCQ4X8Y?tag=beetlefinder-22&linkCode=ogi&th=1&psc=1" target="_blank" rel="noopener sponsored">見る</a>
+        <img src="https://ir-jp.amazon-adsystem.com/e/ir?t=beetlefinder-22&language=ja_JP&l=li3&o=9&a=B0CDCQ4X8Y" width="1" height="1" border="0" alt="" style="border:none!important;margin:0!important;">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-print-btn" id="modalPrintBtn" onclick="doPrint()">🖨️ 印刷する（<span id="countdown">5</span>）</button>
+      <button class="modal-skip" onclick="doPrint()">スキップ</button>
+    </div>
+    <div class="modal-count">※ Amazonアソシエイトプログラムのリンクです</div>
+  </div>
+</div>
+
+<script>
+  function showPrintModal() {
+    document.getElementById('printModal').classList.add('active');
+    let sec = 5;
+    const el = document.getElementById('countdown');
+    const btn = document.getElementById('modalPrintBtn');
+    const timer = setInterval(function() {
+      sec--;
+      if (el) el.textContent = sec;
+      if (sec <= 0) {
+        clearInterval(timer);
+        doPrint();
+      }
+    }, 1000);
+    btn._timer = timer;
+  }
+  function doPrint() {
+    document.getElementById('printModal').classList.remove('active');
+    const btn = document.getElementById('modalPrintBtn');
+    if (btn && btn._timer) clearInterval(btn._timer);
+    setTimeout(function(){ window.print(); }, 100);
+  }
+  document.getElementById('printModal').addEventListener('click', function(e){
+    if (e.target === this) doPrint();
+  });
+</script>
 </body>
 </html>
