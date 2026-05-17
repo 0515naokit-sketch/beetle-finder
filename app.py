@@ -627,6 +627,44 @@ def guide_aftercare():
     return render_template("guide_aftercare.html")
 
 
+@app.route("/guide/june")
+def guide_june():
+    return render_template("guide_june.html")
+
+
+@app.route("/guide/july")
+def guide_july():
+    return render_template("guide_july.html")
+
+
+@app.route("/guide/august")
+def guide_august():
+    return render_template("guide_august.html")
+
+
+PREF_DATA = {
+    "tokyo":     {"name": "東京都",   "alt": "奥多摩・高尾山",         "elev": "200〜1000m", "species": "ノコギリ・コクワ・ヒラタ",         "spots": "奥多摩・高尾山・青梅",         "best_month": "7〜8月"},
+    "kanagawa":  {"name": "神奈川県", "alt": "丹沢山地",               "elev": "200〜1500m", "species": "ミヤマ・ノコギリ・ヒラタ",         "spots": "丹沢・相模川沿い・宮ヶ瀬",     "best_month": "7月"},
+    "saitama":   {"name": "埼玉県",   "alt": "奥武蔵・秩父",           "elev": "100〜1000m", "species": "ノコギリ・コクワ・ミヤマ",         "spots": "秩父・飯能・越生",             "best_month": "7〜8月"},
+    "chiba":     {"name": "千葉県",   "alt": "房総丘陵",               "elev": "0〜300m",   "species": "ノコギリ・コクワ・カブトムシ",     "spots": "君津・鴨川・市原",             "best_month": "7〜8月"},
+    "osaka":     {"name": "大阪府",   "alt": "金剛山・北摂",           "elev": "100〜1100m", "species": "ノコギリ・ヒラタ・コクワ",         "spots": "金剛山・能勢・箕面",           "best_month": "7〜8月"},
+    "aichi":     {"name": "愛知県",   "alt": "三河山地・設楽",         "elev": "100〜1000m", "species": "ノコギリ・ヒラタ・ミヤマ",         "spots": "設楽・豊田・新城",             "best_month": "7〜8月"},
+    "fukuoka":   {"name": "福岡県",   "alt": "英彦山・脊振山地",       "elev": "200〜1200m", "species": "ノコギリ・ヒラタ・ミヤマ",         "spots": "英彦山・脊振山・宝満山",       "best_month": "7月"},
+    "hokkaido":  {"name": "北海道",   "alt": "道内各山地",             "elev": "0〜800m",   "species": "ミヤマ・ノコギリ・コクワ",         "spots": "道南・道央の雑木林",           "best_month": "7〜8月"},
+    "nagano":    {"name": "長野県",   "alt": "日本アルプス周辺",       "elev": "500〜1800m", "species": "ミヤマ・アカアシ・ノコギリ",       "spots": "伊那谷・安曇野・上高地周辺",   "best_month": "7月"},
+    "yamanashi": {"name": "山梨県",   "alt": "富士山麓・南アルプス",   "elev": "400〜1800m", "species": "ミヤマ・ノコギリ・アカアシ",       "spots": "富士五湖周辺・昇仙峡・甲府盆地縁", "best_month": "7月"},
+}
+
+
+@app.route("/guide/spot/<pref>")
+def guide_spot(pref):
+    data = PREF_DATA.get(pref)
+    if not data:
+        from flask import abort
+        abort(404)
+    return render_template("guide_spot.html", pref=pref, **data)
+
+
 @app.route("/about")
 def about():
     return render_template("about.html")
@@ -679,6 +717,19 @@ def sitemap():
         ("https://beetle-finder.onrender.com/guide/light",     "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/tools",     "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/aftercare", "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/june",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/july",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/august",   "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/spot/tokyo",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/kanagawa",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/saitama",   "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/chiba",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/osaka",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/aichi",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/fukuoka",   "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/hokkaido",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/nagano",    "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/yamanashi", "monthly", "0.6", today),
         ("https://beetle-finder.onrender.com/about",           "monthly", "0.5", today),
         ("https://beetle-finder.onrender.com/privacy",         "yearly",  "0.3", today),
         ("https://beetle-finder.onrender.com/terms",           "yearly",  "0.3", today),
