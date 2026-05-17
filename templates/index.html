@@ -100,7 +100,7 @@
     .btn-row{display:flex;gap:5px;flex-wrap:wrap}
 
     /* クワガタアイコン */
-    .kw-i{height:1.1em;width:auto;vertical-align:-.18em;display:inline-block}
+    .kw-i{height:1.1em;width:auto;vertical-align:-.18em;display:inline-block;mix-blend-mode:multiply}
 
     /* 出発地入力 */
     .addr-row{display:flex;gap:6px}
@@ -456,33 +456,33 @@
 
       <div id="adv-section" style="display:none">
         <!-- 種選択 -->
-        <div class="ctrl-label"><img src="/static/kw.svg" class="kw-i" alt=""> ターゲット種</div>
+        <div class="ctrl-label"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> ターゲット種</div>
         <div class="sp-group">
           <div class="sp-group-label">🏔 山岳種</div>
           <div class="btn-row">
-            <button class="sp-btn active" data-sp="miyama"  data-guide="/guide/miyama"   onclick="setSpecies('miyama')"><img src="/static/kw.svg" class="kw-i" alt=""> ミヤマ</button>
-            <button class="sp-btn"        data-sp="akaashi" data-guide="/guide"           onclick="setSpecies('akaashi')"><img src="/static/kw.svg" class="kw-i" alt=""> アカアシ</button>
+            <button class="sp-btn active" data-sp="miyama"  data-guide="/guide/miyama"   onclick="setSpecies('miyama')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> ミヤマ</button>
+            <button class="sp-btn"        data-sp="akaashi" data-guide="/guide"           onclick="setSpecies('akaashi')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> アカアシ</button>
           </div>
         </div>
         <div class="sp-group">
           <div class="sp-group-label">🌲 中山地種</div>
           <div class="btn-row">
-            <button class="sp-btn" data-sp="okuwagata" data-guide="/guide/ookuwa"  onclick="setSpecies('okuwagata')"><img src="/static/kw.svg" class="kw-i" alt=""> オオクワ</button>
-            <button class="sp-btn" data-sp="suji"      data-guide="/guide"         onclick="setSpecies('suji')"><img src="/static/kw.svg" class="kw-i" alt=""> スジクワ</button>
+            <button class="sp-btn" data-sp="okuwagata" data-guide="/guide/ookuwa"  onclick="setSpecies('okuwagata')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> オオクワ</button>
+            <button class="sp-btn" data-sp="suji"      data-guide="/guide"         onclick="setSpecies('suji')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> スジクワ</button>
           </div>
         </div>
         <div class="sp-group">
           <div class="sp-group-label">🌾 低地種</div>
           <div class="btn-row">
-            <button class="sp-btn" data-sp="nokogiri"   data-guide="/guide/nokogiri" onclick="setSpecies('nokogiri')"><img src="/static/kw.svg" class="kw-i" alt=""> ノコギリ</button>
-            <button class="sp-btn" data-sp="kokuwagata" data-guide="/guide"           onclick="setSpecies('kokuwagata')"><img src="/static/kw.svg" class="kw-i" alt=""> コクワ</button>
-            <button class="sp-btn" data-sp="hirata"     data-guide="/guide/hirata"   onclick="setSpecies('hirata')"><img src="/static/kw.svg" class="kw-i" alt=""> ヒラタ</button>
+            <button class="sp-btn" data-sp="nokogiri"   data-guide="/guide/nokogiri" onclick="setSpecies('nokogiri')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> ノコギリ</button>
+            <button class="sp-btn" data-sp="kokuwagata" data-guide="/guide"           onclick="setSpecies('kokuwagata')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> コクワ</button>
+            <button class="sp-btn" data-sp="hirata"     data-guide="/guide/hirata"   onclick="setSpecies('hirata')"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> ヒラタ</button>
           </div>
         </div>
         <div class="sp-group">
-          <div class="sp-group-label"><img src="/static/kw.svg" class="kw-i" alt=""> 甲虫</div>
+          <div class="sp-group-label"><img src="/static/img/icon-kabuto.jpg" class="kw-i" alt="カブトムシ"> 甲虫</div>
           <div class="btn-row">
-            <button class="sp-btn" data-sp="kabuto" data-guide="/guide/kabuto" onclick="setSpecies('kabuto')"><img src="/static/kw.svg" class="kw-i" alt=""> カブトムシ</button>
+            <button class="sp-btn" data-sp="kabuto" data-guide="/guide/kabuto" onclick="setSpecies('kabuto')"><img src="/static/img/icon-kabuto.jpg" class="kw-i" alt="カブトムシ"> カブトムシ</button>
           </div>
         </div>
         <!-- 種別ガイドリンク -->
@@ -599,7 +599,7 @@
                  data-ad-slot="auto"></ins>
           </div>
           <a href="/guide/nokogiri" style="display:flex;align-items:center;gap:8px;background:#1f321f;border:1px solid #2a3e2a;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#243e24'" onmouseout="this.style.background='#1f321f'">
-            <span style="font-size:1rem;flex-shrink:0"><img src="/static/kw.svg" style="height:1em;width:auto" alt=""></span>
+            <span style="font-size:1rem;flex-shrink:0"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"></span>
             <div>
               <div style="font-size:.76rem;font-weight:700;color:#a5d6a7">ノコギリクワガタ採集</div>
               <div style="font-size:.64rem;color:#4a7c4e;margin-top:1px">最も採集しやすい定番種</div>
@@ -778,14 +778,14 @@ function _amazonBottomBar(){
 }
 
 const SPECIES_META = {
-  miyama:    { label:"ミヤマクワガタ",   icon:'<img src="/static/kw.svg" class="kw-i" alt="">', color:"#1565c0", badge:"badge-m" },
-  okuwagata: { label:"オオクワガタ",     icon:'<img src="/static/kw.svg" class="kw-i" alt="">', color:"#4a148c", badge:"badge-o" },
-  nokogiri:  { label:"ノコギリクワガタ", icon:'<img src="/static/kw.svg" class="kw-i" alt="">', color:"#1b5e20", badge:"badge-n" },
-  kokuwagata:{ label:"コクワガタ",       icon:'<img src="/static/kw.svg" class="kw-i" alt="">', color:"#006064", badge:"badge-k" },
-  hirata:    { label:"ヒラタクワガタ",   icon:'<img src="/static/kw.svg" class="kw-i" alt="">', color:"#880e4f", badge:"badge-h" },
-  akaashi:   { label:"アカアシクワガタ", icon:'<img src="/static/kw.svg" class="kw-i" alt="">', color:"#4a148c", badge:"badge-a" },
-  suji:      { label:"スジクワガタ",     icon:'<img src="/static/kw.svg" class="kw-i" alt="">', color:"#1a237e", badge:"badge-s" },
-  kabuto:    { label:"カブトムシ",       icon:'<img src="/static/kw.svg" class="kw-i" alt="">', color:"#4e342e", badge:"badge-kb" },
+  miyama:    { label:"ミヤマクワガタ",   icon:'<img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ">', color:"#1565c0", badge:"badge-m" },
+  okuwagata: { label:"オオクワガタ",     icon:'<img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ">', color:"#4a148c", badge:"badge-o" },
+  nokogiri:  { label:"ノコギリクワガタ", icon:'<img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ">', color:"#1b5e20", badge:"badge-n" },
+  kokuwagata:{ label:"コクワガタ",       icon:'<img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ">', color:"#006064", badge:"badge-k" },
+  hirata:    { label:"ヒラタクワガタ",   icon:'<img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ">', color:"#880e4f", badge:"badge-h" },
+  akaashi:   { label:"アカアシクワガタ", icon:'<img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ">', color:"#4a148c", badge:"badge-a" },
+  suji:      { label:"スジクワガタ",     icon:'<img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ">', color:"#1a237e", badge:"badge-s" },
+  kabuto:    { label:"カブトムシ",       icon:'<img src="/static/img/icon-kabuto.jpg" class="kw-i" alt="カブトムシ">', color:"#4e342e", badge:"badge-kb" },
 };
 
 // 月別活性係数
