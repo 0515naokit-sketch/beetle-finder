@@ -61,120 +61,119 @@
     }
     .btn-header:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(27,94,32,.4)}
 
-    /* ── ヒーロー ── */
+    /* ── ヒーロー（縦割り2カラム） ── */
     #hero{
-      position:relative;min-height:82svh;
-      display:flex;flex-direction:column;
-      align-items:center;justify-content:center;
-      text-align:center;padding:72px 24px 56px;
-      overflow:hidden;
+      display:grid;
+      grid-template-columns:58% 42%;
+      min-height:100svh;
     }
-    #hero-bg{
-      position:absolute;inset:0;
-      background-color:#1a3a1a;
-      z-index:0;overflow:hidden;
+    .hero-photo{
+      position:relative;overflow:hidden;
     }
-    #hero-bg img{
+    .hero-photo img{
       width:100%;height:100%;
-      object-fit:cover;object-position:center 35%;
-      filter:brightness(.55) saturate(1.1);
+      object-fit:cover;object-position:center 30%;
       display:block;
     }
-    /* 全体に緑がかったダークオーバーレイ */
-    #hero-bg::before{
-      content:'';position:absolute;inset:0;z-index:1;
-      background:linear-gradient(
-        180deg,
-        rgba(5,25,10,.55) 0%,
-        rgba(5,20,8,.40) 45%,
-        rgba(5,25,10,.70) 100%
-      );
+    /* 右側へのグラデーション */
+    .hero-photo::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(to right,transparent 70%,rgba(8,20,8,.6));
     }
-    /* 下部グラデーション */
-    #hero-bg::after{
-      content:'';position:absolute;bottom:0;left:0;right:0;height:160px;
-      background:linear-gradient(transparent,rgba(0,15,0,.6));
-      z-index:2;
+    .hero-panel{
+      background:#0b1a0b;
+      display:flex;flex-direction:column;
+      justify-content:center;
+      padding:56px 52px 48px;
+      position:relative;
     }
-    #hero > *{position:relative;z-index:3}
-
-    .hero-eyebrow{
-      display:inline-block;
-      background:rgba(255,255,255,.15);
-      border:1px solid rgba(255,255,255,.3);
-      color:#fff;
-      font-size:.72rem;font-weight:700;letter-spacing:.14em;
-      padding:6px 18px;border-radius:20px;margin-bottom:28px;
+    /* 左側へのつながりグラデーション */
+    .hero-panel::before{
+      content:'';position:absolute;top:0;bottom:0;left:-40px;width:40px;
+      background:linear-gradient(to right,transparent,#0b1a0b);
+      pointer-events:none;
+    }
+    .hero-tag{
+      display:inline-flex;align-items:center;gap:6px;
+      background:rgba(67,160,71,.18);
+      border:1px solid rgba(67,160,71,.35);
+      color:#81c784;
+      font-size:.68rem;font-weight:700;letter-spacing:.12em;
+      padding:5px 14px;border-radius:4px;
+      margin-bottom:28px;align-self:flex-start;
+    }
+    .hero-tag::before{
+      content:'';width:6px;height:6px;border-radius:50%;
+      background:#43a047;flex-shrink:0;
     }
     #hero h1{
-      font-size:clamp(2.2rem,6.5vw,4rem);
-      font-weight:900;line-height:1.2;
-      color:#fff;margin-bottom:18px;
+      font-size:clamp(1.7rem,3vw,2.6rem);
+      font-weight:900;line-height:1.22;
+      color:#fff;margin-bottom:20px;
       letter-spacing:-.02em;
-      text-shadow:0 3px 24px rgba(0,0,0,.6), 0 1px 4px rgba(0,0,0,.4);
     }
     #hero h1 em{
-      color:#6fcf74;font-style:normal;
-      display:inline-block;
-      text-shadow:0 0 32px rgba(111,207,116,.4);
+      color:#6fcf74;font-style:normal;display:block;
     }
     .hero-sub{
-      font-size:clamp(.92rem,2.5vw,1.08rem);
-      color:rgba(255,255,255,.9);max-width:500px;
-      margin:0 auto 44px;line-height:2;
-      text-shadow:0 1px 8px rgba(0,0,0,.5);
+      font-size:.9rem;
+      color:rgba(255,255,255,.65);
+      line-height:1.9;margin-bottom:36px;
+      border-left:2px solid #2e7d32;
+      padding-left:14px;
     }
-    .hero-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
     .hero-cta{
       display:inline-block;
       background:linear-gradient(135deg,#43a047,#2e7d32);
       color:#fff;
-      font-size:1.08rem;font-weight:800;
-      padding:18px 60px;border-radius:50px;
-      box-shadow:0 8px 32px rgba(46,125,50,.5);
+      font-size:1rem;font-weight:800;
+      padding:16px 40px;border-radius:8px;
+      box-shadow:0 6px 24px rgba(46,125,50,.45);
       transition:all .25s;
       letter-spacing:.04em;
+      align-self:flex-start;
+      margin-bottom:36px;
     }
-    .hero-cta:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(46,125,50,.6)}
-
-    /* ヒーロー ミニ利用ガイド */
-    .hero-how{
-      display:flex;align-items:center;gap:10px;
-      margin-top:24px;
-      background:rgba(0,0,0,.3);
-      backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,.18);
-      border-radius:50px;padding:10px 24px;
-      flex-wrap:wrap;justify-content:center;
+    .hero-cta:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(46,125,50,.6)}
+    /* ヒーロー内3ステップ */
+    .hero-steps{
+      display:flex;flex-direction:column;gap:0;
+      margin-bottom:36px;
     }
-    .hero-how-item{
-      display:flex;align-items:center;gap:8px;
-      color:#fff;font-size:.82rem;font-weight:600;
+    .hero-step{
+      display:flex;align-items:center;gap:16px;
+      padding:12px 0;
+      border-bottom:1px solid rgba(255,255,255,.07);
     }
-    .hero-how-num{
-      width:22px;height:22px;border-radius:50%;
-      background:#43a047;color:#fff;
-      font-size:.72rem;font-weight:800;
+    .hero-step:first-child{border-top:1px solid rgba(255,255,255,.07)}
+    .hero-step-num{
+      width:28px;height:28px;border-radius:50%;
+      background:transparent;
+      border:1px solid #43a047;
+      color:#6fcf74;
+      font-size:.78rem;font-weight:800;
       display:flex;align-items:center;justify-content:center;
       flex-shrink:0;
     }
-    .hero-how-arrow{color:rgba(255,255,255,.45);font-size:.8rem}
-
+    .hero-step-text{
+      font-size:.86rem;color:rgba(255,255,255,.82);font-weight:500;
+    }
+    .hero-step-sub{
+      font-size:.72rem;color:rgba(255,255,255,.38);margin-top:1px;
+    }
+    /* 統計 */
     .hero-stats{
-      display:flex;gap:0;margin-top:20px;
-      background:rgba(255,255,255,.12);
-      backdrop-filter:blur(16px);
-      -webkit-backdrop-filter:blur(16px);
-      border:1px solid rgba(255,255,255,.2);
-      border-radius:20px;padding:24px 40px;
+      display:flex;gap:0;
+      border-top:1px solid rgba(255,255,255,.1);
+      padding-top:24px;
     }
     .hero-stat{
-      padding:0 36px;border-right:1px solid rgba(255,255,255,.2);
-      text-align:center;
+      flex:1;text-align:center;
+      border-right:1px solid rgba(255,255,255,.1);
     }
     .hero-stat:last-child{border-right:none}
-    .hero-stat-num{font-size:1.9rem;font-weight:900;color:#fff;line-height:1;letter-spacing:-.02em}
-    .hero-stat-label{font-size:.66rem;color:rgba(255,255,255,.65);margin-top:6px;letter-spacing:.06em}
+    .hero-stat-num{font-size:1.5rem;font-weight:900;color:#fff;line-height:1;letter-spacing:-.02em}
+    .hero-stat-label{font-size:.6rem;color:rgba(255,255,255,.45);margin-top:5px;letter-spacing:.06em}
 
     /* ── セクション共通 ── */
     .section-inner{max-width:920px;margin:0 auto}
@@ -413,14 +412,14 @@
     @media(max-width:700px){
       #lp-header{padding:0 16px}
       nav{display:none}
-      #hero{min-height:80svh;padding:56px 16px 48px}
-      .hero-how{gap:8px;padding:10px 16px;border-radius:16px}
-      .hero-how-arrow{display:none}
-      .hero-stats{
-        gap:0;padding:18px 20px;flex-wrap:wrap;
-        justify-content:center;border-radius:16px;
-      }
-      .hero-stat{padding:8px 18px}
+      /* モバイルは縦積み */
+      #hero{grid-template-columns:1fr;min-height:auto}
+      .hero-photo{height:52vw;min-height:200px}
+      .hero-photo::after{background:linear-gradient(to bottom,transparent 60%,rgba(8,20,8,.8))}
+      .hero-panel{padding:32px 20px 36px}
+      .hero-panel::before{display:none}
+      .hero-cta{align-self:stretch;text-align:center;padding:15px 24px}
+      .hero-stats{gap:0}
       #how{padding:64px 16px}
       .steps{grid-template-columns:1fr;gap:16px}
       #scene{grid-template-columns:1fr}
@@ -438,8 +437,6 @@
     @media(max-width:440px){
       .guide-grid{grid-template-columns:1fr}
       .tool-row{grid-template-columns:1fr}
-      .hero-stats{flex-direction:column;align-items:center;gap:16px}
-      .hero-stat{border-right:none;padding:0}
     }
   </style>
 </head>
@@ -461,31 +458,63 @@
 
 <!-- ヒーロー -->
 <section id="hero">
-  <div id="hero-bg">
-    <img src="/static/img/hero.jpg" alt="親子でクワガタ採集" aria-hidden="true">
+  <!-- 左：写真 -->
+  <div class="hero-photo">
+    <img src="/static/img/hero.jpg" alt="親子でクワガタ採集">
   </div>
 
-  <div class="hero-eyebrow">全国対応・登録不要・完全無料</div>
-  <h1>夏はクワガタ、カブトムシ採集に<br><em>出かけよう！</em></h1>
-  <p class="hero-sub">
-    出発地を入れるだけで、近くの採集スポットを地図に表示。<br>
-    標高・月齢・気象データで「採れる可能性が高い場所」がすぐわかる。
-  </p>
+  <!-- 右：テキストパネル -->
+  <div class="hero-panel">
+    <div class="hero-tag">全国対応・登録不要・完全無料</div>
 
-  <a href="/app" class="hero-cta">近くのスポットを探す（無料）</a>
+    <h1>夏はクワガタ、<br>カブトムシ採集に<br><em>出かけよう！</em></h1>
 
-  <div class="hero-stats">
-    <div class="hero-stat">
-      <div class="hero-stat-num">10,000+</div>
-      <div class="hero-stat-label">全国採集スポット</div>
+    <p class="hero-sub">
+      出発地を入れるだけ。標高・月齢・気象データから<br>
+      採れる可能性が高い場所を地図に表示します。
+    </p>
+
+    <a href="/app" class="hero-cta">近くのスポットを探す（無料）</a>
+
+    <!-- 3ステップ -->
+    <div class="hero-steps">
+      <div class="hero-step">
+        <div class="hero-step-num">1</div>
+        <div>
+          <div class="hero-step-text">出発地を入力する</div>
+          <div class="hero-step-sub">住所・地名・現在地GPS対応</div>
+        </div>
+      </div>
+      <div class="hero-step">
+        <div class="hero-step-num">2</div>
+        <div>
+          <div class="hero-step-text">狙う種を選ぶ</div>
+          <div class="hero-step-sub">ミヤマ・ノコギリ・カブトムシなど8種</div>
+        </div>
+      </div>
+      <div class="hero-step">
+        <div class="hero-step-num">3</div>
+        <div>
+          <div class="hero-step-text">スポットを地図で確認</div>
+          <div class="hero-step-sub">スコア順・難易度・駐車場情報つき</div>
+        </div>
+      </div>
     </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">47</div>
-      <div class="hero-stat-label">都道府県対応</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">8種</div>
-      <div class="hero-stat-label">クワガタ・カブト対応</div>
+
+    <!-- 統計 -->
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">10,000+</div>
+        <div class="hero-stat-label">全国スポット</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">47</div>
+        <div class="hero-stat-label">都道府県対応</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">8種</div>
+        <div class="hero-stat-label">対応種</div>
+      </div>
     </div>
   </div>
 </section>
