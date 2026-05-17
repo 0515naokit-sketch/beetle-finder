@@ -262,15 +262,46 @@
         flex-shrink:0;
       }
 
-      /* ── 検索後（body.results-shown）: 上部マップ＋タブ＋下部リスト ── */
-      body.results-shown #map-wrap{ display:block; }
+      /* ── 検索後（body.results-shown）: デフォルトで地図フル表示 ── */
+      body.results-shown #map-wrap{ display:block; height:calc(100dvh - 48px); }
       body.results-shown #mobile-tab-bar{ display:flex; }
-      body.results-shown #sidebar{ height:calc(60dvh - 48px); }
+      body.results-shown #sidebar{ height:0; overflow:hidden; min-height:0; }
 
-      /* ── マップフォーカス（body.map-focus）── */
+      /* ── リスト表示（body.list-focus）── */
+      body.list-focus #map-wrap{ height:42dvh; }
+      body.list-focus #sidebar{ height:calc(58dvh - 48px); overflow-y:auto; }
+
+      /* ── マップフォーカス（body.map-focus）: results-shownと同じ ── */
       body.map-focus #map-wrap{ height:calc(100dvh - 48px); }
       body.map-focus #sidebar{ height:0; overflow:hidden; min-height:0; }
       body.map-focus #map-overlay-ad{ display:none; }
+
+      /* ── スポット数フローティングバッジ（地図左上） ── */
+      #map-spot-badge{
+        display:none;position:absolute;top:12px;left:12px;z-index:900;
+        background:rgba(17,29,17,.92);
+        border:1px solid #4caf50;border-radius:24px;
+        padding:7px 14px;
+        font-size:.8rem;font-weight:700;color:#a5d6a7;
+        box-shadow:0 2px 12px rgba(0,0,0,.4);
+        pointer-events:none;
+        backdrop-filter:blur(6px);
+      }
+      body.results-shown #map-spot-badge{ display:block; }
+      body.list-focus #map-spot-badge{ display:block; }
+
+      /* ── 一覧ボタン（地図右上） ── */
+      #map-list-btn{
+        display:none;position:absolute;top:12px;right:12px;z-index:900;
+        background:#1b5e20;border:1px solid #4caf50;border-radius:24px;
+        padding:7px 16px;
+        font-size:.8rem;font-weight:700;color:#fff;
+        box-shadow:0 2px 12px rgba(0,0,0,.4);
+        cursor:pointer;
+        backdrop-filter:blur(6px);
+      }
+      body.results-shown #map-list-btn{ display:block; }
+      body.list-focus #map-list-btn{ background:#243e24; }
 
       /* ── モバイルタブバー ── */
       #mobile-tab-bar{
@@ -652,11 +683,11 @@
 
   <!-- モバイル専用タブバー（検索後に表示） -->
   <div id="mobile-tab-bar">
-    <button class="mob-tab active" id="mob-tab-list" onclick="setMobileTab('list')">
+    <button class="mob-tab" id="mob-tab-list" onclick="setMobileTab('list')">
       <span class="mob-tab-icon">📋</span>
-      <span class="mob-tab-label" id="mob-list-label">スポット</span>
+      <span class="mob-tab-label" id="mob-list-label">一覧</span>
     </button>
-    <button class="mob-tab" id="mob-tab-map" onclick="setMobileTab('map')">
+    <button class="mob-tab active" id="mob-tab-map" onclick="setMobileTab('map')">
       <span class="mob-tab-icon">🗺</span>
       <span class="mob-tab-label">地図</span>
     </button>
@@ -664,6 +695,10 @@
 
   <div id="map-wrap" style="flex:1;position:relative;overflow:hidden">
     <div id="map" style="width:100%;height:100%"></div>
+    <!-- スポット数バッジ（モバイル：地図左上） -->
+    <div id="map-spot-badge">📍 <span id="map-spot-count-text">0件</span></div>
+    <!-- 一覧ボタン（モバイル：地図右上） -->
+    <button id="map-list-btn" onclick="setMobileTab('list')">一覧 ≡</button>
     <!-- マップ中央下：もっと見るフローティングボタン -->
     <button id="map-more-btn" onclick="_mapMoreBtnClick()">🔍 もっと見る</button>
     <!-- マップ右下オーバーレイ広告（AdSense審査通過後に有効化） -->
@@ -1304,10 +1339,12 @@ function setMobileTab(tab){
   const mapBtn  = document.getElementById('mob-tab-map');
   if(listBtn) listBtn.classList.toggle('active', tab==='list');
   if(mapBtn)  mapBtn.classList.toggle('active',  tab==='map');
-  if(tab==='map'){
-    document.body.classList.add('map-focus');
-  } else {
+  if(tab==='list'){
     document.body.classList.remove('map-focus');
+    document.body.classList.add('list-focus');
+  } else {
+    document.body.classList.remove('list-focus');
+    document.body.classList.add('map-focus');
   }
   setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 300);
 }
@@ -1411,10 +1448,12 @@ function _renderFamilyList(){
   document.getElementById('spot-count').textContent =
     `実績スポット ${_familyLimit}件表示 ／ 全${all.length}件 ／ 50km以内`;
   document.getElementById('sidebar-top-ad').style.display = 'block';
-  // モバイルタブラベル更新
+  // モバイル：バッジ更新＋地図をデフォルト表示
   const mll = document.getElementById('mob-list-label');
-  if(mll) mll.textContent = `スポット ${_familyLimit}件`;
-  setMobileTab('list');
+  if(mll) mll.textContent = `一覧 ${_familyLimit}件`;
+  const badge = document.getElementById('map-spot-count-text');
+  if(badge) badge.textContent = `${_familyLimit}件のスポット`;
+  setMobileTab('map');
 
   list.innerHTML = display.map((sp,i)=>{
     const rank = i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}位`;
@@ -1623,10 +1662,12 @@ function _renderExpertList(){
   document.getElementById('spot-count').textContent =
     `予測ポイント ${_expertLimit}件表示 ／ 全${all.length}件 ／ ${expertRadius}km以内（玄人モード）`;
   document.getElementById('sidebar-top-ad').style.display = 'block';
-  // モバイルタブラベル更新
+  // モバイル：バッジ更新＋地図をデフォルト表示
   const mll2 = document.getElementById('mob-list-label');
-  if(mll2) mll2.textContent = `スポット ${_expertLimit}件`;
-  setMobileTab('list');
+  if(mll2) mll2.textContent = `一覧 ${_expertLimit}件`;
+  const badge2 = document.getElementById('map-spot-count-text');
+  if(badge2) badge2.textContent = `${_expertLimit}件のポイント`;
+  setMobileTab('map');
 
   list.innerHTML = '<div style="padding:6px 14px;background:#1a0a2e;border-top:2px solid #7e57c2;font-size:.72rem;color:#ce93d8;font-weight:600">🔬 予測ポイント（玄人モード） ※未確認地点</div>'
   + display.map((sp,i)=>{
