@@ -11,9 +11,9 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>クワガタ採集スポット検索 | 採れる場所を地図で探せる無料サービス</title>
+  <title>クワガタ・カブトムシ採集スポット検索 | 採れる場所を地図で探せる無料サービス</title>
   <meta name="description" content="出発地を入力するだけ。クワガタ・カブトムシが採れる採集スポットを地図で表示。標高・月齢・気象データで全国の採集ポイントをランキング。全国対応・完全無料。">
-  <meta property="og:title" content="クワガタ採集スポット検索">
+  <meta property="og:title" content="クワガタ・カブトムシ採集スポット検索">
   <meta property="og:description" content="出発地を入力するだけ。クワガタ・カブトムシが採れる採集スポットを地図で表示。全国対応・完全無料。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://beetle-finder.onrender.com/">
@@ -136,13 +136,32 @@
       letter-spacing:.04em;
     }
     .hero-cta:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(46,125,50,.6)}
-    .hero-note{
-      font-size:.74rem;color:rgba(255,255,255,.6);letter-spacing:.04em;
-      background:rgba(0,0,0,.25);padding:4px 14px;border-radius:12px;
+
+    /* ヒーロー ミニ利用ガイド */
+    .hero-how{
+      display:flex;align-items:center;gap:10px;
+      margin-top:24px;
+      background:rgba(0,0,0,.3);
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:50px;padding:10px 24px;
+      flex-wrap:wrap;justify-content:center;
     }
+    .hero-how-item{
+      display:flex;align-items:center;gap:8px;
+      color:#fff;font-size:.82rem;font-weight:600;
+    }
+    .hero-how-num{
+      width:22px;height:22px;border-radius:50%;
+      background:#43a047;color:#fff;
+      font-size:.72rem;font-weight:800;
+      display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;
+    }
+    .hero-how-arrow{color:rgba(255,255,255,.45);font-size:.8rem}
 
     .hero-stats{
-      display:flex;gap:0;margin-top:60px;
+      display:flex;gap:0;margin-top:28px;
       background:rgba(255,255,255,.12);
       backdrop-filter:blur(16px);
       -webkit-backdrop-filter:blur(16px);
@@ -395,6 +414,8 @@
       #lp-header{padding:0 16px}
       nav{display:none}
       #hero{min-height:80svh;padding:56px 16px 48px}
+      .hero-how{gap:8px;padding:10px 16px;border-radius:16px}
+      .hero-how-arrow{display:none}
       .hero-stats{
         gap:0;padding:18px 20px;flex-wrap:wrap;
         justify-content:center;border-radius:16px;
@@ -428,7 +449,7 @@
 <header id="lp-header">
   <div class="lp-logo">
     <span class="lp-logo-dot"></span>
-    クワガタ採集スポット検索
+    クワガタ・カブトムシ採集スポット検索
   </div>
   <nav>
     <a href="#how">使い方</a>
@@ -444,15 +465,31 @@
     <img src="/static/img/hero.jpg" alt="親子でクワガタ採集" aria-hidden="true">
   </div>
 
-  <div class="hero-eyebrow">全国対応・完全無料</div>
-  <h1>家族で行く、<em>採れる</em>場所を<br>地図で探そう。</h1>
+  <div class="hero-eyebrow">全国対応・登録不要・完全無料</div>
+  <h1>夏はクワガタ、カブトムシ採集に<br><em>出かけよう！</em></h1>
   <p class="hero-sub">
-    出発地を入力するだけ。標高・月齢・気象データで<br>
-    近くの採集スポットをスコア順に地図表示。
+    出発地を入れるだけで、近くの採集スポットを地図に表示。<br>
+    標高・月齢・気象データで「採れる可能性が高い場所」がすぐわかる。
   </p>
-  <div class="hero-cta-wrap">
-    <a href="/app" class="hero-cta">近くのスポットを探す</a>
-    <p class="hero-note">登録不要・アプリ不要・今すぐ使える</p>
+
+  <a href="/app" class="hero-cta">近くのスポットを探す（無料）</a>
+
+  <!-- 利用方法ミニガイド -->
+  <div class="hero-how">
+    <div class="hero-how-item">
+      <span class="hero-how-num">1</span>
+      <span>出発地を入力</span>
+    </div>
+    <div class="hero-how-arrow">→</div>
+    <div class="hero-how-item">
+      <span class="hero-how-num">2</span>
+      <span>狙う種を選ぶ</span>
+    </div>
+    <div class="hero-how-arrow">→</div>
+    <div class="hero-how-item">
+      <span class="hero-how-num">3</span>
+      <span>スポットを地図で確認</span>
+    </div>
   </div>
 
   <div class="hero-stats">
@@ -466,7 +503,7 @@
     </div>
     <div class="hero-stat">
       <div class="hero-stat-num">8種</div>
-      <div class="hero-stat-label">対応種</div>
+      <div class="hero-stat-label">クワガタ・カブト対応</div>
     </div>
   </div>
 </section>
@@ -672,7 +709,7 @@
 
 <!-- フッター -->
 <footer>
-  <div class="footer-logo">クワガタ採集スポット検索</div>
+  <div class="footer-logo">クワガタ・カブトムシ採集スポット検索</div>
   <div class="footer-links">
     <a href="/app">スポット検索</a>
     <a href="/guide">採集ガイド</a>
@@ -680,7 +717,7 @@
     <a href="/privacy">プライバシーポリシー</a>
     <a href="/terms">利用規約</a>
   </div>
-  <div class="footer-copy">© 2026 クワガタ採集スポット検索</div>
+  <div class="footer-copy">© 2026 クワガタ・カブトムシ採集スポット検索</div>
 </footer>
 
 <div id="lp-anchor-ad" style="display:none"></div>
