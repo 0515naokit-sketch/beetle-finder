@@ -769,6 +769,24 @@ def contact():
     return render_template("contact.html")
 
 
+# ── 都道府県別ガイド ──────────────────────────────────────────
+@app.route("/guide/pref/tokyo")
+def guide_pref_tokyo():
+    return render_template("guide_pref_tokyo.html")
+
+@app.route("/guide/pref/kanagawa")
+def guide_pref_kanagawa():
+    return render_template("guide_pref_kanagawa.html")
+
+@app.route("/guide/pref/saitama")
+def guide_pref_saitama():
+    return render_template("guide_pref_saitama.html")
+
+@app.route("/guide/pref/chiba")
+def guide_pref_chiba():
+    return render_template("guide_pref_chiba.html")
+
+
 @app.route("/health")
 def health():
     """ヘルスチェック用エンドポイント（UptimeRobotなどの死活監視から定期ping）"""
