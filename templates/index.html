@@ -1375,10 +1375,9 @@ function clearFamilyMarkers(){
 let _ctrlCollapsed = false;
 function collapseControls(){
   _ctrlCollapsed = true;
-  // モバイル：results-shown を付与して地図フルスクリーンに
   document.body.classList.add('results-shown');
   document.body.classList.remove('ctrl-open');
-  setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 350);
+  // invalidateSize は renderFamilyResults の requestAnimationFrame 内で呼ぶ
 }
 function toggleControls(){
   if(_ctrlCollapsed){
@@ -1554,20 +1553,34 @@ function _renderFamilyList(){
 
 function renderFamilyResults(spots, moonAge){
   _inlineAdCount = 0;
+  clearFamilyMarkers();
+
+  // ① 先に地図を表示（results-shown → #map-wrap が display:block になる）
+  collapseControls();
+
   if(!spots.length){
-    document.getElementById('spot-list').innerHTML =
+    const sl = document.getElementById('spot-list');
+    if(sl) sl.innerHTML =
       '<div style="padding:20px;color:#81c784;font-size:.8rem;text-align:center">⚠ 50km以内に実績スポットが見つかりませんでした。<br>出発地を変えるか、玄人モードで広域予測を試してください。</div>';
+    const badge = document.getElementById('map-spot-count-text');
+    if(badge) badge.textContent = '0件';
     return;
   }
-  // 表示順を操作：トップFAMILY_TOP件＋末尾の低スコア件を先頭に並べ
-  // 高スコアの中位を「もっと見る」の中に温存する
+
   _allFamilySpots  = _reorderForDisplay(spots, FAMILY_TOP, FAMILY_PAGE);
   _familyMoonAge   = moonAge;
   _familyLimit     = FAMILY_PAGE;
-  clearFamilyMarkers();
-  _addFamilyMarkers(_allFamilySpots, 0, _familyLimit);
-  if(_allFamilySpots[0]) map.setView([_allFamilySpots[0].lat, _allFamilySpots[0].lng], 11);
-  collapseControls();
+
+  // ② ブラウザの描画が完了してからマーカーを追加・setView
+  //    （display:none→block 直後は Leaflet がサイズを取得できないため）
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      map.invalidateSize({animate:false, pan:false});
+      _addFamilyMarkers(_allFamilySpots, 0, _familyLimit);
+      if(_allFamilySpots[0]) map.setView([_allFamilySpots[0].lat, _allFamilySpots[0].lng], 11);
+    });
+  });
+
   _renderFamilyList();
 }
 
@@ -1758,19 +1771,27 @@ function _renderExpertList(){
 }
 
 function renderExpertResults(spots, moonAge){
+  clearFamilyMarkers();
+  collapseControls(); // 先に地図を表示
+
   if(!spots.length){
-    document.getElementById('spot-list').innerHTML=
+    const sl = document.getElementById('spot-list');
+    if(sl) sl.innerHTML=
       '<div style="padding:20px;color:#ce93d8;font-size:.8rem;text-align:center">⚠ 指定範囲内に候補が見つかりませんでした。<br>距離を広げて再試行してください。</div>';
     return;
   }
-  // 表示順を操作：トップEXPERT_TOP件＋末尾の低スコア件を先頭に並べ
   _allExpertSpots  = _reorderForDisplay(spots, EXPERT_TOP, EXPERT_PAGE);
   _expertMoonAge   = moonAge;
   _expertLimit     = EXPERT_PAGE;
-  clearFamilyMarkers();
-  _addExpertMarkers(_allExpertSpots, 0, _expertLimit);
-  if(_allExpertSpots[0]) map.setView([_allExpertSpots[0].lat, _allExpertSpots[0].lng], 10);
-  collapseControls();
+
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      map.invalidateSize({animate:false, pan:false});
+      _addExpertMarkers(_allExpertSpots, 0, _expertLimit);
+      if(_allExpertSpots[0]) map.setView([_allExpertSpots[0].lat, _allExpertSpots[0].lng], 10);
+    });
+  });
+
   _renderExpertList();
 }
 
