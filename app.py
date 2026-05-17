@@ -656,6 +656,16 @@ PREF_DATA = {
 }
 
 
+@app.route("/guide/jiyukenkyu")
+def guide_jiyukenkyu():
+    return render_template("guide_jiyukenkyu.html")
+
+
+@app.route("/guide/jiyukenkyu-kabuto")
+def guide_jiyukenkyu_kabuto():
+    return render_template("guide_jiyukenkyu_kabuto.html")
+
+
 @app.route("/guide/spot/<pref>")
 def guide_spot(pref):
     data = PREF_DATA.get(pref)
@@ -729,7 +739,9 @@ def sitemap():
         ("https://beetle-finder.onrender.com/guide/spot/fukuoka",   "monthly", "0.6", today),
         ("https://beetle-finder.onrender.com/guide/spot/hokkaido",  "monthly", "0.6", today),
         ("https://beetle-finder.onrender.com/guide/spot/nagano",    "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/yamanashi", "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/yamanashi",    "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/jiyukenkyu",        "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/jiyukenkyu-kabuto", "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/about",           "monthly", "0.5", today),
         ("https://beetle-finder.onrender.com/privacy",         "yearly",  "0.3", today),
         ("https://beetle-finder.onrender.com/terms",           "yearly",  "0.3", today),
