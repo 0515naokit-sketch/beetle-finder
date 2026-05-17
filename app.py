@@ -627,6 +627,11 @@ def guide_aftercare():
     return render_template("guide_aftercare.html")
 
 
+@app.route("/guide/may")
+def guide_may():
+    return render_template("guide_may.html")
+
+
 @app.route("/guide/june")
 def guide_june():
     return render_template("guide_june.html")
@@ -642,18 +647,87 @@ def guide_august():
     return render_template("guide_august.html")
 
 
+@app.route("/guide/september")
+def guide_september():
+    return render_template("guide_september.html")
+
+
+@app.route("/guide/october")
+def guide_october():
+    return render_template("guide_october.html")
+
+
 PREF_DATA = {
-    "tokyo":     {"name": "東京都",   "alt": "奥多摩・高尾山",         "elev": "200〜1000m", "species": "ノコギリ・コクワ・ヒラタ",         "spots": "奥多摩・高尾山・青梅",         "best_month": "7〜8月"},
-    "kanagawa":  {"name": "神奈川県", "alt": "丹沢山地",               "elev": "200〜1500m", "species": "ミヤマ・ノコギリ・ヒラタ",         "spots": "丹沢・相模川沿い・宮ヶ瀬",     "best_month": "7月"},
-    "saitama":   {"name": "埼玉県",   "alt": "奥武蔵・秩父",           "elev": "100〜1000m", "species": "ノコギリ・コクワ・ミヤマ",         "spots": "秩父・飯能・越生",             "best_month": "7〜8月"},
-    "chiba":     {"name": "千葉県",   "alt": "房総丘陵",               "elev": "0〜300m",   "species": "ノコギリ・コクワ・カブトムシ",     "spots": "君津・鴨川・市原",             "best_month": "7〜8月"},
-    "osaka":     {"name": "大阪府",   "alt": "金剛山・北摂",           "elev": "100〜1100m", "species": "ノコギリ・ヒラタ・コクワ",         "spots": "金剛山・能勢・箕面",           "best_month": "7〜8月"},
-    "aichi":     {"name": "愛知県",   "alt": "三河山地・設楽",         "elev": "100〜1000m", "species": "ノコギリ・ヒラタ・ミヤマ",         "spots": "設楽・豊田・新城",             "best_month": "7〜8月"},
-    "fukuoka":   {"name": "福岡県",   "alt": "英彦山・脊振山地",       "elev": "200〜1200m", "species": "ノコギリ・ヒラタ・ミヤマ",         "spots": "英彦山・脊振山・宝満山",       "best_month": "7月"},
-    "hokkaido":  {"name": "北海道",   "alt": "道内各山地",             "elev": "0〜800m",   "species": "ミヤマ・ノコギリ・コクワ",         "spots": "道南・道央の雑木林",           "best_month": "7〜8月"},
-    "nagano":    {"name": "長野県",   "alt": "日本アルプス周辺",       "elev": "500〜1800m", "species": "ミヤマ・アカアシ・ノコギリ",       "spots": "伊那谷・安曇野・上高地周辺",   "best_month": "7月"},
+    # 北海道・東北
+    "hokkaido":  {"name": "北海道",   "alt": "道内各山地",             "elev": "0〜800m",    "species": "ミヤマ・ノコギリ・コクワ",         "spots": "道南・道央の雑木林",               "best_month": "7〜8月"},
+    "aomori":    {"name": "青森県",   "alt": "八甲田山・白神山地",     "elev": "200〜1200m", "species": "ミヤマ・ノコギリ・アカアシ",       "spots": "八甲田・白神・下北半島周辺",       "best_month": "7月"},
+    "iwate":     {"name": "岩手県",   "alt": "早池峰山・奥羽山脈",     "elev": "200〜1200m", "species": "ミヤマ・ノコギリ・アカアシ",       "spots": "花巻・遠野・八幡平周辺",           "best_month": "7月"},
+    "miyagi":    {"name": "宮城県",   "alt": "蔵王山・船形山",         "elev": "200〜1000m", "species": "ミヤマ・ノコギリ・コクワ",         "spots": "蔵王・七ヶ宿・気仙沼周辺",         "best_month": "7〜8月"},
+    "akita":     {"name": "秋田県",   "alt": "奥羽山脈・白神山地",     "elev": "200〜1500m", "species": "ミヤマ・ノコギリ・アカアシ",       "spots": "田沢湖・角館・男鹿周辺",           "best_month": "7月"},
+    "yamagata":  {"name": "山形県",   "alt": "月山・蔵王・飯豊連峰",   "elev": "200〜1400m", "species": "ミヤマ・ノコギリ・アカアシ",       "spots": "月山麓・米沢・上山周辺",           "best_month": "7月"},
+    "fukushima": {"name": "福島県",   "alt": "奥羽山脈・阿武隈山地",   "elev": "200〜1500m", "species": "ミヤマ・ノコギリ・ヒラタ",         "spots": "裏磐梯・南会津・那須周辺",         "best_month": "7〜8月"},
+    # 関東
+    "ibaraki":   {"name": "茨城県",   "alt": "筑波山・八溝山地",       "elev": "0〜800m",    "species": "ノコギリ・コクワ・ヒラタ",         "spots": "筑波山・奥久慈・大子周辺",         "best_month": "7〜8月"},
+    "tochigi":   {"name": "栃木県",   "alt": "日光・那須・足尾山地",   "elev": "200〜1500m", "species": "ミヤマ・ノコギリ・ヒラタ",         "spots": "日光・那須・矢板周辺",             "best_month": "7月"},
+    "gunma":     {"name": "群馬県",   "alt": "赤城山・榛名山・上信越", "elev": "200〜1500m", "species": "ミヤマ・ノコギリ・アカアシ",       "spots": "赤城山・榛名山・みなかみ周辺",     "best_month": "7月"},
+    "saitama":   {"name": "埼玉県",   "alt": "奥武蔵・秩父",           "elev": "100〜1000m", "species": "ノコギリ・コクワ・ミヤマ",         "spots": "秩父・飯能・越生",                 "best_month": "7〜8月"},
+    "chiba":     {"name": "千葉県",   "alt": "房総丘陵",               "elev": "0〜300m",    "species": "ノコギリ・コクワ・カブトムシ",     "spots": "君津・鴨川・市原",                 "best_month": "7〜8月"},
+    "tokyo":     {"name": "東京都",   "alt": "奥多摩・高尾山",         "elev": "200〜1000m", "species": "ノコギリ・コクワ・ヒラタ",         "spots": "奥多摩・高尾山・青梅",             "best_month": "7〜8月"},
+    "kanagawa":  {"name": "神奈川県", "alt": "丹沢山地",               "elev": "200〜1500m", "species": "ミヤマ・ノコギリ・ヒラタ",         "spots": "丹沢・相模川沿い・宮ヶ瀬",         "best_month": "7月"},
+    # 中部
+    "niigata":   {"name": "新潟県",   "alt": "越後山脈・妙高山",       "elev": "200〜1500m", "species": "ミヤマ・ノコギリ・アカアシ",       "spots": "妙高・糸魚川・魚沼周辺",           "best_month": "7月"},
+    "toyama":    {"name": "富山県",   "alt": "立山・北アルプス",       "elev": "300〜1800m", "species": "ミヤマ・アカアシ・ノコギリ",       "spots": "立山山麓・朝日・魚津周辺",         "best_month": "7月"},
+    "ishikawa":  {"name": "石川県",   "alt": "白山・能登半島",         "elev": "200〜1200m", "species": "ノコギリ・コクワ・ミヤマ",         "spots": "白山麓・加賀・能登周辺",           "best_month": "7〜8月"},
+    "fukui":     {"name": "福井県",   "alt": "越前山地・若狭",         "elev": "200〜900m",  "species": "ノコギリ・ヒラタ・コクワ",         "spots": "越前・若狭・大野周辺",             "best_month": "7〜8月"},
     "yamanashi": {"name": "山梨県",   "alt": "富士山麓・南アルプス",   "elev": "400〜1800m", "species": "ミヤマ・ノコギリ・アカアシ",       "spots": "富士五湖周辺・昇仙峡・甲府盆地縁", "best_month": "7月"},
+    "nagano":    {"name": "長野県",   "alt": "日本アルプス周辺",       "elev": "500〜1800m", "species": "ミヤマ・アカアシ・ノコギリ",       "spots": "伊那谷・安曇野・上高地周辺",       "best_month": "7月"},
+    "gifu":      {"name": "岐阜県",   "alt": "飛騨山脈・木曽山脈",     "elev": "300〜1800m", "species": "ミヤマ・アカアシ・ノコギリ",       "spots": "飛騨高山・郡上・下呂周辺",         "best_month": "7月"},
+    "shizuoka":  {"name": "静岡県",   "alt": "南アルプス・天城山",     "elev": "200〜1800m", "species": "ミヤマ・ノコギリ・ヒラタ",         "spots": "天城山・寸又峡・井川周辺",         "best_month": "7〜8月"},
+    "aichi":     {"name": "愛知県",   "alt": "三河山地・設楽",         "elev": "100〜1000m", "species": "ノコギリ・ヒラタ・ミヤマ",         "spots": "設楽・豊田・新城",                 "best_month": "7〜8月"},
+    "mie":       {"name": "三重県",   "alt": "大台ケ原・紀伊山地",     "elev": "200〜1500m", "species": "ノコギリ・ヒラタ・ミヤマ",         "spots": "大台ケ原・熊野・宮川周辺",         "best_month": "7〜8月"},
+    # 近畿
+    "shiga":     {"name": "滋賀県",   "alt": "比良山系・鈴鹿山脈",     "elev": "200〜1200m", "species": "ノコギリ・ミヤマ・コクワ",         "spots": "比良山・伊吹山・朽木周辺",         "best_month": "7〜8月"},
+    "kyoto":     {"name": "京都府",   "alt": "丹波高地・北山",         "elev": "200〜900m",  "species": "ノコギリ・コクワ・ヒラタ",         "spots": "美山・京都北山・綾部周辺",         "best_month": "7〜8月"},
+    "osaka":     {"name": "大阪府",   "alt": "金剛山・北摂",           "elev": "100〜1100m", "species": "ノコギリ・ヒラタ・コクワ",         "spots": "金剛山・能勢・箕面",               "best_month": "7〜8月"},
+    "hyogo":     {"name": "兵庫県",   "alt": "六甲山・氷ノ山",         "elev": "200〜1500m", "species": "ノコギリ・ヒラタ・ミヤマ",         "spots": "氷ノ山・丹波・篠山周辺",           "best_month": "7〜8月"},
+    "nara":      {"name": "奈良県",   "alt": "大台ケ原・吉野山地",     "elev": "300〜1700m", "species": "ミヤマ・ノコギリ・ヒラタ",         "spots": "吉野・大台ケ原・天川周辺",         "best_month": "7月"},
+    "wakayama":  {"name": "和歌山県", "alt": "紀伊山地",               "elev": "200〜1300m", "species": "ノコギリ・ヒラタ・コクワ",         "spots": "護摩壇山・龍神・熊野周辺",         "best_month": "7〜8月"},
+    # 中国
+    "tottori":   {"name": "鳥取県",   "alt": "大山・中国山地",         "elev": "200〜1700m", "species": "ミヤマ・ノコギリ・アカアシ",       "spots": "大山・智頭・日野周辺",             "best_month": "7月"},
+    "shimane":   {"name": "島根県",   "alt": "中国山地・三瓶山",       "elev": "200〜1200m", "species": "ノコギリ・ミヤマ・コクワ",         "spots": "三瓶山・奥出雲・益田周辺",         "best_month": "7〜8月"},
+    "okayama":   {"name": "岡山県",   "alt": "中国山地・蒜山",         "elev": "200〜1200m", "species": "ノコギリ・ヒラタ・ミヤマ",         "spots": "蒜山・津山・新見周辺",             "best_month": "7〜8月"},
+    "hiroshima": {"name": "広島県",   "alt": "中国山地・冠山",         "elev": "200〜1300m", "species": "ノコギリ・ヒラタ・ミヤマ",         "spots": "三段峡・庄原・三次周辺",           "best_month": "7〜8月"},
+    "yamaguchi": {"name": "山口県",   "alt": "西中国山地",             "elev": "200〜1000m", "species": "ノコギリ・ヒラタ・コクワ",         "spots": "秋吉台・山口・岩国周辺",           "best_month": "7〜8月"},
+    # 四国
+    "tokushima": {"name": "徳島県",   "alt": "剣山・四国山地",         "elev": "300〜1900m", "species": "ミヤマ・ノコギリ・アカアシ",       "spots": "剣山・祖谷・那賀周辺",             "best_month": "7月"},
+    "kagawa":    {"name": "香川県",   "alt": "讃岐山脈",               "elev": "200〜800m",  "species": "ノコギリ・コクワ・ヒラタ",         "spots": "五色台・琴平・小豆島周辺",         "best_month": "7〜8月"},
+    "ehime":     {"name": "愛媛県",   "alt": "石鎚山・四国山地",       "elev": "300〜1900m", "species": "ミヤマ・ノコギリ・アカアシ",       "spots": "石鎚山・久万高原・宇和島周辺",     "best_month": "7月"},
+    "kochi":     {"name": "高知県",   "alt": "四国山地・剣山地",       "elev": "300〜1900m", "species": "ミヤマ・ノコギリ・ヒラタ",         "spots": "四万十・嶺北・土佐山周辺",         "best_month": "7〜8月"},
+    # 九州
+    "fukuoka":   {"name": "福岡県",   "alt": "英彦山・脊振山地",       "elev": "200〜1200m", "species": "ノコギリ・ヒラタ・ミヤマ",         "spots": "英彦山・脊振山・宝満山",           "best_month": "7月"},
+    "saga":      {"name": "佐賀県",   "alt": "脊振山地・天山",         "elev": "200〜1000m", "species": "ノコギリ・ヒラタ・コクワ",         "spots": "脊振山・天山・唐津周辺",           "best_month": "7〜8月"},
+    "nagasaki":  {"name": "長崎県",   "alt": "多良山系・雲仙",         "elev": "200〜1400m", "species": "ノコギリ・ヒラタ・コクワ",         "spots": "雲仙・対馬・五島周辺",             "best_month": "7〜8月"},
+    "kumamoto":  {"name": "熊本県",   "alt": "阿蘇山・九州山地",       "elev": "200〜1500m", "species": "ノコギリ・ヒラタ・ミヤマ",         "spots": "阿蘇・五木・球磨周辺",             "best_month": "7〜8月"},
+    "oita":      {"name": "大分県",   "alt": "くじゅう連山・九州山地", "elev": "300〜1700m", "species": "ミヤマ・ノコギリ・ヒラタ",         "spots": "くじゅう・由布院・日田周辺",       "best_month": "7月"},
+    "miyazaki":  {"name": "宮崎県",   "alt": "九州山地・霧島",         "elev": "200〜1700m", "species": "ノコギリ・ヒラタ・ミヤマ",         "spots": "椎葉・綾・高千穂周辺",             "best_month": "7〜8月"},
+    "kagoshima": {"name": "鹿児島県", "alt": "霧島山・大隅山地",       "elev": "200〜1700m", "species": "ノコギリ・ヒラタ・コクワ",         "spots": "霧島・屋久島・大隅周辺",           "best_month": "7〜8月"},
+    "okinawa":   {"name": "沖縄県",   "alt": "沖縄本島北部・やんばる", "elev": "0〜500m",    "species": "ノコギリ・コクワ（琉球亜種）",     "spots": "やんばる・名護・国頭周辺",         "best_month": "6〜9月"},
 }
+
+
+@app.route("/guide/kokuwagata")
+def guide_kokuwagata():
+    return render_template("guide_kokuwagata.html")
+
+
+@app.route("/guide/akaashi")
+def guide_akaashi():
+    return render_template("guide_akaashi.html")
+
+
+@app.route("/guide/suji")
+def guide_suji():
+    return render_template("guide_suji.html")
 
 
 @app.route("/guide/jiyukenkyu")
@@ -690,6 +764,11 @@ def terms():
     return render_template("terms.html")
 
 
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
+
+
 @app.route("/health")
 def health():
     """ヘルスチェック用エンドポイント（UptimeRobotなどの死活監視から定期ping）"""
@@ -722,24 +801,67 @@ def sitemap():
         ("https://beetle-finder.onrender.com/guide/nokogiri",  "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/hirata",    "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/ookuwa",    "monthly", "0.8", today),
-        ("https://beetle-finder.onrender.com/guide/kabuto",    "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/kabuto",       "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/kokuwagata", "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/akaashi",    "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/suji",       "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/kids",      "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/light",     "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/tools",     "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/aftercare", "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/may",       "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/june",     "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/july",     "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/august",   "monthly", "0.7", today),
-        ("https://beetle-finder.onrender.com/guide/spot/tokyo",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/kanagawa",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/september","monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/october",  "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/spot/hokkaido",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/aomori",    "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/iwate",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/miyagi",    "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/akita",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/yamagata",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/fukushima", "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/ibaraki",   "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/tochigi",   "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/gunma",     "monthly", "0.6", today),
         ("https://beetle-finder.onrender.com/guide/spot/saitama",   "monthly", "0.6", today),
         ("https://beetle-finder.onrender.com/guide/spot/chiba",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/osaka",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/aichi",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/fukuoka",   "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/hokkaido",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/tokyo",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/kanagawa",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/niigata",   "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/toyama",    "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/ishikawa",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/fukui",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/yamanashi", "monthly", "0.6", today),
         ("https://beetle-finder.onrender.com/guide/spot/nagano",    "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/yamanashi",    "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/gifu",      "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/shizuoka",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/aichi",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/mie",       "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/shiga",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/kyoto",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/osaka",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/hyogo",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/nara",      "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/wakayama",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/tottori",   "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/shimane",   "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/okayama",   "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/hiroshima", "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/yamaguchi", "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/tokushima", "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/kagawa",    "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/ehime",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/kochi",     "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/fukuoka",   "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/saga",      "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/nagasaki",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/kumamoto",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/oita",      "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/miyazaki",  "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/kagoshima", "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/spot/okinawa",   "monthly", "0.6", today),
         ("https://beetle-finder.onrender.com/guide/jiyukenkyu",        "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/jiyukenkyu-kabuto", "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/about",           "monthly", "0.5", today),

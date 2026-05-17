@@ -34,35 +34,35 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Helvetica Neue',Arial,sans-serif;background:#141e14;color:#dcedc8}
+    body{font-family:'Helvetica Neue',Arial,sans-serif;background:#12121c;color:#e0e0f0}
     #app{display:flex;height:100vh;overflow:hidden}
 
     /* ─ サイドバー ─ */
-    #sidebar{width:390px;min-width:300px;background:#1b2d1b;border-right:1px solid #2a3e2a;display:flex;flex-direction:column;overflow:hidden}
-    #header{padding:10px 15px 8px;background:#111d11;border-bottom:1px solid #2a3e2a;flex-shrink:0}
+    #sidebar{width:390px;min-width:300px;background:#171724;border-right:1px solid #2a3e2a;display:flex;flex-direction:column;overflow:hidden}
+    #header{padding:10px 15px 8px;background:#0f0f1a;border-bottom:1px solid #28283c;flex-shrink:0}
     #header h1{font-size:1.05rem;color:#a5d6a7;letter-spacing:.02em}
     .header-tagline{font-size:.78rem;color:#81c784;margin-top:2px;font-weight:500}
     .header-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
-    .header-badge{font-size:.62rem;background:#1f321f;border:1px solid #2e4a2e;color:#81c784;padding:2px 7px;border-radius:10px}
+    .header-badge{font-size:.62rem;background:#1d1d2a;border:1px solid #2a2a42;color:#81c784;padding:2px 7px;border-radius:10px}
 
     /* 詳細設定トグル */
     #adv-toggle{
       width:100%;margin-top:10px;padding:9px 14px;
-      background:#243e24;border:2px dashed #4a7a4a;border-radius:8px;
+      background:#1e1e32;border:2px dashed #4a7a4a;border-radius:8px;
       color:#a5d6a7;font-size:.8rem;font-weight:600;
       cursor:pointer;user-select:none;text-align:left;
       display:flex;justify-content:space-between;align-items:center;
       transition:background .15s,border-color .15s;
     }
-    #adv-toggle:hover{background:#2e4e2e;border-color:#66bb6a}
-    #adv-toggle.open{background:#2e4e2e;border-style:solid;border-color:#66bb6a;border-bottom-left-radius:0;border-bottom-right-radius:0}
+    #adv-toggle:hover{background:#242442;border-color:#66bb6a}
+    #adv-toggle.open{background:#242442;border-style:solid;border-color:#66bb6a;border-bottom-left-radius:0;border-bottom-right-radius:0}
     .adv-badge{font-size:.72rem;padding:2px 10px;border-radius:10px;font-weight:700;
       background:#388e3c;color:#fff;white-space:nowrap}
     #adv-section{
-      border:1px solid #3a5e3a;border-top:none;
+      border:1px solid #303050;border-top:none;
       border-radius:0 0 8px 8px;
       padding:10px 6px 6px;margin-bottom:4px;
-      background:#161e16;
+      background:#131320;
     }
 
     /* シェアボタン */
@@ -70,7 +70,7 @@
     .share-btn:hover{background:#252545}
 
     /* ─ コントロール ─ */
-    #controls{padding:9px 14px 11px;border-bottom:1px solid #2a3e2a;flex-shrink:0;overflow-y:auto;max-height:65vh;transition:max-height .3s ease}
+    #controls{padding:9px 14px 11px;border-bottom:1px solid #28283c;flex-shrink:0;overflow-y:auto;max-height:65vh;transition:max-height .3s ease}
     #controls.collapsed{max-height:0;padding:0;overflow:hidden;border-bottom:none}
     #controls::-webkit-scrollbar{width:3px}
     #controls::-webkit-scrollbar-thumb{background:#2e4a2e}
@@ -78,7 +78,7 @@
     #ctrl-toggle{
       display:none;flex-shrink:0;
       padding:10px 16px;
-      background:#1b3d1b;
+      background:#18183a;
       border-bottom:2px solid #4caf50;
       border-top:1px solid #2e5e2e;
       cursor:pointer;
@@ -88,7 +88,7 @@
       user-select:none;
       letter-spacing:.02em;
     }
-    #ctrl-toggle:hover{background:#243e24;color:#fff}
+    #ctrl-toggle:hover{background:#1e1e32;color:#fff}
     /* マップ上に浮かせた「もっと見る」ボタン */
     #map-more-btn{
       display:none;position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
@@ -114,26 +114,26 @@
 
     /* 出発地入力 */
     .addr-row{display:flex;gap:6px}
-    .loc-input{flex:1;background:#1f321f;border:1px solid #2a3e2a;color:#dcedc8;
+    .loc-input{flex:1;background:#1d1d2a;border:1px solid #28283c;color:#e0e0f0;
       border-radius:6px;padding:6px 10px;font-size:.82rem;outline:none}
     .loc-input:focus{border-color:#66bb6a}
     /* 後方互換 */
-    #addr-input{flex:1;background:#1f321f;border:1px solid #2a3e2a;color:#dcedc8;
+    #addr-input{flex:1;background:#1d1d2a;border:1px solid #28283c;color:#e0e0f0;
       border-radius:6px;padding:6px 10px;font-size:.82rem;outline:none}
     #addr-input:focus{border-color:#66bb6a}
     #addr-btn{background:#2e7d32;color:#fff;border:none;border-radius:6px;
       padding:6px 12px;font-size:.8rem;cursor:pointer;white-space:nowrap}
     #addr-btn:hover{background:#388e3c}
     #gps-btn{display:flex;align-items:center;gap:5px;width:100%;justify-content:center;
-      background:#1f2f1f;border:1px solid #2e7d32;color:#81c784;border-radius:6px;
+      background:#1a1a28;border:1px solid #2e7d32;color:#81c784;border-radius:6px;
       padding:7px;font-size:.78rem;cursor:pointer;margin-top:5px;transition:background .15s}
-    #gps-btn:hover{background:#243e24}
+    #gps-btn:hover{background:#1e1e32}
     #gps-btn:disabled{opacity:.5;cursor:not-allowed}
     #addr-result{font-size:.68rem;color:#81c784;margin-top:3px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
     /* 種ボタン */
     .sp-btn{border-radius:16px;font-size:.75rem;border:2px solid #2a3e2a;
-      padding:3px 11px;cursor:pointer;background:#1f321f;color:#a5d6a7;transition:all .15s}
+      padding:3px 11px;cursor:pointer;background:#1d1d2a;color:#a5d6a7;transition:all .15s}
     .sp-btn:hover{border-color:#4a7c4a}
     .sp-btn.active{border-color:#90caf9;background:#1a3a6e;color:#fff}
     /* 種グループ */
@@ -147,30 +147,44 @@
 
     /* 月ボタン */
     .month-btn{border-radius:14px;font-size:.75rem;border:2px solid #2a3e2a;
-      padding:3px 9px;cursor:pointer;background:#1f321f;color:#a5d6a7;transition:all .15s}
+      padding:3px 9px;cursor:pointer;background:#1d1d2a;color:#a5d6a7;transition:all .15s}
     .month-btn.active{background:#33691e;border-color:#8bc34a;color:#fff}
 
     /* お気に入り */
     #fav-toggle{font-size:.78rem;border:2px solid #2a3e2a;border-radius:14px;
-      padding:3px 11px;cursor:pointer;background:#1f321f;color:#a5d6a7;transition:all .15s}
+      padding:3px 11px;cursor:pointer;background:#1d1d2a;color:#a5d6a7;transition:all .15s}
     #fav-toggle.active{background:#7b5c00;border-color:#ffd700;color:#fff}
 
     /* 方向選択 */
     .dir-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;max-width:144px}
     .dir-btn{border-radius:5px;font-size:.72rem;border:2px solid #2a3e2a;padding:5px 2px;
-      cursor:pointer;background:#1f321f;color:#a5d6a7;transition:all .15s;text-align:center;line-height:1}
+      cursor:pointer;background:#1d1d2a;color:#a5d6a7;transition:all .15s;text-align:center;line-height:1}
     .dir-btn:hover{border-color:#4a7c4a}
     .dir-btn.active{border-color:#ffb74d;background:#4e2b00;color:#ffe082}
-    .dir-btn-all.active{border-color:#66bb6a;background:#1b3d1b;color:#a5d6a7}
+    .dir-btn-all.active{border-color:#66bb6a;background:#18183a;color:#a5d6a7}
 
     /* 採集方法ボタン */
     .method-btn{border-radius:14px;font-size:.75rem;border:2px solid #2a3e2a;
-      padding:4px 12px;cursor:pointer;background:#1f321f;color:#a5d6a7;transition:all .15s}
+      padding:4px 12px;cursor:pointer;background:#1d1d2a;color:#a5d6a7;transition:all .15s}
     .method-btn:hover{border-color:#4a7c4a}
-    .method-btn[data-m="tree"].active  {border-color:#66bb6a;background:#1a3d1a;color:#fff}
+    .method-btn[data-m="tree"].active  {border-color:#66bb6a;background:#181838;color:#fff}
     .method-btn[data-m="light"].active {border-color:#9c27b0;background:#2a0040;color:#e1bee7}
     .method-btn[data-m="street"].active{border-color:#ffc107;background:#3e2a00;color:#ffe082}
     .method-desc{font-size:.66rem;color:#81c784;opacity:.75;margin-top:3px;line-height:1.5}
+
+    /* モード選択ボタン */
+    .mode-btn{
+      border-radius:10px;font-size:.8rem;font-weight:700;
+      border:2px solid #303050;padding:10px 6px;
+      cursor:pointer;background:#1d1d2c;color:#c8c8e8;
+      transition:all .15s;text-align:center;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:4px;min-height:60px;
+    }
+    .mode-btn:hover{border-color:#4caf50;background:#1e1e34}
+    .mode-btn.active{border-color:#4caf50;background:#1a2a1a;color:#fff}
+    .mode-sub{font-size:.63rem;color:#8888aa;font-weight:400;line-height:1.3}
+    .mode-btn.active .mode-sub{color:#81c784}
 
     /* 夜間採集ボタン */
     .night-btn{width:100%;font-size:.8rem;border-radius:7px;border:2px solid;
@@ -195,13 +209,13 @@
     #prog-msg{font-size:.71rem;color:#81c784;margin-top:3px}
 
     /* ─ リスト ─ */
-    #spot-count{padding:4px 14px;font-size:.71rem;color:#81c784;opacity:.8;border-bottom:1px solid #2a3e2a;flex-shrink:0}
+    #spot-count{padding:4px 14px;font-size:.71rem;color:#81c784;opacity:.8;border-bottom:1px solid #28283c;flex-shrink:0}
     #spot-list{flex:1;overflow-y:auto}
     #spot-list::-webkit-scrollbar{width:4px}
     #spot-list::-webkit-scrollbar-thumb{background:#2e4a2e;border-radius:2px}
-    .spot-item{padding:9px 14px;cursor:pointer;border-bottom:1px solid #1f321f;transition:background .12s;position:relative}
-    .spot-item:hover{background:#213521}
-    .spot-item.active{background:#243e24;border-left:3px solid #66bb6a;padding-left:11px}
+    .spot-item{padding:9px 14px;cursor:pointer;border-bottom:1px solid #222236;transition:background .12s;position:relative}
+    .spot-item:hover{background:#20202e}
+    .spot-item.active{background:#1e1e32;border-left:3px solid #66bb6a;padding-left:11px}
     .spot-top{display:flex;justify-content:space-between;align-items:flex-start}
     .spot-name{font-size:.84rem;font-weight:600;color:#c8e6c9;flex:1;padding-right:6px}
     .spot-score{font-size:1.05rem;font-weight:700;flex-shrink:0}
@@ -216,11 +230,11 @@
     .badge-s{background:#1a237e;color:#fff}
     .badge-kb{background:#4e342e;color:#fff}
     .badge-t{background:#1a3a1a;border:1px solid #2e5e2e;color:#a5d6a7}
-    .sp-tag{display:inline-block;font-size:.67rem;padding:1px 6px;border-radius:9px;margin-top:3px;margin-right:2px;background:#1a3d1a;border:1px solid #2e5e2e;color:#a5d6a7}
+    .sp-tag{display:inline-block;font-size:.67rem;padding:1px 6px;border-radius:9px;margin-top:3px;margin-right:2px;background:#181838;border:1px solid #2e5e2e;color:#a5d6a7}
     .sp-tag.needle{background:#2d2000;border-color:#5d4000;color:#ffcc80}
     .bar-wrap{margin-top:6px}
     .bar-row{display:flex;justify-content:space-between;font-size:.68rem;color:#9e9e9e;margin-bottom:1px}
-    .bar-bg{height:4px;background:#1f321f;border-radius:2px}
+    .bar-bg{height:4px;background:#1d1d2a;border-radius:2px}
     .bar-fill{height:100%;border-radius:2px;transition:width .3s}
     .fav-star{position:absolute;top:7px;right:9px;font-size:.95rem;cursor:pointer;opacity:.5;transition:all .15s}
     .fav-star:hover{opacity:1;transform:scale(1.2)}
@@ -231,8 +245,8 @@
     #map{width:100%;height:100%}
 
     /* ─ ポップアップ ─ */
-    .leaflet-popup-content-wrapper{background:#1b2d1b;color:#dcedc8;border:1px solid #2a3e2a;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.6)}
-    .leaflet-popup-tip{background:#1b2d1b}
+    .leaflet-popup-content-wrapper{background:#171724;color:#e0e0f0;border:1px solid #28283c;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,.6)}
+    .leaflet-popup-tip{background:#171724}
     .leaflet-popup-content{margin:11px 15px;min-width:210px}
     .pop-title{font-size:.92rem;font-weight:bold;color:#a5d6a7;margin-bottom:7px}
     .pop-row{font-size:.78rem;margin:3px 0}
@@ -241,7 +255,7 @@
     .pop-link:hover{color:#a5d6a7}
     .ptag-m{background:#0d47a1;color:#fff;padding:1px 6px;border-radius:9px;font-size:.7rem}
     .ptag-o{background:#4a148c;color:#fff;padding:1px 6px;border-radius:9px;font-size:.7rem}
-    .ptag-sp{background:#1a3d1a;border:1px solid #2e5e2e;color:#a5d6a7;padding:1px 6px;border-radius:9px;font-size:.7rem}
+    .ptag-sp{background:#181838;border:1px solid #2e5e2e;color:#a5d6a7;padding:1px 6px;border-radius:9px;font-size:.7rem}
     .res-ok{color:#66bb6a}
     .res-warn{color:#ffb74d}
 
@@ -252,7 +266,7 @@
     .tonight-toggle.active{background:#0d2a4a;border-color:#42a5f5;color:#fff}
 
     /* ─ 凡例 ─ */
-    .legend{background:rgba(27,45,27,.95);padding:8px 12px;border-radius:8px;border:1px solid #2a3e2a;font-size:.74rem;color:#c8e6c9;line-height:1.9}
+    .legend{background:rgba(27,45,27,.95);padding:8px 12px;border-radius:8px;border:1px solid #28283c;font-size:.74rem;color:#c8e6c9;line-height:1.9}
     .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:middle}
 
     /* ── 案B：1行検索バー ── */
@@ -261,7 +275,7 @@
     }
     .search-bar-row{
       display:flex;align-items:center;gap:0;
-      background:#1f321f;
+      background:#1d1d2a;
       border:2px solid #4caf50;border-radius:10px;
       overflow:hidden;
       box-shadow:0 2px 10px rgba(76,175,80,.25);
@@ -272,7 +286,7 @@
     }
     .search-bar-input{
       flex:1;background:transparent;border:none;outline:none;
-      color:#dcedc8;font-size:16px;padding:11px 6px;
+      color:#e0e0f0;font-size:16px;padding:11px 6px;
       min-height:46px;
     }
     .search-bar-input::placeholder{color:#4a7c4e;opacity:1}
@@ -288,12 +302,12 @@
     .gps-bar-btn{
       display:flex;align-items:center;justify-content:center;gap:5px;
       width:100%;margin-top:6px;
-      background:#1a2a1a;border:1px solid #2e7d32;
+      background:#181828;border:1px solid #2e7d32;
       color:#81c784;border-radius:8px;
       padding:9px;font-size:.8rem;cursor:pointer;
       transition:background .15s;
     }
-    .gps-bar-btn:hover{background:#243e24}
+    .gps-bar-btn:hover{background:#1e1e32}
     .gps-bar-btn:disabled{opacity:.5;cursor:not-allowed}
     .search-bar-result{
       font-size:.68rem;color:#81c784;margin-top:4px;
@@ -305,52 +319,182 @@
     .detail-toggle{
       display:flex;justify-content:space-between;align-items:center;
       padding:9px 12px;margin-top:6px;
-      background:#1a2a1a;border:1px dashed #3a5e3a;border-radius:8px;
+      background:#181828;border:1px dashed #3a5e3a;border-radius:8px;
       color:#81c784;font-size:.78rem;font-weight:600;
       cursor:pointer;user-select:none;
       transition:background .15s,border-color .15s;
     }
-    .detail-toggle:hover{background:#243e24;border-color:#66bb6a}
-    .detail-toggle.open{background:#243e24;border-color:#66bb6a;border-bottom-left-radius:0;border-bottom-right-radius:0;border-style:solid}
+    .detail-toggle:hover{background:#1e1e32;border-color:#66bb6a}
+    .detail-toggle.open{background:#1e1e32;border-color:#66bb6a;border-bottom-left-radius:0;border-bottom-right-radius:0;border-style:solid}
 
     /* ══════════════════════════════════════════
-       モバイル完全リデザイン（≤680px）
-       ★ display:none を使わない設計
-         Leaflet は display:none コンテナでサイズ0×0になるため
-         position:fixed + z-index でサイドバーの裏に地図を常に描画する
+       モバイル：地図ファースト＋ボトムシート型（≤680px）
+       ・地図は常に全画面（シートの裏）
+       ・#sidebar = ボトムシート（下から引き出す）
+       ・3状態: デフォルト50vh / 設定(ctrl-open)92vh / 結果(results-shown)85vh
        ══════════════════════════════════════════ */
     @media(max-width:680px){
 
       /* ── ベースレイアウト ── */
       #app{ display:block; height:100dvh; overflow:hidden; position:relative; }
 
-      /* ── 地図：常にfull-screenで裏に描画（z-index低い） ── */
+      /* ── 地図：常に全画面（シートの裏） ── */
       #map-wrap{
-        position:fixed; inset:0; z-index:1;
+        position:fixed !important; inset:0 !important;
+        z-index:50 !important; display:block !important;
       }
+
+      /* ── 不要要素を非表示 ── */
       #mobile-tab-bar{ display:none !important; }
+      #mobile-anchor-ad{ display:none !important; }
+      #sidebar-amazon-footer{ display:none !important; }
+      #map-research-btn{ display:none !important; }
+      #map-more-btn{ display:none !important; }
 
-      /* ── サイドバー：地図の上に重なる（初期状態） ── */
+      /* ══ ボトムシート ══ */
       #sidebar{
-        position:fixed; inset:0; z-index:100;
-        width:100%; height:100dvh;
-        border-right:none; border-top:none;
-        overflow-y:auto; -webkit-overflow-scrolling:touch;
-        background:#1b2d1b;
+        position:fixed !important;
+        bottom:0; left:0; right:0; top:auto !important;
+        width:100% !important;
+        height:50vh;
+        max-height:92vh;
+        z-index:200;
+        border-right:none !important;
+        border-top:2px solid #4caf50;
+        border-radius:18px 18px 0 0;
+        box-shadow:0 -6px 28px rgba(0,0,0,.55);
+        overflow:hidden;
+        display:flex !important;
+        flex-direction:column;
+        transition:height .35s cubic-bezier(.25,.8,.5,1);
+        padding-bottom:env(safe-area-inset-bottom,0px) !important;
+        background:#171724;
       }
 
-      /* ── 検索後（body.results-shown）: 地図を前面に ── */
-      body.results-shown #sidebar{ display:none; }
-      body.results-shown #map-wrap{ z-index:100; }
-
-      /* ── 条件変更（body.ctrl-open）: サイドバーを前面に ── */
-      body.ctrl-open #sidebar{
-        display:flex; z-index:200;
+      /* ── ドラッグハンドル ── */
+      .sheet-handle{
+        flex-shrink:0; height:22px;
+        display:flex !important;
+        justify-content:center; align-items:center;
+        background:#171724;
+        cursor:grab; touch-action:none; user-select:none;
       }
-      body.ctrl-open #map-wrap{ z-index:1; }
+      .sheet-handle::after{
+        content:''; display:block;
+        width:36px; height:4px;
+        background:#3a5c3a; border-radius:2px;
+      }
+
+      /* ── ヘッダー：コンパクト ── */
+      #header{
+        flex-shrink:0; padding:5px 14px 6px;
+        border-bottom:1px solid #1f2f1f; background:#0f0f1a;
+      }
+      #header h1{ font-size:.88rem; }
+      .header-tagline{ display:none; }
+      .header-badges{ display:none; }
+      #header > div:last-child{ margin-top:4px; }
+
+      /* 検索後はヘッダー非表示（結果リストにスペースを確保） */
+      body.results-shown:not(.ctrl-open) #header{ display:none; }
+
+      /* ── ctrl-toggle："← 地図に戻る" バー ── */
+      #ctrl-toggle{
+        display:none; flex-shrink:0;
+        padding:9px 14px;
+        background:#141426; border-bottom:1px solid #2e2e50;
+        font-size:.8rem; font-weight:700; color:#c8e6c9;
+        text-align:center; cursor:pointer; user-select:none;
+      }
       body.ctrl-open #ctrl-toggle{ display:block !important; }
 
-      /* ── スポット数フローティングバッジ（地図左上） ── */
+      /* ── 種選択行：横スクロールチップス ── */
+      #sp-row{
+        flex-shrink:0; padding:7px 14px 6px;
+        background:#161628; border-bottom:1px solid #1f1f38;
+        position:sticky; top:0; z-index:10;
+      }
+      #sp-row .ctrl-label{ margin:0 0 5px; font-size:.66rem; }
+      #sp-row .btn-row{
+        overflow-x:auto; flex-wrap:nowrap !important;
+        -webkit-overflow-scrolling:touch;
+        scrollbar-width:none; gap:7px;
+        padding-bottom:2px;
+      }
+      #sp-row .btn-row::-webkit-scrollbar{ display:none; }
+      #sp-row .sp-btn{
+        flex-shrink:0; white-space:nowrap;
+        font-size:.78rem; padding:5px 13px; min-height:36px;
+        border-radius:18px;
+      }
+      /* 検索後（結果表示中）は種行を非表示 */
+      body.results-shown:not(.ctrl-open) #sp-row{ display:none; }
+
+      /* ── コントロールエリア ── */
+      #controls{
+        flex-shrink:0; overflow-y:visible; max-height:none;
+        padding:0 14px 8px;
+      }
+      /* 設定モード：コントロールをスクロール可能に */
+      body.ctrl-open #controls{
+        flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;
+        padding-bottom:0;
+      }
+      /* 検索後は非表示 */
+      body.results-shown:not(.ctrl-open) #controls{ display:none; }
+
+      /* ── 詳細設定トグル：視認性大幅改善 ── */
+      .detail-toggle{
+        margin:8px 0 0; padding:11px 12px;
+        border-radius:10px;
+        border:2px solid #2e4e2e;
+        background:#161628;
+        color:#a5d6a7; font-size:.82rem; font-weight:700;
+        min-height:46px;
+        letter-spacing:.01em;
+      }
+      .detail-toggle:hover{ background:#1a1a34; border-color:#4caf50; }
+      .detail-toggle.open{
+        background:#1a1a34; border-color:#4caf50;
+        border-bottom-left-radius:0; border-bottom-right-radius:0;
+        color:#c8e6c9;
+      }
+
+      /* ── 検索実行バー（設定モード最下部に固定） ── */
+      #ctrl-search-bar{
+        display:none; flex-shrink:0;
+        padding:12px 14px;
+        background:#0d0d1c; border-top:2px solid #4caf50;
+      }
+      body.ctrl-open #ctrl-search-bar{ display:block; }
+
+      /* ── プログレス・カウント・スポットリスト ── */
+      #progress-wrap{ flex-shrink:0; }
+      #spot-count{ flex-shrink:0; }
+      #show-more-bar{ flex-shrink:0; }
+      #cond-panel{ flex-shrink:0; }
+      #nearby-light-status{ flex-shrink:0; }
+
+      body.ctrl-open #spot-count{ display:none; }
+      body.ctrl-open #show-more-bar{ display:none !important; }
+      body.ctrl-open #spot-list{ display:none; }
+      body.ctrl-open #progress-wrap{ display:none; }
+
+      #spot-list{ flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+      #spot-list::-webkit-scrollbar{ width:3px; }
+      #spot-list::-webkit-scrollbar-thumb{ background:#2e4a2e; border-radius:2px; }
+
+      /* ── シート高さ：状態別 ── */
+      /* 検索結果表示中 → 高く */
+      body.results-shown:not(.ctrl-open) #sidebar{ height:85vh; }
+      body.results-shown #sidebar{ display:flex !important; }  /* display:noneを上書き */
+      body.results-shown #map-wrap{ z-index:50 !important; }
+
+      /* 設定パネル開時 → 最大高さ */
+      body.ctrl-open #sidebar{ height:92vh !important; }
+      body.ctrl-open #map-wrap{ z-index:50 !important; }
+
+      /* ── 地図フローティングUI ── */
       #map-spot-badge{
         display:none; position:fixed; top:12px; left:12px; z-index:900;
         background:rgba(17,29,17,.92);
@@ -358,137 +502,199 @@
         padding:7px 14px;
         font-size:.8rem; font-weight:700; color:#a5d6a7;
         box-shadow:0 2px 12px rgba(0,0,0,.4);
-        pointer-events:none;
-        backdrop-filter:blur(6px);
+        pointer-events:none; backdrop-filter:blur(6px);
       }
       body.results-shown #map-spot-badge{ display:block; }
 
-      /* ── 条件変更ボタン（地図右上・小） ── */
       #map-list-btn{
         display:none; position:fixed; top:12px; right:12px; z-index:900;
-        background:#1b2d1b; border:1px solid #4caf50; border-radius:24px;
+        background:#171724; border:1px solid #4caf50; border-radius:24px;
         padding:7px 16px;
         font-size:.8rem; font-weight:700; color:#a5d6a7;
         box-shadow:0 2px 12px rgba(0,0,0,.4);
-        cursor:pointer;
-        backdrop-filter:blur(6px);
+        cursor:pointer; backdrop-filter:blur(6px);
       }
       body.results-shown #map-list-btn{ display:block; }
 
-      /* ── 再検索ボタン（地図下部・大・目立つ） ── */
-      #map-research-btn{
-        display:none; position:fixed; bottom:24px; left:50%;
-        transform:translateX(-50%); z-index:900;
-        background:linear-gradient(135deg,#1b5e20,#2e7d32);
-        border:2px solid #66bb6a; border-radius:32px;
-        padding:14px 28px;
-        font-size:1rem; font-weight:700; color:#fff;
-        box-shadow:0 4px 20px rgba(76,175,80,.6);
-        cursor:pointer; white-space:nowrap;
-        -webkit-tap-highlight-color:transparent;
-      }
-      body.results-shown #map-research-btn{ display:block; }
-
-      /* ── 条件変更パネル：検索ボタンを最下部に固定 ── */
-      body.ctrl-open #sidebar{
-        display:flex; flex-direction:column;
-      }
-      /* ctrl-open時のcontrolsはflexで伸縮し、ボタンが常に見える */
-      body.ctrl-open #controls{
-        flex:1; overflow-y:auto; max-height:none;
-        padding-bottom:0;
-      }
-      /* 検索実行バー（ctrl-open時に固定表示） */
-      #ctrl-search-bar{
-        display:none; flex-shrink:0;
-        padding:12px 14px;
-        background:#111d11;
-        border-top:2px solid #4caf50;
-      }
-      body.ctrl-open #ctrl-search-bar{ display:block; }
-
-      /* ── モバイルタブバー ── */
-      #mobile-tab-bar{
-        height:48px; flex-shrink:0;
-        background:#111d11;
-        border-top:1px solid #2e7d32;
-        border-bottom:1px solid #2a3e2a;
-      }
-      .mob-tab{
-        flex:1; border:none; background:none;
-        color:#66bb6a; font-size:.72rem; font-weight:600;
-        cursor:pointer; display:flex; flex-direction:column;
-        align-items:center; justify-content:center; gap:1px;
-        padding:4px; transition:background .15s; -webkit-tap-highlight-color:transparent;
-      }
-      .mob-tab.active{
-        background:#1b3d1b; color:#a5d6a7;
-        border-top:2px solid #4caf50; padding-top:2px;
-      }
-      .mob-tab-icon{ font-size:1.3rem; line-height:1; }
-      .mob-tab-label{ font-size:.62rem; line-height:1; }
-
-      /* ── ヘッダー：コンパクト化 ── */
-      #header{ padding:8px 12px 6px; }
-      #header h1{ font-size:.9rem; }
-      .header-tagline{ display:none; }
-      .header-badges{ display:none; }
-      #header > div:last-child{ margin-top:4px; }
-
-      /* ── コントロール：スムーズスクロール ── */
-      #controls{
-        max-height:none; flex:1;
-        overflow-y:auto; -webkit-overflow-scrolling:touch;
-      }
-      #ctrl-toggle{ font-size:.88rem; padding:12px 14px; min-height:48px; }
-
-      /* ── タッチフレンドリー（最小44px） ── */
-      .sp-btn{ min-height:42px; font-size:.85rem; padding:6px 12px; }
+      /* ── タッチフレンドリー（最小タップ44px） ── */
       .month-btn{ min-height:38px; font-size:.82rem; padding:5px 10px; }
       .dir-btn{ min-height:42px; font-size:.85rem; }
       .method-btn{ min-height:42px; font-size:.85rem; padding:6px 14px; }
+      .mode-btn{ padding:10px 8px; font-size:.8rem; min-height:64px; }
 
       /* ── 入力フォーム（iOS ズーム防止：16px必須） ── */
       .loc-input, #addr-input{
         font-size:16px !important; padding:11px 12px; min-height:46px;
       }
-      #addr-btn{
-        padding:11px 16px; font-size:.9rem; min-height:46px;
-      }
+      #addr-btn{ padding:11px 16px; font-size:.9rem; min-height:46px; }
       #gps-btn{ padding:13px; font-size:.85rem; min-height:46px; }
-
-      /* ── 検索ボタン：モバイル ── */
       #search-btn{ min-height:54px; font-size:1rem; }
 
       /* ── スポットカード ── */
       .spot-item{ padding:12px 14px; }
 
-      /* ── もっと見るボタン（地図上）：位置調整 ── */
-      #map-more-btn{ position:fixed; bottom:24px; font-size:.88rem; padding:12px 24px; }
-
-      /* ── モード切替ボタン ── */
-      .mode-btn{ padding:10px 6px; font-size:.82rem; min-height:52px; }
-
-      /* ── モバイル固定下部広告バー ── */
-      #mobile-anchor-ad{
-        display:block;
-        position:fixed;bottom:0;left:0;right:0;z-index:9999;
-        background:#0d150d;
-        border-top:1px solid #1f2f1f;
-        padding:4px 0 env(safe-area-inset-bottom,0px);
-        text-align:center;
-      }
-      /* 固定広告の分だけsidebarの下部にpaddingを確保 */
-      #sidebar{ padding-bottom:80px; }
+      /* ── 検索バーのtopマージン調整 ── */
+      .search-bar-wrap{ padding:8px 0 4px; }
     }
     @media(min-width:681px){
+      .sheet-handle{ display:none !important; }
       #mobile-anchor-ad{ display:none !important; }
+    }
+
+    /* ══════════════════════════════════════════
+       ライトテーマ：ファミリー向け明るいデザイン
+       ══════════════════════════════════════════ */
+    body{background:#f0f8f0;color:#1c3a1c}
+
+    /* サイドバー・ヘッダー */
+    #sidebar{background:#ffffff;border-right:1px solid #c8e6c9}
+    #header{background:linear-gradient(135deg,#2e7d32,#43a047);border-bottom:none}
+    #header h1{color:#ffffff}
+    #header .kw-i{filter:none}
+    .header-tagline{color:#c8f5c8}
+    .header-badges{display:flex}
+    .header-badge{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);color:#fff}
+    #header a{background:rgba(255,255,255,.18) !important;color:#fff !important;border-color:rgba(255,255,255,.35) !important}
+    #header a:hover{background:rgba(255,255,255,.3) !important}
+
+    /* コントロールエリア */
+    #controls{background:#ffffff}
+    #controls::-webkit-scrollbar-thumb{background:#a5d6a7}
+    #ctrl-toggle{background:#e8f5e9;border-color:#a5d6a7;color:#2e7d32}
+    #ctrl-toggle:hover{background:#c8e6c9;color:#1b5e20}
+    .ctrl-label{color:#388e3c;opacity:1}
+
+    /* 検索バー */
+    .search-bar-row{background:#ffffff;border-color:#4caf50;box-shadow:0 2px 10px rgba(46,125,50,.15)}
+    .search-bar-input{color:#1c3a1c}
+    .search-bar-input::placeholder{color:#81c784}
+    .search-bar-btn{background:linear-gradient(135deg,#2e7d32,#43a047)}
+    .search-bar-btn:hover{background:linear-gradient(135deg,#388e3c,#4caf50)}
+    .gps-bar-btn{background:#f1f8e9;border-color:#81c784;color:#2e7d32}
+    .gps-bar-btn:hover{background:#dcedc8}
+    .search-bar-result{color:#2e7d32}
+
+    /* 入力フィールド */
+    .loc-input,#addr-input{background:#ffffff;border-color:#a5d6a7;color:#1c3a1c}
+    .loc-input:focus,#addr-input:focus{border-color:#2e7d32}
+    #gps-btn{background:#f1f8e9;border-color:#81c784;color:#2e7d32}
+    #gps-btn:hover{background:#dcedc8}
+    #addr-result{color:#2e7d32}
+    #addr-btn{background:#4caf50;color:#fff}
+    #addr-btn:hover{background:#388e3c}
+
+    /* 種・月・方向・採集方法ボタン */
+    .sp-btn{background:#f1f8e9;border-color:#a5d6a7;color:#2e7d32}
+    .sp-btn:hover{border-color:#4caf50;background:#dcedc8}
+    .sp-btn.active{border-color:#1565c0;background:#e3f2fd;color:#0d47a1}
+    .month-btn{background:#f1f8e9;border-color:#a5d6a7;color:#2e7d32}
+    .month-btn.active{background:#4caf50;border-color:#2e7d32;color:#fff}
+    .dir-btn{background:#f1f8e9;border-color:#a5d6a7;color:#2e7d32}
+    .dir-btn:hover{border-color:#4caf50;background:#dcedc8}
+    .dir-btn.active{border-color:#f57c00;background:#fff3e0;color:#bf360c}
+    .dir-btn-all.active{border-color:#4caf50;background:#e8f5e9;color:#1b5e20}
+    .method-btn{background:#f1f8e9;border-color:#a5d6a7;color:#2e7d32}
+    .method-btn:hover{border-color:#4caf50;background:#dcedc8}
+    .method-btn[data-m="tree"].active{border-color:#4caf50;background:#e8f5e9;color:#1b5e20}
+    .method-btn[data-m="light"].active{border-color:#9c27b0;background:#f3e5f5;color:#6a1b9a}
+    .method-btn[data-m="street"].active{border-color:#f9a825;background:#fffde7;color:#e65100}
+    .method-desc{color:#388e3c;opacity:.85}
+
+    /* モードボタン */
+    .mode-btn{background:#f1f8e9;border-color:#c8e6c9;color:#2e7d32}
+    .mode-btn:hover{border-color:#4caf50;background:#dcedc8}
+    .mode-btn.active{border-color:#2e7d32;background:#e8f5e9;color:#1b5e20}
+    .mode-sub{color:#66bb6a}
+    .mode-btn.active .mode-sub{color:#388e3c}
+
+    /* スライダー */
+    #hours-label{color:#2e7d32}
+
+    /* お気に入り */
+    #fav-toggle{background:#f1f8e9;border-color:#a5d6a7;color:#2e7d32}
+    #fav-toggle.active{background:#fff8e1;border-color:#ffd700;color:#795500}
+
+    /* 詳細設定トグル */
+    #adv-toggle{background:#f1f8e9;border-color:#81c784;color:#2e7d32}
+    #adv-toggle:hover{background:#dcedc8;border-color:#4caf50}
+    #adv-toggle.open{background:#dcedc8;border-color:#2e7d32}
+    .adv-badge{background:#4caf50;color:#fff}
+    #adv-section{background:#f9fbe7;border-color:#c8e6c9}
+    .detail-toggle{background:#f1f8e9;border-color:#a5d6a7;color:#2e7d32}
+    .detail-toggle:hover{background:#dcedc8;border-color:#4caf50}
+    .detail-toggle.open{background:#dcedc8;border-color:#2e7d32;color:#1b5e20}
+
+    /* プログレスバー */
+    .prog-bg{background:#dcedc8}
+    .prog-fill{background:#4caf50}
+    #prog-msg{color:#388e3c}
+
+    /* スポットリスト */
+    #spot-count{color:#388e3c;border-color:#e8f5e9}
+    #spot-list::-webkit-scrollbar-thumb{background:#a5d6a7}
+    .spot-item{border-color:#e8f5e9;background:#ffffff}
+    .spot-item:hover{background:#f1f8e9}
+    .spot-item.active{background:#e8f5e9;border-left-color:#4caf50}
+    .spot-name{color:#1c3a1c}
+    .spot-meta{color:#388e3c}
+    .bar-bg{background:#e8f5e9}
+    .bar-row{color:#5a7a5a}
+    .badge-t{background:#e8f5e9;border-color:#a5d6a7;color:#1b5e20}
+    .sp-tag{background:#e8f5e9;border-color:#a5d6a7;color:#1b5e20}
+    .sp-tag.needle{background:#fff8e1;border-color:#f9a825;color:#6d3e00}
+
+    /* ポップアップ */
+    .leaflet-popup-content-wrapper{background:#ffffff;color:#1c3a1c;border-color:#c8e6c9;box-shadow:0 4px 18px rgba(0,0,0,.15)}
+    .leaflet-popup-tip{background:#ffffff}
+    .pop-title{color:#1b5e20}
+    .pop-div{border-color:#c8e6c9}
+    .pop-link{color:#2e7d32}
+    .pop-link:hover{color:#1b5e20}
+    .ptag-sp{background:#e8f5e9;border-color:#a5d6a7;color:#1b5e20}
+
+    /* コンディションパネル */
+    #cond-panel{background:#e8f5e9;border-color:#c8e6c9}
+    .tonight-toggle{background:#f1f8e9;border-color:#a5d6a7;color:#2e7d32}
+    .tonight-toggle.active{background:#e8f5e9;border-color:#2e7d32;color:#1b5e20}
+
+    /* 凡例 */
+    .legend{background:rgba(255,255,255,.95);border-color:#c8e6c9;color:#1c3a1c}
+
+    /* シェアボタン */
+    .share-btn{background:#e8f5e9;border-color:#a5d6a7;color:#1565c0}
+    .share-btn:hover{background:#dcedc8}
+
+    /* 検索ボタン（無効時） */
+    #search-btn:disabled{background:#dcedc8;color:#81c784}
+
+    /* ブックマークバナー */
+    #bookmark-banner{background:linear-gradient(135deg,#e8f5e9,#f1f8e9) !important;border-color:#a5d6a7 !important}
+    #bookmark-banner div:first-child{color:#1b5e20 !important}
+    #bookmark-banner div:last-child{color:#388e3c !important}
+    #bookmark-banner button{color:#81c784 !important}
+
+    /* モバイル：ボトムシート */
+    @media(max-width:680px){
+      #sidebar{background:#ffffff !important;border-top-color:#4caf50 !important;box-shadow:0 -4px 24px rgba(0,0,0,.12) !important}
+      .sheet-handle{background:#ffffff !important}
+      .sheet-handle::after{background:#a5d6a7 !important}
+      #header{background:linear-gradient(135deg,#2e7d32,#43a047) !important;border-color:transparent !important}
+      #sp-row{background:#ffffff !important;border-color:#e8f5e9 !important}
+      #ctrl-toggle{background:#e8f5e9 !important;border-color:#c8e6c9 !important;color:#2e7d32 !important}
+      .detail-toggle{background:#f1f8e9 !important;border-color:#a5d6a7 !important;color:#2e7d32 !important}
+      .detail-toggle.open{background:#dcedc8 !important;border-color:#2e7d32 !important;color:#1b5e20 !important}
+      #ctrl-search-bar{background:#f9fbe7 !important;border-top-color:#4caf50 !important}
+      #map-spot-badge{background:rgba(255,255,255,.95) !important;color:#1b5e20 !important;border-color:#4caf50 !important;box-shadow:0 2px 12px rgba(0,0,0,.15) !important}
+      #map-list-btn{background:#ffffff !important;color:#1b5e20 !important;border-color:#4caf50 !important;box-shadow:0 2px 12px rgba(0,0,0,.15) !important}
+      .spot-item{background:#ffffff !important;border-color:#e8f5e9 !important}
+      .spot-item:hover{background:#f1f8e9 !important}
     }
   </style>
 </head>
 <body>
 <div id="app">
   <div id="sidebar">
+    <div class="sheet-handle" id="sheet-handle"></div>
     <div id="header">
       <h1><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> クワガタ採集スポット検索</h1>
       <div class="header-tagline">採集予定日・出発地を入力して採れる場所を地図表示</div>
@@ -499,9 +705,10 @@
         <span class="header-badge">🆓 無料</span>
       </div>
       <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap;align-items:center">
-        <a href="/guide" style="display:inline-flex;align-items:center;gap:4px;background:#2e4e2e;color:#a5d6a7;border:1px solid #4a7a4a;border-radius:6px;padding:4px 11px;font-size:.75rem;font-weight:700;text-decoration:none">📖 採集ガイド10本</a>
+        <a href="/guide" style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:4px 11px;font-size:.75rem;font-weight:700;text-decoration:none">📖 採集ガイド10本</a>
         <a href="/about" style="color:#4a7c4e;font-size:.65rem;text-decoration:none">ℹ 概要</a>
         <a href="/privacy" style="color:#4a7c4e;font-size:.65rem;text-decoration:none">🔒 規約</a>
+        <a href="/contact" style="color:#4a7c4e;font-size:.65rem;text-decoration:none">💬 お問い合わせ</a>
       </div>
     </div>
 
@@ -527,26 +734,8 @@
         <div id="addr-result" class="search-bar-result"></div>
       </div>
 
-      <!-- ── 詳細設定（折りたたみ） ── -->
-      <div class="detail-toggle" onclick="toggleAdvanced()">
-        <span>⚙ 種・日付・範囲など詳細設定</span>
-        <span id="adv-badge">＋</span>
-      </div>
-
-      <div id="adv-section" style="display:none;padding:0 2px 4px">
-
-        <!-- モード切替 -->
-        <div class="ctrl-label" style="margin-top:8px">🗂 検索モード</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
-          <button id="mode-family-btn" class="mode-btn active" onclick="setAppMode('family')">
-            かんたん検索<span class="mode-sub">実績スポットから選ぶ</span>
-          </button>
-          <button id="mode-expert-btn" class="mode-btn" onclick="setAppMode('expert')">
-            新ポイント探索<span class="mode-sub">AI予測（玄人用）</span>
-          </button>
-        </div>
-
-        <!-- 種選択 -->
+      <!-- ── 種選択（常時表示） ── -->
+      <div id="sp-row" style="padding:6px 0 4px">
         <div class="ctrl-label">🪲 狙う種</div>
         <div class="btn-row" style="flex-wrap:wrap;gap:6px;margin-bottom:4px">
           <button class="sp-btn active" data-sp="miyama"     data-guide="/guide/miyama"   onclick="setSpecies('miyama')">ミヤマ</button>
@@ -559,14 +748,40 @@
           <button class="sp-btn"        data-sp="kabuto"     data-guide="/guide/kabuto"    onclick="setSpecies('kabuto')">カブトムシ</button>
         </div>
         <div id="sp-guide-link" style="display:none;margin-bottom:6px">
-          <a id="sp-guide-anchor" href="/guide" style="font-size:.7rem;color:#66bb6a;text-decoration:none;display:inline-flex;align-items:center;gap:3px;border:1px solid #2e4e2e;border-radius:10px;padding:2px 10px;background:#1a3d1a">
+          <a id="sp-guide-anchor" href="/guide" style="font-size:.7rem;color:#66bb6a;text-decoration:none;display:inline-flex;align-items:center;gap:3px;border:1px solid #2e4e2e;border-radius:10px;padding:2px 10px;background:#181838">
             📖 <span id="sp-guide-label">採集ガイドを読む →</span>
           </a>
+        </div>
+      </div>
+
+      <!-- ── 詳細設定（折りたたみ） ── -->
+      <div class="detail-toggle" onclick="toggleAdvanced()">
+        <span>⚙ モード・日付・範囲など詳細設定</span>
+        <span id="adv-badge">＋</span>
+      </div>
+
+      <div id="adv-section" style="display:none;padding:0 2px 4px">
+
+        <!-- モード切替 -->
+        <div class="ctrl-label" style="margin-top:8px">🗂 検索モード</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+          <button id="mode-family-btn" class="mode-btn active" onclick="setAppMode('family')">
+            <span>📍 定番スポット</span><span class="mode-sub">実績データから選ぶ</span>
+          </button>
+          <button id="mode-expert-btn" class="mode-btn" onclick="setAppMode('expert')">
+            <span>🔍 AI新規探索</span><span class="mode-sub">未知の場所を予測</span>
+          </button>
         </div>
 
         <!-- 採集範囲 -->
         <div id="family-range-row">
-          <div class="ctrl-label">📍 検索範囲：自宅から <b style="color:#66bb6a">50km以内</b></div>
+          <div class="ctrl-label">📍 検索範囲</div>
+          <div class="btn-row" style="flex-wrap:wrap;margin-bottom:4px">
+            <button class="month-btn" data-fr="20"  onclick="setFamilyRadius(20)">20km</button>
+            <button class="month-btn active" data-fr="50"  onclick="setFamilyRadius(50)">50km</button>
+            <button class="month-btn" data-fr="100" onclick="setFamilyRadius(100)">100km</button>
+            <button class="month-btn" data-fr="200" onclick="setFamilyRadius(200)">200km</button>
+          </div>
         </div>
         <div id="expert-range-row" style="display:none">
           <div class="ctrl-label">🚗 採集に行ける距離</div>
@@ -590,7 +805,7 @@
         <div class="ctrl-label">📅 採集予定日（月齢・気象連動）</div>
         <div style="display:flex;gap:6px;align-items:center">
           <input type="date" id="plan-date" onchange="onPlanDateChange()"
-            style="flex:1;background:#1f321f;border:1px solid #2a3e2a;color:#dcedc8;border-radius:6px;padding:5px 9px;font-size:.82rem;outline:none">
+            style="flex:1;background:#1d1d2a;border:1px solid #28283c;color:#e0e0f0;border-radius:6px;padding:5px 9px;font-size:.82rem;outline:none">
           <button onclick="onPlanDateChange()" style="background:#2e4a2e;color:#a5d6a7;border:none;border-radius:6px;padding:5px 10px;font-size:.8rem;cursor:pointer">更新</button>
         </div>
         <div id="plan-date-label" style="font-size:.68rem;color:#81c784;margin-top:2px;opacity:.8"></div>
@@ -651,39 +866,49 @@
     <!-- sidebar-top-ad: AdSense審査通過後に有効化 -->
     <div id="sidebar-top-ad" style="display:none"></div>
     <div id="spot-list">
+      <!-- ブックマーク促進バナー -->
+      <div id="bookmark-banner" style="margin:10px 12px 0;padding:9px 12px;background:linear-gradient(135deg,#1a3d1a,#1b5e20);border:1px solid #4caf50;border-radius:9px;display:flex;align-items:center;gap:8px;position:relative">
+        <span style="font-size:1.3rem;flex-shrink:0">🔖</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:.74rem;font-weight:700;color:#a5d6a7">このサイトをブックマーク保存</div>
+          <div style="font-size:.65rem;color:#66bb6a;margin-top:1px">採集シーズン中にすぐ使えます。スマホは「ホーム画面に追加」がおすすめ！</div>
+        </div>
+        <button onclick="document.getElementById('bookmark-banner').style.display='none';localStorage.setItem('bk_dismissed','1')" style="background:none;border:none;color:#4a7c4e;font-size:1rem;cursor:pointer;padding:2px 4px;flex-shrink:0;line-height:1" title="閉じる">✕</button>
+      </div>
+      <script>if(localStorage.getItem('bk_dismissed')==='1'){var b=document.getElementById('bookmark-banner');if(b)b.style.display='none';}</script>
       <div id="guide-empty-state" style="padding:12px 12px 16px">
-        <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #2a3e2a">
-          <div style="font-size:.72rem;color:#66bb6a;font-weight:700;margin-bottom:8px;text-align:center">📋 使い方（3ステップ）</div>
+        <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #c8e6c9">
+          <div style="font-size:.72rem;color:#2e7d32;font-weight:700;margin-bottom:8px;text-align:center">📋 使い方（3ステップ）</div>
           <div style="display:flex;flex-direction:column;gap:6px">
-            <div style="display:flex;align-items:center;gap:8px;background:#1a3d1a;border-radius:7px;padding:7px 10px">
+            <div style="display:flex;align-items:center;gap:8px;background:#f1f8e9;border-radius:7px;padding:7px 10px">
               <span style="background:#2e7d32;color:#fff;font-size:.65rem;font-weight:800;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</span>
-              <span style="font-size:.75rem;color:#a5d6a7">📍 <b>出発地</b>を住所入力 or 現在地で設定</span>
+              <span style="font-size:.75rem;color:#1c3a1c">📍 <b>出発地</b>を住所入力 or 現在地で設定</span>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;background:#1a3d1a;border-radius:7px;padding:7px 10px">
+            <div style="display:flex;align-items:center;gap:8px;background:#f1f8e9;border-radius:7px;padding:7px 10px">
               <span style="background:#2e7d32;color:#fff;font-size:.65rem;font-weight:800;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</span>
-              <span style="font-size:.75rem;color:#a5d6a7">🪲 <b>種・方法</b>を選ぶ（省略可・後で変更可）</span>
+              <span style="font-size:.75rem;color:#1c3a1c">🪲 <b>種・方法</b>を選ぶ（省略可・後で変更可）</span>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;background:#1b5e20;border-radius:7px;padding:7px 10px;border:1px solid #4caf50">
+            <div style="display:flex;align-items:center;gap:8px;background:#e8f5e9;border-radius:7px;padding:7px 10px;border:1px solid #4caf50">
               <span style="background:#4caf50;color:#fff;font-size:.65rem;font-weight:800;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</span>
-              <span style="font-size:.75rem;color:#fff;font-weight:700">👇 「検索」を押すと地図に表示！</span>
+              <span style="font-size:.75rem;color:#1b5e20;font-weight:700">👇 「検索」を押すと地図に表示！</span>
             </div>
           </div>
         </div>
         <!-- ガイド記事カード -->
-        <div style="font-size:.68rem;color:#66bb6a;margin-bottom:6px;font-weight:700;letter-spacing:.04em">📖 採集ガイド</div>
+        <div style="font-size:.68rem;color:#2e7d32;margin-bottom:6px;font-weight:700;letter-spacing:.04em">📖 採集ガイド</div>
         <div style="display:flex;flex-direction:column;gap:5px">
-          <a href="/guide/beginners" style="display:flex;align-items:center;gap:8px;background:#1f321f;border:1px solid #2a3e2a;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#243e24'" onmouseout="this.style.background='#1f321f'">
+          <a href="/guide/beginners" style="display:flex;align-items:center;gap:8px;background:#ffffff;border:1px solid #c8e6c9;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#f1f8e9'" onmouseout="this.style.background='#ffffff'">
             <span style="font-size:1rem;flex-shrink:0">🔰</span>
             <div>
-              <div style="font-size:.76rem;font-weight:700;color:#a5d6a7">初心者完全ガイド</div>
-              <div style="font-size:.64rem;color:#4a7c4e;margin-top:1px">道具・場所・時期・安全対策</div>
+              <div style="font-size:.76rem;font-weight:700;color:#1b5e20">初心者完全ガイド</div>
+              <div style="font-size:.64rem;color:#388e3c;margin-top:1px">道具・場所・時期・安全対策</div>
             </div>
           </a>
-          <a href="/guide/kabuto" style="display:flex;align-items:center;gap:8px;background:#1f321f;border:1px solid #2a3e2a;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#243e24'" onmouseout="this.style.background='#1f321f'">
+          <a href="/guide/kabuto" style="display:flex;align-items:center;gap:8px;background:#ffffff;border:1px solid #c8e6c9;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#f1f8e9'" onmouseout="this.style.background='#ffffff'">
             <span style="font-size:1rem;flex-shrink:0">🦏</span>
             <div>
-              <div style="font-size:.76rem;font-weight:700;color:#a5d6a7">カブトムシ採集ガイド</div>
-              <div style="font-size:.64rem;color:#4a7c4e;margin-top:1px">クヌギ林・朝採りのコツ</div>
+              <div style="font-size:.76rem;font-weight:700;color:#1b5e20">カブトムシ採集ガイド</div>
+              <div style="font-size:.64rem;color:#388e3c;margin-top:1px">クヌギ林・朝採りのコツ</div>
             </div>
           </a>
           <!-- ガイド内インライン広告 -->
@@ -696,55 +921,55 @@
                  data-ad-client="ca-pub-9675243685208925"
                  data-ad-slot="auto"></ins>
           </div>
-          <a href="/guide/nokogiri" style="display:flex;align-items:center;gap:8px;background:#1f321f;border:1px solid #2a3e2a;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#243e24'" onmouseout="this.style.background='#1f321f'">
-            <span style="font-size:1rem;flex-shrink:0"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"></span>
+          <a href="/guide/nokogiri" style="display:flex;align-items:center;gap:8px;background:#ffffff;border:1px solid #c8e6c9;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#f1f8e9'" onmouseout="this.style.background='#ffffff'">
+            <span style="font-size:1rem;flex-shrink:0"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ" style="filter:none;mix-blend-mode:multiply"></span>
             <div>
-              <div style="font-size:.76rem;font-weight:700;color:#a5d6a7">ノコギリクワガタ採集</div>
-              <div style="font-size:.64rem;color:#4a7c4e;margin-top:1px">最も採集しやすい定番種</div>
+              <div style="font-size:.76rem;font-weight:700;color:#1b5e20">ノコギリクワガタ採集</div>
+              <div style="font-size:.64rem;color:#388e3c;margin-top:1px">最も採集しやすい定番種</div>
             </div>
           </a>
-          <a href="/guide/light" style="display:flex;align-items:center;gap:8px;background:#1f321f;border:1px solid #2a3e2a;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#243e24'" onmouseout="this.style.background='#1f321f'">
+          <a href="/guide/light" style="display:flex;align-items:center;gap:8px;background:#ffffff;border:1px solid #c8e6c9;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#f1f8e9'" onmouseout="this.style.background='#ffffff'">
             <span style="font-size:1rem;flex-shrink:0">💡</span>
             <div>
-              <div style="font-size:.76rem;font-weight:700;color:#a5d6a7">街灯・ライトトラップ採集</div>
-              <div style="font-size:.64rem;color:#4a7c4e;margin-top:1px">月齢と光を使った採集テクニック</div>
+              <div style="font-size:.76rem;font-weight:700;color:#1b5e20">街灯・ライトトラップ採集</div>
+              <div style="font-size:.64rem;color:#388e3c;margin-top:1px">月齢と光を使った採集テクニック</div>
             </div>
           </a>
-          <a href="/guide/kids" style="display:flex;align-items:center;gap:8px;background:#1f321f;border:1px solid #2a3e2a;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#243e24'" onmouseout="this.style.background='#1f321f'">
+          <a href="/guide/kids" style="display:flex;align-items:center;gap:8px;background:#ffffff;border:1px solid #c8e6c9;border-radius:7px;padding:7px 10px;text-decoration:none;transition:background .15s" onmouseover="this.style.background='#f1f8e9'" onmouseout="this.style.background='#ffffff'">
             <span style="font-size:1rem;flex-shrink:0">👨‍👧</span>
             <div>
-              <div style="font-size:.76rem;font-weight:700;color:#a5d6a7">子供・家族で採集ガイド</div>
-              <div style="font-size:.64rem;color:#4a7c4e;margin-top:1px">安全な場所・準備・楽しみ方</div>
+              <div style="font-size:.76rem;font-weight:700;color:#1b5e20">子供・家族で採集ガイド</div>
+              <div style="font-size:.64rem;color:#388e3c;margin-top:1px">安全な場所・準備・楽しみ方</div>
             </div>
           </a>
-          <a href="/guide" style="display:block;text-align:center;font-size:.7rem;color:#66bb6a;padding:5px;text-decoration:none;border:1px dashed #2e4e2e;border-radius:6px;margin-top:2px" onmouseover="this.style.background='#1a3d1a'" onmouseout="this.style.background='transparent'">
+          <a href="/guide" style="display:block;text-align:center;font-size:.7rem;color:#2e7d32;padding:5px;text-decoration:none;border:1px dashed #81c784;border-radius:6px;margin-top:2px" onmouseover="this.style.background='#e8f5e9'" onmouseout="this.style.background='transparent'">
             全10記事を見る →
           </a>
         </div>
       </div>
     </div>
     <!-- サイドバー下部 固定広告バナー（#sidebar 内に配置） -->
-    <div style="flex-shrink:0;padding:6px 14px 8px;background:#0d150d;border-top:1px solid #1f2f1f;text-align:center">
-      <div style="font-size:.55rem;color:#3a5c3a;margin-bottom:3px">- スポンサー -</div>
+    <div id="sidebar-amazon-footer" style="flex-shrink:0;padding:6px 14px 8px;background:#fff8e1;border-top:1px solid #ffe082;text-align:center">
+      <div style="font-size:.55rem;color:#8a6d00;margin-bottom:3px">- スポンサー -</div>
       <!-- Amazon アソシエイト採集グッズリンク -->
       <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
         <a href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E6%8D%95%E8%99%AB%E7%B6%B2&tag=beetlefinder-22"
            target="_blank" rel="noopener"
-           style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600">
+           style="display:inline-flex;align-items:center;gap:4px;background:#fff3e0;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#e65100;font-weight:600">
           🛒 捕虫網
         </a>
         <a href="https://www.amazon.co.jp/s?k=%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+%E7%99%BB%E5%B1%B1&tag=beetlefinder-22"
            target="_blank" rel="noopener"
-           style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600">
+           style="display:inline-flex;align-items:center;gap:4px;background:#fff3e0;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#e65100;font-weight:600">
           🔦 ヘッドライト
         </a>
         <a href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E9%A3%BC%E8%82%B2+%E3%82%BB%E3%83%83%E3%83%88&tag=beetlefinder-22"
            target="_blank" rel="noopener"
-           style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600">
+           style="display:inline-flex;align-items:center;gap:4px;background:#fff3e0;border:1px solid #ff9900;border-radius:7px;padding:5px 10px;text-decoration:none;font-size:.68rem;color:#e65100;font-weight:600">
           🐛 飼育セット
         </a>
       </div>
-      <div style="font-size:.55rem;color:#4a6c4a;margin-top:3px">Amazonアソシエイト参加中</div>
+      <div style="font-size:.55rem;color:#8a6d00;margin-top:3px">Amazonアソシエイト参加中</div>
     </div>
 
     <!-- ★ 条件変更パネル下部固定：検索実行バー（モバイルのみ表示） -->
@@ -755,7 +980,7 @@
       </button>
       <div style="text-align:center;margin-top:8px">
         <button onclick="closeCtrlPanel()"
-          style="background:none;border:none;color:#4a7c4e;font-size:.78rem;cursor:pointer;text-decoration:underline">
+          style="background:none;border:none;color:#388e3c;font-size:.78rem;cursor:pointer;text-decoration:underline">
           ← 地図に戻る（検索しない）
         </button>
       </div>
@@ -824,6 +1049,59 @@ function getNoteUrl(sp){
   // spot オブジェクトから region を取得（family/expert共通）
   const reg = sp.region || PREF_REGION[sp.prefecture] || '';
   return { url: NOTE_LINKS[reg] || '', region: reg, label: REGION_LABEL[reg] || reg };
+}
+
+// ── A: ローディング中に spot-list へ表示する採集グッズ広告 ────────────────
+function _loadingAdHtml(){
+  const tag = 'beetlefinder-22';
+  const items = [
+    { em:'🔦', label:'ヘッドライト',   kw:'%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED+%E7%99%BB%E5%B1%B1' },
+    { em:'🕸',  label:'捕虫網',         kw:'%E6%8D%95%E8%99%AB%E7%B6%B2' },
+    { em:'🪲',  label:'虫かご',         kw:'%E8%99%AB%E3%81%8B%E3%81%94+%E6%98%86%E8%99%AB' },
+    { em:'🌿', label:'昆虫ゼリー',     kw:'%E6%98%86%E8%99%AB%E3%82%BC%E3%83%AA%E3%83%BC' },
+  ];
+  const cards = items.map(p=>
+    `<a href="https://www.amazon.co.jp/s?k=${p.kw}&tag=${tag}" target="_blank" rel="noopener"
+       style="flex:1;min-width:68px;display:flex;flex-direction:column;align-items:center;gap:3px;background:#1a0c00;border:1px solid #c47000;border-radius:9px;padding:9px 5px;text-decoration:none;text-align:center;transition:border-color .2s">
+      <span style="font-size:1.5rem">${p.em}</span>
+      <span style="font-size:.68rem;color:#ff9900;font-weight:700">${p.label}</span>
+      <span style="font-size:.58rem;color:#7a4a00">Amazon →</span>
+    </a>`).join('');
+  return `<div style="padding:14px 14px 16px;background:#110a00;border-bottom:2px solid #2a1500">
+  <div style="font-size:.68rem;color:#c47000;margin-bottom:9px;font-weight:700;text-align:center">🛒 準備はOK？今夜の採集グッズをチェック</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap">${cards}</div>
+  <div style="font-size:.58rem;color:#4a2a00;margin-top:8px;text-align:center">スポット検索中… しばらくお待ちください</div>
+</div>`;
+}
+
+// ── B: 検索結果リスト最上部に表示するAmazon採集グッズ行 ─────────────────
+function _topResultsAdHtml(){
+  const tag = 'beetlefinder-22';
+  const sp = currentSp || 'miyama';
+  const isKabuto = sp === 'kabuto';
+  const spLabel = {miyama:'ミヤマ',okuwagata:'オオクワ',nokogiri:'ノコギリ',
+    kokuwagata:'コクワ',hirata:'ヒラタ',akaashi:'アカアシ',suji:'スジクワ',kabuto:'カブト'}[sp] || 'クワガタ';
+  const items = isKabuto
+    ? [
+        { em:'🦏', label:'カブト飼育セット', kw:'%E3%82%AB%E3%83%96%E3%83%88%E3%83%A0%E3%82%B7+%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88' },
+        { em:'🔦', label:'ヘッドライト',     kw:'%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED' },
+        { em:'🕸',  label:'捕虫網',           kw:'%E6%8D%95%E8%99%AB%E7%B6%B2' },
+      ]
+    : [
+        { em:'🪲',  label:`${spLabel}飼育セット`, kw:encodeURIComponent(spLabel+'飼育セット') },
+        { em:'🔦', label:'ヘッドライト',         kw:'%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED' },
+        { em:'🕸',  label:'捕虫網',               kw:'%E6%8D%95%E8%99%AB%E7%B6%B2' },
+      ];
+  const links = items.map(p=>
+    `<a href="https://www.amazon.co.jp/s?k=${p.kw}&tag=${tag}" target="_blank" rel="noopener"
+       style="flex:1;min-width:60px;display:flex;flex-direction:column;align-items:center;gap:2px;background:#1a0c00;border:1px solid #b36a00;border-radius:8px;padding:8px 5px;text-decoration:none;text-align:center">
+      <span style="font-size:1.2rem">${p.em}</span>
+      <span style="font-size:.64rem;color:#ff9900;font-weight:700">${p.label}</span>
+    </a>`).join('');
+  return `<div style="padding:8px 12px 12px;background:#0e0800;border-bottom:2px solid #c47000;margin-bottom:2px">
+  <div style="font-size:.58rem;color:#7a4a00;margin-bottom:6px;font-weight:700">🛒 採集グッズ — Amazon</div>
+  <div style="display:flex;gap:5px">${links}</div>
+</div>`;
 }
 
 // ── インライン広告ユニット（リスト途中に挿入・Amazon固定） ─────────────────
@@ -920,6 +1198,7 @@ let currentConditions = null, tonightModeOn = false;
 // ── モード管理 ────────────────────────────────────────────────
 let appMode = 'family';       // 'family' | 'expert'
 let expertRadius = 50;        // 玄人モードの検索半径(km)
+let familyRadius = 50;        // かんたん検索の検索範囲(km)
 let familySpotMarkers = [];   // 家族モードのマーカー
 
 // ── もっと見る ページング管理 ──────────────────────────────────
@@ -1248,6 +1527,12 @@ function toggleAdvanced(){
   sec.style.display = open ? 'none' : 'block';
   if(btn) btn.classList.toggle('open', !open);
   if(badge) badge.textContent = open ? '＋' : '－';
+  // モバイル：詳細を開いたときシートを設定モードに展開
+  if(!open && window.innerWidth <= 680){
+    document.body.classList.add('ctrl-open');
+    document.body.classList.remove('results-shown');
+    _ctrlCollapsed = false;
+  }
 }
 
 // ── 条件変更時の共通クリア処理 ───────────────────────────────────────────────
@@ -1284,7 +1569,7 @@ function setDirection(dir){
 
 const METHOD_META = {
   tree:   { label:'樹木採集',   icon:'🌳', color:'#66bb6a', desc:'広葉樹林の標高・樹相を重視したランキング', key: null },
-  light:  { label:'ライト採集', icon:'🔦', color:'#ce93d8', desc:'暗所の山地・水辺を重視（700〜1500m最適）', key: 'm_light' },
+  light:  { label:'ライト採集', icon:'🔦', color:'#7b1fa2', desc:'暗所の山地・水辺を重視（700〜1500m最適）', key: 'm_light' },
   street: { label:'街灯採集',   icon:'💡', color:'#ffc107', desc:'低標高・河川沿い道路を重視。選択後に実データ取得', key: 'm_street' },
 };
 
@@ -1336,6 +1621,14 @@ function setExpertRadius(r){
     b.classList.toggle('active', +b.dataset.r === r);
   });
   clearResults('検索距離を変更しました');
+}
+
+function setFamilyRadius(r){
+  familyRadius = r;
+  document.querySelectorAll('#family-range-row .month-btn').forEach(b=>{
+    b.classList.toggle('active', +b.dataset.fr === r);
+  });
+  clearResults('検索範囲を変更しました');
 }
 
 function handleSearchBtn(){
@@ -1401,7 +1694,7 @@ function startFamilySearch(){
   const date = getPlanDate();
   const month = date ? (new Date(date).getMonth()+1) : new Date().getMonth()+1;
   const dir = currentDirection || 'all';
-  const url = `/api/nearby-spots?lat=${centerLat}&lng=${centerLng}&mode=family&radius=50&species=${currentSp}&method=${currentMethod}&month=${month}&date=${date||''}&direction=${dir}`;
+  const url = `/api/nearby-spots?lat=${centerLat}&lng=${centerLng}&mode=family&radius=${familyRadius}&species=${currentSp}&method=${currentMethod}&month=${month}&date=${date||''}&direction=${dir}`;
 
   fetch(url)
     .then(r=>r.json())
@@ -1553,7 +1846,7 @@ function _renderFamilyList(){
   const display = all.slice(0, _familyLimit);
   const list = document.getElementById('spot-list');
   document.getElementById('spot-count').textContent =
-    `実績スポット ${_familyLimit}件表示 ／ 全${all.length}件 ／ 50km以内`;
+    `実績スポット ${_familyLimit}件表示 ／ 全${all.length}件 ／ ${familyRadius}km以内`;
   document.getElementById('sidebar-top-ad').style.display = 'block';
   // モバイル：バッジ更新＋地図をデフォルト表示
   const mll = document.getElementById('mob-list-label');
@@ -1565,25 +1858,25 @@ function _renderFamilyList(){
   list.innerHTML = display.map((sp,i)=>{
     const rank = i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}位`;
     const color = i===0?'#e53935':i<3?'#fb8c00':i<6?'#66bb6a':'#607d8b';
-    const bg    = i===0?'#2a0000':i<3?'#2a1400':'#140e00';
+    const bg    = i===0?'#fff5f5':i<3?'#fffbf0':'#f9fdf9';
     const spLabels = (sp.species||[]).map(s=>SPEC[s]||s).join('・');
     const diffLabel = sp.difficulty===1?'★☆☆':sp.difficulty===2?'★★☆':'★★★';
     const famOk = sp.family_ok ? '<span style="color:#66bb6a">👨‍👩‍👧 ファミリー向け◎</span>' : '<span style="color:#ff9800">⚠ 大人向け</span>';
     const noteInfo = getNoteUrl(sp);
     const noteBtnHtml = noteInfo.url
       ? `<a href="${noteInfo.url}" target="_blank" rel="noopener"
-           style="display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:5px 11px;background:#1a0a26;border:1px solid #7e57c2;border-radius:8px;text-decoration:none;font-size:.68rem;color:#ce93d8;font-weight:600;transition:background .15s"
-           onmouseover="this.style.background='#2a1040'" onmouseout="this.style.background='#1a0a26'">
-           📖 Note でエリア詳細を見る（${noteInfo.label}）<span style="background:#7e57c2;color:#fff;border-radius:5px;padding:0 6px;font-size:.65rem">¥100</span>
+           style="display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:5px 11px;background:#f3e5f5;border:1px solid #9c27b0;border-radius:8px;text-decoration:none;font-size:.68rem;color:#6a1b9a;font-weight:600;transition:background .15s"
+           onmouseover="this.style.background='#e1bee7'" onmouseout="this.style.background='#f3e5f5'">
+           📖 Note でエリア詳細を見る（${noteInfo.label}）<span style="background:#9c27b0;color:#fff;border-radius:5px;padding:0 6px;font-size:.65rem">¥100</span>
          </a>`
-      : `<div style="margin-top:5px;padding:4px 10px;background:#1a1a1a;border:1px dashed #3a3a3a;border-radius:7px;font-size:.63rem;color:#5a5a5a;display:inline-block">
+      : `<div style="margin-top:5px;padding:4px 10px;background:#f5f5f5;border:1px dashed #bdbdbd;border-radius:7px;font-size:.63rem;color:#757575;display:inline-block">
            📝 ${noteInfo.label||'このエリア'}の詳細記事 準備中...
          </div>`;
     return `<div class="spot-item" onclick="familySpotClick(${i})" style="background:${bg};border-left:3px solid ${color}">
   <div class="spot-top">
     <div style="flex:1">
       <div style="font-size:.82rem;color:${color};font-weight:700">${rank} ${sp.name}</div>
-      <div style="font-size:.68rem;color:#81c784;opacity:.8">${sp.prefecture} / ${sp.area||''}</div>
+      <div style="font-size:.68rem;color:#4a7a4a;opacity:.9">${sp.prefecture} / ${sp.area||''}</div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
       <span style="font-size:.78rem;font-weight:700;background:${color};color:${color==='#fdd835'?'#333':'#fff'};padding:1px 8px;border-radius:10px">${sp.score}点</span>
@@ -1591,14 +1884,14 @@ function _renderFamilyList(){
     </div>
   </div>
   <div style="font-size:.7rem;color:#9e9e9e;margin-top:3px">⛰ ${sp.elevation}m ／ 難易度 ${diffLabel} ／ ${famOk}</div>
-  <div style="font-size:.7rem;color:#a5d6a7;margin-top:2px">🪲 ${spLabels}</div>
-  <div style="font-size:.68rem;color:#81c784;margin-top:2px">🌙 ${sp.best_time} ／ 🚗 ${sp.access}</div>
-  ${sp.notes?`<div style="font-size:.63rem;color:#ccb060;margin-top:3px;padding:3px 6px;background:#2a1a00;border-radius:4px">📝 ${sp.notes}</div>`:''}
+  <div style="font-size:.7rem;color:#2e7d32;margin-top:2px">🪲 ${spLabels}</div>
+  <div style="font-size:.68rem;color:#4a7a4a;margin-top:2px">🌙 ${sp.best_time} ／ 🚗 ${sp.access}</div>
+  ${sp.notes?`<div style="font-size:.63rem;color:#6d4c00;margin-top:3px;padding:3px 6px;background:#fff8e1;border-radius:4px">📝 ${sp.notes}</div>`:''}
   ${noteBtnHtml}
 </div>`;
   }).reduce((acc,html,i)=>{
     acc.push(html);
-    if((i+1)%5===0 && i<display.length-1) acc.push(inlineAdHtml());
+    if((i+1)%3===0 && i<display.length-1) acc.push(inlineAdHtml());
     return acc;
   },[]).join('')
   + _amazonBottomBar()
@@ -1616,7 +1909,7 @@ function renderFamilyResults(spots, moonAge){
   if(!spots.length){
     const sl = document.getElementById('spot-list');
     if(sl) sl.innerHTML =
-      '<div style="padding:20px;color:#81c784;font-size:.8rem;text-align:center">⚠ 50km以内に実績スポットが見つかりませんでした。<br>出発地を変えるか、玄人モードで広域予測を試してください。</div>';
+      `<div style="padding:20px;color:#81c784;font-size:.8rem;text-align:center">⚠ ${familyRadius}km以内に実績スポットが見つかりませんでした。<br>範囲を広げるか、玄人モードで広域予測を試してください。</div>`;
     const badge = document.getElementById('map-spot-count-text');
     if(badge) badge.textContent = '0件';
     return;
@@ -1717,7 +2010,7 @@ function startAdCountdown(){
 }
 
 function startExpertSearch(){
-  document.getElementById('spot-list').innerHTML = '<div style="padding:16px;color:#ce93d8;font-size:.8rem;text-align:center">🔬 広域予測中... スコアリング実行中</div>';
+  document.getElementById('spot-list').innerHTML = '<div style="padding:16px;color:#7b1fa2;font-size:.8rem;text-align:center">🔬 広域予測中... スコアリング実行中</div>';
   const btn = document.getElementById('search-btn');
   btn.disabled = true;
   clearFamilyMarkers();
@@ -1757,7 +2050,7 @@ function _addExpertMarkers(spots, fromIdx, toIdx){
     const m = L.marker([sp.lat,sp.lng],{icon}).addTo(map);
     const treeStr = Object.entries(sp.trees||{}).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>`${TREE_JA[k]||k}${v}%`).join('・');
     m.bindPopup(`<div class="pop-title">🔬 予測ポイント ${i+1}位</div>
-<div class="pop-row" style="color:#ce93d8;font-size:.65rem">※未確認予測地点（実績なし）</div>
+<div class="pop-row" style="color:#7b1fa2;font-size:.65rem">※未確認予測地点（実績なし）</div>
 <div class="pop-row">⛰ 標高 ${sp.elevation}m ／ 斜面 ${sp.slope||'不明'}向き</div>
 <div class="pop-row">🌳 樹種: ${treeStr||'不明'}</div>
 <div class="pop-row">🌊 水場: ${sp.water_m}m ／ 光害: Lv${sp.light_pollution}</div>
@@ -1784,7 +2077,7 @@ function _renderExpertList(){
   if(badge2) badge2.textContent = `${_expertLimit}件のポイント`;
   setMobileTab('map');
 
-  list.innerHTML = '<div style="padding:6px 14px;background:#1a0a2e;border-top:2px solid #7e57c2;font-size:.72rem;color:#ce93d8;font-weight:600">🔬 予測ポイント（玄人モード） ※未確認地点</div>'
+  list.innerHTML = '<div style="padding:6px 14px;background:#f3e5f5;border-top:2px solid #9c27b0;font-size:.72rem;color:#6a1b9a;font-weight:600">🔬 予測ポイント（AI探索モード） ※未確認地点</div>'
   + display.map((sp,i)=>{
     const pct = maxSc===minSc?0.5:(sp.score-minSc)/(maxSc-minSc);
     const color = pct>=0.75?'#e53935':pct>=0.5?'#fb8c00':pct>=0.25?'#fdd835':'#43a047';
@@ -1792,12 +2085,12 @@ function _renderExpertList(){
     const noteInfo = getNoteUrl(sp);
     const noteBtnHtml = noteInfo.url
       ? `<a href="${noteInfo.url}" target="_blank" rel="noopener"
-           style="display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:5px 11px;background:#1a0a26;border:1px solid #7e57c2;border-radius:8px;text-decoration:none;font-size:.68rem;color:#ce93d8;font-weight:600"
-           onmouseover="this.style.background='#2a1040'" onmouseout="this.style.background='#1a0a26'">
-           📖 Note でエリア詳細を見る（${noteInfo.label}）<span style="background:#7e57c2;color:#fff;border-radius:5px;padding:0 6px;font-size:.65rem">¥100</span>
+           style="display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:5px 11px;background:#f3e5f5;border:1px solid #9c27b0;border-radius:8px;text-decoration:none;font-size:.68rem;color:#6a1b9a;font-weight:600"
+           onmouseover="this.style.background='#e1bee7'" onmouseout="this.style.background='#f3e5f5'">
+           📖 Note でエリア詳細を見る（${noteInfo.label}）<span style="background:#9c27b0;color:#fff;border-radius:5px;padding:0 6px;font-size:.65rem">¥100</span>
          </a>`
-      : `<div style="margin-top:4px;font-size:.62rem;color:#4a3a5a">📝 エリア詳細記事 準備中</div>`;
-    return `<div class="spot-item" onclick="familySpotClick(${i})" style="background:#140a1e;border-left:3px solid ${color}">
+      : `<div style="margin-top:4px;font-size:.62rem;color:#7a6a8a">📝 エリア詳細記事 準備中</div>`;
+    return `<div class="spot-item" onclick="familySpotClick(${i})" style="background:#fdf8ff;border-left:3px solid ${color}">
   <div class="spot-top">
     <div style="flex:1">
       <div style="font-size:.8rem;color:${color};font-weight:700">${i+1}位 ${sp.name}</div>
@@ -1805,13 +2098,13 @@ function _renderExpertList(){
     </div>
     <span style="font-size:.88rem;font-weight:700;color:${color}">${sp.score}点</span>
   </div>
-  <div style="font-size:.65rem;color:#b39ddb;margin-top:3px">🌳 ${treeStr} ／ 🌊水場${sp.water_m}m ／ 光害Lv${sp.light_pollution}</div>
+  <div style="font-size:.65rem;color:#7b1fa2;margin-top:3px">🌳 ${treeStr} ／ 🌊水場${sp.water_m}m ／ 光害Lv${sp.light_pollution}</div>
   <div style="font-size:.63rem;color:#9e9e9e;margin-top:1px">※採集実績のない予測地点です</div>
   ${noteBtnHtml}
 </div>`;
   }).reduce((acc,html,i)=>{
     acc.push(html);
-    if((i+1)%5===0 && i<display.length-1) acc.push(inlineAdHtml());
+    if((i+1)%3===0 && i<display.length-1) acc.push(inlineAdHtml());
     return acc;
   },[]).join('')
   + _amazonBottomBar()
@@ -1826,7 +2119,7 @@ function renderExpertResults(spots, moonAge){
   if(!spots.length){
     const sl = document.getElementById('spot-list');
     if(sl) sl.innerHTML=
-      '<div style="padding:20px;color:#ce93d8;font-size:.8rem;text-align:center">⚠ 指定範囲内に候補が見つかりませんでした。<br>距離を広げて再試行してください。</div>';
+      '<div style="padding:20px;color:#7b1fa2;font-size:.8rem;text-align:center">⚠ 指定範囲内に候補が見つかりませんでした。<br>距離を広げて再試行してください。</div>';
     return;
   }
   _allExpertSpots  = _reorderForDisplay(spots, EXPERT_TOP, EXPERT_PAGE);
@@ -1845,7 +2138,7 @@ function startSearch(){
   btn.disabled=true;
   document.getElementById('progress-wrap').style.display='block';
   document.getElementById('spot-count').textContent='';
-  document.getElementById('spot-list').innerHTML='';
+  document.getElementById('spot-list').innerHTML=_loadingAdHtml();
   // ガイドカードを非表示（検索結果が入るため）
   const guideEmptyState = document.getElementById('guide-empty-state');
   if(guideEmptyState) guideEmptyState.style.display='none';
@@ -1921,7 +2214,7 @@ function renderSpots(){
   // 方向絞込時は全件、全方向時は上位30件
   const listMax = (currentDirection && currentDirection !== 'all') ? filtered.length : 30;
   const listSpots = filtered.slice(0, listMax);
-  list.innerHTML=listSpots.map((spot,i)=>{
+  list.innerHTML=_topResultsAdHtml()+listSpots.map((spot,i)=>{
     const sc=displayScore(spot), obs=spot.obs||{}, favd=favs.includes(spotKey(spot));
     const isGrid = spot.is_grid;
     const coordStr = `${spot.lat.toFixed(4)}, ${spot.lng.toFixed(4)}`;
@@ -1960,7 +2253,7 @@ function renderSpots(){
   </div>
   <div class="spot-meta">📍 ${spot.dist_km}km ｜ ⛰ ${spot.elevation??'不明'}m ｜ 🌿 ${spot.bl_confirmed?'広葉樹林✓':spot.broadleaf?'広葉樹林（推定）':'樹林'}${spot.temp!=null?' ｜ 🌡️ '+spot.temp+'°C':''}${spot.river_dist_km!=null?' ｜ 🌊 '+spot.river_dist_km+'km':''}</div>
   ${typeBadge||spTag||obsBadge?`<div style="margin-top:3px">${typeBadge}${spTag}${obsBadge}</div>`:''}
-  ${reasonsHtml?`<div style="margin-top:3px;padding:3px 5px;background:#1a2a1a;border-radius:4px">${reasonsHtml}</div>`:''}
+  ${reasonsHtml?`<div style="margin-top:3px;padding:3px 5px;background:#181828;border-radius:4px">${reasonsHtml}</div>`:''}
   <div class="bar-wrap">
     <div class="bar-row"><span>${SPECIES_META[currentSp].label} <span style="color:${grd.c};font-size:.7rem">${grd.label}</span></span><span>${barScore}点</span></div>
     <div class="bar-bg"><div class="bar-fill" style="width:${barScore}%;background:${SPECIES_META[currentSp].color}"></div></div>
@@ -1968,7 +2261,7 @@ function renderSpots(){
 </div>`;
   }).reduce((acc, html, i)=>{
     acc.push(html);
-    if((i+1)%4===0 && i<listSpots.length-1) acc.push(inlineAdHtml());
+    if((i+1)%3===0 && i<listSpots.length-1) acc.push(inlineAdHtml());
     return acc;
   },[]).join('')
   + (filtered.length>listMax?`<div style="padding:10px 14px;text-align:center;color:#4a7c4e;font-size:.75rem">地図上には全${filtered.length}件表示。上位${listMax}件のみリスト表示。</div>`:'');
@@ -2112,17 +2405,17 @@ function renderConditions(){
   panel.innerHTML=`
 <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px">
   <span style="background:${gc};color:${gc==='#fdd835'?'#333':'#fff'};font-weight:700;padding:1px 8px;border-radius:7px;font-size:.82rem">${c.grade}</span>
-  <span style="font-size:.71rem;color:#90caf9">${c.moon_emoji} ${c.moon_label}（${c.moon_age}日）</span>
+  <span style="font-size:.71rem;color:#1565c0">${c.moon_emoji} ${c.moon_label}（${c.moon_age}日）</span>
   ${w
-    ?`<span style="font-size:.71rem;color:#b3e5fc">🌡${w.temp}°C 💧${w.humidity}% ☁${w.cloud}%</span>`
+    ?`<span style="font-size:.71rem;color:#0277bd">🌡${w.temp}°C 💧${w.humidity}% ☁${w.cloud}%</span>`
     :`<span style="font-size:.67rem;color:#546e7a">気象データなし</span>`}
-  <span style="font-size:.63rem;color:#4a7c4e;opacity:.7;margin-left:auto">${c.date}</span>
+  <span style="font-size:.63rem;color:#388e3c;opacity:.9;margin-left:auto">${c.date}</span>
   <button class="tonight-toggle${tonightModeOn?' active':''}" id="tonight-toggle" onclick="toggleTonightMode()">
     🌙 ${tonightModeOn?'今夜モード✓':'今夜スコア'}
   </button>
 </div>
 <div style="display:flex;gap:10px;font-size:.68rem;flex-wrap:wrap">
-  <span style="color:#ce93d8">🔦 ${starsHtml(lightSc)} ${lightSc}点</span>
+  <span style="color:#7b1fa2">🔦 ${starsHtml(lightSc)} ${lightSc}点</span>
   <span style="color:#ffc107">💡 ${starsHtml(streetSc)} ${streetSc}点</span>
   <span style="color:#66bb6a">🌳 ${starsHtml(50)} 天候依存なし</span>
 </div>`;
@@ -2155,11 +2448,11 @@ function showDateAdvice(age, dateStr){
   // ① 月齢スコア（ライト採集への影響）
   let moonScore, moonRating, moonColor;
   if(age < 2 || age > 27.5){
-    moonScore=5; moonRating='◎ 新月（暗夜）'; moonColor='#66bb6a';
+    moonScore=5; moonRating='◎ 新月（暗夜）'; moonColor='#2e7d32';
   } else if(age < 5 || age > 25){
-    moonScore=4; moonRating='○ 細い月';      moonColor='#8bc34a';
+    moonScore=4; moonRating='○ 細い月';      moonColor='#558b2f';
   } else if(age < 8 || age > 22){
-    moonScore=3; moonRating='△ 半月前後';    moonColor='#ffc107';
+    moonScore=3; moonRating='△ 半月前後';    moonColor='#e65100';
   } else if(age < 12 || age > 18){
     moonScore=2; moonRating='▲ 月明るめ';   moonColor='#ff9800';
   } else {
@@ -2187,15 +2480,15 @@ function showDateAdvice(age, dateStr){
   let bestMethod, bestMethodIcon, methodDetail, methodColor;
   if(moonScore >= 4){
     bestMethodIcon='🔦'; bestMethod='ライト採集';
-    methodColor='#ce93d8';
+    methodColor='#7b1fa2';
     methodDetail='月が暗く灯火への誘引効果が最大。山頂・尾根付近の光源を狙う。日没後30分〜23時がピーク。';
   } else if(moonScore === 3){
     bestMethodIcon='🌳'; bestMethod='樹木採集 or 💡 街灯採集';
-    methodColor='#a5d6a7';
+    methodColor='#388e3c';
     methodDetail='月の影響は中程度。クヌギ・コナラの樹液か、周辺に森がある街灯を狙うと効果的。';
   } else {
     bestMethodIcon='🌳'; bestMethod='樹木採集（朝採りも◎）';
-    methodColor='#81c784';
+    methodColor='#2e7d32';
     methodDetail='月が明るく灯火の誘引効果が低下。樹液採集に切り替えを。カブト狙いなら夜明け前4〜6時も有効。';
   }
 
@@ -2203,15 +2496,15 @@ function showDateAdvice(age, dateStr){
   const total = moonScore + seasonScore;
   let overallLabel, overallColor, overallBg;
   if(total >= 9){
-    overallLabel='🔥 絶好日！';      overallColor='#e53935'; overallBg='#2a0000';
+    overallLabel='🔥 絶好日！';      overallColor='#c62828'; overallBg='#fff5f5';
   } else if(total >= 7){
-    overallLabel='⭐ 良い採集日';    overallColor='#fb8c00'; overallBg='#2a1400';
+    overallLabel='⭐ 良い採集日';    overallColor='#e65100'; overallBg='#fff8f0';
   } else if(total >= 5){
-    overallLabel='🟡 まずまずの日';  overallColor='#fdd835'; overallBg='#1e1a00';
+    overallLabel='🟡 まずまずの日';  overallColor='#f9a825'; overallBg='#fffde7';
   } else if(total >= 3){
-    overallLabel='🟢 やや不向き';   overallColor='#66bb6a'; overallBg='#0d1a0d';
+    overallLabel='🟢 やや不向き';   overallColor='#2e7d32'; overallBg='#f1f8e9';
   } else {
-    overallLabel='⚫ 採集不向き';   overallColor='#78909c'; overallBg='#0d1010';
+    overallLabel='⚫ 採集不向き';   overallColor='#546e7a'; overallBg='#f5f5f5';
   }
 
   // ⑤ ベストタイム
@@ -2230,24 +2523,24 @@ function showDateAdvice(age, dateStr){
   </div>
   <!-- 月齢 × 採集方法 2カラム -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:7px">
-    <div style="background:#0d1a0d;border-radius:7px;padding:7px 9px">
-      <div style="font-size:.6rem;color:#4a7c4e;margin-bottom:3px">🌙 月の状態</div>
+    <div style="background:#f5f5f5;border-radius:7px;padding:7px 9px">
+      <div style="font-size:.6rem;color:#388e3c;margin-bottom:3px">🌙 月の状態</div>
       <div style="font-size:.8rem;color:${moonColor};font-weight:600">${moonLabelJS(age)}</div>
       <div style="font-size:.63rem;color:${moonColor};margin-top:1px">${moonRating}</div>
-      <div style="font-size:.6rem;color:#4a7c4e;margin-top:4px">ライト採集への影響</div>
+      <div style="font-size:.6rem;color:#388e3c;margin-top:4px">ライト採集への影響</div>
       <div style="display:flex;gap:2px;margin-top:2px">
-        ${[1,2,3,4,5].map(i=>`<div style="width:16px;height:5px;border-radius:2px;background:${i<=moonScore?moonColor:'#1f321f'}"></div>`).join('')}
+        ${[1,2,3,4,5].map(i=>`<div style="width:16px;height:5px;border-radius:2px;background:${i<=moonScore?moonColor:'#c8e6c9'}"></div>`).join('')}
       </div>
     </div>
-    <div style="background:#0d1a0d;border-radius:7px;padding:7px 9px">
-      <div style="font-size:.6rem;color:#4a7c4e;margin-bottom:3px">🎯 おすすめ方法</div>
+    <div style="background:#f5f5f5;border-radius:7px;padding:7px 9px">
+      <div style="font-size:.6rem;color:#388e3c;margin-bottom:3px">🎯 おすすめ方法</div>
       <div style="font-size:.78rem;color:${methodColor};font-weight:600">${bestMethodIcon} ${bestMethod}</div>
-      <div style="font-size:.6rem;color:#4a7c4e;margin-top:4px">⏰ ベストタイム</div>
-      <div style="font-size:.63rem;color:#a5d6a7;margin-top:1px;line-height:1.4">${bestTime}</div>
+      <div style="font-size:.6rem;color:#388e3c;margin-top:4px">⏰ ベストタイム</div>
+      <div style="font-size:.63rem;color:#2e7d32;margin-top:1px;line-height:1.4">${bestTime}</div>
     </div>
   </div>
   <!-- アドバイス文 -->
-  <div style="background:#0d1a0d;border-radius:6px;padding:6px 9px;font-size:.64rem;color:#81c784;line-height:1.6;border-left:3px solid ${methodColor}">
+  <div style="background:#f5f5f5;border-radius:6px;padding:6px 9px;font-size:.64rem;color:#2e7d32;line-height:1.6;border-left:3px solid ${methodColor}">
     ${methodDetail}
   </div>
 </div>`;
@@ -2343,10 +2636,10 @@ ${(()=>{
   const ts = Math.min(Math.round(sc * mf * tf * hf), 100);
   const tg = scoreGrade(ts);
   const ztStr = zt!=null ? `🌡 現地推定${zt}°C` : '';
-  return `<div style="background:#0d1a2a;border-radius:6px;padding:5px 8px;margin-bottom:6px">
-<div style="font-size:.7rem;color:#90caf9;font-weight:600;margin-bottom:3px">🌙 今夜の条件</div>
-<div style="font-size:.7rem;color:#c8e6c9">${currentConditions.moon_emoji} ${currentConditions.moon_label}（月齢${currentConditions.moon_age}日）× ${ztStr}</div>
-<div style="font-size:.7rem;color:#90caf9;margin-top:2px">今夜スコア: <b style="color:${scoreColor(ts)}">${ts}点</b> <span style="font-size:.75rem;background:${tg.c};color:${tg.c==='#fdd835'?'#333':'#fff'};padding:1px 6px;border-radius:8px">${tg.g}</span></div>
+  return `<div style="background:#e8f0fe;border-radius:6px;padding:5px 8px;margin-bottom:6px">
+<div style="font-size:.7rem;color:#1565c0;font-weight:600;margin-bottom:3px">🌙 今夜の条件</div>
+<div style="font-size:.7rem;color:#1c3a1c">${currentConditions.moon_emoji} ${currentConditions.moon_label}（月齢${currentConditions.moon_age}日）× ${ztStr}</div>
+<div style="font-size:.7rem;color:#1565c0;margin-top:2px">今夜スコア: <b style="color:${scoreColor(ts)}">${ts}点</b> <span style="font-size:.75rem;background:${tg.c};color:${tg.c==='#fdd835'?'#333':'#fff'};padding:1px 6px;border-radius:8px">${tg.g}</span></div>
 </div>`;
 })()}
 <a href="https://www.google.com/maps?q=${zone.lat},${zone.lng}" target="_blank" class="pop-link">📌 Gマップ</a>
@@ -2419,7 +2712,7 @@ function renderZones(){
   const zoneHtml =`
 <div style="padding:8px 14px 6px;background:#1a1200;border-top:2px solid ${headerColor};font-size:.75rem;color:${headerColor};font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
   <span>${meta.icon} 探索推奨ゾーン ／ ${meta.label}ランキング ${total}件${total < allZones.length ? `<span style="font-size:.62rem;opacity:.7">（全${allZones.length}件中）</span>` : ''}</span>
-  ${tonightLabel?`<span style="font-size:.63rem;background:#0d1a2a;color:#90caf9;padding:1px 7px;border-radius:9px">${tonightLabel}</span>`:''}
+  ${tonightLabel?`<span style="font-size:.63rem;background:#e8f0fe;color:#1565c0;padding:1px 7px;border-radius:9px">${tonightLabel}</span>`:''}
   <a href="${shareUrl}" target="_blank" class="share-btn" style="margin-left:auto">𝕏 結果をシェア</a>
 </div>
 ${sorted.map(({zone, origIdx, sc}, rank)=>{
@@ -2439,14 +2732,14 @@ ${sorted.map(({zone, origIdx, sc}, rank)=>{
   const zt = tonightModeOn && currentConditions?.weather
     ? zoneNightTemp(currentConditions.weather.temp, zone.elevation) : null;
   const tonightBadge = tonightModeOn && sc !== baseScVal
-    ? `<span style="font-size:.68rem;background:#0d1a2a;color:#90caf9;padding:1px 6px;border-radius:8px;margin-left:4px">基本${baseScVal}→今夜${sc}</span>` : '';
+    ? `<span style="font-size:.68rem;background:#e8f0fe;color:#1565c0;padding:1px 6px;border-radius:8px;margin-left:4px">基本${baseScVal}→今夜${sc}</span>` : '';
   const nightTempStr = zt!=null ? `｜ 🌙 ${zt}°C（現地推定）` : '';
   return `
-<div class="spot-item" onclick="zoneClick(${origIdx})" style="background:#140e00;border-left:3px solid ${relColor};cursor:pointer">
+<div class="spot-item" onclick="zoneClick(${origIdx})" style="background:#f9fdf9;border-left:3px solid ${relColor};cursor:pointer">
   <div class="spot-top">
     <div style="font-size:.78rem;color:${relColor};font-weight:600;flex:1;padding-right:6px">
       🔷 探索ゾーン ${rank+1}位<br>
-      <span style="font-size:.63rem;color:#ccb060;font-weight:400">${coordStr}</span>
+      <span style="font-size:.63rem;color:#6d5200;font-weight:400">${coordStr}</span>
     </div>
     <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
       <span style="font-size:.75rem;font-weight:700;background:${relColor};color:${relColor==='#fdd835'?'#333':'#fff'};padding:1px 7px;border-radius:10px">${grd.g}</span>
@@ -2455,8 +2748,8 @@ ${sorted.map(({zone, origIdx, sc}, rank)=>{
   </div>
   <div class="spot-meta">📍 ${zone.dist_km}km ｜ ⛰ ${zone.elevation??'不明'}m${zone.river_dist_km!=null?' ｜ 🌊 '+zone.river_dist_km+'km':''}${nightTempStr}</div>
   <div style="margin-top:2px;display:flex;align-items:center;gap:4px">${lightBadge}${subScores}${tonightBadge}</div>
-  <div style="margin-top:3px;padding:3px 6px;background:#2a1a00;border-radius:4px">
-    ${reasons.map(r=>`<div style="font-size:.64rem;color:#e0c060;line-height:1.6">▸ ${r}</div>`).join('')}
+  <div style="margin-top:3px;padding:3px 6px;background:#fff8e1;border-radius:4px">
+    ${reasons.map(r=>`<div style="font-size:.64rem;color:#6d4c00;line-height:1.6">▸ ${r}</div>`).join('')}
   </div>
   <div class="bar-wrap">
     <div class="bar-row">
@@ -2465,7 +2758,7 @@ ${sorted.map(({zone, origIdx, sc}, rank)=>{
     </div>
     <div class="bar-bg"><div class="bar-fill" style="width:${sc}%;background:${meta.color}"></div></div>
   </div>
-</div>`; }).reduce((acc,html,i,arr)=>{ acc.push(html); if((i+1)%4===0&&i<arr.length-1) acc.push(inlineAdHtml()); return acc; },[]).join('')}`;
+</div>`; }).reduce((acc,html,i,arr)=>{ acc.push(html); if((i+1)%3===0&&i<arr.length-1) acc.push(inlineAdHtml()); return acc; },[]).join('')}`;
   list.innerHTML = zoneHtml;
   const dirNote = currentDirection!=='all' ? ` ／ ${DIR_JA[currentDirection]}方向` : '';
   document.getElementById('spot-count').textContent =
@@ -2616,14 +2909,14 @@ function fetchNearbyLight(spot){
       <div style="font-size:.55rem;color:#5a3a00;margin-top:5px">Amazonアソシエイト参加中</div>
     </div>
     <!-- Note 記事予告ティーザー -->
-    <div style="background:#1a0a26;border:1px solid #5e35b1;border-radius:8px;padding:10px;text-align:center;margin-bottom:10px">
-      <div style="font-size:.72rem;color:#ce93d8;font-weight:700;margin-bottom:4px">📖 採集エリア詳細レポート（Note）</div>
-      <div style="font-size:.65rem;color:#9e9e9e;line-height:1.6">各エリアの具体的なポイント・木の見分け方・<br>採集実績データをNote記事で公開中</div>
-      <div style="margin-top:6px;font-size:.68rem;color:#b39ddb">関東 / 近畿 / 中部 など各地域版 ¥100〜</div>
+    <div style="background:#f3e5f5;border:1px solid #9c27b0;border-radius:8px;padding:10px;text-align:center;margin-bottom:10px">
+      <div style="font-size:.72rem;color:#6a1b9a;font-weight:700;margin-bottom:4px">📖 採集エリア詳細レポート（Note）</div>
+      <div style="font-size:.65rem;color:#5a5a5a;line-height:1.6">各エリアの具体的なポイント・木の見分け方・<br>採集実績データをNote記事で公開中</div>
+      <div style="margin-top:6px;font-size:.68rem;color:#7b1fa2">関東 / 近畿 / 中部 など各地域版 ¥100〜</div>
     </div>
     <!-- カウントダウン -->
     <div id="ad-countdown-wrap" style="text-align:center;margin-bottom:14px;font-size:.75rem;color:#9e9e9e">
-      ポイント情報取得中… あと <span id="ad-counter" style="font-size:1.2rem;font-weight:700;color:#ce93d8">3</span> 秒で表示
+      ポイント情報取得中… あと <span id="ad-counter" style="font-size:1.2rem;font-weight:700;color:#7b1fa2">3</span> 秒で表示
     </div>
     <button id="ad-unlock-btn" onclick="closeAdModal(true)" disabled
       style="width:100%;padding:11px;background:#1b5e20;color:#a5d6a7;border:2px solid #2e7d32;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;opacity:.5;transition:opacity .3s">
@@ -2635,42 +2928,6 @@ function fetchNearbyLight(spot){
   </div>
 </div>
 
-<!-- フィードバックボタン -->
-<button id="fb-btn" onclick="openFeedback()" title="ご意見・ご要望はこちら">
-  💬 <span class="fb-label">ご意見・要望</span>
-</button>
-
-<!-- フィードバックモーダル -->
-<div id="fb-overlay" onclick="closeFeedback()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9998"></div>
-<div id="fb-modal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;background:#1b2d1b;border:2px solid #4a7a4a;border-radius:12px;padding:24px 22px;width:min(420px,92vw);box-shadow:0 8px 32px rgba(0,0,0,.5)">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-    <h2 style="color:#a5d6a7;font-size:1rem;margin:0">💬 ご意見・ご要望</h2>
-    <button onclick="closeFeedback()" style="background:none;border:none;color:#81c784;font-size:1.3rem;cursor:pointer;line-height:1">✕</button>
-  </div>
-  <p style="font-size:.8rem;color:#81c784;margin-bottom:14px">バグ報告・欲しい機能・使い方の質問など何でもどうぞ！</p>
-  <p style="font-size:.85rem;color:#a5d6a7;margin-bottom:20px;line-height:1.7">
-    バグ報告・欲しい機能・使い方の質問など<br>何でもお気軽にどうぞ！<br>
-    <span style="font-size:.78rem;color:#81c784">いただいたご意見はサービス改善に活用します。</span>
-  </p>
-  <a href="https://forms.gle/D2YN8CZdAEVhDzNc9" target="_blank"
-     style="display:block;width:100%;background:#43a047;color:#fff;text-align:center;padding:13px;border-radius:8px;font-size:.95rem;font-weight:700;text-decoration:none;margin-bottom:10px">
-    📝 フォームを開く
-  </a>
-  <p style="font-size:.72rem;color:#66a;text-align:center;color:#81c784">新しいタブで開きます</p>
-</div>
-
-<style>
-#fb-btn{
-  position:fixed;bottom:20px;right:20px;z-index:9000;
-  background:#2e7d32;color:#fff;border:2px solid #66bb6a;
-  padding:10px 16px;border-radius:24px;font-size:.82rem;font-weight:700;
-  cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.4);
-  display:flex;align-items:center;gap:6px;
-  transition:background .15s,transform .15s;
-}
-#fb-btn:hover{background:#388e3c;transform:scale(1.05)}
-@media(max-width:680px){.fb-label{display:none}#fb-btn{padding:10px 12px;border-radius:50%;font-size:1.1rem}}
-</style>
 
 <script>
 // ページ読み込み時：初期種のガイドリンクを表示
@@ -2678,16 +2935,7 @@ document.addEventListener('DOMContentLoaded', function(){
   setSpecies('miyama');
 });
 
-function openFeedback(){
-  document.getElementById('fb-overlay').style.display='block';
-  document.getElementById('fb-modal').style.display='block';
-}
-function closeFeedback(){
-  document.getElementById('fb-overlay').style.display='none';
-  document.getElementById('fb-modal').style.display='none';
-  document.getElementById('fb-form').style.display='block';
-  document.getElementById('fb-thanks').style.display='none';
-}
+
 // 静的 AdSense ユニット（sidebar-top-ad・ad modal）を一括初期化
 window.addEventListener('load', function(){
   try{
@@ -2700,5 +2948,85 @@ window.addEventListener('load', function(){
 
 <!-- モバイル専用 固定下部広告バー（AdSense審査通過後に有効化） -->
 <div id="mobile-anchor-ad" style="display:none"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   ボトムシート：タッチドラッグ＆スナップ（モバイルのみ）
+   ══════════════════════════════════════════════════════ */
+(function(){
+  if(window.innerWidth > 680) return;
+  const handle = document.getElementById('sheet-handle');
+  const sheet  = document.getElementById('sidebar');
+  if(!handle || !sheet) return;
+
+  let startY = 0, startH = 0, isDragging = false;
+
+  function snapSheet(currentH){
+    const vh = window.innerHeight;
+    const threshLow  = vh * 0.35;   // 35vh 未満 → デフォルト50vh へ
+    const threshHigh = vh * 0.70;   // 70vh 超   → 設定モード92vh へ
+
+    sheet.style.transition = 'height .35s cubic-bezier(.25,.8,.5,1)';
+    sheet.style.height = ''; // CSS クラス任せに戻す
+
+    if(currentH > threshHigh){
+      // 上まで引っ張った → 設定パネルを開く
+      if(!document.body.classList.contains('results-shown')){
+        document.body.classList.add('ctrl-open');
+        _ctrlCollapsed = false;
+      }
+    } else if(currentH < threshLow){
+      // 下に戻した → 設定を閉じてデフォルトへ
+      document.body.classList.remove('ctrl-open');
+      document.body.classList.remove('results-shown');
+      _ctrlCollapsed = true;
+      if(typeof map !== 'undefined') setTimeout(()=>map.invalidateSize(), 380);
+    } else {
+      // 中間 → ctrl-openだけ閉じる（results-shownはそのまま）
+      document.body.classList.remove('ctrl-open');
+      if(typeof map !== 'undefined') setTimeout(()=>map.invalidateSize(), 380);
+    }
+  }
+
+  handle.addEventListener('touchstart', function(e){
+    startY    = e.touches[0].clientY;
+    startH    = sheet.offsetHeight;
+    isDragging = true;
+    sheet.style.transition = 'none';
+  }, {passive:true});
+
+  window.addEventListener('touchmove', function(e){
+    if(!isDragging) return;
+    const dy  = startY - e.touches[0].clientY;   // 上へ＝正
+    const newH = Math.min(
+      Math.max(startH + dy, 80),
+      window.innerHeight * 0.93
+    );
+    sheet.style.height = newH + 'px';
+  }, {passive:true});
+
+  window.addEventListener('touchend', function(){
+    if(!isDragging) return;
+    isDragging = false;
+    snapSheet(sheet.offsetHeight);
+  });
+
+  // ハンドルタップ：デフォルト⇔設定 トグル
+  handle.addEventListener('click', function(){
+    if(document.body.classList.contains('ctrl-open')){
+      document.body.classList.remove('ctrl-open');
+      sheet.style.height = '';
+      if(typeof map !== 'undefined') setTimeout(()=>map.invalidateSize(), 380);
+    } else if(document.body.classList.contains('results-shown')){
+      // 結果表示中にタップ → 設定を開く
+      document.body.classList.add('ctrl-open');
+      _ctrlCollapsed = false;
+    } else {
+      document.body.classList.add('ctrl-open');
+      _ctrlCollapsed = false;
+    }
+  });
+})();
+</script>
 </body>
 </html>

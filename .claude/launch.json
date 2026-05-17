@@ -5,7 +5,10 @@
       "name": "beetle-finder",
       "runtimeExecutable": "python",
       "runtimeArgs": ["app.py"],
-      "port": 5000
+      "port": 5000,
+      "env": {
+        "FLASK_DEBUG": "true"
+      }
     }
   ]
 }
