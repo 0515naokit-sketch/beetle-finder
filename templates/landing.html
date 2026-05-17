@@ -63,7 +63,7 @@
 
     /* ── ヒーロー ── */
     #hero{
-      position:relative;min-height:90svh;
+      position:relative;min-height:92svh;
       display:flex;flex-direction:column;
       align-items:center;justify-content:center;
       text-align:center;padding:80px 24px 72px;
@@ -71,75 +71,91 @@
     }
     #hero-bg{
       position:absolute;inset:0;
-      background-color:#0d2a0d;
+      background-color:#1a3a1a;
       z-index:0;overflow:hidden;
     }
     #hero-bg img{
       width:100%;height:100%;
-      object-fit:cover;object-position:center 40%;
-      filter:brightness(.38);
+      object-fit:cover;object-position:center 35%;
+      filter:brightness(.55) saturate(1.1);
       display:block;
+    }
+    /* 全体に緑がかったダークオーバーレイ */
+    #hero-bg::before{
+      content:'';position:absolute;inset:0;z-index:1;
+      background:linear-gradient(
+        180deg,
+        rgba(5,25,10,.55) 0%,
+        rgba(5,20,8,.40) 45%,
+        rgba(5,25,10,.70) 100%
+      );
     }
     /* 下部グラデーション */
     #hero-bg::after{
-      content:'';position:absolute;bottom:0;left:0;right:0;height:200px;
-      background:linear-gradient(transparent,rgba(0,0,0,.5));
-      z-index:1;
+      content:'';position:absolute;bottom:0;left:0;right:0;height:160px;
+      background:linear-gradient(transparent,rgba(0,15,0,.6));
+      z-index:2;
     }
-    #hero > *{position:relative;z-index:2}
+    #hero > *{position:relative;z-index:3}
 
     .hero-eyebrow{
       display:inline-block;
-      background:rgba(165,214,167,.15);
-      border:1px solid rgba(165,214,167,.4);
-      color:#a5d6a7;
-      font-size:.72rem;font-weight:700;letter-spacing:.12em;
-      padding:5px 16px;border-radius:20px;margin-bottom:24px;
+      background:rgba(255,255,255,.15);
+      border:1px solid rgba(255,255,255,.3);
+      color:#fff;
+      font-size:.72rem;font-weight:700;letter-spacing:.14em;
+      padding:6px 18px;border-radius:20px;margin-bottom:28px;
     }
     #hero h1{
-      font-size:clamp(2rem,6.5vw,3.8rem);
-      font-weight:900;line-height:1.18;
-      color:#fff;margin-bottom:20px;
-      letter-spacing:-.03em;
-      text-shadow:0 2px 20px rgba(0,0,0,.3);
+      font-size:clamp(2.2rem,6.5vw,4rem);
+      font-weight:900;line-height:1.2;
+      color:#fff;margin-bottom:18px;
+      letter-spacing:-.02em;
+      text-shadow:0 3px 24px rgba(0,0,0,.6), 0 1px 4px rgba(0,0,0,.4);
     }
     #hero h1 em{
-      color:#a5d6a7;font-style:normal;
+      color:#6fcf74;font-style:normal;
       display:inline-block;
+      text-shadow:0 0 32px rgba(111,207,116,.4);
     }
     .hero-sub{
-      font-size:clamp(.9rem,2.5vw,1.05rem);
-      color:rgba(255,255,255,.82);max-width:520px;
+      font-size:clamp(.92rem,2.5vw,1.08rem);
+      color:rgba(255,255,255,.9);max-width:500px;
       margin:0 auto 44px;line-height:2;
+      text-shadow:0 1px 8px rgba(0,0,0,.5);
     }
-    .hero-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+    .hero-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
     .hero-cta{
       display:inline-block;
-      background:linear-gradient(135deg,#fff 0%,#f1f8e9 100%);
-      color:#1b5e20;
-      font-size:1.05rem;font-weight:800;
-      padding:18px 56px;border-radius:10px;
-      box-shadow:0 6px 32px rgba(0,0,0,.28);
+      background:linear-gradient(135deg,#43a047,#2e7d32);
+      color:#fff;
+      font-size:1.08rem;font-weight:800;
+      padding:18px 60px;border-radius:50px;
+      box-shadow:0 8px 32px rgba(46,125,50,.5);
       transition:all .25s;
-      letter-spacing:.02em;
+      letter-spacing:.04em;
     }
-    .hero-cta:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.35)}
-    .hero-note{font-size:.74rem;color:rgba(255,255,255,.5);letter-spacing:.04em}
+    .hero-cta:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(46,125,50,.6)}
+    .hero-note{
+      font-size:.74rem;color:rgba(255,255,255,.6);letter-spacing:.04em;
+      background:rgba(0,0,0,.25);padding:4px 14px;border-radius:12px;
+    }
 
     .hero-stats{
-      display:flex;gap:0;margin-top:64px;
-      background:rgba(0,0,0,.35);
-      backdrop-filter:blur(12px);
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:16px;padding:28px 48px;
+      display:flex;gap:0;margin-top:60px;
+      background:rgba(255,255,255,.12);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,.2);
+      border-radius:20px;padding:24px 40px;
     }
     .hero-stat{
-      padding:0 40px;border-right:1px solid rgba(255,255,255,.15);
+      padding:0 36px;border-right:1px solid rgba(255,255,255,.2);
       text-align:center;
     }
     .hero-stat:last-child{border-right:none}
-    .hero-stat-num{font-size:1.8rem;font-weight:900;color:#a5d6a7;line-height:1;letter-spacing:-.02em}
-    .hero-stat-label{font-size:.66rem;color:rgba(255,255,255,.55);margin-top:6px;letter-spacing:.06em}
+    .hero-stat-num{font-size:1.9rem;font-weight:900;color:#fff;line-height:1;letter-spacing:-.02em}
+    .hero-stat-label{font-size:.66rem;color:rgba(255,255,255,.65);margin-top:6px;letter-spacing:.06em}
 
     /* ── セクション共通 ── */
     .section-inner{max-width:920px;margin:0 auto}
@@ -380,10 +396,10 @@
       nav{display:none}
       #hero{min-height:80svh;padding:56px 16px 48px}
       .hero-stats{
-        gap:0;padding:20px 24px;flex-wrap:wrap;
-        justify-content:center;
+        gap:0;padding:18px 20px;flex-wrap:wrap;
+        justify-content:center;border-radius:16px;
       }
-      .hero-stat{padding:10px 20px}
+      .hero-stat{padding:8px 18px}
       #how{padding:64px 16px}
       .steps{grid-template-columns:1fr;gap:16px}
       #scene{grid-template-columns:1fr}
