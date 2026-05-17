@@ -316,27 +316,26 @@
       #app{ flex-direction:column; height:100dvh; overflow:hidden; }
 
       /* ── 初期状態：マップ非表示・サイドバー全画面 ── */
-      #map-wrap{ display:none; order:1; flex-shrink:0; height:40dvh; }
-      #mobile-tab-bar{ order:2; display:none; }
+      #map-wrap{ display:none; order:1; flex-shrink:0; height:100dvh; }
+      #mobile-tab-bar{ display:none !important; }
       #sidebar{
-        order:3; width:100%; min-width:unset;
+        order:2; width:100%; min-width:unset;
         height:100dvh; border-right:none; border-top:none;
         flex-shrink:0;
       }
 
-      /* ── 検索後（body.results-shown）: デフォルトで地図フル表示 ── */
-      body.results-shown #map-wrap{ display:block; height:calc(100dvh - 48px); }
-      body.results-shown #mobile-tab-bar{ display:flex; }
-      body.results-shown #sidebar{ height:0; overflow:hidden; min-height:0; }
+      /* ── 検索後（body.results-shown）: 地図フルスクリーン ── */
+      body.results-shown #map-wrap{ display:block; height:100dvh; }
+      body.results-shown #sidebar{ display:none; }
 
-      /* ── リスト表示（body.list-focus）── */
-      body.list-focus #map-wrap{ height:42dvh; }
-      body.list-focus #sidebar{ height:calc(58dvh - 48px); overflow-y:auto; }
-
-      /* ── マップフォーカス（body.map-focus）: results-shownと同じ ── */
-      body.map-focus #map-wrap{ height:calc(100dvh - 48px); }
-      body.map-focus #sidebar{ height:0; overflow:hidden; min-height:0; }
-      body.map-focus #map-overlay-ad{ display:none; }
+      /* ── 条件変更（body.ctrl-open）: サイドバーを上に重ねる ── */
+      body.ctrl-open #map-wrap{ display:block; height:100dvh; }
+      body.ctrl-open #sidebar{
+        display:flex; position:fixed; top:0; left:0; right:0; bottom:0;
+        z-index:1000; height:100dvh; overflow-y:auto;
+        background:#1b2d1b;
+      }
+      body.ctrl-open #ctrl-toggle{ display:block !important; }
 
       /* ── スポット数フローティングバッジ（地図左上） ── */
       #map-spot-badge{
@@ -350,20 +349,18 @@
         backdrop-filter:blur(6px);
       }
       body.results-shown #map-spot-badge{ display:block; }
-      body.list-focus #map-spot-badge{ display:block; }
 
-      /* ── 一覧ボタン（地図右上） ── */
+      /* ── 条件変更ボタン（地図右上） ── */
       #map-list-btn{
         display:none;position:absolute;top:12px;right:12px;z-index:900;
-        background:#1b5e20;border:1px solid #4caf50;border-radius:24px;
+        background:#1b2d1b;border:1px solid #4caf50;border-radius:24px;
         padding:7px 16px;
-        font-size:.8rem;font-weight:700;color:#fff;
+        font-size:.8rem;font-weight:700;color:#a5d6a7;
         box-shadow:0 2px 12px rgba(0,0,0,.4);
         cursor:pointer;
         backdrop-filter:blur(6px);
       }
       body.results-shown #map-list-btn{ display:block; }
-      body.list-focus #map-list-btn{ background:#243e24; }
 
       /* ── モバイルタブバー ── */
       #mobile-tab-bar{
@@ -437,7 +434,7 @@
         text-align:center;
       }
       /* 固定広告の分だけsidebarの下部にpaddingを確保 */
-      #sidebar{ padding-bottom:68px; }
+      #sidebar{ padding-bottom:80px; }
     }
     @media(min-width:681px){
       #mobile-anchor-ad{ display:none !important; }
@@ -463,9 +460,9 @@
       </div>
     </div>
 
-    <!-- 検索後：条件変更トグル -->
-    <div id="ctrl-toggle" onclick="toggleControls()">
-      ▼ 検索条件を変更する
+    <!-- 条件変更パネル（モバイル）の閉じるバー -->
+    <div id="ctrl-toggle" onclick="closeCtrlPanel()" style="display:none">
+      ✕ 閉じて地図に戻る
     </div>
 
     <div id="controls">
@@ -706,17 +703,7 @@
     </div>
   </div>
 
-  <!-- モバイル専用タブバー（検索後に表示） -->
-  <div id="mobile-tab-bar">
-    <button class="mob-tab" id="mob-tab-list" onclick="setMobileTab('list')">
-      <span class="mob-tab-icon">📋</span>
-      <span class="mob-tab-label" id="mob-list-label">一覧</span>
-    </button>
-    <button class="mob-tab active" id="mob-tab-map" onclick="setMobileTab('map')">
-      <span class="mob-tab-icon">🗺</span>
-      <span class="mob-tab-label">地図</span>
-    </button>
-  </div>
+  <!-- モバイルタブバー削除済み（地図のみ表示） -->
 
   <div id="map-wrap" style="flex:1;position:relative;overflow:hidden">
     <div id="map" style="width:100%;height:100%"></div>
@@ -724,8 +711,8 @@
     <div id="map-toast"></div>
     <!-- スポット数バッジ（モバイル：地図左上） -->
     <div id="map-spot-badge">📍 <span id="map-spot-count-text">0件</span></div>
-    <!-- 一覧ボタン（モバイル：地図右上） -->
-    <button id="map-list-btn" onclick="setMobileTab('list')">一覧 ≡</button>
+    <!-- 検索条件変更ボタン（モバイル：地図右上） -->
+    <button id="map-list-btn" onclick="toggleControls()" style="right:12px">⚙ 条件変更</button>
     <!-- マップ中央下：もっと見るフローティングボタン -->
     <button id="map-more-btn" onclick="_mapMoreBtnClick()">🔍 もっと見る</button>
     <!-- マップ右下オーバーレイ広告（AdSense審査通過後に有効化） -->
@@ -1102,7 +1089,10 @@ function useGPS(){
 function geocodeAddress(){
   const addr = document.getElementById('addr-input').value.trim();
   if(!addr) return;
+  geocodeAndSearch(addr);
+  return; // 以下は新フローに移行済み
   const btn = document.getElementById('addr-btn');
+  if(!btn) return;
   btn.disabled = true; btn.textContent = '検索中...';
 
   // ブラウザから Nominatim API を直接呼ぶ（CORS 対応済み）
@@ -1133,7 +1123,7 @@ function geocodeAddress(){
     .catch(() => alert('住所の検索に失敗しました。インターネット接続を確認して再度お試しください。'))
     .finally(() => { btn.disabled = false; btn.textContent = '設定'; });
 }
-document.getElementById('addr-input').addEventListener('keydown', e=>{ if(e.key==='Enter') geocodeAddress(); });
+// Enterキーはaddr-inputのonkeydown属性でhandleSearchBtn()を呼ぶため削除
 
 function setOrigin(lat, lng, label){
   centerLat = lat; centerLng = lng;
@@ -1290,21 +1280,64 @@ function setExpertRadius(r){
 }
 
 function handleSearchBtn(){
-  if(!centerLat){ alert('出発地を先に設定してください'); return; }
-  // 初回検索は広告なしで直接実行（もっと見るのみ広告ゲート）
-  if(appMode === 'family'){
-    startFamilySearch();
+  const addr = (document.getElementById('addr-input')||{}).value?.trim();
+  if(addr){
+    // 住所が入力されていれば必ずジオコードしてから検索
+    geocodeAndSearch(addr);
+  } else if(centerLat !== DEFAULT_LAT || centerLng !== DEFAULT_LNG){
+    // GPS等で座標取得済み → 直接検索
+    _doSearch();
   } else {
-    startExpertSearch();
+    alert('出発地（市区町村・住所）を入力してください');
   }
+}
+
+function _doSearch(){
+  if(appMode === 'family') startFamilySearch();
+  else startExpertSearch();
+}
+
+function geocodeAndSearch(addr){
+  const searchBtn = document.querySelector('.search-bar-btn');
+  if(searchBtn){ searchBtn.disabled=true; searchBtn.textContent='検索中...'; }
+  const resultEl = document.getElementById('addr-result');
+  if(resultEl) resultEl.textContent='📍 住所を検索中...';
+
+  const url = 'https://nominatim.openstreetmap.org/search?' +
+    new URLSearchParams({q:addr, format:'json', limit:'3', 'accept-language':'ja', countrycodes:'jp'});
+
+  fetch(url, {headers:{'Accept-Language':'ja'}})
+    .then(r=>r.json())
+    .then(hits=>{
+      if(!hits||hits.length===0){
+        return fetch('https://nominatim.openstreetmap.org/search?'+
+          new URLSearchParams({q:addr+' 日本', format:'json', limit:'1', 'accept-language':'ja'}),
+          {headers:{'Accept-Language':'ja'}}).then(r2=>r2.json());
+      }
+      return hits;
+    })
+    .then(hits=>{
+      if(!hits||hits.length===0){
+        alert(`「${addr}」が見つかりませんでした。\n市区町村名（例：幸手市、新宿区）で入力してください。`);
+        return;
+      }
+      const h=hits[0];
+      setOrigin(parseFloat(h.lat), parseFloat(h.lon), h.display_name);
+      _doSearch();
+    })
+    .catch(()=>alert('住所の検索に失敗しました。通信状況を確認してください。'))
+    .finally(()=>{ if(searchBtn){ searchBtn.disabled=false; searchBtn.textContent='検索'; } });
 }
 
 // ── 家族モード検索 ────────────────────────────────────────────
 function startFamilySearch(){
   if(!centerLat){ alert('出発地を先に設定してください'); return; }
   const btn = document.getElementById('search-btn');
-  btn.disabled = true;
-  document.getElementById('spot-list').innerHTML = '<div style="padding:16px;color:#81c784;font-size:.8rem;text-align:center">🔍 近くの採集スポットを検索中...</div>';
+  if(btn) btn.disabled = true;
+  const searchBtn = document.querySelector('.search-bar-btn');
+  if(searchBtn){ searchBtn.disabled=true; searchBtn.textContent='検索中...'; }
+  const sl = document.getElementById('spot-list');
+  if(sl) sl.innerHTML = '<div style="padding:16px;color:#81c784;font-size:.8rem;text-align:center">🔍 近くの採集スポットを検索中...</div>';
 
   const date = getPlanDate();
   const month = date ? (new Date(date).getMonth()+1) : new Date().getMonth()+1;
@@ -1314,13 +1347,18 @@ function startFamilySearch(){
   fetch(url)
     .then(r=>r.json())
     .then(data=>{
-      btn.disabled = false;
+      if(btn) btn.disabled = false;
+      const sb = document.querySelector('.search-bar-btn');
+      if(sb){ sb.disabled=false; sb.textContent='検索'; }
       clearFamilyMarkers();
       renderFamilyResults(data.spots || [], data.moon_age || 0);
     })
     .catch(e=>{
-      btn.disabled = false;
-      document.getElementById('spot-list').innerHTML = '<div style="padding:16px;color:#ef5350;font-size:.8rem">取得失敗：'+e.message+'</div>';
+      if(btn) btn.disabled = false;
+      const sb = document.querySelector('.search-bar-btn');
+      if(sb){ sb.disabled=false; sb.textContent='検索'; }
+      const sl2 = document.getElementById('spot-list');
+      if(sl2) sl2.innerHTML = '<div style="padding:16px;color:#ef5350;font-size:.8rem">取得失敗：'+e.message+'</div>';
     });
 }
 
@@ -1329,51 +1367,34 @@ function clearFamilyMarkers(){
   familySpotMarkers = [];
 }
 
-// ── コントロール折りたたみ ──────────────────────────────────────
+// ── コントロール折りたたみ（検索後に地図→条件変更） ──────────────────────
 let _ctrlCollapsed = false;
 function collapseControls(){
-  const ctrl   = document.getElementById('controls');
-  const toggle = document.getElementById('ctrl-toggle');
-  if(!ctrl || !toggle) return;
-  ctrl.classList.add('collapsed');
-  toggle.style.display = 'block';
-  toggle.innerHTML = '⚙ 検索条件を変更する ▼';
   _ctrlCollapsed = true;
-  // モバイル：results-shown を付与してレイアウト切替
+  // モバイル：results-shown を付与して地図フルスクリーンに
   document.body.classList.add('results-shown');
+  document.body.classList.remove('ctrl-open');
   setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 350);
 }
 function toggleControls(){
-  const ctrl   = document.getElementById('controls');
-  const toggle = document.getElementById('ctrl-toggle');
-  if(!ctrl || !toggle) return;
   if(_ctrlCollapsed){
-    // モバイルでは検索画面に戻る
-    document.body.classList.remove('results-shown');
-    document.body.classList.remove('map-focus');
-    ctrl.classList.remove('collapsed');
-    toggle.innerHTML = '⚙ 検索条件を閉じる ▲';
-    _ctrlCollapsed   = false;
-    ctrl.scrollTop   = 0;
-    setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 50);
+    // 地図表示中 → 条件変更パネルを開く
+    document.body.classList.add('ctrl-open');
   } else {
+    // 初期状態から閉じる（使わないが念のため）
     collapseControls();
   }
 }
+function closeCtrlPanel(){
+  // 条件変更パネルを閉じて地図に戻る
+  document.body.classList.remove('ctrl-open');
+  setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 100);
+}
 
-// ── モバイルタブ切替 ──────────────────────────────────────────
+// ── モバイルタブ切替（一覧削除により地図のみ） ──────────────────────────
 function setMobileTab(tab){
-  const listBtn = document.getElementById('mob-tab-list');
-  const mapBtn  = document.getElementById('mob-tab-map');
-  if(listBtn) listBtn.classList.toggle('active', tab==='list');
-  if(mapBtn)  mapBtn.classList.toggle('active',  tab==='map');
-  if(tab==='list'){
-    document.body.classList.remove('map-focus');
-    document.body.classList.add('list-focus');
-  } else {
-    document.body.classList.remove('list-focus');
-    document.body.classList.add('map-focus');
-  }
+  // 一覧タブ廃止 → 常に地図表示
+  closeCtrlPanel();
   setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 300);
 }
 
