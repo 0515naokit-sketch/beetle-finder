@@ -353,12 +353,8 @@
       }
       #gps-btn{ padding:13px; font-size:.85rem; min-height:46px; }
 
-      /* ── 検索ボタン：大きく目立つ ── */
-      #search-btn{
-        padding:16px; font-size:1rem; font-weight:700;
-        margin-top:14px; border-radius:10px;
-        min-height:54px;
-      }
+      /* ── 検索ボタン：モバイル ── */
+      #search-btn{ min-height:54px; font-size:1rem; }
 
       /* ── スポットカード ── */
       .spot-item{ padding:12px 14px; }
@@ -367,9 +363,7 @@
       #map-more-btn{ bottom:60px; font-size:.88rem; padding:12px 24px; }
 
       /* ── モード切替ボタン ── */
-      #mode-family-btn, #mode-expert-btn{
-        padding:12px 6px; font-size:.82rem; min-height:60px;
-      }
+      .mode-btn{ padding:10px 6px; font-size:.82rem; min-height:52px; }
 
       /* ── モバイル固定下部広告バー ── */
       #mobile-anchor-ad{
@@ -414,78 +408,94 @@
 
     <div id="controls">
 
-      <!-- ───── モード切替 ───── -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
-        <button id="mode-family-btn" onclick="setAppMode('family')"
-          style="padding:10px 6px;border-radius:8px;border:2px solid #4a7a4a;background:#1a3d1a;color:#a5d6a7;font-size:.78rem;font-weight:700;cursor:pointer;text-align:center;line-height:1.4">
-          👨‍👩‍👧 かんたん検索<br><span style="font-size:.62rem;font-weight:400;opacity:.8">実績スポットから選ぶ</span>
+      <!-- モード切替（コンパクト） -->
+      <div class="mode-switch-row">
+        <button id="mode-family-btn" class="mode-btn active" onclick="setAppMode('family')">
+          かんたん検索<span class="mode-sub">実績スポットから選ぶ</span>
         </button>
-        <button id="mode-expert-btn" onclick="setAppMode('expert')"
-          style="padding:10px 6px;border-radius:8px;border:2px solid #2a2a2a;background:#1a1a1a;color:#9e9e9e;font-size:.78rem;font-weight:700;cursor:pointer;text-align:center;line-height:1.4">
-          🔬 新ポイント探索<br><span style="font-size:.62rem;font-weight:400;opacity:.8">広域AI予測（玄人用）</span>
+        <button id="mode-expert-btn" class="mode-btn" onclick="setAppMode('expert')">
+          新ポイント探索<span class="mode-sub">AI予測（玄人用）</span>
         </button>
       </div>
 
-      <!-- 出発地（共通） -->
-      <div class="ctrl-label">📍 出発地</div>
-
-      <!-- 住所入力 -->
-      <div id="loc-addr-row" class="addr-row">
-        <input id="addr-input" class="loc-input" type="text"
-               placeholder="例：新宿区 / 横浜市 / 長野県諏訪市" value=""
-               onkeydown="if(event.key==='Enter')geocodeAddress()">
-        <button id="addr-btn" onclick="geocodeAddress()">設定</button>
+      <!-- STEP 1: 出発地 -->
+      <div class="step-card">
+        <div class="step-card-label"><span class="step-circle">1</span>出発地を設定する</div>
+        <div id="loc-addr-row" class="addr-row">
+          <input id="addr-input" class="loc-input" type="text"
+                 placeholder="市区町村名・住所を入力" value=""
+                 onkeydown="if(event.key==='Enter')geocodeAddress()">
+          <button id="addr-btn" onclick="geocodeAddress()">設定</button>
+        </div>
+        <button id="gps-btn" onclick="useGPS()">
+          <span id="gps-icon">📡</span> 現在地を使う
+        </button>
+        <div id="addr-result" style="font-size:.72rem;color:#66bb6a;margin-top:5px;min-height:1.2em"></div>
       </div>
 
-      <!-- GPS ボタン -->
-      <button id="gps-btn" onclick="useGPS()">
-        <span id="gps-icon">📡</span> 現在地を使う
-      </button>
-
-      <div id="addr-hint" style="font-size:.65rem;color:#66bb6a;margin-top:4px">↑ 市区町村名や住所を入力して「設定」を押すか、現在地を使ってください</div>
-      <div id="addr-result" style="font-size:.68rem;color:#81c784;margin-top:3px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
-
-      <!-- 採集範囲（family=固定50km / expert=選択式） -->
-      <div id="family-range-row">
-        <div class="ctrl-label">📍 検索範囲：自宅から <b style="color:#66bb6a">50km以内</b>の実績スポットを表示</div>
-      </div>
-      <div id="expert-range-row" style="display:none">
-        <div class="ctrl-label">🚗 採集に行ける距離</div>
-        <div class="btn-row" style="flex-wrap:wrap">
-          <button class="month-btn" data-r="20"  onclick="setExpertRadius(20)">20km</button>
-          <button class="month-btn active" data-r="50" onclick="setExpertRadius(50)">50km</button>
-          <button class="month-btn" data-r="100" onclick="setExpertRadius(100)">100km</button>
-          <button class="month-btn" data-r="200" onclick="setExpertRadius(200)">200km</button>
-          <button class="month-btn" data-r="300" onclick="setExpertRadius(300)">300km</button>
+      <!-- STEP 2: 種を選ぶ（フラット表示・デフォルト表示） -->
+      <div class="step-card">
+        <div class="step-card-label">
+          <span class="step-circle">2</span>狙う種を選ぶ
+          <span class="step-opt">省略可</span>
+        </div>
+        <div class="sp-flat-row">
+          <button class="sp-btn active" data-sp="miyama"     data-guide="/guide/miyama"   onclick="setSpecies('miyama')">ミヤマ</button>
+          <button class="sp-btn"        data-sp="nokogiri"   data-guide="/guide/nokogiri" onclick="setSpecies('nokogiri')">ノコギリ</button>
+          <button class="sp-btn"        data-sp="hirata"     data-guide="/guide/hirata"   onclick="setSpecies('hirata')">ヒラタ</button>
+          <button class="sp-btn"        data-sp="okuwagata"  data-guide="/guide/ookuwa"   onclick="setSpecies('okuwagata')">オオクワ</button>
+          <button class="sp-btn"        data-sp="kokuwagata" data-guide="/guide"           onclick="setSpecies('kokuwagata')">コクワ</button>
+          <button class="sp-btn"        data-sp="akaashi"    data-guide="/guide"           onclick="setSpecies('akaashi')">アカアシ</button>
+          <button class="sp-btn"        data-sp="suji"       data-guide="/guide"           onclick="setSpecies('suji')">スジクワ</button>
+          <button class="sp-btn"        data-sp="kabuto"     data-guide="/guide/kabuto"    onclick="setSpecies('kabuto')"><img src="/static/img/icon-kabuto.jpg" class="kw-i" alt=""> カブト</button>
+        </div>
+        <div id="sp-guide-link" style="display:none;margin-top:8px">
+          <a id="sp-guide-anchor" href="/guide" style="font-size:.7rem;color:#66bb6a;text-decoration:none;display:inline-flex;align-items:center;gap:3px;border:1px solid #2e4e2e;border-radius:10px;padding:3px 10px;background:#1a3d1a">
+            📖 <span id="sp-guide-label">採集ガイドを読む →</span>
+          </a>
         </div>
       </div>
 
-      <!-- ドライブ時間（旧来の玄人ゾーン予測用、expert時は非表示） -->
-      <div id="drive-time-row" style="display:none">
-        <div class="ctrl-label">🚗 ドライブ時間</div>
-        <div class="slider-row">
-          <input type="range" id="hours-slider" min="1" max="8" step="0.5" value="3" oninput="onSliderChange(this.value)">
-          <span id="hours-label">3時間（約165km）</span>
-        </div>
+      <!-- 検索ボタン（大・目立つ） -->
+      <button id="search-btn" onclick="handleSearchBtn()">🔍 スポットを検索する</button>
+
+      <!-- 詳細設定（折りたたみ） -->
+      <div class="detail-toggle" onclick="toggleAdvanced()">
+        <span>📅 日付・方向など詳細設定</span>
+        <span id="adv-badge">＋ 開く</span>
       </div>
-
-      <!-- 採集予定日 -->
-      <div class="ctrl-label">📅 採集予定日（月齢・気象連動）</div>
-      <div style="display:flex;gap:6px;align-items:center">
-        <input type="date" id="plan-date" onchange="onPlanDateChange()"
-          style="flex:1;background:#1f321f;border:1px solid #2a3e2a;color:#dcedc8;border-radius:6px;padding:5px 9px;font-size:.82rem;outline:none">
-        <button onclick="onPlanDateChange()" style="background:#2e4a2e;color:#a5d6a7;border:none;border-radius:6px;padding:5px 10px;font-size:.8rem;cursor:pointer">更新</button>
-      </div>
-      <div id="plan-date-label" style="font-size:.68rem;color:#81c784;margin-top:2px;opacity:.8"></div>
-      <div id="plan-date-advice" style="display:none;margin-top:7px"></div>
-
-      <!-- 詳細設定トグル -->
-      <button id="adv-toggle" onclick="toggleAdvanced()">
-        <span>⚙ 種・方向・採集方法を選ぶ</span>
-        <span class="adv-badge" id="adv-badge" style="background:#388e3c">＋ 開く</span>
-      </button>
-
       <div id="adv-section" style="display:none">
+
+        <!-- 採集範囲 -->
+        <div id="family-range-row">
+          <div class="ctrl-label">📍 検索範囲：自宅から <b style="color:#66bb6a">50km以内</b></div>
+        </div>
+        <div id="expert-range-row" style="display:none">
+          <div class="ctrl-label">🚗 採集に行ける距離</div>
+          <div class="btn-row" style="flex-wrap:wrap">
+            <button class="month-btn" data-r="20"  onclick="setExpertRadius(20)">20km</button>
+            <button class="month-btn active" data-r="50" onclick="setExpertRadius(50)">50km</button>
+            <button class="month-btn" data-r="100" onclick="setExpertRadius(100)">100km</button>
+            <button class="month-btn" data-r="200" onclick="setExpertRadius(200)">200km</button>
+            <button class="month-btn" data-r="300" onclick="setExpertRadius(300)">300km</button>
+          </div>
+        </div>
+        <div id="drive-time-row" style="display:none">
+          <div class="ctrl-label">🚗 ドライブ時間</div>
+          <div class="slider-row">
+            <input type="range" id="hours-slider" min="1" max="8" step="0.5" value="3" oninput="onSliderChange(this.value)">
+            <span id="hours-label">3時間（約165km）</span>
+          </div>
+        </div>
+        <!-- 採集予定日 -->
+        <div class="ctrl-label">📅 採集予定日（月齢・気象連動）</div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <input type="date" id="plan-date" onchange="onPlanDateChange()"
+            style="flex:1;background:#1f321f;border:1px solid #2a3e2a;color:#dcedc8;border-radius:6px;padding:5px 9px;font-size:.82rem;outline:none">
+          <button onclick="onPlanDateChange()" style="background:#2e4a2e;color:#a5d6a7;border:none;border-radius:6px;padding:5px 10px;font-size:.8rem;cursor:pointer">更新</button>
+        </div>
+        <div id="plan-date-label" style="font-size:.68rem;color:#81c784;margin-top:2px;opacity:.8"></div>
+        <div id="plan-date-advice" style="display:none;margin-top:7px"></div>
         <!-- 種選択 -->
         <div class="ctrl-label"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> ターゲット種</div>
         <div class="sp-group">
@@ -566,10 +576,7 @@
         </div>
       </div><!-- /adv-section -->
 
-      <!-- 探索ゾーン検索（モード別） -->
-      <button id="search-btn" onclick="handleSearchBtn()">
-        <span id="search-btn-label">👨‍👩‍👧 近くの採集スポットを検索</span>
-      </button>
+      <span id="search-btn-label" style="display:none"></span>
     </div>
 
     <div id="progress-wrap">
@@ -695,6 +702,8 @@
 
   <div id="map-wrap" style="flex:1;position:relative;overflow:hidden">
     <div id="map" style="width:100%;height:100%"></div>
+    <!-- 条件変更トースト -->
+    <div id="map-toast"></div>
     <!-- スポット数バッジ（モバイル：地図左上） -->
     <div id="map-spot-badge">📍 <span id="map-spot-count-text">0件</span></div>
     <!-- 一覧ボタン（モバイル：地図右上） -->
@@ -1185,12 +1194,16 @@ function clearResults(msg){
   const smb = document.getElementById('show-more-bar');
   if(smb){ smb.style.display='none'; smb.innerHTML=''; }
   if(msg){
-    document.getElementById('spot-list').innerHTML=
-      `<div style="padding:16px;text-align:center;color:#ffc107;font-size:.8rem">
-        ⚙ ${msg}<br>
-        <span style="color:#81c784;font-size:.72rem">条件を確認して再度「検索」を押してください</span>
-      </div>`;
+    // リストには何も表示しない（空のまま）
     document.getElementById('spot-count').textContent='';
+    // 地図上にトースト表示（2秒で消える）
+    const toast = document.getElementById('map-toast');
+    if(toast){
+      toast.textContent = '⚙ ' + msg + ' — 再度「検索」を押してください';
+      toast.style.display = 'block';
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(()=>{ toast.style.display='none'; }, 3000);
+    }
   }
 }
 
@@ -1236,19 +1249,17 @@ function setAppMode(mode){
   const label = document.getElementById('search-btn-label');
 
   if(mode === 'family'){
-    fb.style.borderColor='#66bb6a'; fb.style.background='#1a3d1a'; fb.style.color='#a5d6a7';
-    eb.style.borderColor='#2a2a2a'; eb.style.background='#1a1a1a'; eb.style.color='#9e9e9e';
+    fb.classList.add('active'); eb.classList.remove('active');
     familyRange.style.display='block';
     expertRange.style.display='none';
     driveRow.style.display='none';
-    label.textContent = '👨‍👩‍👧 近くの採集スポットを検索';
+    if(label) label.textContent = '🔍 スポットを検索する';
   } else {
-    eb.style.borderColor='#7e57c2'; eb.style.background='#1a0a2e'; eb.style.color='#ce93d8';
-    fb.style.borderColor='#2a2a2a'; fb.style.background='#1a1a1a'; fb.style.color='#9e9e9e';
+    eb.classList.add('active'); fb.classList.remove('active');
     familyRange.style.display='none';
     expertRange.style.display='block';
     driveRow.style.display='none';
-    label.textContent = '🔬 新ポイントを予測探索する';
+    if(label) label.textContent = '🔍 スポットを検索する';
   }
   clearResults('モードを切り替えました');
 }
