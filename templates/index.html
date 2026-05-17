@@ -361,7 +361,7 @@
       }
       body.results-shown #map-spot-badge{ display:block; }
 
-      /* ── 条件変更ボタン（地図右上） ── */
+      /* ── 条件変更ボタン（地図右上・小） ── */
       #map-list-btn{
         display:none; position:fixed; top:12px; right:12px; z-index:900;
         background:#1b2d1b; border:1px solid #4caf50; border-radius:24px;
@@ -372,6 +372,38 @@
         backdrop-filter:blur(6px);
       }
       body.results-shown #map-list-btn{ display:block; }
+
+      /* ── 再検索ボタン（地図下部・大・目立つ） ── */
+      #map-research-btn{
+        display:none; position:fixed; bottom:24px; left:50%;
+        transform:translateX(-50%); z-index:900;
+        background:linear-gradient(135deg,#1b5e20,#2e7d32);
+        border:2px solid #66bb6a; border-radius:32px;
+        padding:14px 28px;
+        font-size:1rem; font-weight:700; color:#fff;
+        box-shadow:0 4px 20px rgba(76,175,80,.6);
+        cursor:pointer; white-space:nowrap;
+        -webkit-tap-highlight-color:transparent;
+      }
+      body.results-shown #map-research-btn{ display:block; }
+
+      /* ── 条件変更パネル：検索ボタンを最下部に固定 ── */
+      body.ctrl-open #sidebar{
+        display:flex; flex-direction:column;
+      }
+      /* ctrl-open時のcontrolsはflexで伸縮し、ボタンが常に見える */
+      body.ctrl-open #controls{
+        flex:1; overflow-y:auto; max-height:none;
+        padding-bottom:0;
+      }
+      /* 検索実行バー（ctrl-open時に固定表示） */
+      #ctrl-search-bar{
+        display:none; flex-shrink:0;
+        padding:12px 14px;
+        background:#111d11;
+        border-top:2px solid #4caf50;
+      }
+      body.ctrl-open #ctrl-search-bar{ display:block; }
 
       /* ── モバイルタブバー ── */
       #mobile-tab-bar{
@@ -471,9 +503,9 @@
       </div>
     </div>
 
-    <!-- 条件変更パネル（モバイル）の閉じるバー -->
+    <!-- 条件変更パネル（モバイル）：ヘッダーバー -->
     <div id="ctrl-toggle" onclick="closeCtrlPanel()" style="display:none">
-      ✕ 閉じて地図に戻る
+      ← 地図に戻る
     </div>
 
     <div id="controls">
@@ -712,9 +744,21 @@
       </div>
       <div style="font-size:.55rem;color:#4a6c4a;margin-top:3px">Amazonアソシエイト参加中</div>
     </div>
-  </div>
 
-  <!-- モバイルタブバー削除済み（地図のみ表示） -->
+    <!-- ★ 条件変更パネル下部固定：検索実行バー（モバイルのみ表示） -->
+    <div id="ctrl-search-bar">
+      <button onclick="handleSearchBtn()"
+        style="width:100%;padding:14px;background:linear-gradient(135deg,#2e7d32,#43a047);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.04em">
+        🔍 この条件で検索する
+      </button>
+      <div style="text-align:center;margin-top:8px">
+        <button onclick="closeCtrlPanel()"
+          style="background:none;border:none;color:#4a7c4e;font-size:.78rem;cursor:pointer;text-decoration:underline">
+          ← 地図に戻る（検索しない）
+        </button>
+      </div>
+    </div>
+  </div>
 
   <div id="map-wrap">
     <div id="map" style="width:100%;height:100%"></div>
@@ -722,8 +766,10 @@
     <div id="map-toast"></div>
     <!-- スポット数バッジ（モバイル：地図左上） -->
     <div id="map-spot-badge">📍 <span id="map-spot-count-text">0件</span></div>
-    <!-- 検索条件変更ボタン（モバイル：地図右上） -->
-    <button id="map-list-btn" onclick="toggleControls()" style="right:12px">⚙ 条件変更</button>
+    <!-- 検索条件変更ボタン（モバイル：地図右上・小） -->
+    <button id="map-list-btn" onclick="toggleControls()">⚙ 条件変更</button>
+    <!-- ★ 再検索ボタン（地図下部中央・大きく目立つ） -->
+    <button id="map-research-btn" onclick="toggleControls()">🔍 再検索・条件変更</button>
     <!-- マップ中央下：もっと見るフローティングボタン -->
     <button id="map-more-btn" onclick="_mapMoreBtnClick()">🔍 もっと見る</button>
     <!-- マップ右下オーバーレイ広告（AdSense審査通過後に有効化） -->
