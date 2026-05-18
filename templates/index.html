@@ -1684,12 +1684,14 @@ function geocodeAndSearch(addr){
 // ── 家族モード検索 ────────────────────────────────────────────
 function startFamilySearch(){
   if(!centerLat){ alert('出発地を先に設定してください'); return; }
+  // ① モバイル：ローディング前にサイドバーを結果モードへ展開
+  collapseControls();
   const btn = document.getElementById('search-btn');
   if(btn) btn.disabled = true;
   const searchBtn = document.querySelector('.search-bar-btn');
   if(searchBtn){ searchBtn.disabled=true; searchBtn.textContent='検索中...'; }
   const sl = document.getElementById('spot-list');
-  if(sl) sl.innerHTML = '<div style="padding:16px;color:#81c784;font-size:.8rem;text-align:center">🔍 近くの採集スポットを検索中...</div>';
+  if(sl){ sl.innerHTML = '<div style="padding:16px;color:#81c784;font-size:.8rem;text-align:center">🔍 近くの採集スポットを検索中...</div>'; sl.scrollTop=0; }
 
   const date = getPlanDate();
   const month = date ? (new Date(date).getMonth()+1) : new Date().getMonth()+1;
@@ -1725,7 +1727,9 @@ function collapseControls(){
   _ctrlCollapsed = true;
   document.body.classList.add('results-shown');
   document.body.classList.remove('ctrl-open');
-  // invalidateSize は renderFamilyResults の requestAnimationFrame 内で呼ぶ
+  // モバイル：インラインheightを解除してCSSクラス(85vh)を有効化
+  const sidebar = document.getElementById('sidebar');
+  if(sidebar) sidebar.style.removeProperty('height');
 }
 function toggleControls(){
   if(_ctrlCollapsed){
@@ -1854,6 +1858,7 @@ function _renderFamilyList(){
   const badge = document.getElementById('map-spot-count-text');
   if(badge) badge.textContent = `${_familyLimit}件のスポット`;
   setMobileTab('map');
+  list.scrollTop = 0; // 新結果を先頭から表示
 
   list.innerHTML = display.map((sp,i)=>{
     const rank = i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}位`;
@@ -2010,7 +2015,10 @@ function startAdCountdown(){
 }
 
 function startExpertSearch(){
-  document.getElementById('spot-list').innerHTML = '<div style="padding:16px;color:#7b1fa2;font-size:.8rem;text-align:center">🔬 広域予測中... スコアリング実行中</div>';
+  // ① モバイル：ローディング前にサイドバーを結果モードへ展開
+  collapseControls();
+  const sl0 = document.getElementById('spot-list');
+  if(sl0){ sl0.innerHTML = '<div style="padding:16px;color:#7b1fa2;font-size:.8rem;text-align:center">🔬 広域予測中... スコアリング実行中</div>'; sl0.scrollTop=0; }
   const btn = document.getElementById('search-btn');
   btn.disabled = true;
   clearFamilyMarkers();
@@ -2076,6 +2084,7 @@ function _renderExpertList(){
   const badge2 = document.getElementById('map-spot-count-text');
   if(badge2) badge2.textContent = `${_expertLimit}件のポイント`;
   setMobileTab('map');
+  list.scrollTop = 0; // 新結果を先頭から表示
 
   list.innerHTML = '<div style="padding:6px 14px;background:#f3e5f5;border-top:2px solid #9c27b0;font-size:.72rem;color:#6a1b9a;font-weight:600">🔬 予測ポイント（AI探索モード） ※未確認地点</div>'
   + display.map((sp,i)=>{
