@@ -1,7 +1,8 @@
 import sys
 sys.setrecursionlimit(10000)   # gevent + SSL ハンドシェイクの深い再帰に対応
 
-from flask import Flask, render_template, Response, jsonify, request, stream_with_context
+from flask import Flask, render_template, Response, jsonify, request, stream_with_context, abort
+from pref_data import PREF_DATA
 import requests
 from requests.adapters import HTTPAdapter
 import math
@@ -785,6 +786,13 @@ def guide_pref_saitama():
 @app.route("/guide/pref/chiba")
 def guide_pref_chiba():
     return render_template("guide_pref_chiba.html")
+
+@app.route("/guide/pref/<slug>")
+def guide_pref_dynamic(slug):
+    pref = PREF_DATA.get(slug)
+    if not pref or pref.get("static"):
+        abort(404)
+    return render_template("guide_pref.html", pref=pref)
 
 
 @app.route("/health")
