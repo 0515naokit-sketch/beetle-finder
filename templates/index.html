@@ -911,8 +911,8 @@
               <div style="font-size:.64rem;color:#388e3c;margin-top:1px">クヌギ林・朝採りのコツ</div>
             </div>
           </a>
-          <!-- ガイド内インライン広告 -->
-          <div style="margin:2px 0">
+          <!-- ガイド内インライン広告（AdSense審査通過後に display:none を外す） -->
+          <div style="display:none;margin:2px 0">
             <div style="font-size:.52rem;color:#3a5c3a;text-align:center;margin-bottom:2px">- スポンサー -</div>
             <ins class="adsbygoogle"
                  style="display:block;width:100%;min-height:60px"
@@ -1062,15 +1062,15 @@ function _loadingAdHtml(){
   ];
   const cards = items.map(p=>
     `<a href="https://www.amazon.co.jp/s?k=${p.kw}&tag=${tag}" target="_blank" rel="noopener"
-       style="flex:1;min-width:68px;display:flex;flex-direction:column;align-items:center;gap:3px;background:#1a0c00;border:1px solid #c47000;border-radius:9px;padding:9px 5px;text-decoration:none;text-align:center;transition:border-color .2s">
+       style="flex:1;min-width:68px;display:flex;flex-direction:column;align-items:center;gap:3px;background:#fff3e0;border:1px solid #ff9900;border-radius:9px;padding:9px 5px;text-decoration:none;text-align:center;transition:border-color .2s">
       <span style="font-size:1.5rem">${p.em}</span>
-      <span style="font-size:.68rem;color:#ff9900;font-weight:700">${p.label}</span>
-      <span style="font-size:.58rem;color:#7a4a00">Amazon →</span>
+      <span style="font-size:.68rem;color:#e65100;font-weight:700">${p.label}</span>
+      <span style="font-size:.58rem;color:#c45000">Amazon →</span>
     </a>`).join('');
-  return `<div style="padding:14px 14px 16px;background:#110a00;border-bottom:2px solid #2a1500">
-  <div style="font-size:.68rem;color:#c47000;margin-bottom:9px;font-weight:700;text-align:center">🛒 準備はOK？今夜の採集グッズをチェック</div>
+  return `<div style="padding:14px 14px 16px;background:#fff8e1;border-bottom:2px solid #ffe082">
+  <div style="font-size:.68rem;color:#c45000;margin-bottom:9px;font-weight:700;text-align:center">🛒 準備はOK？今夜の採集グッズをチェック</div>
   <div style="display:flex;gap:6px;flex-wrap:wrap">${cards}</div>
-  <div style="font-size:.58rem;color:#4a2a00;margin-top:8px;text-align:center">スポット検索中… しばらくお待ちください</div>
+  <div style="font-size:.58rem;color:#888;margin-top:8px;text-align:center">スポット検索中… しばらくお待ちください</div>
 </div>`;
 }
 
@@ -1094,12 +1094,12 @@ function _topResultsAdHtml(){
       ];
   const links = items.map(p=>
     `<a href="https://www.amazon.co.jp/s?k=${p.kw}&tag=${tag}" target="_blank" rel="noopener"
-       style="flex:1;min-width:60px;display:flex;flex-direction:column;align-items:center;gap:2px;background:#1a0c00;border:1px solid #b36a00;border-radius:8px;padding:8px 5px;text-decoration:none;text-align:center">
+       style="flex:1;min-width:60px;display:flex;flex-direction:column;align-items:center;gap:2px;background:#fff3e0;border:1px solid #ff9900;border-radius:8px;padding:8px 5px;text-decoration:none;text-align:center">
       <span style="font-size:1.2rem">${p.em}</span>
-      <span style="font-size:.64rem;color:#ff9900;font-weight:700">${p.label}</span>
+      <span style="font-size:.64rem;color:#e65100;font-weight:700">${p.label}</span>
     </a>`).join('');
-  return `<div style="padding:8px 12px 12px;background:#0e0800;border-bottom:2px solid #c47000;margin-bottom:2px">
-  <div style="font-size:.58rem;color:#7a4a00;margin-bottom:6px;font-weight:700">🛒 採集グッズ — Amazon</div>
+  return `<div style="padding:8px 12px 12px;background:#fff8e1;border-bottom:2px solid #ffe082;margin-bottom:2px">
+  <div style="font-size:.58rem;color:#c45000;margin-bottom:6px;font-weight:700">🛒 採集グッズ — Amazon</div>
   <div style="display:flex;gap:5px">${links}</div>
 </div>`;
 }
@@ -1131,9 +1131,9 @@ function inlineAdHtml(){
        style="display:inline-flex;align-items:center;gap:4px;background:#1a0c00;border:1px solid #b36a00;border-radius:7px;padding:6px 11px;text-decoration:none;font-size:.68rem;color:#ff9900;font-weight:600;white-space:nowrap">
        ${label}
      </a>`).join('');
-  return `<div style="padding:8px 14px;background:#110a00;border-top:1px solid #2a1a00;border-bottom:1px solid #2a1a00">
-  <div style="font-size:.56rem;color:#7a4a00;margin-bottom:5px;font-weight:600">🛒 採集グッズ — Amazon</div>
-  <div style="display:flex;gap:5px;flex-wrap:wrap">${links}</div>
+  return `<div style="padding:8px 14px;background:#fff8e1;border-top:1px solid #ffe082;border-bottom:1px solid #ffe082">
+  <div style="font-size:.56rem;color:#c45000;margin-bottom:5px;font-weight:600">🛒 採集グッズ — Amazon</div>
+  <div style="display:flex;gap:5px;flex-wrap:wrap">${links.replace(/background:#1a0c00/g,'background:#fff3e0').replace(/color:#ff9900/g,'color:#e65100')}</div>
 </div>`;
 }
 
