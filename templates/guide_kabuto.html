@@ -77,21 +77,38 @@
     .amz-btn{display:inline-block;background:#ff9900;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
     .amz-btn:hover{background:#e68900 !important;color:#fff !important}
     .amz-note{font-size:.7rem;color:#999;margin:0}
-
-    /* Amazonアフィリエイト 商品カード */
-    .amz-section{margin:24px 0}
-    .amz-section-title{font-size:.88rem;font-weight:700;color:#c45000;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-    .prod-row{display:flex;gap:12px;overflow-x:auto;padding:4px 0 12px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-    .prod-row::-webkit-scrollbar{display:none}
-    .prod-card{flex:0 0 130px;background:#fff;border:1px solid #e0e0e0;border-radius:10px;padding:10px 8px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-    .prod-card a{text-decoration:none !important}
-    .prod-card img.prod-img{width:100px;height:100px;object-fit:contain;display:block;margin:0 auto 6px}
-    .prod-card .prod-name{font-size:.72rem;color:#333;line-height:1.35;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-    .prod-card .prod-btn{display:block;background:#ff9900;color:#fff !important;font-size:.73rem;font-weight:700;padding:5px 4px;border-radius:5px;text-decoration:none !important}
-    .prod-card .prod-btn:hover{background:#e68900 !important}
-    .amz-note2{font-size:.68rem;color:#aaa;margin-top:4px}
     .cta-btn:hover{background:#388e3c;text-decoration:none;color:#fff}
     footer{background:#1b2d1b;color:#81c784;text-align:center;padding:16px;font-size:.78rem;margin-top:40px}
+  
+    /* ── おすすめ商品ブロック ─────────────────────── */
+    .rec-box{background:#fffbf0;border:2px solid #f0c040;border-radius:10px;padding:14px 16px;margin:22px 0}
+    .rec-title{font-weight:700;color:#c45000;font-size:.9rem;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+    .rec-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #f5e7a0;flex-wrap:wrap}
+    .rec-item:last-child{border-bottom:none;padding-bottom:0}
+    .rec-info{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+    .rec-icon{font-size:1.5rem;flex-shrink:0;line-height:1}
+    .rec-text{min-width:0}
+    .rec-name{font-weight:700;font-size:.88rem;color:#333;margin:0}
+    .rec-sub{font-size:.74rem;color:#777;margin:2px 0 0}
+    .rec-links{display:flex;gap:5px;flex-shrink:0}
+    .rec-amz{background:#ff9900;color:#fff!important;padding:5px 10px;border-radius:5px;font-size:.75rem;font-weight:700;text-decoration:none!important;white-space:nowrap}
+    .rec-amz:hover{background:#e68900!important;color:#fff!important}
+    .rec-rkt{background:#bf0000;color:#fff!important;padding:5px 10px;border-radius:5px;font-size:.75rem;font-weight:700;text-decoration:none!important;white-space:nowrap}
+    .rec-rkt:hover{background:#900!important;color:#fff!important}
+    .rec-yah{background:#ff0033;color:#fff!important;padding:5px 10px;border-radius:5px;font-size:.75rem;font-weight:700;text-decoration:none!important;white-space:nowrap}
+    .rec-yah:hover{background:#cc0029!important;color:#fff!important}
+    .rec-note{font-size:.68rem;color:#aaa;margin:8px 0 0;text-align:right}
+    /* ── (旧)amz-box ─────────────────────── */
+    .amz-box{background:#fffbf0;border:1px solid #f0c040;border-radius:8px;padding:14px 16px;margin:20px 0}
+    .amz-box-title{font-weight:700;color:#c45000;font-size:.88rem;margin-bottom:10px}
+    .amz-links{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+    .amz-btn{display:inline-block;background:#ff9900;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
+    .amz-btn:hover{background:#e68900 !important;color:#fff !important}
+    .rkt-btn{display:inline-block;background:#bf0000;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
+    .rkt-btn:hover{background:#900 !important;color:#fff !important}
+    .yah-btn{display:inline-block;background:#ff0033;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
+    .yah-btn:hover{background:#cc0029 !important;color:#fff !important}
+    .amz-note{font-size:.7rem;color:#999;margin:0}
   </style>
 <script type="application/ld+json">
 {
@@ -181,18 +198,6 @@
       <div class="spec-item"><span>適正気温</span>27〜32°C</div>
     </div>
   </div>
-
-    <div class="amz-section">
-    <p class="amz-section-title">🛒 採集・飼育に必要な道具</p>
-    <div class="prod-row">
-      <div class="prod-card">
-        <a href="https://www.amazon.co.jp/dp/B09MT2GZDF?tag=beetlefinder-22&linkCode=ogi&th=1&psc=1" target="_blank" rel="noopener sponsored">
-          <img class="prod-img" src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B09MT2GZDF&Format=_SL200_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=beetlefinder-22" alt="GENTOS ヘッドライト GH-200RG 1200ルーメン USB充電">
-          <p class="prod-name">GENTOS ヘッドライト GH-200RG 1200ルーメン USB充電</p>
-        </a>
-        <a class="prod-btn" href="https://www.amazon.co.jp/dp/B09MT2GZDF?tag=beetlefinder-22&linkCode=ogi&th=1&psc=1" target="_blank" rel="noopener sponsored">Amazonで見る</a>
-        <img src="https://ir-jp.amazon-adsystem.com/e/ir?t=beetlefinder-22&language=ja_JP&l=li3&o=9&a=B09MT2GZDF" width="1" height="1" border="0" alt="" style="border:none!important;margin:0!important;">
-      </div>
       <div class="prod-card">
         <a href="https://www.amazon.co.jp/dp/B09324G799?tag=beetlefinder-22&linkCode=ogi&th=1&psc=1" target="_blank" rel="noopener sponsored">
           <img class="prod-img" src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B09324G799&Format=_SL200_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=beetlefinder-22" alt="GENTOS ヘッドライト CP-195DB 超軽量69g">
@@ -236,6 +241,41 @@
     </div>
     <p class="amz-note2">※ Amazonアソシエイトプログラムのリンクです。購入しても価格は変わりません。</p>
   </div>
+
+<div class="rec-box">
+  <p class="rec-title">🛒 採集に必要な道具（ページ下部に飼育グッズも）</p>
+  <div class="rec-item">
+    <div class="rec-info">
+      <span class="rec-icon">🔦</span>
+      <div class="rec-text">
+        <p class="rec-name">充電式ヘッドライト</p>
+        <p class="rec-sub">夜間採集の基本装備 ｜ 2,000〜4,000円台</p>
+      </div>
+    </div>
+    <div class="rec-links"><a class="rec-amz" href="https://www.amazon.co.jp/dp/B09MT2GZDF?tag=beetlefinder-22" target="_blank" rel="noopener sponsored">Amazon</a><a class="rec-rkt" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+%E5%85%85%E9%9B%BB%E5%BC%8F%2F" target="_blank" rel="noopener sponsored">楽天</a></div>
+  </div>
+  <div class="rec-item">
+    <div class="rec-info">
+      <span class="rec-icon">🪣</span>
+      <div class="rec-text">
+        <p class="rec-name">大型虫かご（通気メッシュ）</p>
+        <p class="rec-sub">カブトムシは大きいので大型推奨 ｜ 1,000〜2,000円</p>
+      </div>
+    </div>
+    <div class="rec-links"><a class="rec-amz" href="https://www.amazon.co.jp/s?k=%E8%99%AB%E3%81%8B%E3%81%94+%E5%A4%A7%E5%9E%8B+%E3%82%AB%E3%83%96%E3%83%88%E3%83%A0%E3%82%B7&tag=beetlefinder-22" target="_blank" rel="noopener sponsored">Amazon</a><a class="rec-rkt" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E8%99%AB%E3%81%8B%E3%81%94+%E5%A4%A7%E5%9E%8B%2F" target="_blank" rel="noopener sponsored">楽天</a></div>
+  </div>
+  <div class="rec-item">
+    <div class="rec-info">
+      <span class="rec-icon">🦟</span>
+      <div class="rec-text">
+        <p class="rec-name">防虫スプレー（長時間タイプ）</p>
+        <p class="rec-sub">夏の夜は虫が多い。長時間タイプが便利 ｜ 700〜1,500円</p>
+      </div>
+    </div>
+    <div class="rec-links"><a class="rec-amz" href="https://www.amazon.co.jp/s?k=%E9%98%B2%E8%99%AB%E3%82%B9%E3%83%97%E3%83%AC%E3%83%BC+%E9%95%B7%E6%99%82%E9%96%93&tag=beetlefinder-22" target="_blank" rel="noopener sponsored">Amazon</a><a class="rec-yah" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=1225&pc_id=1925&pl_id=19142&url=https%3A%2F%2Fshopping.yahoo.co.jp%2Fsearch%3Fp%3D%E9%98%B2%E8%99%AB%E3%82%B9%E3%83%97%E3%83%AC%E3%83%BC+%E3%82%A2%E3%82%A6%E3%83%88%E3%83%89%E3%82%A2" target="_blank" rel="noopener sponsored">Yahoo</a></div>
+  </div>
+  <p class="rec-note">※ Amazon：アソシエイト参加。楽天・Yahoo：もしもアフィリエイト経由。クリックで価格は変わりません。</p>
+</div>
 
   <h2 class="section" id="ecology">① カブトムシの生態</h2>
   <p>カブトムシは日本の夏を代表する昆虫で、「昆虫の王者」として子供から大人まで絶大な人気を誇ります。クワガタムシと同じくクヌギやコナラの樹液に集まり、夜行性のため夜間に活動が活発になります。クワガタに比べて個体数が多く、採集難易度は低いため、初心者の最初の一匹にも最適です。</p>
@@ -434,6 +474,51 @@
     <p>オスとメスを同じケースで飼育すると交尾・産卵が期待できます。産卵させたい場合は深めの発酵マット（15cm以上）を使用し、メスが潜れる環境を作りましょう。産卵後はメスを別居させると幼虫が傷つきにくくなります。</p>
   </div>
 
+<div class="rec-box">
+  <p class="rec-title">🏠 採集後の飼育グッズ</p>
+  <div class="rec-item">
+    <div class="rec-info">
+      <span class="rec-icon">🏠</span>
+      <div class="rec-text">
+        <p class="rec-name">飼育ケース（大型）</p>
+        <p class="rec-sub">カブトムシは大型なのでゆとりのあるサイズを ｜ 1,000〜2,500円</p>
+      </div>
+    </div>
+    <div class="rec-links"><a class="rec-amz" href="https://www.amazon.co.jp/s?k=%E9%A3%BC%E8%82%B2%E3%82%B1%E3%83%BC%E3%82%B9+%E5%A4%A7%E5%9E%8B+%E3%82%AB%E3%83%96%E3%83%88%E3%83%A0%E3%82%B7&tag=beetlefinder-22" target="_blank" rel="noopener sponsored">Amazon</a><a class="rec-rkt" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E9%A3%BC%E8%82%B2%E3%82%B1%E3%83%BC%E3%82%B9+%E5%A4%A7%E5%9E%8B+%E3%82%AB%E3%83%96%E3%83%88%E3%83%A0%E3%82%B7%2F" target="_blank" rel="noopener sponsored">楽天</a></div>
+  </div>
+  <div class="rec-item">
+    <div class="rec-info">
+      <span class="rec-icon">🍮</span>
+      <div class="rec-text">
+        <p class="rec-name">昆虫ゼリー（プロゼリー）</p>
+        <p class="rec-sub">カブトムシは食欲旺盛。大容量がお得 ｜ 800〜1,500円</p>
+      </div>
+    </div>
+    <div class="rec-links"><a class="rec-amz" href="https://www.amazon.co.jp/s?k=%E6%98%86%E8%99%AB%E3%82%BC%E3%83%AA%E3%83%BC+%E3%82%AB%E3%83%96%E3%83%88%E3%83%A0%E3%82%B7&tag=beetlefinder-22" target="_blank" rel="noopener sponsored">Amazon</a><a class="rec-yah" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=1225&pc_id=1925&pl_id=19142&url=https%3A%2F%2Fshopping.yahoo.co.jp%2Fsearch%3Fp%3D%E6%98%86%E8%99%AB%E3%82%BC%E3%83%AA%E3%83%BC+%E3%82%AB%E3%83%96%E3%83%88%E3%83%A0%E3%82%B7" target="_blank" rel="noopener sponsored">Yahoo</a></div>
+  </div>
+  <div class="rec-item">
+    <div class="rec-info">
+      <span class="rec-icon">🌱</span>
+      <div class="rec-text">
+        <p class="rec-name">カブトムシ幼虫マット（発酵・10L以上）</p>
+        <p class="rec-sub">幼虫飼育・産卵の必需品。大袋がお得 ｜ 1,000〜2,500円</p>
+      </div>
+    </div>
+    <div class="rec-links"><a class="rec-amz" href="https://www.amazon.co.jp/s?k=%E3%82%AB%E3%83%96%E3%83%88%E3%83%A0%E3%82%B7+%E5%B9%BC%E8%99%AB%E3%83%9E%E3%83%83%E3%83%88+%E7%99%BA%E9%85%B5&tag=beetlefinder-22" target="_blank" rel="noopener sponsored">Amazon</a><a class="rec-rkt" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%82%AB%E3%83%96%E3%83%88%E3%83%A0%E3%82%B7+%E5%B9%BC%E8%99%AB%E3%83%9E%E3%83%83%E3%83%88%2F" target="_blank" rel="noopener sponsored">楽天</a></div>
+  </div>
+  <div class="rec-item">
+    <div class="rec-info">
+      <span class="rec-icon">🪵</span>
+      <div class="rec-text">
+        <p class="rec-name">産卵木（クヌギ材）</p>
+        <p class="rec-sub">産卵セットに。適度に加水して使用 ｜ 300〜800円</p>
+      </div>
+    </div>
+    <div class="rec-links"><a class="rec-amz" href="https://www.amazon.co.jp/s?k=%E7%94%A3%E5%8D%B5%E6%9C%A8+%E3%82%AF%E3%83%8C%E3%82%AE+%E6%98%86%E8%99%AB&tag=beetlefinder-22" target="_blank" rel="noopener sponsored">Amazon</a><a class="rec-yah" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=1225&pc_id=1925&pl_id=19142&url=https%3A%2F%2Fshopping.yahoo.co.jp%2Fsearch%3Fp%3D%E7%94%A3%E5%8D%B5%E6%9C%A8+%E3%82%AF%E3%83%8C%E3%82%AE" target="_blank" rel="noopener sponsored">Yahoo</a></div>
+  </div>
+  <p class="rec-note">※ Amazon：アソシエイト参加。楽天・Yahoo：もしもアフィリエイト経由。クリックで価格は変わりません。</p>
+</div>
+
   <h2 class="section" id="faq">⑧ よくある質問（FAQ）</h2>
 
   <h3 class="sub">Q. カブトムシはどのくらい生きますか？</h3>
@@ -501,6 +586,6 @@
   <a href="/privacy">プライバシーポリシー</a> |
   <a href="/terms">利用規約</a>
 </footer>
-<script>(adsbygoogle=window.adsbygoogle||[]).push({});(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+
 </body>
 </html>

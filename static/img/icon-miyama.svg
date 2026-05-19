@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110">
+  <g fill="#1b5e20">
+    <!-- 大顎(左) 長く複数の歯あり -->
+    <path d="M46,22 C44,16 38,8 28,5 C22,3 16,7 14,12 C12,17 15,22 20,21
+             C23,20 25,23 26,27 C29,24 32,18 36,16 C38,22 40,26 42,28 Z"/>
+    <!-- 大顎の歯(左) -->
+    <circle cx="23" cy="11" r="2.5"/>
+    <circle cx="18" cy="15" r="2"/>
+    <!-- 大顎(右) -->
+    <path d="M54,22 C56,16 62,8 72,5 C78,3 84,7 86,12 C88,17 85,22 80,21
+             C77,20 75,23 74,27 C71,24 68,18 64,16 C62,22 60,26 58,28 Z"/>
+    <!-- 大顎の歯(右) -->
+    <circle cx="77" cy="11" r="2.5"/>
+    <circle cx="82" cy="15" r="2"/>
+    <!-- 頭部 -->
+    <ellipse cx="50" cy="30" rx="14" ry="11"/>
+    <!-- 耳状突起(左) -->
+    <path d="M36,26 C30,21 28,16 32,13 C36,11 40,17 39,24 Z"/>
+    <!-- 耳状突起(右) -->
+    <path d="M64,26 C70,21 72,16 68,13 C64,11 60,17 61,24 Z"/>
+    <!-- 前胸板 -->
+    <ellipse cx="50" cy="48" rx="19" ry="12"/>
+    <!-- 上翅 -->
+    <ellipse cx="50" cy="77" rx="16" ry="22"/>
+    <!-- 前脚(左) -->
+    <path d="M32,42 C24,36 14,34 10,38" stroke="#1b5e20" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- 中脚(左) -->
+    <path d="M31,50 C22,48 12,50 8,55" stroke="#1b5e20" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- 後脚(左) -->
+    <path d="M34,62 C26,66 16,70 12,76" stroke="#1b5e20" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- 前脚(右) -->
+    <path d="M68,42 C76,36 86,34 90,38" stroke="#1b5e20" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- 中脚(右) -->
+    <path d="M69,50 C78,48 88,50 92,55" stroke="#1b5e20" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- 後脚(右) -->
+    <path d="M66,62 C74,66 84,70 88,76" stroke="#1b5e20" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>
