@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ pref.title }}</title>
   <meta name="description" content="{{ pref.description }}">
-  <meta name="keywords" content="{{ pref.name_short }} クワガタ 採集 場所 スポット カブトムシ">
+  <meta name="keywords" content="{{ pref.name_short }} クワガタ 採集 場所 スポット カブトムシ {{ pref.main_area }}{% for sp in pref.species %} {{ sp.name }}{% endfor %}">
   <link rel="canonical" href="https://beetle-finder.onrender.com/guide/pref/{{ pref.slug }}">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9675243685208925" crossorigin="anonymous"></script>
   <style>
@@ -91,6 +91,18 @@
     ]
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      {"@type":"ListItem","position":1,"name":"ホーム","item":"https://beetle-finder.onrender.com/"},
+      {"@type":"ListItem","position":2,"name":"採集ガイド","item":"https://beetle-finder.onrender.com/guide"},
+      {"@type":"ListItem","position":3,"name":"都道府県別ガイド","item":"https://beetle-finder.onrender.com/guide#pref"},
+      {"@type":"ListItem","position":4,"name":"{{ pref.name }}のクワガタ採集ガイド","item":"https://beetle-finder.onrender.com/guide/pref/{{ pref.slug }}"}
+    ]
+  }
+  </script>
 </head>
 <body>
 <header id="site-header">
@@ -107,9 +119,9 @@
 </div>
 
 <div class="container">
-  <div class="breadcrumb">
-    <a href="/">ホーム</a> &rsaquo; <a href="/guide">採集ガイド</a> &rsaquo; <a href="/guide">都道府県別ガイド</a> &rsaquo; {{ pref.name }}
-  </div>
+  <nav class="breadcrumb" aria-label="パンくずリスト">
+    <a href="/">ホーム</a> &rsaquo; <a href="/guide">採集ガイド</a> &rsaquo; <a href="/guide#pref">都道府県別ガイド</a> &rsaquo; {{ pref.name }}
+  </nav>
 
   <!-- サマリー -->
   <div class="summary-grid">
@@ -136,7 +148,7 @@
   </div>
 
   <!-- 採集できる種 -->
-  <h2 class="section">🪲 {{ pref.name }}で採集できる種</h2>
+  <h2 class="section" id="species">🪲 {{ pref.name }}で採集できる種</h2>
   <table class="sp-table">
     <thead>
       <tr><th>種名</th><th>サイズ</th><th>時期</th><th>ポイント</th></tr>
@@ -168,7 +180,7 @@
   </div>
 
   <!-- エリア別ガイド -->
-  <h2 class="section">📍 {{ pref.name }}の採集エリア</h2>
+  <h2 class="section" id="areas">📍 {{ pref.name }}の採集エリア</h2>
   {% for area in pref.areas %}
   <div class="area-card">
     <h3>
@@ -185,7 +197,7 @@
   {% endfor %}
 
   <!-- 採集のコツ -->
-  <h2 class="section">💡 {{ pref.name }}採集のコツ</h2>
+  <h2 class="section" id="tips">💡 {{ pref.name }}採集のコツ</h2>
   <div class="tip-box">
     <div class="tip-title">🌟 現地で役立つアドバイス</div>
     <ul>
@@ -203,7 +215,7 @@
   </div>
 
   <!-- FAQ -->
-  <h2 class="section">❓ よくある質問（{{ pref.name }}）</h2>
+  <h2 class="section" id="faq">❓ よくある質問（{{ pref.name }}）</h2>
   <div>
     {% for faq in pref.faqs %}
     <div class="faq-item">
@@ -224,8 +236,21 @@
     <p class="amz-note">※Amazonアソシエイトプログラム参加。</p>
   </div>
 
+  <!-- 同地域の都道府県 -->
+  {% if same_region %}
+  <h2 class="section" id="region">🗾 {{ pref.region }}の採集ガイド</h2>
+  <div class="related-grid">
+    {% for rel in same_region %}
+    <div class="related-card">
+      <a href="/guide/pref/{{ rel.slug }}">📍 {{ rel.name }}の採集ガイド</a>
+      <p>{{ rel.region }}｜ベストシーズン {{ rel.best_months }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
   <!-- 関連都道府県 -->
-  <h2 class="section">🗾 近隣の採集ガイド</h2>
+  <h2 class="section" id="related">🗾 近隣の採集ガイド</h2>
   <div class="related-grid">
     {% for rel in pref.related %}
     <div class="related-card">

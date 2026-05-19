@@ -2,7 +2,7 @@ import sys
 sys.setrecursionlimit(10000)   # gevent + SSL ハンドシェイクの深い再帰に対応
 
 from flask import Flask, render_template, Response, jsonify, request, stream_with_context, abort
-from pref_data import PREF_DATA
+from pref_data import PREF_DATA as PREF_GUIDE_DATA
 import requests
 from requests.adapters import HTTPAdapter
 import math
@@ -658,7 +658,7 @@ def guide_october():
     return render_template("guide_october.html")
 
 
-PREF_DATA = {
+SPOT_DATA = {
     # 北海道・東北
     "hokkaido":  {"name": "北海道",   "alt": "道内各山地",             "elev": "0〜800m",    "species": "ミヤマ・ノコギリ・コクワ",         "spots": "道南・道央の雑木林",               "best_month": "7〜8月"},
     "aomori":    {"name": "青森県",   "alt": "八甲田山・白神山地",     "elev": "200〜1200m", "species": "ミヤマ・ノコギリ・アカアシ",       "spots": "八甲田・白神・下北半島周辺",       "best_month": "7月"},
@@ -743,7 +743,7 @@ def guide_jiyukenkyu_kabuto():
 
 @app.route("/guide/spot/<pref>")
 def guide_spot(pref):
-    data = PREF_DATA.get(pref)
+    data = SPOT_DATA.get(pref)
     if not data:
         from flask import abort
         abort(404)
@@ -789,10 +789,15 @@ def guide_pref_chiba():
 
 @app.route("/guide/pref/<slug>")
 def guide_pref_dynamic(slug):
-    pref = PREF_DATA.get(slug)
+    pref = PREF_GUIDE_DATA.get(slug)
     if not pref or pref.get("static"):
         abort(404)
-    return render_template("guide_pref.html", pref=pref)
+    # 同地域の都道府県（現在のページを除く、最大4件）
+    same_region = [
+        p for s, p in PREF_GUIDE_DATA.items()
+        if p.get("region") == pref.get("region") and s != slug and not p.get("static")
+    ][:4]
+    return render_template("guide_pref.html", pref=pref, same_region=same_region)
 
 
 @app.route("/health")
@@ -841,53 +846,53 @@ def sitemap():
         ("https://beetle-finder.onrender.com/guide/august",   "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/september","monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/october",  "monthly", "0.7", today),
-        ("https://beetle-finder.onrender.com/guide/spot/hokkaido",  "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/aomori",    "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/iwate",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/miyagi",    "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/akita",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/yamagata",  "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/fukushima", "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/ibaraki",   "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/tochigi",   "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/gunma",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/saitama",   "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/chiba",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/tokyo",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/kanagawa",  "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/niigata",   "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/toyama",    "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/ishikawa",  "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/fukui",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/yamanashi", "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/nagano",    "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/gifu",      "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/shizuoka",  "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/aichi",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/mie",       "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/shiga",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/kyoto",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/osaka",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/hyogo",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/nara",      "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/wakayama",  "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/tottori",   "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/shimane",   "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/okayama",   "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/hiroshima", "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/yamaguchi", "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/tokushima", "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/kagawa",    "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/ehime",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/kochi",     "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/fukuoka",   "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/saga",      "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/nagasaki",  "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/kumamoto",  "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/oita",      "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/miyazaki",  "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/kagoshima", "monthly", "0.6", today),
-        ("https://beetle-finder.onrender.com/guide/spot/okinawa",   "monthly", "0.6", today),
+        ("https://beetle-finder.onrender.com/guide/pref/hokkaido",  "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/aomori",    "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/iwate",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/miyagi",    "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/akita",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/yamagata",  "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/fukushima", "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/ibaraki",   "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/tochigi",   "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/gunma",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/saitama",   "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/chiba",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/tokyo",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/kanagawa",  "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/niigata",   "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/toyama",    "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/ishikawa",  "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/fukui",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/yamanashi", "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/nagano",    "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/gifu",      "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/shizuoka",  "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/aichi",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/mie",       "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/shiga",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/kyoto",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/osaka",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/hyogo",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/nara",      "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/wakayama",  "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/tottori",   "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/shimane",   "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/okayama",   "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/hiroshima", "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/yamaguchi", "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/tokushima", "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/kagawa",    "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/ehime",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/kochi",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/fukuoka",   "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/saga",      "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/nagasaki",  "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/kumamoto",  "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/oita",      "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/miyazaki",  "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/kagoshima", "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/pref/okinawa",   "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/jiyukenkyu",        "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/jiyukenkyu-kabuto", "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/about",           "monthly", "0.5", today),
