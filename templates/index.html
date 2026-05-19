@@ -349,7 +349,18 @@
       #mobile-anchor-ad{ display:none !important; }
       #sidebar-amazon-footer{ display:none !important; }
       #map-research-btn{ display:none !important; }
-      #map-more-btn{ display:none !important; }
+      /* map-more-btn：デフォルト非表示 */
+      #map-more-btn{ display:none; }
+      /* ピークモード以外は強制非表示（JS制御より優先） */
+      body:not(.results-shown) #map-more-btn,
+      body.results-shown.ctrl-open #map-more-btn,
+      body.results-shown.list-open #map-more-btn{ display:none !important; }
+      /* ピークモード時：ピークバーの上に配置 */
+      body.results-shown:not(.ctrl-open):not(.list-open) #map-more-btn{
+        bottom:112px !important;
+        font-size:.78rem !important;
+        padding:9px 18px !important;
+      }
 
       /* ══ ボトムシート ══ */
       #sidebar{
@@ -738,10 +749,10 @@
     <div id="peek-bar" onclick="openList()">
       <div style="flex:1;min-width:0">
         <div style="font-size:.82rem;font-weight:700;color:#1b5e20" id="peek-count-text">スポット検索中…</div>
-        <div style="font-size:.7rem;color:#388e3c;margin-top:2px">タップしてリストを見る</div>
+        <div style="font-size:.7rem;color:#388e3c;margin-top:2px" id="peek-score-text"></div>
       </div>
-      <div style="background:#2e7d32;color:#fff;border-radius:20px;padding:7px 14px;font-size:.78rem;font-weight:700;white-space:nowrap;flex-shrink:0">
-        リスト ▲
+      <div style="background:#2e7d32;color:#fff;border-radius:20px;padding:8px 16px;font-size:.82rem;font-weight:700;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:4px">
+        リストを見る <span style="font-size:.9rem">▲</span>
       </div>
     </div>
 
@@ -1919,14 +1930,25 @@ function _renderFamilyList(){
   document.getElementById('spot-count').textContent =
     `実績スポット ${_familyLimit}件表示 ／ 全${all.length}件 ／ ${familyRadius}km以内`;
   document.getElementById('sidebar-top-ad').style.display = 'block';
-  // ピークバーのカウントテキスト更新
+  // ピークバーのカウント＋スコア更新
   const peekTxt = document.getElementById('peek-count-text');
   if(peekTxt) peekTxt.textContent = `📍 ${all.length}件のスポットが見つかりました`;
+  const peekSc = document.getElementById('peek-score-text');
+  if(peekSc){
+    const top = all[0];
+    const topScore = top?.score ?? top?.totalScore;
+    peekSc.textContent = topScore != null
+      ? `🥇 最高スコア ${topScore}点 ／ タップしてリストを見る`
+      : `タップしてリストを見る`;
+  }
   // モバイル：バッジ更新＋地図をデフォルト表示
   const mll = document.getElementById('mob-list-label');
   if(mll) mll.textContent = `一覧 ${_familyLimit}件`;
   const badge = document.getElementById('map-spot-count-text');
-  if(badge) badge.textContent = `${_familyLimit}件のスポット`;
+  const topSc = _allFamilySpots[0]?.score ?? _allFamilySpots[0]?.totalScore;
+  if(badge) badge.textContent = topSc != null
+    ? `${_familyLimit}件 🥇${topSc}点`
+    : `${_familyLimit}件のスポット`;
   setMobileTab('map');
   list.scrollTop = 0; // 新結果を先頭から表示
 
@@ -2148,14 +2170,25 @@ function _renderExpertList(){
   document.getElementById('spot-count').textContent =
     `予測ポイント ${_expertLimit}件表示 ／ 全${all.length}件 ／ ${expertRadius}km以内（玄人モード）`;
   document.getElementById('sidebar-top-ad').style.display = 'block';
-  // ピークバーのカウントテキスト更新
+  // ピークバーのカウント＋スコア更新
   const peekTxt2 = document.getElementById('peek-count-text');
   if(peekTxt2) peekTxt2.textContent = `🔬 ${all.length}件の予測ポイントが見つかりました`;
+  const peekSc2 = document.getElementById('peek-score-text');
+  if(peekSc2){
+    const top2 = all[0];
+    const topScore2 = top2?.score;
+    peekSc2.textContent = topScore2 != null
+      ? `🥇 最高スコア ${topScore2}点 ／ タップしてリストを見る`
+      : `タップしてリストを見る`;
+  }
   // モバイル：バッジ更新＋地図をデフォルト表示
   const mll2 = document.getElementById('mob-list-label');
   if(mll2) mll2.textContent = `一覧 ${_expertLimit}件`;
   const badge2 = document.getElementById('map-spot-count-text');
-  if(badge2) badge2.textContent = `${_expertLimit}件のポイント`;
+  const topSc2 = _allExpertSpots[0]?.score;
+  if(badge2) badge2.textContent = topSc2 != null
+    ? `${_expertLimit}件 🥇${topSc2}点`
+    : `${_expertLimit}件のポイント`;
   setMobileTab('map');
   list.scrollTop = 0; // 新結果を先頭から表示
 
