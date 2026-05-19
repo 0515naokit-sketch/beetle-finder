@@ -331,7 +331,7 @@
        モバイル：地図ファースト＋ボトムシート型（≤680px）
        ・地図は常に全画面（シートの裏）
        ・#sidebar = ボトムシート（下から引き出す）
-       ・3状態: デフォルト50vh / 設定(ctrl-open)92vh / 結果(results-shown)85vh
+       ・4状態: デフォルト50vh / 設定(ctrl-open)92vh / ピーク(results-shown)100px / リスト展開(list-open)85vh
        ══════════════════════════════════════════ */
     @media(max-width:680px){
 
@@ -485,14 +485,48 @@
       #spot-list::-webkit-scrollbar-thumb{ background:#2e4a2e; border-radius:2px; }
 
       /* ── シート高さ：状態別 ── */
-      /* 検索結果表示中 → 高く */
-      body.results-shown:not(.ctrl-open) #sidebar{ height:85vh; }
-      body.results-shown #sidebar{ display:flex !important; }  /* display:noneを上書き */
+      /* ピークモード（検索結果・リスト閉じ）→ ちら見えバーのみ */
+      body.results-shown:not(.ctrl-open):not(.list-open) #sidebar{ height:100px; }
+      /* リスト展開モード → 85vh */
+      body.results-shown.list-open:not(.ctrl-open) #sidebar{ height:85vh; }
+      body.results-shown #sidebar{ display:flex !important; }
       body.results-shown #map-wrap{ z-index:50 !important; }
 
       /* 設定パネル開時 → 最大高さ */
       body.ctrl-open #sidebar{ height:92vh !important; }
       body.ctrl-open #map-wrap{ z-index:50 !important; }
+
+      /* ── ピークバー ── */
+      #peek-bar{
+        display:none; flex-shrink:0;
+        flex-direction:row; align-items:center;
+        padding:10px 16px 12px;
+        cursor:pointer;
+        background:#ffffff;
+        border-bottom:1px solid #e8f5e9;
+        gap:10px;
+      }
+      body.results-shown:not(.ctrl-open):not(.list-open) #peek-bar{ display:flex !important; }
+      /* ピークモード時：リスト系を隠す */
+      body.results-shown:not(.ctrl-open):not(.list-open) #spot-count{ display:none !important; }
+      body.results-shown:not(.ctrl-open):not(.list-open) #spot-list{ display:none !important; }
+      body.results-shown:not(.ctrl-open):not(.list-open) #show-more-bar{ display:none !important; }
+      body.results-shown:not(.ctrl-open):not(.list-open) #cond-panel{ display:none !important; }
+      body.results-shown:not(.ctrl-open):not(.list-open) #sidebar-top-ad{ display:none !important; }
+
+      /* ── リスト展開時の「▼ 地図に戻る」バー ── */
+      #list-close-bar{
+        display:none; flex-shrink:0;
+        padding:9px 16px;
+        background:#e8f5e9;
+        border-bottom:2px solid #4caf50;
+        cursor:pointer;
+        font-size:.82rem; font-weight:700;
+        color:#1b5e20; text-align:center;
+        user-select:none;
+      }
+      #list-close-bar:active{ background:#dcedc8; }
+      body.results-shown.list-open:not(.ctrl-open) #list-close-bar{ display:block !important; }
 
       /* ── 地図フローティングUI ── */
       #map-spot-badge{
@@ -688,6 +722,10 @@
       #map-list-btn{background:#ffffff !important;color:#1b5e20 !important;border-color:#4caf50 !important;box-shadow:0 2px 12px rgba(0,0,0,.15) !important}
       .spot-item{background:#ffffff !important;border-color:#e8f5e9 !important}
       .spot-item:hover{background:#f1f8e9 !important}
+      /* ピークバー・リストクローズバー */
+      #peek-bar{background:#ffffff !important;border-bottom-color:#e8f5e9 !important}
+      #list-close-bar{background:#e8f5e9 !important;border-bottom-color:#4caf50 !important;color:#1b5e20 !important}
+      #list-close-bar:active{background:#dcedc8 !important}
     }
   </style>
 </head>
@@ -695,6 +733,23 @@
 <div id="app">
   <div id="sidebar">
     <div class="sheet-handle" id="sheet-handle"></div>
+
+    <!-- ピークバー：検索結果後・リスト閉じ中にのみ表示 -->
+    <div id="peek-bar" onclick="openList()">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:.82rem;font-weight:700;color:#1b5e20" id="peek-count-text">スポット検索中…</div>
+        <div style="font-size:.7rem;color:#388e3c;margin-top:2px">タップしてリストを見る</div>
+      </div>
+      <div style="background:#2e7d32;color:#fff;border-radius:20px;padding:7px 14px;font-size:.78rem;font-weight:700;white-space:nowrap;flex-shrink:0">
+        リスト ▲
+      </div>
+    </div>
+
+    <!-- リスト展開時の「地図に戻る」バー -->
+    <div id="list-close-bar" onclick="closeList()">
+      🗺 地図に戻る ▼
+    </div>
+
     <div id="header">
       <h1><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> クワガタ採集スポット検索</h1>
       <div class="header-tagline">採集予定日・出発地を入力して採れる場所を地図表示</div>
@@ -1727,23 +1782,35 @@ function collapseControls(){
   _ctrlCollapsed = true;
   document.body.classList.add('results-shown');
   document.body.classList.remove('ctrl-open');
-  // モバイル：インラインheightを解除してCSSクラス(85vh)を有効化
+  document.body.classList.remove('list-open'); // ピークモードに戻す
   const sidebar = document.getElementById('sidebar');
   if(sidebar) sidebar.style.removeProperty('height');
 }
 function toggleControls(){
   if(_ctrlCollapsed){
-    // 地図表示中 → 条件変更パネルを開く
+    document.body.classList.remove('list-open');
     document.body.classList.add('ctrl-open');
   } else {
-    // 初期状態から閉じる（使わないが念のため）
     collapseControls();
   }
 }
 function closeCtrlPanel(){
-  // 条件変更パネルを閉じて地図に戻る
   document.body.classList.remove('ctrl-open');
   setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 100);
+}
+
+// ── リスト展開 / 閉じる（案B：ピーク↔リスト） ──────────────────────────
+function openList(){
+  document.body.classList.add('list-open');
+  const sidebar = document.getElementById('sidebar');
+  if(sidebar) sidebar.style.removeProperty('height');
+  setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 350);
+}
+function closeList(){
+  document.body.classList.remove('list-open');
+  const sidebar = document.getElementById('sidebar');
+  if(sidebar) sidebar.style.removeProperty('height');
+  setTimeout(()=>{ if(typeof map!=='undefined') map.invalidateSize(); }, 350);
 }
 
 // ── モバイルタブ切替（一覧削除により地図のみ） ──────────────────────────
@@ -1852,6 +1919,9 @@ function _renderFamilyList(){
   document.getElementById('spot-count').textContent =
     `実績スポット ${_familyLimit}件表示 ／ 全${all.length}件 ／ ${familyRadius}km以内`;
   document.getElementById('sidebar-top-ad').style.display = 'block';
+  // ピークバーのカウントテキスト更新
+  const peekTxt = document.getElementById('peek-count-text');
+  if(peekTxt) peekTxt.textContent = `📍 ${all.length}件のスポットが見つかりました`;
   // モバイル：バッジ更新＋地図をデフォルト表示
   const mll = document.getElementById('mob-list-label');
   if(mll) mll.textContent = `一覧 ${_familyLimit}件`;
@@ -2078,6 +2148,9 @@ function _renderExpertList(){
   document.getElementById('spot-count').textContent =
     `予測ポイント ${_expertLimit}件表示 ／ 全${all.length}件 ／ ${expertRadius}km以内（玄人モード）`;
   document.getElementById('sidebar-top-ad').style.display = 'block';
+  // ピークバーのカウントテキスト更新
+  const peekTxt2 = document.getElementById('peek-count-text');
+  if(peekTxt2) peekTxt2.textContent = `🔬 ${all.length}件の予測ポイントが見つかりました`;
   // モバイル：バッジ更新＋地図をデフォルト表示
   const mll2 = document.getElementById('mob-list-label');
   if(mll2) mll2.textContent = `一覧 ${_expertLimit}件`;
@@ -2972,26 +3045,36 @@ window.addEventListener('load', function(){
 
   function snapSheet(currentH){
     const vh = window.innerHeight;
-    const threshLow  = vh * 0.35;   // 35vh 未満 → デフォルト50vh へ
-    const threshHigh = vh * 0.70;   // 70vh 超   → 設定モード92vh へ
+    const threshLow  = vh * 0.20;   // 20vh 未満 → ピーク or デフォルト
+    const threshMid  = vh * 0.45;   // 45vh 超   → リスト展開(list-open)へ
+    const threshHigh = vh * 0.80;   // 80vh 超   → 設定モードへ
 
     sheet.style.transition = 'height .35s cubic-bezier(.25,.8,.5,1)';
     sheet.style.height = ''; // CSS クラス任せに戻す
 
-    if(currentH > threshHigh){
-      // 上まで引っ張った → 設定パネルを開く
-      if(!document.body.classList.contains('results-shown')){
-        document.body.classList.add('ctrl-open');
-        _ctrlCollapsed = false;
-      }
-    } else if(currentH < threshLow){
-      // 下に戻した → 設定を閉じてデフォルトへ
+    const isResults = document.body.classList.contains('results-shown');
+
+    if(currentH > threshHigh && !isResults){
+      // 初期状態で上まで → 設定パネルを開く
+      document.body.classList.add('ctrl-open');
+      _ctrlCollapsed = false;
+    } else if(currentH > threshMid && isResults){
+      // 結果表示中に上へ引っ張った → リスト展開
       document.body.classList.remove('ctrl-open');
-      document.body.classList.remove('results-shown');
+      document.body.classList.add('list-open');
+      if(typeof map !== 'undefined') setTimeout(()=>map.invalidateSize(), 380);
+    } else if(currentH < threshLow && isResults){
+      // 結果表示中に下へ戻した → ピークモードに戻す
+      document.body.classList.remove('ctrl-open');
+      document.body.classList.remove('list-open');
+      if(typeof map !== 'undefined') setTimeout(()=>map.invalidateSize(), 380);
+    } else if(currentH < threshLow && !isResults){
+      // 初期状態で下へ → デフォルトへ
+      document.body.classList.remove('ctrl-open');
       _ctrlCollapsed = true;
       if(typeof map !== 'undefined') setTimeout(()=>map.invalidateSize(), 380);
     } else {
-      // 中間 → ctrl-openだけ閉じる（results-shownはそのまま）
+      // 中間 → ctrl-openだけ閉じる（他はそのまま）
       document.body.classList.remove('ctrl-open');
       if(typeof map !== 'undefined') setTimeout(()=>map.invalidateSize(), 380);
     }
@@ -3023,13 +3106,19 @@ window.addEventListener('load', function(){
   // ハンドルタップ：デフォルト⇔設定 トグル
   handle.addEventListener('click', function(){
     if(document.body.classList.contains('ctrl-open')){
+      // 設定中 → 閉じる
       document.body.classList.remove('ctrl-open');
       sheet.style.height = '';
       if(typeof map !== 'undefined') setTimeout(()=>map.invalidateSize(), 380);
     } else if(document.body.classList.contains('results-shown')){
-      // 結果表示中にタップ → 設定を開く
-      document.body.classList.add('ctrl-open');
-      _ctrlCollapsed = false;
+      // 結果表示中：ピーク⇔リスト トグル
+      if(document.body.classList.contains('list-open')){
+        document.body.classList.remove('list-open'); // リスト→ピーク
+      } else {
+        document.body.classList.add('list-open');    // ピーク→リスト
+      }
+      sheet.style.height = '';
+      if(typeof map !== 'undefined') setTimeout(()=>map.invalidateSize(), 380);
     } else {
       document.body.classList.add('ctrl-open');
       _ctrlCollapsed = false;
