@@ -623,6 +623,11 @@ def guide_light():
     return render_template("guide_light.html")
 
 
+@app.route("/guide/night")
+def guide_night():
+    return render_template("guide_night.html")
+
+
 @app.route("/guide/aftercare")
 def guide_aftercare():
     return render_template("guide_aftercare.html")
@@ -838,6 +843,7 @@ def sitemap():
         ("https://beetle-finder.onrender.com/guide/suji",       "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/kids",      "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/light",     "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/night",     "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/tools",     "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/aftercare", "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/may",       "monthly", "0.7", today),
