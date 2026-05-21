@@ -817,6 +817,12 @@ def robots():
     return send_from_directory("static", "robots.txt", mimetype="text/plain")
 
 
+@app.route("/ads.txt")
+def ads_txt():
+    from flask import send_from_directory
+    return send_from_directory("static", "ads.txt", mimetype="text/plain")
+
+
 @app.route("/ogp.png")
 def ogp_png():
     """OGP画像を /ogp.png でも配信（SNSクローラー向け短縮URL）"""
