@@ -628,6 +628,26 @@ def guide_night():
     return render_template("guide_night.html")
 
 
+@app.route("/guide/trap")
+def guide_trap():
+    return render_template("guide_trap.html")
+
+
+@app.route("/guide/calendar")
+def guide_calendar():
+    return render_template("guide_calendar.html")
+
+
+@app.route("/guide/breeding")
+def guide_breeding():
+    return render_template("guide_breeding.html")
+
+
+@app.route("/guide/case")
+def guide_case():
+    return render_template("guide_case.html")
+
+
 @app.route("/guide/aftercare")
 def guide_aftercare():
     return render_template("guide_aftercare.html")
@@ -905,6 +925,10 @@ def sitemap():
         ("https://beetle-finder.onrender.com/guide/pref/miyazaki",  "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/pref/kagoshima", "monthly", "0.7", today),
         ("https://beetle-finder.onrender.com/guide/pref/okinawa",   "monthly", "0.7", today),
+        ("https://beetle-finder.onrender.com/guide/trap",      "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/calendar",  "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/breeding",  "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/case",      "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/jiyukenkyu",        "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/jiyukenkyu-kabuto", "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/about",           "monthly", "0.5", today),
