@@ -928,8 +928,16 @@
     <div id="show-more-bar" style="display:none;flex-shrink:0;border-bottom:1px solid #1a3a1a"></div>
     <div id="cond-panel"></div>
     <div id="nearby-light-status" class="night-status" style="padding:3px 14px;display:none"></div>
-    <!-- sidebar-top-ad: AdSense審査通過後に有効化 -->
-    <div id="sidebar-top-ad" style="display:none"></div>
+    <!-- sidebar-top-ad: 検索結果表示時に有効化 -->
+    <div id="sidebar-top-ad" style="display:none;padding:4px 8px 6px;background:#fafafa;border-bottom:1px solid #e8e8e8">
+      <div style="font-size:.52rem;color:#bbb;text-align:center;margin-bottom:2px">- スポンサー -</div>
+      <ins class="adsbygoogle"
+           style="display:block;width:100%;min-height:60px"
+           data-ad-client="ca-pub-9675243685208925"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
     <div id="spot-list">
       <!-- ブックマーク促進バナー -->
       <div id="bookmark-banner" style="margin:10px 12px 0;padding:9px 12px;background:linear-gradient(135deg,#1a3d1a,#1b5e20);border:1px solid #4caf50;border-radius:9px;display:flex;align-items:center;gap:8px;position:relative">
@@ -1119,23 +1127,31 @@ function getNoteUrl(sp){
 // ── A: ローディング中に spot-list へ表示する採集グッズ広告 ────────────────
 function _loadingAdHtml(){
   const tag = 'beetlefinder-22';
-  const items = [
-    { em:'🔦', label:'ヘッドライト',   kw:'%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED+%E7%99%BB%E5%B1%B1' },
-    { em:'🕸',  label:'捕虫網',         kw:'%E6%8D%95%E8%99%AB%E7%B6%B2' },
-    { em:'🪲',  label:'虫かご',         kw:'%E8%99%AB%E3%81%8B%E3%81%94+%E6%98%86%E8%99%AB' },
-    { em:'🌿', label:'昆虫ゼリー',     kw:'%E6%98%86%E8%99%AB%E3%82%BC%E3%83%AA%E3%83%BC' },
-  ];
+  const sp = currentSp || 'miyama';
+  const isKabuto = sp === 'kabuto';
+  const items = isKabuto
+    ? [
+        { em:'🔦', label:'ヘッドライト（LED）', kw:'%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED+%E7%99%BB%E5%B1%B1', desc:'両手が空く採集の必需品' },
+        { em:'🦏', label:'カブトムシ 飼育セット', kw:'%E3%82%AB%E3%83%96%E3%83%88%E3%83%A0%E3%82%B7+%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88', desc:'採集後すぐ始められる完全セット' },
+      ]
+    : [
+        { em:'🔦', label:'ヘッドライト（LED）', kw:'%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED+%E7%99%BB%E5%B1%B1', desc:'両手が空く採集の必需品' },
+        { em:'🪲', label:'クワガタ 飼育セット', kw:'%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88', desc:'採集後すぐ始められる完全セット' },
+      ];
   const cards = items.map(p=>
     `<a href="https://www.amazon.co.jp/s?k=${p.kw}&tag=${tag}" target="_blank" rel="noopener"
-       style="flex:1;min-width:68px;display:flex;flex-direction:column;align-items:center;gap:3px;background:#fff3e0;border:1px solid #ff9900;border-radius:9px;padding:9px 5px;text-decoration:none;text-align:center;transition:border-color .2s">
-      <span style="font-size:1.5rem">${p.em}</span>
-      <span style="font-size:.68rem;color:#e65100;font-weight:700">${p.label}</span>
-      <span style="font-size:.58rem;color:#c45000">Amazon →</span>
+       style="display:flex;align-items:center;gap:12px;background:#fff;border:2px solid #ff9900;border-radius:10px;padding:13px 14px;text-decoration:none;width:100%;box-sizing:border-box">
+      <span style="font-size:2rem;flex-shrink:0">${p.em}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:.84rem;color:#e65100;font-weight:700;line-height:1.3">${p.label}</div>
+        <div style="font-size:.7rem;color:#888;margin-top:3px">${p.desc}</div>
+      </div>
+      <span style="font-size:.72rem;background:#ff9900;color:#fff;padding:4px 9px;border-radius:6px;font-weight:700;white-space:nowrap;flex-shrink:0">Amazon →</span>
     </a>`).join('');
-  return `<div style="padding:14px 14px 16px;background:#fff8e1;border-bottom:2px solid #ffe082">
-  <div style="font-size:.68rem;color:#c45000;margin-bottom:9px;font-weight:700;text-align:center">🛒 準備はOK？今夜の採集グッズをチェック</div>
-  <div style="display:flex;gap:6px;flex-wrap:wrap">${cards}</div>
-  <div style="font-size:.58rem;color:#888;margin-top:8px;text-align:center">スポット検索中… しばらくお待ちください</div>
+  return `<div style="padding:16px;background:#fff8e1;border-bottom:2px solid #ffe082">
+  <div style="font-size:.7rem;color:#c45000;margin-bottom:10px;font-weight:700;text-align:center">🛒 準備はOK？採集グッズをチェック</div>
+  <div style="display:flex;flex-direction:column;gap:8px">${cards}</div>
+  <div style="font-size:.62rem;color:#aaa;margin-top:12px;text-align:center">📍 スポットをスキャン中... しばらくお待ちください</div>
 </div>`;
 }
 
@@ -1876,7 +1892,7 @@ function _updateShowMoreBar(shown, total, action){
                box-shadow:0 2px 10px rgba(255,152,0,.45);letter-spacing:.02em">
         👁 次の${addCount}件を見る →
       </button>
-      <div style="font-size:.54rem;color:#4a6c3a;text-align:center;margin-top:3px">広告視聴のみ・無料・再検索不要</div>
+      <div style="font-size:.54rem;color:#4a6c3a;text-align:center;margin-top:3px">無料・再検索不要</div>
     </div>
   </div>
 </div>`;
@@ -1891,16 +1907,8 @@ function _updateShowMoreBar(shown, total, action){
 
 function requestShowMore(action){
   _adModalAction = action;
-  const title = document.getElementById('ad-modal-title');
-  const sub   = document.getElementById('ad-modal-sub');
-  const btn   = document.getElementById('ad-unlock-btn');
-  if(title) title.textContent = '🔍 さらに採集スポットを表示する';
-  if(sub)   sub.textContent   = '広告を視聴すると追加のポイントを確認できます';
-  if(btn){ btn.disabled=true; btn.textContent='⏳ ポイント情報取得中...'; }
-  document.getElementById('ad-countdown-wrap').style.display='block';
-  document.getElementById('ad-counter').textContent=3;
-  document.getElementById('expert-ad-overlay').style.display='flex';
-  startAdCountdown();
+  // モーダルなしで直接追加表示
+  closeAdModal(true);
 }
 
 // ── 家族モード 描画ヘルパー ───────────────────────────────────────
@@ -1929,6 +1937,7 @@ function _renderFamilyList(){
   document.getElementById('spot-count').textContent =
     `実績スポット ${_familyLimit}件表示 ／ 全${all.length}件 ／ ${familyRadius}km以内`;
   document.getElementById('sidebar-top-ad').style.display = 'block';
+  _initSidebarTopAd();
   // ピークバーのカウント＋スコア更新
   const peekTxt = document.getElementById('peek-count-text');
   if(peekTxt) peekTxt.textContent = `📍 ${all.length}件のスポットが見つかりました`;
@@ -1987,7 +1996,7 @@ function _renderFamilyList(){
 </div>`;
   }).reduce((acc,html,i)=>{
     acc.push(html);
-    if((i+1)%3===0 && i<display.length-1) acc.push(inlineAdHtml());
+    if((i+1)%5===0 && i<display.length-1) acc.push(inlineAdHtml());
     return acc;
   },[]).join('')
   + _amazonBottomBar()
@@ -2169,6 +2178,7 @@ function _renderExpertList(){
   document.getElementById('spot-count').textContent =
     `予測ポイント ${_expertLimit}件表示 ／ 全${all.length}件 ／ ${expertRadius}km以内（玄人モード）`;
   document.getElementById('sidebar-top-ad').style.display = 'block';
+  _initSidebarTopAd();
   // ピークバーのカウント＋スコア更新
   const peekTxt2 = document.getElementById('peek-count-text');
   if(peekTxt2) peekTxt2.textContent = `🔬 ${all.length}件の予測ポイントが見つかりました`;
@@ -2218,7 +2228,7 @@ function _renderExpertList(){
 </div>`;
   }).reduce((acc,html,i)=>{
     acc.push(html);
-    if((i+1)%3===0 && i<display.length-1) acc.push(inlineAdHtml());
+    if((i+1)%5===0 && i<display.length-1) acc.push(inlineAdHtml());
     return acc;
   },[]).join('')
   + _amazonBottomBar()
@@ -3058,6 +3068,13 @@ window.addEventListener('load', function(){
     });
   }catch(e){}
 });
+// sidebar-top-ad 表示時にAdSenseを初期化（未初期化の場合のみ）
+function _initSidebarTopAd(){
+  try{
+    const ad = document.querySelector('#sidebar-top-ad .adsbygoogle:not([data-adsbygoogle-status])');
+    if(ad)(adsbygoogle = window.adsbygoogle || []).push({});
+  }catch(e){}
+}
 </script>
 
 <!-- モバイル専用 固定下部広告バー（AdSense審査通過後に有効化） -->
