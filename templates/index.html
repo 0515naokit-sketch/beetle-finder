@@ -1244,6 +1244,19 @@ function _amazonBottomBar(){
 </div>`;
 }
 
+function _guideBottomBanner(){
+  const sp = currentSp || 'miyama';
+  const spLabel = {miyama:'ミヤマ',okuwagata:'オオクワ',nokogiri:'ノコギリ',
+    kokuwagata:'コクワ',hirata:'ヒラタ',akaashi:'アカアシ',suji:'スジクワ',kabuto:'カブト'}[sp] || 'クワガタ';
+  const activeBtn = document.querySelector(`.sp-btn[data-sp="${sp}"]`);
+  const guideUrl = activeBtn?.dataset.guide || '/guide';
+  return `<div style="margin:10px 0 0;padding:14px 16px;background:#e8f5e9;border:1px solid #81c784;border-radius:10px;text-align:center">
+  <div style="font-size:.72rem;color:#2e7d32;font-weight:700;margin-bottom:7px">📖 採集前に読みたい：${spLabel}クワガタ採集ガイド</div>
+  <a href="${guideUrl}" style="display:inline-block;background:#2e7d32;color:#fff;text-decoration:none;padding:8px 22px;border-radius:8px;font-size:.8rem;font-weight:700">ガイドを読む →</a>
+  <div style="font-size:.6rem;color:#66bb6a;margin-top:6px">場所・時期・道具を徹底解説 — 無料</div>
+</div>`;
+}
+
 const SPECIES_META = {
   miyama:    { label:"ミヤマクワガタ",   icon:'<img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ">', color:"#1565c0", badge:"badge-m" },
   okuwagata: { label:"オオクワガタ",     icon:'<img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ">', color:"#4a148c", badge:"badge-o" },
@@ -2000,6 +2013,7 @@ function _renderFamilyList(){
     return acc;
   },[]).join('')
   + _amazonBottomBar()
+  + _guideBottomBanner()
   ;
   _updateShowMoreBar(_familyLimit, all.length, 'more_family');
 }
@@ -2232,6 +2246,7 @@ function _renderExpertList(){
     return acc;
   },[]).join('')
   + _amazonBottomBar()
+  + _guideBottomBanner()
   ;
   _updateShowMoreBar(_expertLimit, all.length, 'more_expert');
 }
