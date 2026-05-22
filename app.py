@@ -835,6 +835,18 @@ def guide_pref_osaka():
 def guide_pref_aichi():
     return render_template("guide_pref_aichi.html")
 
+@app.route("/guide/pref/hyogo")
+def guide_pref_hyogo():
+    return render_template("guide_pref_hyogo.html")
+
+@app.route("/guide/pref/fukuoka")
+def guide_pref_fukuoka():
+    return render_template("guide_pref_fukuoka.html")
+
+@app.route("/guide/pref/hokkaido")
+def guide_pref_hokkaido():
+    return render_template("guide_pref_hokkaido.html")
+
 @app.route("/guide/pref/<slug>")
 def guide_pref_dynamic(slug):
     pref = PREF_GUIDE_DATA.get(slug)
