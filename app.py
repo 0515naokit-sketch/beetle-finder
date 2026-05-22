@@ -827,6 +827,14 @@ def guide_pref_saitama():
 def guide_pref_chiba():
     return render_template("guide_pref_chiba.html")
 
+@app.route("/guide/pref/osaka")
+def guide_pref_osaka():
+    return render_template("guide_pref_osaka.html")
+
+@app.route("/guide/pref/aichi")
+def guide_pref_aichi():
+    return render_template("guide_pref_aichi.html")
+
 @app.route("/guide/pref/<slug>")
 def guide_pref_dynamic(slug):
     pref = PREF_GUIDE_DATA.get(slug)
