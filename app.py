@@ -883,6 +883,22 @@ def guide_pref_gifu():
 def guide_pref_kyoto():
     return render_template("guide_pref_kyoto.html")
 
+@app.route("/guide/pref/shiga")
+def guide_pref_shiga():
+    return render_template("guide_pref_shiga.html")
+
+@app.route("/guide/pref/nara")
+def guide_pref_nara():
+    return render_template("guide_pref_nara.html")
+
+@app.route("/guide/pref/mie")
+def guide_pref_mie():
+    return render_template("guide_pref_mie.html")
+
+@app.route("/guide/pref/wakayama")
+def guide_pref_wakayama():
+    return render_template("guide_pref_wakayama.html")
+
 @app.route("/guide/pref/<slug>")
 def guide_pref_dynamic(slug):
     pref = PREF_GUIDE_DATA.get(slug)
