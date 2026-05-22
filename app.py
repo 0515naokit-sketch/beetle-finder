@@ -766,6 +766,21 @@ def guide_jiyukenkyu_kabuto():
     return render_template("guide_jiyukenkyu_kabuto.html")
 
 
+@app.route("/guide/tree")
+def guide_tree():
+    return render_template("guide_tree.html")
+
+
+@app.route("/guide/morning")
+def guide_morning():
+    return render_template("guide_morning.html")
+
+
+@app.route("/guide/rain")
+def guide_rain():
+    return render_template("guide_rain.html")
+
+
 @app.route("/guide/spot/<pref>")
 def guide_spot(pref):
     data = SPOT_DATA.get(pref)
@@ -931,6 +946,9 @@ def sitemap():
         ("https://beetle-finder.onrender.com/guide/case",      "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/jiyukenkyu",        "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/jiyukenkyu-kabuto", "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/tree",    "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/morning", "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/rain",    "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/about",           "monthly", "0.5", today),
         ("https://beetle-finder.onrender.com/privacy",         "yearly",  "0.3", today),
         ("https://beetle-finder.onrender.com/terms",           "yearly",  "0.3", today),
