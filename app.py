@@ -896,6 +896,120 @@ def guide_pref_dynamic(slug):
     return render_template("guide_pref.html", pref=pref, same_region=same_region)
 
 
+@app.route("/feed.xml")
+@app.route("/rss")
+def rss_feed():
+    """RSS 2.0フィード（ブログ村など外部サービス連携用）"""
+    BASE = "https://beetle-finder.onrender.com"
+    items = [
+        # 固定ガイド記事（新しい順）
+        {"title": "京都府クワガタ採集ガイド｜美山・京都北山・丹波のスポット完全解説",
+         "link": f"{BASE}/guide/pref/kyoto",
+         "desc": "京都府でクワガタを採るなら美山・京都北山・丹波高地・由良川ヒラタ。ノコギリ・コクワ・ヒラタ・ミヤマの採れる場所・時期・コツを徹底解説。",
+         "date": "Fri, 22 May 2026 10:00:00 +0900"},
+        {"title": "岐阜県クワガタ採集ガイド｜奥飛騨・白川郷・郡上のスポット完全解説",
+         "link": f"{BASE}/guide/pref/gifu",
+         "desc": "岐阜県でクワガタを採るなら奥飛騨・白川郷・郡上八幡・長良川ヒラタ。ミヤマ・アカアシ・ノコギリの採れる場所・時期・コツを徹底解説。",
+         "date": "Fri, 22 May 2026 09:00:00 +0900"},
+        {"title": "山梨県クワガタ採集ガイド｜富士五湖・奥秩父・昇仙峡のスポット完全解説",
+         "link": f"{BASE}/guide/pref/yamanashi",
+         "desc": "山梨県でクワガタを採るなら富士五湖周辺・奥秩父・昇仙峡・桂川ヒラタ。富士山採集禁止区域の解説も。",
+         "date": "Fri, 22 May 2026 08:00:00 +0900"},
+        {"title": "群馬県クワガタ採集ガイド｜赤城山・榛名山・みなかみのスポット完全解説",
+         "link": f"{BASE}/guide/pref/gunma",
+         "desc": "群馬県でクワガタを採るなら赤城山・榛名山・みなかみ。ミヤマ・アカアシ・ノコギリの採れる場所・時期を徹底解説。",
+         "date": "Fri, 22 May 2026 07:00:00 +0900"},
+        {"title": "栃木県クワガタ採集ガイド｜日光・那須・足尾のスポット完全解説",
+         "link": f"{BASE}/guide/pref/tochigi",
+         "desc": "栃木県でクワガタを採るなら日光・那須高原・足尾山地・渡良瀬川ヒラタ。日光国立公園の採集可否も解説。",
+         "date": "Thu, 21 May 2026 18:00:00 +0900"},
+        {"title": "宮城県クワガタ採集ガイド｜蔵王・船形山・七ツ森のスポット完全解説",
+         "link": f"{BASE}/guide/pref/miyagi",
+         "desc": "宮城県でクワガタを採るなら蔵王・船形山・七ツ森・南三陸。仙台から日帰り可能なスポット多数。",
+         "date": "Thu, 21 May 2026 10:00:00 +0900"},
+        {"title": "広島県クワガタ採集ガイド｜恐羅漢山・三段峡・太田川のスポット完全解説",
+         "link": f"{BASE}/guide/pref/hiroshima",
+         "desc": "広島県でクワガタを採るなら恐羅漢山・三段峡・比婆山・太田川ヒラタ。中国山地の採集スポットを徹底解説。",
+         "date": "Thu, 21 May 2026 09:00:00 +0900"},
+        {"title": "長野県クワガタ採集ガイド｜木曽谷・戸隠・八ヶ岳のスポット完全解説",
+         "link": f"{BASE}/guide/pref/nagano",
+         "desc": "長野県でクワガタを採るなら木曽谷・戸隠・伊那谷・八ヶ岳。信州ミヤマ天国の採集スポットを徹底解説。",
+         "date": "Thu, 21 May 2026 08:00:00 +0900"},
+        {"title": "静岡県クワガタ採集ガイド｜富士山麓・天城山・安倍川のスポット完全解説",
+         "link": f"{BASE}/guide/pref/shizuoka",
+         "desc": "静岡県でクワガタを採るなら富士山麓・天城山・梅ヶ島・安倍川ヒラタ。採集スポットを徹底解説。",
+         "date": "Thu, 21 May 2026 07:00:00 +0900"},
+        {"title": "北海道クワガタ採集ガイド｜日高山脈・渡島半島・道央のスポット完全解説",
+         "link": f"{BASE}/guide/pref/hokkaido",
+         "desc": "北海道でクワガタを採るなら日高山脈・渡島半島・道央（支笏湖）。アイヌコクワガタ固有亜種やヒグマ対策も解説。",
+         "date": "Wed, 20 May 2026 12:00:00 +0900"},
+        {"title": "福岡県クワガタ採集ガイド｜英彦山・脊振山・三郡山のスポット完全解説",
+         "link": f"{BASE}/guide/pref/fukuoka",
+         "desc": "福岡県でクワガタを採るなら英彦山・脊振山・三郡山・筑後川ヒラタ。九州は梅雨明け直後が採集ゴールデンタイム。",
+         "date": "Wed, 20 May 2026 10:00:00 +0900"},
+        {"title": "兵庫県クワガタ採集ガイド｜氷ノ山・六甲山・丹波篠山のスポット完全解説",
+         "link": f"{BASE}/guide/pref/hyogo",
+         "desc": "兵庫県でクワガタを採るなら氷ノ山・六甲山系・丹波篠山・揖保川ヒラタ。関西最高峰のミヤマ産地を徹底解説。",
+         "date": "Wed, 20 May 2026 08:00:00 +0900"},
+        {"title": "愛知県クワガタ採集ガイド｜茶臼山・猿投山・矢作川のスポット完全解説",
+         "link": f"{BASE}/guide/pref/aichi",
+         "desc": "愛知県でクワガタを採るなら茶臼山高原・猿投山・矢作川ヒラタ。名古屋から2時間圏内の採集スポットを解説。",
+         "date": "Tue, 19 May 2026 12:00:00 +0900"},
+        {"title": "大阪府クワガタ採集ガイド｜金剛山・能勢・生駒山のスポット完全解説",
+         "link": f"{BASE}/guide/pref/osaka",
+         "desc": "大阪府でクワガタを採るなら金剛山・能勢・生駒山・石川ヒラタ。能勢オオクワガタの産地としても有名。",
+         "date": "Tue, 19 May 2026 10:00:00 +0900"},
+        {"title": "千葉県クワガタ採集ガイド｜房総・清澄山・小糸川のスポット完全解説",
+         "link": f"{BASE}/guide/pref/chiba",
+         "desc": "千葉県でクワガタを採るなら房総半島・清澄山・小糸川ヒラタ。首都圏から最も近い採集フィールドを解説。",
+         "date": "Mon, 18 May 2026 12:00:00 +0900"},
+        {"title": "埼玉県クワガタ採集ガイド｜奥秩父・飯能・荒川のスポット完全解説",
+         "link": f"{BASE}/guide/pref/saitama",
+         "desc": "埼玉県でクワガタを採るなら奥秩父・飯能・荒川ヒラタ。都心から1〜2時間圏内の採集スポットを解説。",
+         "date": "Mon, 18 May 2026 10:00:00 +0900"},
+        {"title": "神奈川県クワガタ採集ガイド｜丹沢・箱根・相模川のスポット完全解説",
+         "link": f"{BASE}/guide/pref/kanagawa",
+         "desc": "神奈川県でクワガタを採るなら丹沢・箱根・相模川ヒラタ。横浜・川崎から日帰り可能なスポットを解説。",
+         "date": "Mon, 18 May 2026 08:00:00 +0900"},
+        {"title": "東京都クワガタ採集ガイド｜奥多摩・高尾山・檜原村のスポット完全解説",
+         "link": f"{BASE}/guide/pref/tokyo",
+         "desc": "東京都でクワガタを採るなら奥多摩・高尾山・檜原村。ミヤマ・ノコギリ・ヒラタの採れる場所・時期を解説。",
+         "date": "Sun, 17 May 2026 12:00:00 +0900"},
+        {"title": "クワガタ採集完全ガイド｜初心者から上級者まで",
+         "link": f"{BASE}/guide",
+         "desc": "クワガタ採集の基本から上級テクニックまで解説。採集時期・場所・道具・種類別ポイント・安全対策を完全網羅。",
+         "date": "Sat, 01 Mar 2026 09:00:00 +0900"},
+    ]
+
+    def esc(s):
+        return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+    item_xml = ""
+    for it in items:
+        item_xml += f"""
+    <item>
+      <title>{esc(it['title'])}</title>
+      <link>{it['link']}</link>
+      <guid isPermaLink="true">{it['link']}</guid>
+      <description>{esc(it['desc'])}</description>
+      <pubDate>{it['date']}</pubDate>
+    </item>"""
+
+    rss = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>クワガタ採集スポット検索｜ビートルファインダー</title>
+    <link>{BASE}</link>
+    <description>AIを使ったクワガタ採集スポット検索と、全国の都道府県別クワガタ採集ガイドを提供するサイトです。</description>
+    <language>ja</language>
+    <atom:link href="{BASE}/feed.xml" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>{items[0]['date']}</lastBuildDate>{item_xml}
+  </channel>
+</rss>"""
+
+    return Response(rss, mimetype="application/rss+xml; charset=utf-8")
+
+
 @app.route("/health")
 def health():
     """ヘルスチェック用エンドポイント（UptimeRobotなどの死活監視から定期ping）"""
