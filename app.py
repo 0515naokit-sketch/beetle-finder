@@ -847,6 +847,22 @@ def guide_pref_fukuoka():
 def guide_pref_hokkaido():
     return render_template("guide_pref_hokkaido.html")
 
+@app.route("/guide/pref/shizuoka")
+def guide_pref_shizuoka():
+    return render_template("guide_pref_shizuoka.html")
+
+@app.route("/guide/pref/nagano")
+def guide_pref_nagano():
+    return render_template("guide_pref_nagano.html")
+
+@app.route("/guide/pref/hiroshima")
+def guide_pref_hiroshima():
+    return render_template("guide_pref_hiroshima.html")
+
+@app.route("/guide/pref/miyagi")
+def guide_pref_miyagi():
+    return render_template("guide_pref_miyagi.html")
+
 @app.route("/guide/pref/<slug>")
 def guide_pref_dynamic(slug):
     pref = PREF_GUIDE_DATA.get(slug)
