@@ -899,6 +899,106 @@ def guide_pref_mie():
 def guide_pref_wakayama():
     return render_template("guide_pref_wakayama.html")
 
+@app.route("/guide/pref/aomori")
+def guide_pref_aomori():
+    return render_template("guide_pref_aomori.html")
+
+@app.route("/guide/pref/iwate")
+def guide_pref_iwate():
+    return render_template("guide_pref_iwate.html")
+
+@app.route("/guide/pref/akita")
+def guide_pref_akita():
+    return render_template("guide_pref_akita.html")
+
+@app.route("/guide/pref/yamagata")
+def guide_pref_yamagata():
+    return render_template("guide_pref_yamagata.html")
+
+@app.route("/guide/pref/fukushima")
+def guide_pref_fukushima():
+    return render_template("guide_pref_fukushima.html")
+
+@app.route("/guide/pref/ibaraki")
+def guide_pref_ibaraki():
+    return render_template("guide_pref_ibaraki.html")
+
+@app.route("/guide/pref/niigata")
+def guide_pref_niigata():
+    return render_template("guide_pref_niigata.html")
+
+@app.route("/guide/pref/toyama")
+def guide_pref_toyama():
+    return render_template("guide_pref_toyama.html")
+
+@app.route("/guide/pref/ishikawa")
+def guide_pref_ishikawa():
+    return render_template("guide_pref_ishikawa.html")
+
+@app.route("/guide/pref/fukui")
+def guide_pref_fukui():
+    return render_template("guide_pref_fukui.html")
+
+@app.route("/guide/pref/tottori")
+def guide_pref_tottori():
+    return render_template("guide_pref_tottori.html")
+
+@app.route("/guide/pref/shimane")
+def guide_pref_shimane():
+    return render_template("guide_pref_shimane.html")
+
+@app.route("/guide/pref/okayama")
+def guide_pref_okayama():
+    return render_template("guide_pref_okayama.html")
+
+@app.route("/guide/pref/yamaguchi")
+def guide_pref_yamaguchi():
+    return render_template("guide_pref_yamaguchi.html")
+
+@app.route("/guide/pref/tokushima")
+def guide_pref_tokushima():
+    return render_template("guide_pref_tokushima.html")
+
+@app.route("/guide/pref/kagawa")
+def guide_pref_kagawa():
+    return render_template("guide_pref_kagawa.html")
+
+@app.route("/guide/pref/ehime")
+def guide_pref_ehime():
+    return render_template("guide_pref_ehime.html")
+
+@app.route("/guide/pref/kochi")
+def guide_pref_kochi():
+    return render_template("guide_pref_kochi.html")
+
+@app.route("/guide/pref/saga")
+def guide_pref_saga():
+    return render_template("guide_pref_saga.html")
+
+@app.route("/guide/pref/nagasaki")
+def guide_pref_nagasaki():
+    return render_template("guide_pref_nagasaki.html")
+
+@app.route("/guide/pref/kumamoto")
+def guide_pref_kumamoto():
+    return render_template("guide_pref_kumamoto.html")
+
+@app.route("/guide/pref/oita")
+def guide_pref_oita():
+    return render_template("guide_pref_oita.html")
+
+@app.route("/guide/pref/miyazaki")
+def guide_pref_miyazaki():
+    return render_template("guide_pref_miyazaki.html")
+
+@app.route("/guide/pref/kagoshima")
+def guide_pref_kagoshima():
+    return render_template("guide_pref_kagoshima.html")
+
+@app.route("/guide/pref/okinawa")
+def guide_pref_okinawa():
+    return render_template("guide_pref_okinawa.html")
+
 @app.route("/guide/pref/<slug>")
 def guide_pref_dynamic(slug):
     pref = PREF_GUIDE_DATA.get(slug)
