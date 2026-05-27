@@ -1475,6 +1475,7 @@ def _load_spots_db(filename):
 
 _FAMILY_SPOTS = _load_spots_db("family_spots.json")
 _EXPERT_SPOTS = _load_spots_db("expert_spots.json")
+_URBAN_PARK_SPOTS = _load_spots_db("urban_park_spots_clean.json")
 
 # 樹種スコア重み（種別×樹種）
 _TREE_WEIGHT = {
@@ -1636,7 +1637,23 @@ def nearby_spots():
         direction = request.args.get("direction", "all")   # N/NE/E/SE/S/SW/W/NW/all
         moon_age = _calc_moon_age(date_str)
 
-        if mode == "family":
+        if mode == "park":
+            # 都市公園モード：駅・公園近郊の採集候補
+            results = []
+            for spot in _URBAN_PARK_SPOTS:
+                dist = haversine(lat, lng, spot["lat"], spot["lng"])
+                if dist > radius:
+                    continue
+                if not _in_direction(lat, lng, spot["lat"], spot["lng"], direction):
+                    continue
+                sc = _family_score(spot, species, method, moon_age, month, lat, lng)
+                # 公園スコアは採集有望度を加算
+                sc = min(100, sc + int(spot.get("collection_score", 0)))
+                results.append({**spot, "dist_km": round(dist, 1), "score": sc})
+            results.sort(key=lambda x: -x["score"])
+            return jsonify({"mode":"park","spots": results[:80], "moon_age": round(moon_age,1)})
+
+        elif mode == "family":
             db = _FAMILY_SPOTS
             results = []
             for spot in db:
@@ -1666,6 +1683,57 @@ def nearby_spots():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/urban-parks")
+def urban_parks_api():
+    """都市公園スポット検索API（フロントエンド用）"""
+    try:
+        lat      = float(request.args.get("lat", DEFAULT_LAT))
+        lng      = float(request.args.get("lng", DEFAULT_LNG))
+        radius   = float(request.args.get("radius", 30))   # デフォルト30km
+        pref     = request.args.get("pref", "")            # 都道府県フィルタ
+        min_ha   = float(request.args.get("min_ha", 0))    # 最小面積(ha)
+        sort_by  = request.args.get("sort", "dist")        # dist / score / area
+
+        results = []
+        for spot in _URBAN_PARK_SPOTS:
+            dist = haversine(lat, lng, spot["lat"], spot["lng"])
+            if dist > radius:
+                continue
+            if pref and spot.get("prefecture") != pref:
+                continue
+            if spot.get("area_ha", 0) < min_ha:
+                continue
+            results.append({
+                **spot,
+                "dist_km": round(dist, 1),
+            })
+
+        if sort_by == "area":
+            results.sort(key=lambda x: -x.get("area_ha", 0))
+        elif sort_by == "score":
+            results.sort(key=lambda x: -x.get("collection_score", 0))
+        else:
+            results.sort(key=lambda x: x["dist_km"])
+
+        return jsonify({
+            "total": len(results),
+            "spots": results[:100],
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/urban-parks/stats")
+def urban_parks_stats():
+    """都市公園データの統計情報"""
+    from collections import Counter
+    pref_count = Counter(s.get("prefecture") for s in _URBAN_PARK_SPOTS)
+    return jsonify({
+        "total": len(_URBAN_PARK_SPOTS),
+        "by_prefecture": dict(pref_count.most_common()),
+    })
 
 
 if __name__ == "__main__":
