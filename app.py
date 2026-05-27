@@ -1654,18 +1654,26 @@ def nearby_spots():
             return jsonify({"mode":"park","spots": results[:80], "moon_age": round(moon_age,1)})
 
         elif mode == "family":
-            db = _FAMILY_SPOTS
+            # 山地スポット＋都市公園を合算して返す
             results = []
-            for spot in db:
+            seen_keys = set()
+            for spot in _FAMILY_SPOTS + _URBAN_PARK_SPOTS:
                 dist = haversine(lat, lng, spot["lat"], spot["lng"])
                 if dist > radius:
                     continue
                 if not _in_direction(lat, lng, spot["lat"], spot["lng"], direction):
                     continue
+                # 同名 or 同座標（小数2桁）の重複を除去
+                dedup_key = (spot["name"], round(spot["lat"], 2), round(spot["lng"], 2))
+                if dedup_key in seen_keys:
+                    continue
+                seen_keys.add(dedup_key)
                 sc = _family_score(spot, species, method, moon_age, month, lat, lng)
+                if spot.get("spot_type") == "urban_park":
+                    sc = min(100, sc + int(spot.get("collection_score", 0)))
                 results.append({**spot, "dist_km": round(dist, 1), "score": sc})
             results.sort(key=lambda x: -x["score"])
-            return jsonify({"mode":"family","spots": results[:60], "moon_age": round(moon_age,1)})
+            return jsonify({"mode":"family","spots": results[:80], "moon_age": round(moon_age,1)})
 
         else:  # expert
             db = _EXPERT_SPOTS
