@@ -598,6 +598,11 @@ def report_takao():
     return render_template("report_takao.html")
 
 
+@app.route("/guide/scoring")
+def guide_scoring():
+    return render_template("guide_scoring.html")
+
+
 @app.route("/guide/beginners")
 def guide_beginners():
     return render_template("guide_beginners.html")
