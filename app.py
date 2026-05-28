@@ -578,6 +578,26 @@ def guide():
     return render_template("guide.html")
 
 
+@app.route("/guide/reports")
+def guide_reports():
+    return render_template("guide_reports.html")
+
+
+@app.route("/guide/report/okutama")
+def report_okutama():
+    return render_template("report_okutama.html")
+
+
+@app.route("/guide/report/chichibu")
+def report_chichibu():
+    return render_template("report_chichibu.html")
+
+
+@app.route("/guide/report/takao")
+def report_takao():
+    return render_template("report_takao.html")
+
+
 @app.route("/guide/beginners")
 def guide_beginners():
     return render_template("guide_beginners.html")
