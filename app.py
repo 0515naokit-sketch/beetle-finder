@@ -673,6 +673,16 @@ def guide_larva():
     return render_template("guide_larva.html")
 
 
+@app.route("/guide/jelly")
+def guide_jelly():
+    return render_template("guide_jelly.html")
+
+
+@app.route("/guide/zaiwari")
+def guide_zaiwari():
+    return render_template("guide_zaiwari.html")
+
+
 @app.route("/guide/iku/<species>")
 def guide_iku(species):
     valid = ["kokuwagata", "nokogiri", "miyama", "hirata", "ookuwa", "akaashi"]
@@ -1268,7 +1278,9 @@ def sitemap():
         ("https://beetle-finder.onrender.com/guide/trap",      "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/calendar",  "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/breeding",  "monthly", "0.8", today),
-        ("https://beetle-finder.onrender.com/guide/larva",           "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/larva",    "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/jelly",    "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/zaiwari",  "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/iku/kokuwagata", "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/iku/nokogiri",   "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/iku/miyama",     "monthly", "0.8", today),
