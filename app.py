@@ -673,6 +673,15 @@ def guide_larva():
     return render_template("guide_larva.html")
 
 
+@app.route("/guide/iku/<species>")
+def guide_iku(species):
+    valid = ["kokuwagata", "nokogiri", "miyama", "hirata", "ookuwa", "akaashi"]
+    if species not in valid:
+        from flask import abort
+        abort(404)
+    return render_template(f"guide_iku_{species}.html")
+
+
 @app.route("/guide/case")
 def guide_case():
     return render_template("guide_case.html")
@@ -1259,7 +1268,13 @@ def sitemap():
         ("https://beetle-finder.onrender.com/guide/trap",      "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/calendar",  "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/breeding",  "monthly", "0.8", today),
-        ("https://beetle-finder.onrender.com/guide/larva",     "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/larva",           "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/iku/kokuwagata", "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/iku/nokogiri",   "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/iku/miyama",     "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/iku/hirata",     "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/iku/ookuwa",     "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/iku/akaashi",    "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/case",      "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/jiyukenkyu",        "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/jiyukenkyu-kabuto", "monthly", "0.8", today),
