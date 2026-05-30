@@ -35,6 +35,26 @@
     .read-btn{display:inline-block;background:#2e7d32;color:#fff!important;padding:8px 18px;border-radius:8px;font-size:.82rem;font-weight:700;text-decoration:none!important;align-self:flex-start}
     .read-btn:hover{background:#1b5e20}
     footer{background:#1b2d1b;color:#81c784;text-align:center;padding:16px;font-size:.78rem;margin-top:40px}
+    .intro-box{background:#fff;border-radius:12px;padding:20px 22px;margin-bottom:28px;box-shadow:0 1px 4px rgba(0,0,0,.07);font-size:.9rem;line-height:1.9}
+    .intro-box h2{font-size:1rem;color:#1b5e20;margin-bottom:10px}
+    .lesson-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}@media(max-width:480px){.lesson-grid{grid-template-columns:1fr}}
+    .lesson-card{background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.07);font-size:.85rem}
+    .lesson-card .lesson-title{font-weight:700;color:#1b5e20;margin-bottom:6px;font-size:.9rem}
+    .section-title{font-size:1.1rem;font-weight:700;color:#1b5e20;border-left:4px solid #4caf50;padding-left:10px;margin:32px 0 16px}
+    .condition-table{width:100%;border-collapse:collapse;font-size:.83rem;margin:12px 0}
+    .condition-table th{background:#2e7d32;color:#fff;padding:8px 10px;text-align:left;font-weight:700}
+    .condition-table td{padding:8px 10px;border-bottom:1px solid #e0e0e0;background:#fff;vertical-align:top}
+    .condition-table tr:nth-child(even) td{background:#f9fbe7}
+    .faq-box{background:#fff;border-radius:10px;padding:14px 18px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+    .faq-q{font-weight:700;color:#1b5e20;margin-bottom:6px;font-size:.9rem}
+    .faq-q::before{content:"Q. "}
+    .faq-a{font-size:.85rem;color:#444;line-height:1.8}
+    .faq-a::before{content:"A. ";font-weight:700;color:#388e3c}
+    .next-card{background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:1px solid #c8e6c9;border-radius:10px;padding:14px 18px;margin-bottom:10px;font-size:.85rem}
+    .next-card .next-title{font-weight:700;color:#1b5e20;margin-bottom:4px}
+    .cta-box{background:linear-gradient(135deg,#2e7d32,#43a047);border-radius:14px;padding:22px 18px;text-align:center;margin:28px 0;color:#fff}
+    .cta-box p{color:#c8e6c9;font-size:.85rem;margin-bottom:14px}
+    .cta-btn{display:inline-block;background:#fff;color:#2e7d32;font-weight:700;padding:12px 28px;border-radius:30px;font-size:.95rem;text-decoration:none!important}
   </style>
 <script type="application/ld+json">
 {
@@ -75,8 +95,18 @@
 <div class="container">
   <div class="breadcrumb"><a href="/">トップ</a> &gt; <a href="/guide">採集ガイド</a> &gt; 採集レポート</div>
   <h1 class="page-title">🌿 クワガタ採集レポート</h1>
-  <p class="page-sub">beetle-finder運営者NTの実体験採集記録。月齢・天候・時間帯など実際のデータとともに採集のコツを公開しています。</p>
+  <p class="page-sub">beetle-finder運営者・森山春樹の実体験採集記録。月齢・天候・時間帯など実際のデータとともに採集のコツを公開しています。</p>
 
+  <!-- イントロ -->
+  <div class="intro-box">
+    <h2>📋 このページについて</h2>
+    <p>クワガタ採集は「どこで」「いつ」「どんな条件で」採るかが9割を決めます。ガイド記事では一般論を書いていますが、ここでは私・森山春樹が実際に出かけた採集の一部始終を記録しています。</p>
+    <p>レポートには採集した日の気温・湿度・月齢・前日の天気・採集開始時刻・終了時刻まで記録しており、「なぜその夜に採れたのか（あるいは採れなかったのか）」を自分なりに考察しています。10年以上の採集経験で積み上げた「当たり夜の見極め方」を、生のデータで伝えるのがこのレポート集の目的です。</p>
+    <p>ガイド記事の理論と、レポートの実体験を合わせて読むことで、採集の成功率をぐっと上げられると思います。</p>
+  </div>
+
+  <!-- 3つのレポートカード -->
+  <h2 class="section-title">📓 採集レポート一覧</h2>
   <div class="report-grid">
 
     <div class="report-card">
@@ -179,7 +209,105 @@
       </div>
     </div>
 
+  </div><!-- /report-grid -->
+
+  <!-- 採集で学んだこと -->
+  <h2 class="section-title">💡 レポートを書いて気づいたこと</h2>
+  <p style="font-size:.88rem;color:#555;margin-bottom:16px">3本のレポートを通して、採集の「当たり外れ」を左右する要因が少しずつ見えてきました。</p>
+  <div class="lesson-grid">
+    <div class="lesson-card">
+      <div class="lesson-title">🌧 雨上がりの翌夜が最強</div>
+      前日に20mm以上の雨が降り、翌夜に気温が25℃以上・湿度80%以上になった夜は、ほぼ確実に当たりです。秩父レポートで実証済み。クワガタが樹液を求めて一斉に動き出す「ゴールデンタイム」です。
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-title">🌕 月齢は暗い夜を選ぶ</div>
+      新月前後（月齢0〜5）の暗い夜のほうが個体数が多い印象です。ただし月明かりよりも気温・湿度の影響のほうが大きく、満月でも条件が揃えば十分採れます。月齢はあくまで「参考程度」です。
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-title">⏰ ピーク時間は22時〜深夜2時</div>
+      クワガタの活動ピークは日没後3〜5時間。7月の場合、日没が19時前後なので22時〜24時がゴールデンタイムです。早く行って待つより、ピーク時間に合わせて到着するのが効率的だと感じています。
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-title">🌡 気温の「下限」に注意</div>
+      気温が20℃を下回ると、クワガタの動きが急に鈍くなります。特に標高が高い山地では、7月でも深夜に17℃まで下がることがあります。奥多摩レポートでも23時以降に気温が下がってから採集ペースが落ちました。
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-title">👨‍👧 子連れはライトトラップが現実的</div>
+      6歳の子供と夜の林を歩くのは危険が多いです。駐車場脇の街灯・水銀灯を活用するライトトラップのほうが安全で、子供も「飛んできたコクワを拾う」体験ができます。高尾山レポートで詳しく解説しています。
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-title">📍 ポイントは複数持つ</div>
+      1カ所に頼るのはリスクが高い。3〜4カ所のポイントを持ち、当日の状況で回るコースを決めるのが理想です。奥多摩レポートでは3カ所を巡回して合計5匹を採集しました。
+    </div>
   </div>
+
+  <!-- 採集条件の読み方 -->
+  <h2 class="section-title">📊 レポートで使う採集条件の見方</h2>
+  <p style="font-size:.88rem;color:#555;margin-bottom:12px">各レポートには以下のデータを記載しています。参考にしてください。</p>
+  <table class="condition-table">
+    <thead><tr><th>項目</th><th>記録内容</th><th>採集への影響</th></tr></thead>
+    <tbody>
+      <tr><td><strong>月齢</strong></td><td>0〜29（新月=0、満月=14〜15）</td><td>月齢0〜5が最も暗く採集向き。ただし気温・湿度の影響のほうが大きい。</td></tr>
+      <tr><td><strong>気温</strong></td><td>採集開始時・ピーク時の気温（℃）</td><td>22〜28℃が最適。20℃以下は活性が急低下する。</td></tr>
+      <tr><td><strong>湿度</strong></td><td>採集地点の湿度（%）</td><td>75%以上が好条件。雨上がりの85%以上は特に当たりが多い。</td></tr>
+      <tr><td><strong>前日天気</strong></td><td>前日の降水量（mm）</td><td>20mm以上の雨の翌夜は活性が高い傾向。</td></tr>
+      <tr><td><strong>採集時刻</strong></td><td>開始・終了時刻</td><td>日没3〜5時間後がピーク。早朝（4〜6時）も樹液採集には有効。</td></tr>
+      <tr><td><strong>標高</strong></td><td>採集地点のおよその標高（m）</td><td>ミヤマは600m以上、コクワは平地〜、ヒラタは低地河川沿いが基本。</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 次回予告 -->
+  <h2 class="section-title">📅 今後公開予定のレポート</h2>
+  <p style="font-size:.88rem;color:#555;margin-bottom:14px">2025〜2026シーズンに出かけた採集を順次レポート化しています。</p>
+  <div class="next-card">
+    <div class="next-title">🗻 日光・那須高原でミヤマクワガタ採集（2025年8月）</div>
+    標高900mのブナ林でのライトトラップ採集。ミヤマの大型個体が連続して飛来した夜の記録。気温18℃という低温でも活性が高かった理由を考察予定。
+  </div>
+  <div class="next-card">
+    <div class="next-title">🏕 山梨・道志渓谷のオオクワガタ探し（2025年8月）</div>
+    樹液から離れ、立ち枯れ木・洞（うろ）を徹底的に叩き回った採集。残念ながら不発に終わりましたが、「なぜ採れなかったのか」を反省とともに記録します。失敗レポートも参考になるはずです。
+  </div>
+  <div class="next-card">
+    <div class="next-title">🌄 早朝採集（朝5時スタート）で大台ケ原へ（2025年9月）</div>
+    夜ではなく早朝に焦点を当てた採集。朝露が残る時間帯はクワガタが樹液付近に残りやすく、写真も撮りやすい。ファミリー向けの「夜更かしなし採集」として実験しました。
+  </div>
+
+  <!-- FAQ -->
+  <h2 class="section-title">❓ よくある質問</h2>
+  <div class="faq-box">
+    <p class="faq-q">レポートで採集した場所の詳細住所を教えてほしい</p>
+    <p class="faq-a">具体的な採集ポイントの座標・住所は公開していません。乱獲・過採集を防ぐためです。「奥多摩町のクヌギ林」「秩父市周辺の里山」という程度のエリア情報のみ掲載しています。ポイント探しは<a href="/app">採集スポット検索</a>を活用してください。</p>
+  </div>
+  <div class="faq-box">
+    <p class="faq-q">採集した個体はどうしていますか？</p>
+    <p class="faq-a">採集後は自宅で1〜2週間飼育して観察します。記録写真を撮り終えたら、採集したエリアの同じ木の近くに放虫（リリース）しています。生体販売・交換は一切しておらず、趣味の記録としてのみ採集しています。</p>
+  </div>
+  <div class="faq-box">
+    <p class="faq-q">採集レポートは毎年更新しますか？</p>
+    <p class="faq-a">はい。毎年6〜9月のシーズン中に採集した記録を、10〜11月にかけてレポートとして公開する予定です。気温・環境の変化でクワガタの出没状況も年ごとに変わるため、最新シーズンのデータを継続して蓄積していきます。</p>
+  </div>
+  <div class="faq-box">
+    <p class="faq-q">初心者でもレポートを参考にして採集できますか？</p>
+    <p class="faq-a">できます。特に「高尾山ファミリー採集レポート」は、初めて採集に行く方・お子さん連れの方向けに書いています。装備・準備・当日の流れをステップごとに解説していますので、まずそちらから読んでみてください。</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <p>📍 レポートのポイントをAIで探す</p>
+    <a href="/app" class="cta-btn">🗺 採集スポット検索を使う</a>
+  </div>
+
+  <!-- 関連リンク -->
+  <h2 class="section-title">📚 あわせて読みたい採集ガイド</h2>
+  <ul style="font-size:.88rem;line-height:2;padding-left:1.2em">
+    <li><a href="/guide/miyama">ミヤマクワガタ採集ガイド</a>｜標高・時期・場所の選び方</li>
+    <li><a href="/guide/nokogiri">ノコギリクワガタ採集ガイド</a>｜平地〜丘陵の採集テクニック</li>
+    <li><a href="/guide/hirata">ヒラタクワガタ採集ガイド</a>｜川沿い・低地での見つけ方</li>
+    <li><a href="/guide/night">夜間採集の基本ガイド</a>｜道具・時間帯・安全対策</li>
+    <li><a href="/guide/rain">雨上がり採集ガイド</a>｜なぜ雨上がりは当たるのか</li>
+    <li><a href="/guide/scoring">採集スコアの仕組み</a>｜月齢・天気・時間帯を数値化</li>
+  </ul>
+
 </div>
 <footer>
   <p>🪲 <a href="/" style="color:#81c784">クワガタ採集スポット検索 beetle-finder</a> ｜ <a href="/guide" style="color:#81c784">採集ガイド一覧</a></p>
