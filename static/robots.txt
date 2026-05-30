@@ -1,4 +1,48 @@
+# robots.txt — クワガタ採集スポット検索
+# https://beetle-finder.onrender.com
+# 最終更新: 2026-05-30
+
+# ── 全クローラー共通 ──
 User-agent: *
 Allow: /
 
+# APIエンドポイント（JSONレスポンス・内部処理用）
+Disallow: /api/
+
+# ヘルスチェック・内部エンドポイント
+Disallow: /health
+
+# ── Googlebot（検索順位に直結） ──
+User-agent: Googlebot
+Allow: /
+Allow: /static/img/
+Allow: /static/ogp*.png
+Disallow: /api/
+Disallow: /health
+
+# ── Googlebot-Image（画像検索） ──
+User-agent: Googlebot-Image
+Allow: /static/img/
+Allow: /static/ogp*.png
+
+# ── Bingbot ──
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /health
+
+# ── AI学習クローラー（オプトアウト） ──
+# OpenAI GPTBot
+User-agent: GPTBot
+Disallow: /
+
+# Anthropic ClaudeBot
+User-agent: ClaudeBot
+Disallow: /
+
+# Common Crawl（学習データ収集）
+User-agent: CCBot
+Disallow: /
+
+# ── サイトマップ ──
 Sitemap: https://beetle-finder.onrender.com/sitemap.xml
