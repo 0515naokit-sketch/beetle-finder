@@ -1,448 +1,446 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D50YSSYFKN"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D50YSSYFKN');</script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ pref.title }}</title>
-  <meta name="description" content="{{ pref.description }}">
-  <meta name="keywords" content="{{ pref.name_short }} クワガタ 採集 場所 スポット カブトムシ {{ pref.main_area }}{% for sp in pref.species %} {{ sp.name }}{% endfor %}">
-  <link rel="canonical" href="https://beetle-finder.onrender.com/guide/pref/{{ pref.slug }}">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9675243685208925" crossorigin="anonymous"></script>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#f5f5f5;color:#333;line-height:1.95}
-    a{color:#388e3c;text-decoration:none}a:hover{text-decoration:underline}
-    #site-header{background:linear-gradient(135deg,#2e7d32,#43a047);padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-    #site-header h1{color:#fff;font-size:1rem;font-weight:700;flex:1}
-    .nav-btn{background:rgba(255,255,255,.2);color:#fff;padding:6px 14px;border-radius:6px;font-size:.82rem;border:1px solid rgba(255,255,255,.35)}
-    .nav-btn:hover{background:rgba(255,255,255,.3);text-decoration:none;color:#fff}
-    .hero-band{background:linear-gradient(135deg,#1b5e20,#2e7d32);padding:32px 20px;text-align:center;color:#fff}
-    .hero-band h2{font-size:1.6rem;margin-bottom:8px;line-height:1.4}
-    .hero-band p{font-size:1rem;color:#c8e6c9;max-width:600px;margin:0 auto}
-    .pref-badge{display:inline-block;background:#fff;color:#1b5e20;font-size:.8rem;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:14px}
-    .container{max-width:800px;margin:0 auto;padding:28px 16px 60px}
-    .breadcrumb{font-size:.78rem;color:#888;margin-bottom:18px}
-    .breadcrumb a{color:#388e3c}
-    h2.section{font-size:1.2rem;color:#1b5e20;border-left:4px solid #43a047;padding-left:12px;margin:40px 0 12px}
-    h3.sub{font-size:1rem;color:#2e7d32;margin:24px 0 8px;font-weight:700}
-    p{margin-bottom:1.4em;font-size:1rem}
-    ul,ol{padding-left:22px;margin-bottom:1.3em}
-    li{margin-bottom:.6em;font-size:1rem}
-    .summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:20px 0}
-    .summary-card{background:#fff;border:1px solid #c8e6c9;border-radius:10px;padding:14px;text-align:center}
-    .summary-card .icon{font-size:1.6rem;margin-bottom:5px}
-    .summary-card .label{font-size:.7rem;color:#888;margin-bottom:3px}
-    .summary-card .value{font-size:.9rem;font-weight:700;color:#1b5e20}
-    .area-card{background:#fff;border:1px solid #c8e6c9;border-radius:10px;padding:20px;margin:14px 0}
-    .area-card h3{color:#1b5e20;font-size:1rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-    .area-tag{display:inline-block;font-size:.7rem;padding:2px 9px;border-radius:10px;font-weight:700}
-    .tag-easy{background:#e8f5e9;color:#2e7d32}
-    .tag-mid{background:#fff8e1;color:#f57f17}
-    .tag-hard{background:#fce4ec;color:#c62828}
-    .spot-list-ul{padding-left:0;list-style:none;margin:8px 0 0}
-    .spot-list-ul li{padding:3px 0 3px 20px;position:relative;font-size:.88rem;color:#444}
-    .spot-list-ul li::before{content:"📍";position:absolute;left:0;font-size:.8rem}
-    .sp-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.88rem}
-    .sp-table th{background:#2e7d32;color:#fff;padding:8px 10px;text-align:left}
-    .sp-table td{padding:8px 10px;border-bottom:1px solid #e8f5e9}
-    .sp-table tr:nth-child(even) td{background:#f9fdf9}
-    .rare{color:#c62828;font-weight:700}
-    .tip-box{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:18px 22px;margin:16px 0}
-    .tip-title{font-weight:700;color:#f57f17;margin-bottom:6px;font-size:.88rem}
-    .amz-box{background:#fffbf0;border:1px solid #f0c040;border-radius:8px;padding:14px 16px;margin:20px 0}
-    .amz-box-title{font-weight:700;color:#c45000;font-size:.88rem;margin-bottom:10px}
-    .amz-links{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
-    .amz-btn{display:inline-block;background:#ff9900;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
-    .amz-btn:hover{background:#e68900 !important}
-    .rkt-btn{display:inline-block;background:#bf0000;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
-    .rkt-btn:hover{background:#a00000 !important}
-    .yah-btn{display:inline-block;background:#ff0033;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
-    .yah-btn:hover{background:#cc0029 !important}
-    .amz-note{font-size:.7rem;color:#999;margin:0}
-    .cta-box{background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;border-radius:12px;padding:26px;text-align:center;margin:40px 0}
-    .cta-box h2{font-size:1.1rem;margin-bottom:8px}
-    .cta-box p{font-size:.85rem;color:#c8e6c9;margin-bottom:18px}
-    .cta-btn{display:inline-block;background:#fff;color:#1b5e20 !important;padding:13px 32px;border-radius:8px;font-weight:700;font-size:.95rem;text-decoration:none !important}
-    .cta-btn:hover{background:#e8f5e9 !important}
-    .faq-item{padding:14px 0;border-bottom:1px solid #e8f5e9}
-    .faq-item:last-child{border-bottom:none}
-    .faq-q{font-size:.92rem;font-weight:700;color:#1b5e20;margin-bottom:6px}
-    .faq-a{font-size:.88rem;color:#444;line-height:1.75}
-    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:16px 0}
-    .related-card{background:#fff;border:1px solid #c8e6c9;border-radius:8px;padding:14px}
-    .related-card a{font-weight:700;color:#2e7d32;font-size:.88rem}
-    .related-card p{font-size:.75rem;color:#666;margin:5px 0 0}
-    @media(max-width:600px){
-      .hero-band h2{font-size:1.25rem}
-      .summary-grid{grid-template-columns:repeat(2,1fr)}
-    }
-  
-    /* ── おすすめ商品ブロック ─────────────────────── */
-    .rec-box{background:#fffbf0;border:2px solid #f0c040;border-radius:10px;padding:14px 16px;margin:22px 0}
-    .rec-title{font-weight:700;color:#c45000;font-size:.9rem;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-    .rec-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #f5e7a0;flex-wrap:wrap}
-    .rec-item:last-child{border-bottom:none;padding-bottom:0}
-    .rec-info{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
-    .rec-icon{font-size:1.5rem;flex-shrink:0;line-height:1}
-    .rec-text{min-width:0}
-    .rec-name{font-weight:700;font-size:.88rem;color:#333;margin:0}
-    .rec-sub{font-size:.74rem;color:#777;margin:2px 0 0}
-    .rec-links{display:flex;gap:5px;flex-shrink:0}
-    .rec-amz{background:#ff9900;color:#fff!important;padding:5px 10px;border-radius:5px;font-size:.75rem;font-weight:700;text-decoration:none!important;white-space:nowrap}
-    .rec-amz:hover{background:#e68900!important;color:#fff!important}
-    .rec-rkt{background:#bf0000;color:#fff!important;padding:5px 10px;border-radius:5px;font-size:.75rem;font-weight:700;text-decoration:none!important;white-space:nowrap}
-    .rec-rkt:hover{background:#900!important;color:#fff!important}
-    .rec-yah{background:#ff0033;color:#fff!important;padding:5px 10px;border-radius:5px;font-size:.75rem;font-weight:700;text-decoration:none!important;white-space:nowrap}
-    .rec-yah:hover{background:#cc0029!important;color:#fff!important}
-    .rec-note{font-size:.68rem;color:#aaa;margin:8px 0 0;text-align:right}
-    /* ── (旧)amz-box ─────────────────────── */
-    .amz-box{background:#fffbf0;border:1px solid #f0c040;border-radius:8px;padding:14px 16px;margin:20px 0}
-    .amz-box-title{font-weight:700;color:#c45000;font-size:.88rem;margin-bottom:10px}
-    .amz-links{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
-    .amz-btn{display:inline-block;background:#ff9900;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
-    .amz-btn:hover{background:#e68900 !important;color:#fff !important}
-    .rkt-btn{display:inline-block;background:#bf0000;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
-    .rkt-btn:hover{background:#900 !important;color:#fff !important}
-    .yah-btn{display:inline-block;background:#ff0033;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
-    .yah-btn:hover{background:#cc0029 !important;color:#fff !important}
-    .amz-note{font-size:.7rem;color:#999;margin:0}
-  
-  /* ── フッターナビ ─────────────────────────────── */
-  footer{background:#1b2d1b;color:#81c784;padding:28px 16px 16px;font-size:.78rem;margin-top:40px}
-  .footer-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;max-width:800px;margin:0 auto 20px;padding:0 0 20px;border-bottom:1px solid #2e4e2e}
-  .footer-nav-group{display:flex;flex-direction:column;gap:6px}
-  .footer-nav-label{color:#a5d6a7;font-weight:700;font-size:.8rem;margin-bottom:2px}
-  .footer-nav a{color:#81c784;text-decoration:none;font-size:.78rem;line-height:1.6}
-  .footer-nav a:hover{color:#fff;text-decoration:underline}
-  .footer-bottom{text-align:center;color:#4a7a4a}
-  .footer-bottom a{color:#81c784}
-  
-  .share-box{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:28px 0;padding:14px 18px;background:#f9f9f9;border-radius:10px;border:1px solid #e0e0e0}
-  .share-label{font-size:.82rem;font-weight:700;color:#555}
-  .share-links{display:flex;gap:8px;flex-wrap:wrap}
-  .share-x{background:#000;color:#fff!important;padding:7px 16px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none!important}
-  .share-x:hover{background:#333!important}
-  .share-hb{background:#00a4de;color:#fff!important;padding:7px 16px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none!important}
-  .share-hb:hover{background:#0083b3!important}
-  </style>
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {% for faq in pref.faqs %}
-      {
-        "@type":"Question",
-        "name":"{{ faq.q }}",
-        "acceptedAnswer":{"@type":"Answer","text":"{{ faq.a }}"}
-      }{% if not loop.last %},{% endif %}
-      {% endfor %}
-    ]
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"BreadcrumbList",
-    "itemListElement":[
-      {"@type":"ListItem","position":1,"name":"ホーム","item":"https://beetle-finder.onrender.com/"},
-      {"@type":"ListItem","position":2,"name":"採集ガイド","item":"https://beetle-finder.onrender.com/guide"},
-      {"@type":"ListItem","position":3,"name":"都道府県別ガイド","item":"https://beetle-finder.onrender.com/guide#pref"},
-      {"@type":"ListItem","position":4,"name":"{{ pref.name }}のクワガタ採集ガイド","item":"https://beetle-finder.onrender.com/guide/pref/{{ pref.slug }}"}
-    ]
-  }
-  </script>
+ <script async src="https://www.googletagmanager.com/gtag/js?id=G-D50YSSYFKN"></script>
+ <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D50YSSYFKN');</script>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>{{ pref.title }}</title>
+ <meta name="description" content="{{ pref.description }}">
+ <meta name="keywords" content="{{ pref.name_short }} クワガタ 採集 場所 スポット カブトムシ {{ pref.main_area }}{% for sp in pref.species %} {{ sp.name }}{% endfor %}">
+ <link rel="canonical" href="https://beetle-finder.onrender.com/guide/pref/{{ pref.slug }}">
+ <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9675243685208925" crossorigin="anonymous"></script>
+ <style>
+ *{box-sizing:border-box;margin:0;padding:0}
+ body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#f5f5f5;color:#333;line-height:1.95}
+ a{color:#388e3c;text-decoration:none}a:hover{text-decoration:underline}
+ #site-header{background:linear-gradient(135deg,#2e7d32,#43a047);padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+ #site-header h1{color:#fff;font-size:1rem;font-weight:700;flex:1}
+ .nav-btn{background:rgba(255,255,255,.2);color:#fff;padding:6px 14px;border-radius:6px;font-size:.82rem;border:1px solid rgba(255,255,255,.35)}
+ .nav-btn:hover{background:rgba(255,255,255,.3);text-decoration:none;color:#fff}
+ .hero-band{background:linear-gradient(135deg,#1b5e20,#2e7d32);padding:32px 20px;text-align:center;color:#fff}
+ .hero-band h2{font-size:1.6rem;margin-bottom:8px;line-height:1.4}
+ .hero-band p{font-size:1rem;color:#c8e6c9;max-width:600px;margin:0 auto}
+ .pref-badge{display:inline-block;background:#fff;color:#1b5e20;font-size:.8rem;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:14px}
+ .container{max-width:800px;margin:0 auto;padding:28px 16px 60px}
+ .breadcrumb{font-size:.78rem;color:#888;margin-bottom:18px}
+ .breadcrumb a{color:#388e3c}
+ h2.section{font-size:1.2rem;color:#1b5e20;border-left:4px solid #43a047;padding-left:12px;margin:40px 0 12px}
+ h3.sub{font-size:1rem;color:#2e7d32;margin:24px 0 8px;font-weight:700}
+ p{margin-bottom:1.4em;font-size:1rem}
+ ul,ol{padding-left:22px;margin-bottom:1.3em}
+ li{margin-bottom:.6em;font-size:1rem}
+ .summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:20px 0}
+ .summary-card{background:#fff;border:1px solid #c8e6c9;border-radius:10px;padding:14px;text-align:center}
+ .summary-card .icon{font-size:1.6rem;margin-bottom:5px}
+ .summary-card .label{font-size:.7rem;color:#888;margin-bottom:3px}
+ .summary-card .value{font-size:.9rem;font-weight:700;color:#1b5e20}
+ .area-card{background:#fff;border:1px solid #c8e6c9;border-radius:10px;padding:20px;margin:14px 0}
+ .area-card h3{color:#1b5e20;font-size:1rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+ .area-tag{display:inline-block;font-size:.7rem;padding:2px 9px;border-radius:10px;font-weight:700}
+ .tag-easy{background:#e8f5e9;color:#2e7d32}
+ .tag-mid{background:#fff8e1;color:#f57f17}
+ .tag-hard{background:#fce4ec;color:#c62828}
+ .spot-list-ul{padding-left:0;list-style:none;margin:8px 0 0}
+ .spot-list-ul li{padding:3px 0 3px 20px;position:relative;font-size:.88rem;color:#444}
+ .spot-list-ul li::before{content:"📍";position:absolute;left:0;font-size:.8rem}
+ .sp-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.88rem}
+ .sp-table th{background:#2e7d32;color:#fff;padding:8px 10px;text-align:left}
+ .sp-table td{padding:8px 10px;border-bottom:1px solid #e8f5e9}
+ .sp-table tr:nth-child(even) td{background:#f9fdf9}
+ .rare{color:#c62828;font-weight:700}
+ .tip-box{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:18px 22px;margin:16px 0}
+ .tip-title{font-weight:700;color:#f57f17;margin-bottom:6px;font-size:.88rem}
+ .amz-box{background:#fffbf0;border:1px solid #f0c040;border-radius:8px;padding:14px 16px;margin:20px 0}
+ .amz-box-title{font-weight:700;color:#c45000;font-size:.88rem;margin-bottom:10px}
+ .amz-links{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+ .amz-btn{display:inline-block;background:#ff9900;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
+ .amz-btn:hover{background:#e68900 !important}
+ .rkt-btn{display:inline-block;background:#bf0000;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
+ .rkt-btn:hover{background:#a00000 !important}
+ .yah-btn{display:inline-block;background:#ff0033;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
+ .yah-btn:hover{background:#cc0029 !important}
+ .amz-note{font-size:.7rem;color:#999;margin:0}
+ .cta-box{background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;border-radius:12px;padding:26px;text-align:center;margin:40px 0}
+ .cta-box h2{font-size:1.1rem;margin-bottom:8px}
+ .cta-box p{font-size:.85rem;color:#c8e6c9;margin-bottom:18px}
+ .cta-btn{display:inline-block;background:#fff;color:#1b5e20 !important;padding:13px 32px;border-radius:8px;font-weight:700;font-size:.95rem;text-decoration:none !important}
+ .cta-btn:hover{background:#e8f5e9 !important}
+ .faq-item{padding:14px 0;border-bottom:1px solid #e8f5e9}
+ .faq-item:last-child{border-bottom:none}
+ .faq-q{font-size:.92rem;font-weight:700;color:#1b5e20;margin-bottom:6px}
+ .faq-a{font-size:.88rem;color:#444;line-height:1.75}
+ .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:16px 0}
+ .related-card{background:#fff;border:1px solid #c8e6c9;border-radius:8px;padding:14px}
+ .related-card a{font-weight:700;color:#2e7d32;font-size:.88rem}
+ .related-card p{font-size:.75rem;color:#666;margin:5px 0 0}
+ @media(max-width:600px){
+ .hero-band h2{font-size:1.25rem}
+ .summary-grid{grid-template-columns:repeat(2,1fr)}
+ }
+ 
+ /* ── おすすめ商品ブロック ─────────────────────── */
+ .rec-box{background:#fffbf0;border:2px solid #f0c040;border-radius:10px;padding:14px 16px;margin:22px 0}
+ .rec-title{font-weight:700;color:#c45000;font-size:.9rem;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+ .rec-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #f5e7a0;flex-wrap:wrap}
+ .rec-item:last-child{border-bottom:none;padding-bottom:0}
+ .rec-info{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+ .rec-icon{font-size:1.5rem;flex-shrink:0;line-height:1}
+ .rec-text{min-width:0}
+ .rec-name{font-weight:700;font-size:.88rem;color:#333;margin:0}
+ .rec-sub{font-size:.74rem;color:#777;margin:2px 0 0}
+ .rec-links{display:flex;gap:5px;flex-shrink:0}
+ .rec-amz{background:#ff9900;color:#fff!important;padding:5px 10px;border-radius:5px;font-size:.75rem;font-weight:700;text-decoration:none!important;white-space:nowrap}
+ .rec-amz:hover{background:#e68900!important;color:#fff!important}
+ .rec-rkt{background:#bf0000;color:#fff!important;padding:5px 10px;border-radius:5px;font-size:.75rem;font-weight:700;text-decoration:none!important;white-space:nowrap}
+ .rec-rkt:hover{background:#900!important;color:#fff!important}
+ .rec-yah{background:#ff0033;color:#fff!important;padding:5px 10px;border-radius:5px;font-size:.75rem;font-weight:700;text-decoration:none!important;white-space:nowrap}
+ .rec-yah:hover{background:#cc0029!important;color:#fff!important}
+ .rec-note{font-size:.68rem;color:#aaa;margin:8px 0 0;text-align:right}
+ /* ── (旧)amz-box ─────────────────────── */
+ .amz-box{background:#fffbf0;border:1px solid #f0c040;border-radius:8px;padding:14px 16px;margin:20px 0}
+ .amz-box-title{font-weight:700;color:#c45000;font-size:.88rem;margin-bottom:10px}
+ .amz-links{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+ .amz-btn{display:inline-block;background:#ff9900;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
+ .amz-btn:hover{background:#e68900 !important;color:#fff !important}
+ .rkt-btn{display:inline-block;background:#bf0000;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
+ .rkt-btn:hover{background:#900 !important;color:#fff !important}
+ .yah-btn{display:inline-block;background:#ff0033;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
+ .yah-btn:hover{background:#cc0029 !important;color:#fff !important}
+ .amz-note{font-size:.7rem;color:#999;margin:0}
+ 
+ /* ── フッターナビ ─────────────────────────────── */
+ footer{background:#1b2d1b;color:#81c784;padding:28px 16px 16px;font-size:.78rem;margin-top:40px}
+ .footer-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;max-width:800px;margin:0 auto 20px;padding:0 0 20px;border-bottom:1px solid #2e4e2e}
+ .footer-nav-group{display:flex;flex-direction:column;gap:6px}
+ .footer-nav-label{color:#a5d6a7;font-weight:700;font-size:.8rem;margin-bottom:2px}
+ .footer-nav a{color:#81c784;text-decoration:none;font-size:.78rem;line-height:1.6}
+ .footer-nav a:hover{color:#fff;text-decoration:underline}
+ .footer-bottom{text-align:center;color:#4a7a4a}
+ .footer-bottom a{color:#81c784}
+ 
+ .share-box{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:28px 0;padding:14px 18px;background:#f9f9f9;border-radius:10px;border:1px solid #e0e0e0}
+ .share-label{font-size:.82rem;font-weight:700;color:#555}
+ .share-links{display:flex;gap:8px;flex-wrap:wrap}
+ .share-x{background:#000;color:#fff!important;padding:7px 16px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none!important}
+ .share-x:hover{background:#333!important}
+ .share-hb{background:#00a4de;color:#fff!important;padding:7px 16px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none!important}
+ .share-hb:hover{background:#0083b3!important}
+ </style>
+ <script type="application/ld+json">
+ {
+ "@context":"https://schema.org",
+ "@type":"FAQPage",
+ "mainEntity":[
+ {% for faq in pref.faqs %}
+ {
+ "@type":"Question",
+ "name":"{{ faq.q }}",
+ "acceptedAnswer":{"@type":"Answer","text":"{{ faq.a }}"}
+ }{% if not loop.last %},{% endif %}
+ {% endfor %}
+ ]
+ }
+ </script>
+ <script type="application/ld+json">
+ {
+ "@context":"https://schema.org",
+ "@type":"BreadcrumbList",
+ "itemListElement":[
+ {"@type":"ListItem","position":1,"name":"ホーム","item":"https://beetle-finder.onrender.com/"},
+ {"@type":"ListItem","position":2,"name":"採集ガイド","item":"https://beetle-finder.onrender.com/guide"},
+ {"@type":"ListItem","position":3,"name":"都道府県別ガイド","item":"https://beetle-finder.onrender.com/guide#pref"},
+ {"@type":"ListItem","position":4,"name":"{{ pref.name }}のクワガタ採集ガイド","item":"https://beetle-finder.onrender.com/guide/pref/{{ pref.slug }}"}
+ ]
+ }
+ </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "{{ pref.title }}",
-  "description": "{{ pref.description }}",
-  "url": "https://beetle-finder.onrender.com/guide/pref",
-  "datePublished": "2026-04-01",
-  "dateModified": "2026-05-30",
-  "author": {
-    "@type": "Person",
-    "name": "森山春樹",
-    "url": "https://beetle-finder.onrender.com/about"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "beetle-finder",
-    "url": "https://beetle-finder.onrender.com",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://beetle-finder.onrender.com/static/img/icon-kuwagata.jpg"
-    }
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://beetle-finder.onrender.com/guide/pref"
-  }
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "headline": "{{ pref.title }}",
+ "description": "{{ pref.description }}",
+ "url": "https://beetle-finder.onrender.com/guide/pref",
+ "datePublished": "2026-04-01",
+ "dateModified": "2026-05-30",
+ "author": {
+ "@type": "Person",
+ "name": "森山春樹",
+ "url": "https://beetle-finder.onrender.com/about"
+ },
+ "publisher": {
+ "@type": "Organization",
+ "name": "beetle-finder",
+ "url": "https://beetle-finder.onrender.com",
+ "logo": {
+ "@type": "ImageObject",
+ "url": "https://beetle-finder.onrender.com/static/img/icon-kuwagata.jpg"
+ }
+ },
+ "mainEntityOfPage": {
+ "@type": "WebPage",
+ "@id": "https://beetle-finder.onrender.com/guide/pref"
+ }
 }
 </script>
-  <meta property="og:title" content="{{ pref.title }}">
-  <meta property="og:description" content="{{ pref.description }}">
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://beetle-finder.onrender.com/guide/pref/{{ pref.slug }}">
-  <meta property="og:image" content="https://beetle-finder.onrender.com/static/ogp.png">
-  <meta property="og:site_name" content="クワガタ採集スポット検索 beetle-finder">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{{ pref.title }}">
-  <meta name="twitter:description" content="{{ pref.description }}">
-  <meta name="twitter:image" content="https://beetle-finder.onrender.com/static/ogp.png">
+ <meta property="og:title" content="{{ pref.title }}">
+ <meta property="og:description" content="{{ pref.description }}">
+ <meta property="og:type" content="article">
+ <meta property="og:url" content="https://beetle-finder.onrender.com/guide/pref/{{ pref.slug }}">
+ <meta property="og:image" content="https://beetle-finder.onrender.com/static/ogp.png">
+ <meta property="og:site_name" content="クワガタ採集スポット検索 beetle-finder">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="{{ pref.title }}">
+ <meta name="twitter:description" content="{{ pref.description }}">
+ <meta name="twitter:image" content="https://beetle-finder.onrender.com/static/ogp.png">
 </head>
 <body>
 <header id="site-header">
-  <h1>🪲 クワガタ採集スポット検索</h1>
-  <a href="/guide" class="nav-btn">📖 ガイド一覧</a>
-  <a href="/app" class="nav-btn">🗺 スポット検索</a>
+ <h1>🪲 クワガタ採集スポット検索</h1>
+ <a href="/guide" class="nav-btn">📖 ガイド一覧</a>
+ <a href="/app" class="nav-btn">🗺 スポット検索</a>
 </header>
 
 <div class="hero-band">
-  <div class="pref-badge">{{ pref.region }}｜{{ pref.name }}</div>
-  <h2>{{ pref.name }}のクワガタ採集スポット</h2>
-  <p>{{ pref.hero_subtitle }}</p>
-  <p style="margin-top:8px;font-size:.85rem;color:#a5d6a7">{{ pref.hero_desc }}</p>
+ <div class="pref-badge">{{ pref.region }}｜{{ pref.name }}</div>
+ <h2>{{ pref.name }}のクワガタ採集スポット</h2>
+ <p>{{ pref.hero_subtitle }}</p>
+ <p style="margin-top:8px;font-size:.85rem;color:#a5d6a7">{{ pref.hero_desc }}</p>
 </div>
 
 <div class="container">
-  <nav class="breadcrumb" aria-label="パンくずリスト">
-    <a href="/">ホーム</a> &rsaquo; <a href="/guide">採集ガイド</a> &rsaquo; <a href="/guide#pref">都道府県別ガイド</a> &rsaquo; {{ pref.name }}
-  </nav>
+ <nav class="breadcrumb" aria-label="パンくずリスト">
+ <a href="/">ホーム</a> &rsaquo; <a href="/guide">採集ガイド</a> &rsaquo; <a href="/guide#pref">都道府県別ガイド</a> &rsaquo; {{ pref.name }}
+ </nav>
 
-  <!-- サマリー -->
-  <div class="summary-grid">
-    <div class="summary-card">
-      <div class="icon">📅</div>
-      <div class="label">ベストシーズン</div>
-      <div class="value">{{ pref.best_months }}</div>
-    </div>
-    <div class="summary-card">
-      <div class="icon">📍</div>
-      <div class="label">主要エリア</div>
-      <div class="value">{{ pref.main_area }}</div>
-    </div>
-    <div class="summary-card">
-      <div class="icon">🪲</div>
-      <div class="label">採集できる種</div>
-      <div class="value">{{ pref.species|length }}種以上</div>
-    </div>
-    <div class="summary-card">
-      <div class="icon">⛰</div>
-      <div class="label">難易度</div>
-      <div class="value">{{ pref.difficulty }}</div>
-    </div>
-  </div>
+ <!-- サマリー -->
+ <div class="summary-grid">
+ <div class="summary-card">
+ <div class="icon">📅</div>
+ <div class="label">ベストシーズン</div>
+ <div class="value">{{ pref.best_months }}</div>
+ </div>
+ <div class="summary-card">
+ <div class="icon">📍</div>
+ <div class="label">主要エリア</div>
+ <div class="value">{{ pref.main_area }}</div>
+ </div>
+ <div class="summary-card">
+ <div class="icon">🪲</div>
+ <div class="label">採集できる種</div>
+ <div class="value">{{ pref.species|length }}種以上</div>
+ </div>
+ <div class="summary-card">
+ <div class="icon">⛰</div>
+ <div class="label">難易度</div>
+ <div class="value">{{ pref.difficulty }}</div>
+ </div>
+ </div>
 
-  <!-- 採集できる種 -->
-  <h2 class="section" id="species">🪲 {{ pref.name }}で採集できる種</h2>
-  <table class="sp-table">
-    <thead>
-      <tr><th>種名</th><th>サイズ</th><th>時期</th><th>ポイント</th></tr>
-    </thead>
-    <tbody>
-      {% for sp in pref.species %}
-      <tr>
-        <td {% if sp.rare is defined and sp.rare %}class="rare"{% endif %}>
-          {{ sp.name }}{% if sp.rare is defined and sp.rare %} ★希少{% endif %}
-        </td>
-        <td>{{ sp.size }}</td>
-        <td>{{ sp.season }}</td>
-        <td>{{ sp.note }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+ <!-- 採集できる種 -->
+ <h2 class="section" id="species">🪲 {{ pref.name }}で採集できる種</h2>
+ <table class="sp-table">
+ <thead>
+ <tr><th>種名</th><th>サイズ</th><th>時期</th><th>ポイント</th></tr>
+ </thead>
+ <tbody>
+ {% for sp in pref.species %}
+ <tr>
+ <td {% if sp.rare is defined and sp.rare %}class="rare"{% endif %}>
+ {{ sp.name }}{% if sp.rare is defined and sp.rare %} ★希少{% endif %}
+ </td>
+ <td>{{ sp.size }}</td>
+ <td>{{ sp.season }}</td>
+ <td>{{ sp.note }}</td>
+ </tr>
+ {% endfor %}
+ </tbody>
+ </table>
 
-  <!-- 採集グッズ -->
-  <div class="amz-box">
-    <div class="amz-box-title">🛒 採集に必要なグッズ</div>
-    <div class="amz-links">
-      <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED+%E7%99%BB%E5%B1%B1&tag=beetlefinder-22" target="_blank" rel="noopener">🔦 ヘッドライト(Amazon)</a>
-      <a class="rkt-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+%E7%99%BB%E5%B1%B1%2F" target="_blank" rel="noopener">🔦 ヘッドライト(楽天)</a>
-      <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E6%8D%95%E8%99%AB%E7%B6%B2&tag=beetlefinder-22" target="_blank" rel="noopener">🕸 捕虫網(Amazon)</a>
-      <a class="rkt-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E6%8D%95%E8%99%AB%E7%B6%B2%2F" target="_blank" rel="noopener">🕸 捕虫網(楽天)</a>
-      <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E8%99%AB%E3%81%8B%E3%81%94+%E6%98%86%E8%99%AB&tag=beetlefinder-22" target="_blank" rel="noopener">🪣 虫かご(Amazon)</a>
-      <a class="yah-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=1225&pc_id=1925&pl_id=19142&url=https%3A%2F%2Fshopping.yahoo.co.jp%2Fsearch%3Fp%3D%E8%99%AB%E3%81%8B%E3%81%94%E6%98%86%E8%99%AB" target="_blank" rel="noopener">🪣 虫かご(Yahoo)</a>
-      <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E9%98%B2%E8%99%AB%E3%82%B9%E3%83%97%E3%83%AC%E3%83%BC+%E9%87%8E%E5%A4%96&tag=beetlefinder-22" target="_blank" rel="noopener">🦟 防虫スプレー(Amazon)</a>
-      <a class="rkt-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E9%98%B2%E8%99%AB%E3%82%B9%E3%83%97%E3%83%AC%E3%83%BC%E9%87%8E%E5%A4%96%2F" target="_blank" rel="noopener">🦟 防虫スプレー(楽天)</a>
-    </div>
-    <p class="amz-note">※Amazon：Amazonアソシエイト参加。楽天・Yahoo：もしもアフィリエイト経由。</p>
-  </div>
+ <!-- 採集グッズ -->
+ <div class="amz-box">
+ <div class="amz-box-title">🛒 採集に必要なグッズ</div>
+ <div class="amz-links">
+ <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED+%E7%99%BB%E5%B1%B1&tag=beetlefinder-22" target="_blank" rel="noopener">🔦 ヘッドライト(Amazon)</a>
+ <a class="rkt-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+%E7%99%BB%E5%B1%B1%2F" target="_blank" rel="noopener">🔦 ヘッドライト(楽天)</a>
+ <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E6%8D%95%E8%99%AB%E7%B6%B2&tag=beetlefinder-22" target="_blank" rel="noopener">🕸 捕虫網(Amazon)</a>
+ <a class="rkt-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E6%8D%95%E8%99%AB%E7%B6%B2%2F" target="_blank" rel="noopener">🕸 捕虫網(楽天)</a>
+ <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E8%99%AB%E3%81%8B%E3%81%94+%E6%98%86%E8%99%AB&tag=beetlefinder-22" target="_blank" rel="noopener">🪣 虫かご(Amazon)</a>
+ <a class="yah-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=1225&pc_id=1925&pl_id=19142&url=https%3A%2F%2Fshopping.yahoo.co.jp%2Fsearch%3Fp%3D%E8%99%AB%E3%81%8B%E3%81%94%E6%98%86%E8%99%AB" target="_blank" rel="noopener">🪣 虫かご(Yahoo)</a>
+ <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E9%98%B2%E8%99%AB%E3%82%B9%E3%83%97%E3%83%AC%E3%83%BC+%E9%87%8E%E5%A4%96&tag=beetlefinder-22" target="_blank" rel="noopener">🦟 防虫スプレー(Amazon)</a>
+ <a class="rkt-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E9%98%B2%E8%99%AB%E3%82%B9%E3%83%97%E3%83%AC%E3%83%BC%E9%87%8E%E5%A4%96%2F" target="_blank" rel="noopener">🦟 防虫スプレー(楽天)</a>
+ </div>
+ <p class="amz-note">※Amazon：Amazonアソシエイト参加。楽天・Yahoo：もしもアフィリエイト経由。</p>
+ </div>
 
-  <!-- エリア別ガイド -->
-  <h2 class="section" id="areas">📍 {{ pref.name }}の採集エリア</h2>
-  {% for area in pref.areas %}
-  <div class="area-card">
-    <h3>
-      {{ area.name }}
-      <span class="area-tag {{ area.tag_class }}">難易度 {{ area.tag }}</span>
-    </h3>
-    <p>{{ area.desc }}</p>
-    <ul class="spot-list-ul">
-      {% for spot in area.spots %}
-      <li>{{ spot }}</li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% endfor %}
+ <!-- エリア別ガイド -->
+ <h2 class="section" id="areas">{{ pref.name }}の採集エリア</h2>
+ {% for area in pref.areas %}
+ <div class="area-card">
+ <h3>{{ area.name }}
+ <span class="area-tag {{ area.tag_class }}">難易度 {{ area.tag }}</span></h3>
+ <p>{{ area.desc }}</p>
+ <ul class="spot-list-ul">
+ {% for spot in area.spots %}
+ <li>{{ spot }}</li>
+ {% endfor %}
+ </ul>
+ </div>
+ {% endfor %}
 
-  <!-- 採集のコツ -->
-  <h2 class="section" id="tips">💡 {{ pref.name }}採集のコツ</h2>
-  <div class="tip-box">
-    <div class="tip-title">🌟 現地で役立つアドバイス</div>
-    <ul>
-      {% for tip in pref.tips %}
-      <li>{{ tip }}</li>
-      {% endfor %}
-    </ul>
-  </div>
+ <!-- 採集のコツ -->
+ <h2 class="section" id="tips">{{ pref.name }}採集のコツ</h2>
+ <div class="tip-box">
+ <div class="tip-title">現地で役立つアドバイス</div>
+ <ul>
+ {% for tip in pref.tips %}
+ <li>{{ tip }}</li>
+ {% endfor %}
+ </ul>
+ </div>
 
-  <!-- CTA -->
-  <div class="cta-box">
-    <h2>📍 {{ pref.name_short }}の採集スポットを地図で確認</h2>
-    <p>出発地を入力するだけ。{{ pref.name_short }}周辺の実績スポットを距離順にランキング表示します。</p>
-    <a href="/app" class="cta-btn">🗺 スポット検索を使う（無料）</a>
-  </div>
+ <!-- CTA -->
+ <div class="cta-box">
+ <h2>{{ pref.name_short }}の採集スポットを地図で確認</h2>
+ <p>出発地を入力するだけ。{{ pref.name_short }}周辺の実績スポットを距離順にランキング表示します。</p>
+ <a href="/app" class="cta-btn">🗺 スポット検索を使う（無料）</a>
+ </div>
 
-  <!-- FAQ -->
-  <h2 class="section" id="faq">❓ よくある質問（{{ pref.name }}）</h2>
-  <div>
-    {% for faq in pref.faqs %}
-    <div class="faq-item">
-      <div class="faq-q">Q. {{ faq.q }}</div>
-      <div class="faq-a">{{ faq.a }}</div>
-    </div>
-    {% endfor %}
-  </div>
+ <!-- FAQ -->
+ <h2 class="section" id="faq">よくある質問（{{ pref.name }}）</h2>
+ <div>
+ {% for faq in pref.faqs %}
+ <div class="faq-item">
+ <div class="faq-q">Q. {{ faq.q }}</div>
+ <div class="faq-a">{{ faq.a }}</div>
+ </div>
+ {% endfor %}
+ </div>
 
-  <!-- 飼育グッズ -->
-  <div class="amz-box" style="margin-top:32px">
-    <div class="amz-box-title">🏠 採集後の飼育グッズ</div>
-    <div class="amz-links">
-      <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88&tag=beetlefinder-22" target="_blank" rel="noopener">🪲 飼育セット(Amazon)</a>
-      <a class="rkt-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88%2F" target="_blank" rel="noopener">🪲 飼育セット(楽天)</a>
-      <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E6%98%86%E8%99%AB%E3%82%BC%E3%83%AA%E3%83%BC&tag=beetlefinder-22" target="_blank" rel="noopener">🌿 昆虫ゼリー(Amazon)</a>
-      <a class="yah-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=1225&pc_id=1925&pl_id=19142&url=https%3A%2F%2Fshopping.yahoo.co.jp%2Fsearch%3Fp%3D%E6%98%86%E8%99%AB%E3%82%BC%E3%83%AA%E3%83%BC" target="_blank" rel="noopener">🌿 昆虫ゼリー(Yahoo)</a>
-      <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E3%83%9E%E3%83%83%E3%83%88&tag=beetlefinder-22" target="_blank" rel="noopener">🌲 産卵マット(Amazon)</a>
-      <a class="rkt-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF%E7%94%A3%E5%8D%B5%E3%83%9E%E3%83%83%E3%83%88%2F" target="_blank" rel="noopener">🌲 産卵マット(楽天)</a>
-    </div>
-    <p class="amz-note">※Amazon：Amazonアソシエイト参加。楽天・Yahoo：もしもアフィリエイト経由。</p>
-  </div>
+ <!-- 飼育グッズ -->
+ <div class="amz-box" style="margin-top:32px">
+ <div class="amz-box-title">🏠 採集後の飼育グッズ</div>
+ <div class="amz-links">
+ <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88&tag=beetlefinder-22" target="_blank" rel="noopener">🪲 飼育セット(Amazon)</a>
+ <a class="rkt-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF%E9%A3%BC%E8%82%B2%E3%82%BB%E3%83%83%E3%83%88%2F" target="_blank" rel="noopener">🪲 飼育セット(楽天)</a>
+ <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E6%98%86%E8%99%AB%E3%82%BC%E3%83%AA%E3%83%BC&tag=beetlefinder-22" target="_blank" rel="noopener">🌿 昆虫ゼリー(Amazon)</a>
+ <a class="yah-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=1225&pc_id=1925&pl_id=19142&url=https%3A%2F%2Fshopping.yahoo.co.jp%2Fsearch%3Fp%3D%E6%98%86%E8%99%AB%E3%82%BC%E3%83%AA%E3%83%BC" target="_blank" rel="noopener">🌿 昆虫ゼリー(Yahoo)</a>
+ <a class="amz-btn" href="https://www.amazon.co.jp/s?k=%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF+%E3%83%9E%E3%83%83%E3%83%88&tag=beetlefinder-22" target="_blank" rel="noopener">🌲 産卵マット(Amazon)</a>
+ <a class="rkt-btn" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF%E7%94%A3%E5%8D%B5%E3%83%9E%E3%83%83%E3%83%88%2F" target="_blank" rel="noopener">🌲 産卵マット(楽天)</a>
+ </div>
+ <p class="amz-note">※Amazon：Amazonアソシエイト参加。楽天・Yahoo：もしもアフィリエイト経由。</p>
+ </div>
 
-  <!-- 同地域の都道府県 -->
-  {% if same_region %}
-  <h2 class="section" id="region">🗾 {{ pref.region }}の採集ガイド</h2>
-  <div class="related-grid">
-    {% for rel in same_region %}
-    <div class="related-card">
-      <a href="/guide/pref/{{ rel.slug }}">📍 {{ rel.name }}の採集ガイド</a>
-      <p>{{ rel.region }}｜ベストシーズン {{ rel.best_months }}</p>
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
+ <!-- 同地域の都道府県 -->
+ {% if same_region %}
+ <h2 class="section" id="region">{{ pref.region }}の採集ガイド</h2>
+ <div class="related-grid">
+ {% for rel in same_region %}
+ <div class="related-card">
+ <a href="/guide/pref/{{ rel.slug }}">📍 {{ rel.name }}の採集ガイド</a>
+ <p>{{ rel.region }}｜ベストシーズン {{ rel.best_months }}</p>
+ </div>
+ {% endfor %}
+ </div>
+ {% endif %}
 
-  <!-- 関連都道府県 -->
-  <h2 class="section" id="related">🗾 近隣の採集ガイド</h2>
-  <div class="related-grid">
-    {% for rel in pref.related %}
-    <div class="related-card">
-      <a href="/guide/pref/{{ rel.slug }}">📍 {{ rel.name }}の採集ガイド</a>
-      <p>{{ rel.desc }}</p>
-    </div>
-    {% endfor %}
-    <div class="related-card">
-      <a href="/guide">📖 全ガイド一覧へ</a>
-      <p>採集方法・道具・月齢など10本のガイド</p>
-    </div>
-  </div>
+ <!-- 関連都道府県 -->
+ <h2 class="section" id="related">近隣の採集ガイド</h2>
+ <div class="related-grid">
+ {% for rel in pref.related %}
+ <div class="related-card">
+ <a href="/guide/pref/{{ rel.slug }}">📍 {{ rel.name }}の採集ガイド</a>
+ <p>{{ rel.desc }}</p>
+ </div>
+ {% endfor %}
+ <div class="related-card">
+ <a href="/guide">📖 全ガイド一覧へ</a>
+ <p>採集方法・道具・月齢など10本のガイド</p>
+ </div>
+ </div>
 </div>
 
 
 <div class="share-box">
-  <span class="share-label">📣 この記事をシェア</span>
-  <div class="share-links">
-    <a href="https://twitter.com/intent/tweet?text=%7B%7B%20pref.title%20%7D%7D%20https%3A//beetle-finder.onrender.com/guide/pref/%7B%7B%20pref.slug%20%7D%7D%20%23%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF%E6%8E%A1%E9%9B%86%20%23beetle_finder" target="_blank" rel="noopener" class="share-x">𝕏 Xでシェア</a>
-    <a href="https://b.hatena.ne.jp/add?mode=confirm&url=https%3A//beetle-finder.onrender.com/guide/pref/%7B%7B%20pref.slug%20%7D%7D&title=%7B%7B%20pref.title%20%7D%7D" target="_blank" rel="noopener" class="share-hb">🔖 はてブ</a>
-  </div>
+ <span class="share-label">📣 この記事をシェア</span>
+ <div class="share-links">
+ <a href="https://twitter.com/intent/tweet?text=%7B%7B%20pref.title%20%7D%7D%20https%3A//beetle-finder.onrender.com/guide/pref/%7B%7B%20pref.slug%20%7D%7D%20%23%E3%82%AF%E3%83%AF%E3%82%AC%E3%82%BF%E6%8E%A1%E9%9B%86%20%23beetle_finder" target="_blank" rel="noopener" class="share-x">𝕏 Xでシェア</a>
+ <a href="https://b.hatena.ne.jp/add?mode=confirm&url=https%3A//beetle-finder.onrender.com/guide/pref/%7B%7B%20pref.slug%20%7D%7D&title=%7B%7B%20pref.title%20%7D%7D" target="_blank" rel="noopener" class="share-hb">🔖 はてブ</a>
+ </div>
 </div>
 <footer>
-  <nav class="footer-nav">
-    <div class="footer-nav-group">
-      <span class="footer-nav-label">🪲 種別ガイド</span>
-      <a href="/guide/kabuto">カブトムシ</a>
-      <a href="/guide/miyama">ミヤマクワガタ</a>
-      <a href="/guide/nokogiri">ノコギリクワガタ</a>
-      <a href="/guide/hirata">ヒラタクワガタ</a>
-      <a href="/guide/kokuwagata">コクワガタ</a>
-      <a href="/guide/ookuwa">オオクワガタ</a>
-      <a href="/guide/akaashi">アカアシクワガタ</a>
-      <a href="/guide/suji">スジクワガタ</a>
-    </div>
-    <div class="footer-nav-group">
-      <span class="footer-nav-label">📅 月別ガイド</span>
-      <a href="/guide/may">5月</a>
-      <a href="/guide/june">6月</a>
-      <a href="/guide/july">7月</a>
-      <a href="/guide/august">8月</a>
-      <a href="/guide/september">9月</a>
-      <a href="/guide/october">10月</a>
-    </div>
-    <div class="footer-nav-group">
-      <span class="footer-nav-label">📖 採集テクニック</span>
-      <a href="/guide/beginners">初心者ガイド</a>
-      <a href="/guide/night">夜間採集</a>
-      <a href="/guide/rain">雨上がり採集</a>
-      <a href="/guide/morning">早朝採集</a>
-      <a href="/guide/trap">トラップ採集</a>
-      <a href="/guide/light">ライト採集</a>
-      <a href="/guide/tools">採集道具</a>
-      <a href="/guide/tree">採集木図鑑</a>
-    </div>
-    <div class="footer-nav-group">
-      <span class="footer-nav-label">🗾 都道府県ガイド</span>
-      <a href="/guide/pref/tokyo">東京都</a>
-      <a href="/guide/pref/kanagawa">神奈川県</a>
-      <a href="/guide/pref/saitama">埼玉県</a>
-      <a href="/guide/pref/chiba">千葉県</a>
-      <a href="/guide/pref/nagano">長野県</a>
-      <a href="/guide/pref/yamanashi">山梨県</a>
-      <a href="/guide/pref/hokkaido">北海道</a>
-      <a href="/guide/pref">全都道府県一覧 →</a>
-    </div>
-  </nav>
-  <div class="footer-bottom">
-    <p style="margin:0 0 6px;font-size:.76rem;color:#5a8a5a">
-      ✍️ 監修・執筆：<a href="/about" style="color:#81c784">森山春樹</a>（クワガタ採集歴20年以上 ／ 全国47都道府県フィールド経験）
-    </p>
-    <a href="/">クワガタ採集スポット検索 beetle-finder</a> ｜
-    <a href="/app">🗺 スポット検索</a> ｜
-    <a href="/guide">📖 ガイド一覧</a> ｜
-    <a href="/about">サービスについて</a> ｜
-    <a href="/privacy">プライバシーポリシー</a> ｜
-    <a href="/terms">利用規約</a>
-  </div>
+ <nav class="footer-nav">
+ <div class="footer-nav-group">
+ <span class="footer-nav-label">🪲 種別ガイド</span>
+ <a href="/guide/kabuto">カブトムシ</a>
+ <a href="/guide/miyama">ミヤマクワガタ</a>
+ <a href="/guide/nokogiri">ノコギリクワガタ</a>
+ <a href="/guide/hirata">ヒラタクワガタ</a>
+ <a href="/guide/kokuwagata">コクワガタ</a>
+ <a href="/guide/ookuwa">オオクワガタ</a>
+ <a href="/guide/akaashi">アカアシクワガタ</a>
+ <a href="/guide/suji">スジクワガタ</a>
+ </div>
+ <div class="footer-nav-group">
+ <span class="footer-nav-label">月別ガイド</span>
+ <a href="/guide/may">5月</a>
+ <a href="/guide/june">6月</a>
+ <a href="/guide/july">7月</a>
+ <a href="/guide/august">8月</a>
+ <a href="/guide/september">9月</a>
+ <a href="/guide/october">10月</a>
+ </div>
+ <div class="footer-nav-group">
+ <span class="footer-nav-label">採集テクニック</span>
+ <a href="/guide/beginners">初心者ガイド</a>
+ <a href="/guide/night">夜間採集</a>
+ <a href="/guide/rain">雨上がり採集</a>
+ <a href="/guide/morning">早朝採集</a>
+ <a href="/guide/trap">トラップ採集</a>
+ <a href="/guide/light">ライト採集</a>
+ <a href="/guide/tools">採集道具</a>
+ <a href="/guide/tree">採集木図鑑</a>
+ </div>
+ <div class="footer-nav-group">
+ <span class="footer-nav-label">都道府県ガイド</span>
+ <a href="/guide/pref/tokyo">東京都</a>
+ <a href="/guide/pref/kanagawa">神奈川県</a>
+ <a href="/guide/pref/saitama">埼玉県</a>
+ <a href="/guide/pref/chiba">千葉県</a>
+ <a href="/guide/pref/nagano">長野県</a>
+ <a href="/guide/pref/yamanashi">山梨県</a>
+ <a href="/guide/pref/hokkaido">北海道</a>
+ <a href="/guide/pref">全都道府県一覧 →</a>
+ </div>
+ </nav>
+ <div class="footer-bottom">
+ <p style="margin:0 0 6px;font-size:.76rem;color:#5a8a5a">
+ ✍️ 監修・執筆：<a href="/about" style="color:#81c784">森山春樹</a>（クワガタ採集歴20年以上 ／ 全国47都道府県フィールド経験）
+ </p>
+ <a href="/">クワガタ採集スポット検索 beetle-finder</a> ｜
+ <a href="/app">🗺 スポット検索</a> ｜
+ <a href="/guide">📖 ガイド一覧</a> ｜
+ <a href="/about">サービスについて</a> ｜
+ <a href="/privacy">プライバシーポリシー</a> ｜
+ <a href="/terms">利用規約</a>
+ </div>
 </footer>
 
 <script>
 (function(){
-  var m = new Date().getMonth()+1;
-  var map = {5:['6月の採集準備を今から！コクワガタが動き出す季節','/guide/june','6月の採集ガイドを読む'],
-             6:['クワガタシーズン開幕！6月の採集ガイド','/guide/june','今すぐ読む →'],
-             7:['🔥 採集最盛期！7月は全種が揃うベストシーズン','/guide/july','7月ガイドを読む'],
-             8:['カブトムシのピーク！8月の採集攻略法','/guide/august','8月ガイドを読む'],
-             9:['9月もまだ間に合う！秋の採集ガイド','/guide/september','9月ガイドを読む'],
-             10:['10月の採集はコクワが主役。シーズン終盤戦','/guide/october','10月ガイドを読む']};
-  if(!map[m]) return;
-  var d=document.createElement('div');
-  d.innerHTML='<div style="background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.85rem;border-bottom:3px solid #4caf50"><span>📅 '+map[m][0]+'</span><a href="'+map[m][1]+'" style="background:#fff;color:#1b5e20;font-weight:700;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;font-size:.8rem">'+map[m][2]+'</a></div>';
-  var header=document.getElementById('site-header');
-  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
-  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
+ var m = new Date().getMonth()+1;
+ var map = {5:['6月の採集準備を今から！コクワガタが動き出す季節','/guide/june','6月の採集ガイドを読む'],
+ 6:['クワガタシーズン開幕！6月の採集ガイド','/guide/june','今すぐ読む →'],
+ 7:['🔥 採集最盛期！7月は全種が揃うベストシーズン','/guide/july','7月ガイドを読む'],
+ 8:['カブトムシのピーク！8月の採集攻略法','/guide/august','8月ガイドを読む'],
+ 9:['9月もまだ間に合う！秋の採集ガイド','/guide/september','9月ガイドを読む'],
+ 10:['10月の採集はコクワが主役。シーズン終盤戦','/guide/october','10月ガイドを読む']};
+ if(!map[m]) return;
+ var d=document.createElement('div');
+ d.innerHTML='<div style="background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.85rem;border-bottom:3px solid #4caf50"><span>📅 '+map[m][0]+'</span><a href="'+map[m][1]+'" style="background:#fff;color:#1b5e20;font-weight:700;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;font-size:.8rem">'+map[m][2]+'</a></div>';
+ var header=document.getElementById('site-header');
+ if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
+ else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
 })();
 </script>
 </body>
