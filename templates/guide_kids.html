@@ -72,7 +72,6 @@
     .amz-btn:hover{background:#e68900 !important;color:#fff !important}
     .amz-note{font-size:.7rem;color:#999;margin:0}
     .cta-btn:hover{background:#388e3c;text-decoration:none;color:#fff}
-    footer{background:#1b2d1b;color:#81c784;text-align:center;padding:16px;font-size:.78rem;margin-top:40px}
   
     /* ── おすすめ商品ブロック ─────────────────────── */
     .rec-box{background:#fffbf0;border:2px solid #f0c040;border-radius:10px;padding:14px 16px;margin:22px 0}
@@ -103,6 +102,16 @@
     .yah-btn{display:inline-block;background:#ff0033;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
     .yah-btn:hover{background:#cc0029 !important;color:#fff !important}
     .amz-note{font-size:.7rem;color:#999;margin:0}
+  
+  /* ── フッターナビ ─────────────────────────────── */
+  footer{background:#1b2d1b;color:#81c784;padding:28px 16px 16px;font-size:.78rem;margin-top:40px}
+  .footer-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;max-width:800px;margin:0 auto 20px;padding:0 0 20px;border-bottom:1px solid #2e4e2e}
+  .footer-nav-group{display:flex;flex-direction:column;gap:6px}
+  .footer-nav-label{color:#a5d6a7;font-weight:700;font-size:.8rem;margin-bottom:2px}
+  .footer-nav a{color:#81c784;text-decoration:none;font-size:.78rem;line-height:1.6}
+  .footer-nav a:hover{color:#fff;text-decoration:underline}
+  .footer-bottom{text-align:center;color:#4a7a4a}
+  .footer-bottom a{color:#81c784}
   </style>
 <script type="application/ld+json">
 {
@@ -198,7 +207,7 @@
 </head>
 <body>
 <header id="site-header">
-  <h1><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> クワガタ採集スポット検索</h1>
+  <h1><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> クワガタ<a href="/app" style="color:#388e3c;font-weight:700;text-decoration:underline">採集スポット</a>検索</h1>
   <a href="/app" class="home-btn">🗺 スポット検索</a>
   <a href="/guide" class="home-btn">📖 ガイド一覧</a>
 </header>
@@ -220,7 +229,7 @@
     </div>
     <div class="age-card">
       <div class="age">6〜9歳</div>
-      <p>里山の樹液採集に挑戦。ヘッドライトを自分で持って歩ける。カブトムシから始めよう</p>
+      <p>里山の樹液採集に挑戦。ヘッドライトを自分で持って歩ける。<a href="/guide/kabuto" style="color:#388e3c;font-weight:700;text-decoration:underline">カブトムシ</a>から始めよう</p>
     </div>
     <div class="age-card">
       <div class="age">10歳〜</div>
@@ -249,7 +258,7 @@
     <div class="check-title">✅ 子供と一緒に採集するための必須アイテム</div>
     <ul>
       <li>🔦 <strong>ヘッドライト</strong>（子供用も1人1個用意。電池残量を確認）</li>
-      <li>🧺 <strong>虫かご・飼育ケース</strong>（蓋がしっかり閉まるものを選ぶ）</li>
+      <li>🧺 <strong>虫かご・<a href="/guide/breeding" style="color:#388e3c;font-weight:700;text-decoration:underline">飼育</a>ケース</strong>（蓋がしっかり閉まるものを選ぶ）</li>
       <li>👕 <strong>長袖・長ズボン・長靴下</strong>（虫刺され・スズメバチ対策）</li>
       <li>👟 <strong>滑りにくい靴</strong>（山道・夜間の転倒防止）</li>
       <li>🦟 <strong>虫除けスプレー</strong>（子供用のものを選ぶ）</li>
@@ -281,10 +290,10 @@
     <li><strong>携帯電話が通じる場所</strong>：緊急時に連絡できることが重要</li>
   </ul>
 
-  <h3 class="sub">初心者ファミリーにおすすめの採集スタイル</h3>
+  <h3 class="sub"><a href="/guide/beginners" style="color:#388e3c;font-weight:700;text-decoration:underline">初心者</a>ファミリーにおすすめの採集スタイル</h3>
   <ul>
     <li><strong>街灯採集</strong>：最安全。道路沿いの街灯を車で回るだけでもOK</li>
-    <li><strong>公園・緑地のクヌギ林</strong>：管理された場所で安心</li>
+    <li><strong>公園・緑地の<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">クヌギ</a>林</strong>：管理された場所で安心</li>
     <li><strong>昆虫採集できる森林公園</strong>：施設が整っており子供連れに最適</li>
   </ul>
 
@@ -319,7 +328,7 @@
   <h3 class="sub">採集を通じて学べること</h3>
   <ul>
     <li><strong>生態系の仕組み</strong>：クワガタと樹液・スズメバチの関係、食物連鎖を実感できる</li>
-    <li><strong>植物の知識</strong>：クヌギ・コナラ・ミズナラの見分け方、木の役割</li>
+    <li><strong>植物の知識</strong>：クヌギ・<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">コナラ</a>・ミズナラの見分け方、木の役割</li>
     <li><strong>季節・天文の知識</strong>：月齢・気温・湿度と生き物の活動の関係</li>
     <li><strong>責任感</strong>：採集した生き物の命を大切に飼育する経験</li>
     <li><strong>科学的観察力</strong>：樹液に来る虫を観察・記録する習慣</li>
@@ -330,7 +339,7 @@
     <p>子供と一緒に「採集日記」をつけると、日付・場所・採集した虫の種類・天気・月齢などを記録する習慣が身に付きます。翌年の参考にもなり、科学的思考力を育てる良い習慣になります。写真を撮って貼り付けるだけでも立派な観察記録になります。</p>
   </div>
 
-  <h2 class="section" id="after">⑦ 採集後の楽しみ方（家族で飼育）</h2>
+  <h2 class="section" id="after">⑦ <a href="/guide/aftercare" style="color:#388e3c;font-weight:700;text-decoration:underline">採集後</a>の楽しみ方（家族で飼育）</h2>
   <p>採集後も家族で楽しむためのヒントをご紹介します。</p>
 
   <h3 class="sub">飼育を通じた体験</h3>
@@ -429,14 +438,77 @@
   </div>
 </div>
 <footer>
-  © 2026 クワガタ採集スポット検索 |
-  <a href="/">トップ</a> |
-  <a href="/app">スポット検索</a> |
-  <a href="/guide">採集ガイド</a> |
-  <a href="/about">サービスについて</a> |
-  <a href="/privacy">プライバシーポリシー</a> |
-  <a href="/terms">利用規約</a>
+  <nav class="footer-nav">
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🪲 種別ガイド</span>
+      <a href="/guide/kabuto">カブトムシ</a>
+      <a href="/guide/miyama">ミヤマクワガタ</a>
+      <a href="/guide/nokogiri">ノコギリクワガタ</a>
+      <a href="/guide/hirata">ヒラタクワガタ</a>
+      <a href="/guide/kokuwagata">コクワガタ</a>
+      <a href="/guide/ookuwa">オオクワガタ</a>
+      <a href="/guide/akaashi">アカアシクワガタ</a>
+      <a href="/guide/suji">スジクワガタ</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📅 月別ガイド</span>
+      <a href="/guide/may">5月</a>
+      <a href="/guide/june">6月</a>
+      <a href="/guide/july">7月</a>
+      <a href="/guide/august">8月</a>
+      <a href="/guide/september">9月</a>
+      <a href="/guide/october">10月</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📖 採集テクニック</span>
+      <a href="/guide/beginners">初心者ガイド</a>
+      <a href="/guide/night">夜間採集</a>
+      <a href="/guide/rain">雨上がり採集</a>
+      <a href="/guide/morning">早朝採集</a>
+      <a href="/guide/trap">トラップ採集</a>
+      <a href="/guide/light">ライト採集</a>
+      <a href="/guide/tools">採集道具</a>
+      <a href="/guide/tree">採集木図鑑</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🗾 都道府県ガイド</span>
+      <a href="/guide/pref/tokyo">東京都</a>
+      <a href="/guide/pref/kanagawa">神奈川県</a>
+      <a href="/guide/pref/saitama">埼玉県</a>
+      <a href="/guide/pref/chiba">千葉県</a>
+      <a href="/guide/pref/nagano">長野県</a>
+      <a href="/guide/pref/yamanashi">山梨県</a>
+      <a href="/guide/pref/hokkaido">北海道</a>
+      <a href="/guide/pref">全都道府県一覧 →</a>
+    </div>
+  </nav>
+  <div class="footer-bottom">
+    <a href="/">クワガタ採集スポット検索 beetle-finder</a> ｜
+    <a href="/app">🗺 スポット検索</a> ｜
+    <a href="/guide">📖 ガイド一覧</a> ｜
+    <a href="/about">サービスについて</a> ｜
+    <a href="/privacy">プライバシーポリシー</a> ｜
+    <a href="/terms">利用規約</a>
+  </div>
 </footer>
 
+
+<script>
+(function(){
+  var m = new Date().getMonth()+1;
+  var map = {5:['6月の採集準備を今から！コクワガタが動き出す季節','/guide/june','6月の採集ガイドを読む'],
+             6:['クワガタシーズン開幕！6月の採集ガイド','/guide/june','今すぐ読む →'],
+             7:['🔥 採集最盛期！7月は全種が揃うベストシーズン','/guide/july','7月ガイドを読む'],
+             8:['カブトムシのピーク！8月の採集攻略法','/guide/august','8月ガイドを読む'],
+             9:['9月もまだ間に合う！秋の採集ガイド','/guide/september','9月ガイドを読む'],
+             10:['10月の採集はコクワが主役。シーズン終盤戦','/guide/october','10月ガイドを読む']};
+  if(!map[m]) return;
+  var d=document.createElement('div');
+  d.innerHTML='<div style="background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.85rem;border-bottom:3px solid #4caf50"><span>📅 '+map[m][0]+'</span><a href="'+map[m][1]+'" style="background:#fff;color:#1b5e20;font-weight:700;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;font-size:.8rem">'+map[m][2]+'</a></div>';
+  var header=document.getElementById('site-header');
+  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
+  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
+})();
+</script>
 </body>
 </html>

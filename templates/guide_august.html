@@ -68,7 +68,6 @@
     .prod-card .prod-btn{display:block;background:#ff9900;color:#fff !important;font-size:.73rem;font-weight:700;padding:5px 4px;border-radius:5px;text-decoration:none !important}
     .prod-card .prod-btn:hover{background:#e68900 !important}
     .amz-note2{font-size:.68rem;color:#aaa;margin-top:4px}
-    footer{background:#1b2d1b;color:#81c784;text-align:center;padding:16px;font-size:.78rem;margin-top:40px}
   
     /* ── おすすめ商品ブロック ─────────────────────── */
     .rec-box{background:#fffbf0;border:2px solid #f0c040;border-radius:10px;padding:14px 16px;margin:22px 0}
@@ -99,6 +98,16 @@
     .yah-btn{display:inline-block;background:#ff0033;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
     .yah-btn:hover{background:#cc0029 !important;color:#fff !important}
     .amz-note{font-size:.7rem;color:#999;margin:0}
+  
+  /* ── フッターナビ ─────────────────────────────── */
+  footer{background:#1b2d1b;color:#81c784;padding:28px 16px 16px;font-size:.78rem;margin-top:40px}
+  .footer-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;max-width:800px;margin:0 auto 20px;padding:0 0 20px;border-bottom:1px solid #2e4e2e}
+  .footer-nav-group{display:flex;flex-direction:column;gap:6px}
+  .footer-nav-label{color:#a5d6a7;font-weight:700;font-size:.8rem;margin-bottom:2px}
+  .footer-nav a{color:#81c784;text-decoration:none;font-size:.78rem;line-height:1.6}
+  .footer-nav a:hover{color:#fff;text-decoration:underline}
+  .footer-bottom{text-align:center;color:#4a7a4a}
+  .footer-bottom a{color:#81c784}
   </style>
 <script type="application/ld+json">
 {
@@ -194,7 +203,7 @@
 </head>
 <body>
 <header id="site-header">
-  <h1>🪲 クワガタ採集スポット検索</h1>
+  <h1>🪲 クワガタ<a href="/app" style="color:#388e3c;font-weight:700;text-decoration:underline">採集スポット</a>検索</h1>
   <a href="/app" class="home-btn">🗺 スポット検索</a>
   <a href="/guide" class="home-btn">📖 ガイド一覧</a>
 </header>
@@ -260,23 +269,23 @@
   <h2 class="section">① 8月の種別状況</h2>
 
   <div class="month-card">
-    <h3>🔴 ヒラタクワガタ（8月が最盛期）</h3>
-    <p>8月はヒラタクワガタの最盛期。河川沿いのヤナギ・コナラ・クヌギに集まります。高温を好む種のため、真夏の熱帯夜でも活発に活動します。</p>
+    <h3>🔴 <a href="/guide/hirata" style="color:#388e3c;font-weight:700;text-decoration:underline">ヒラタクワガタ</a>（8月が最盛期）</h3>
+    <p>8月はヒラタクワガタの最盛期。河川沿いのヤナギ・<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">コナラ</a>・<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">クヌギ</a>に集まります。高温を好む種のため、真夏の熱帯夜でも活発に活動します。</p>
   </div>
 
   <div class="month-card">
-    <h3>🟡 ノコギリクワガタ（8月も継続）</h3>
-    <p>8月も引き続き採集できます。7月に比べ個体数は少し減りますが、まだまだ採集のチャンスあり。特に8月前半は狙い目です。</p>
+    <h3>🟡 <a href="/guide/nokogiri" style="color:#388e3c;font-weight:700;text-decoration:underline">ノコギリクワガタ</a>（8月も継続）</h3>
+    <p>8月も引き続き採集できます。<a href="/guide/july" style="color:#388e3c;font-weight:700;text-decoration:underline">7月</a>に比べ個体数は少し減りますが、まだまだ採集のチャンスあり。特に8月前半は狙い目です。</p>
   </div>
 
   <div class="month-card down">
-    <h3>📉 ミヤマクワガタ（急減期）</h3>
+    <h3>📉 <a href="/guide/miyama" style="color:#388e3c;font-weight:700;text-decoration:underline">ミヤマクワガタ</a>（急減期）</h3>
     <p>8月上旬まではまだ採れますが、中旬以降は急激に減少します。平地はほぼ終了。標高1000m以上に限定すれば8月下旬も可能性はあります。</p>
   </div>
 
   <div class="month-card">
-    <h3>🟠 カブトムシ（8月前半が最盛期）</h3>
-    <p>8月上旬〜中旬がカブトムシの数のピーク。8月下旬になると老齢個体が増え、9月上旬にはほぼ終了します。</p>
+    <h3>🟠 <a href="/guide/kabuto" style="color:#388e3c;font-weight:700;text-decoration:underline">カブトムシ</a>（8月前半が最盛期）</h3>
+    <p>8月上旬〜中旬がカブトムシの数のピーク。8月下旬になると老齢個体が増え、<a href="/guide/september" style="color:#388e3c;font-weight:700;text-decoration:underline">9月</a>上旬にはほぼ終了します。</p>
   </div>
 
   <h2 class="section">② 熱帯夜の攻略法</h2>
@@ -305,7 +314,7 @@
   <ul>
     <li>標高1000m以上のエリアに限定</li>
     <li>8月上旬の新月前後を逃さない</li>
-    <li>峠の街灯・ライトトラップで飛来個体を狙う</li>
+    <li>峠の街灯・ライト<a href="/guide/trap" style="color:#388e3c;font-weight:700;text-decoration:underline">トラップ</a>で飛来個体を狙う</li>
   </ul>
 
   <div class="warn-box">
@@ -319,10 +328,10 @@
   <p>お盆時期（8月13〜16日頃）はヒラタ・ノコギリ・カブトムシのシーズン中なので採集できます。ただしミヤマクワガタはこの時期から急減します。お盆の帰省先でクワガタ採集を楽しむなら、地方の里山の雑木林を探してみましょう。</p>
 
   <h3 class="sub">Q. 8月末でも採集できますか？</h3>
-  <p>コクワガタは8月末〜9月でも採集可能です。ヒラタクワガタも9月上旬まで見られます。ただし全体的に個体数は7月に比べ大幅に減ります。9月以降の採集はコクワガタをメインターゲットにするのが現実的です。</p>
+  <p><a href="/guide/kokuwagata" style="color:#388e3c;font-weight:700;text-decoration:underline">コクワガタ</a>は8月末〜9月でも採集可能です。ヒラタクワガタも9月上旬まで見られます。ただし全体的に個体数は7月に比べ大幅に減ります。9月以降の採集はコクワガタをメインターゲットにするのが現実的です。</p>
 
   <h3 class="sub">Q. 採集したクワガタの越冬はどうすれば？</h3>
-  <p>コクワガタとヒラタクワガタは越冬します。飼育ケースに腐葉土やマットを厚めに入れ、10℃前後の涼しい場所（玄関・物置など）で管理すると翌年まで生きることがあります。ノコギリクワガタは基本的に越冬せず、成虫は秋に死んでしまいますが幼虫は翌年に成虫になります。</p>
+  <p>コクワガタとヒラタクワガタは越冬します。<a href="/guide/breeding" style="color:#388e3c;font-weight:700;text-decoration:underline">飼育</a>ケースに腐葉土やマットを厚めに入れ、10℃前後の涼しい場所（玄関・物置など）で管理すると翌年まで生きることがあります。ノコギリクワガタは基本的に越冬せず、成虫は秋に死んでしまいますが幼虫は翌年に成虫になります。</p>
 
   <h2 class="section">他の月のガイドも読む</h2>
   <div class="guide-links">
@@ -396,14 +405,77 @@
   </div>
 </div>
 <footer>
-  © 2026 クワガタ採集スポット検索 |
-  <a href="/">トップ</a> |
-  <a href="/app">スポット検索</a> |
-  <a href="/guide">採集ガイド</a> |
-  <a href="/about">サービスについて</a> |
-  <a href="/privacy">プライバシーポリシー</a> |
-  <a href="/terms">利用規約</a>
+  <nav class="footer-nav">
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🪲 種別ガイド</span>
+      <a href="/guide/kabuto">カブトムシ</a>
+      <a href="/guide/miyama">ミヤマクワガタ</a>
+      <a href="/guide/nokogiri">ノコギリクワガタ</a>
+      <a href="/guide/hirata">ヒラタクワガタ</a>
+      <a href="/guide/kokuwagata">コクワガタ</a>
+      <a href="/guide/ookuwa">オオクワガタ</a>
+      <a href="/guide/akaashi">アカアシクワガタ</a>
+      <a href="/guide/suji">スジクワガタ</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📅 月別ガイド</span>
+      <a href="/guide/may">5月</a>
+      <a href="/guide/june">6月</a>
+      <a href="/guide/july">7月</a>
+      <a href="/guide/august">8月</a>
+      <a href="/guide/september">9月</a>
+      <a href="/guide/october">10月</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📖 採集テクニック</span>
+      <a href="/guide/beginners">初心者ガイド</a>
+      <a href="/guide/night">夜間採集</a>
+      <a href="/guide/rain">雨上がり採集</a>
+      <a href="/guide/morning">早朝採集</a>
+      <a href="/guide/trap">トラップ採集</a>
+      <a href="/guide/light">ライト採集</a>
+      <a href="/guide/tools">採集道具</a>
+      <a href="/guide/tree">採集木図鑑</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🗾 都道府県ガイド</span>
+      <a href="/guide/pref/tokyo">東京都</a>
+      <a href="/guide/pref/kanagawa">神奈川県</a>
+      <a href="/guide/pref/saitama">埼玉県</a>
+      <a href="/guide/pref/chiba">千葉県</a>
+      <a href="/guide/pref/nagano">長野県</a>
+      <a href="/guide/pref/yamanashi">山梨県</a>
+      <a href="/guide/pref/hokkaido">北海道</a>
+      <a href="/guide/pref">全都道府県一覧 →</a>
+    </div>
+  </nav>
+  <div class="footer-bottom">
+    <a href="/">クワガタ採集スポット検索 beetle-finder</a> ｜
+    <a href="/app">🗺 スポット検索</a> ｜
+    <a href="/guide">📖 ガイド一覧</a> ｜
+    <a href="/about">サービスについて</a> ｜
+    <a href="/privacy">プライバシーポリシー</a> ｜
+    <a href="/terms">利用規約</a>
+  </div>
 </footer>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+
+<script>
+(function(){
+  var m = new Date().getMonth()+1;
+  var map = {5:['6月の採集準備を今から！コクワガタが動き出す季節','/guide/june','6月の採集ガイドを読む'],
+             6:['クワガタシーズン開幕！6月の採集ガイド','/guide/june','今すぐ読む →'],
+             7:['🔥 採集最盛期！7月は全種が揃うベストシーズン','/guide/july','7月ガイドを読む'],
+             8:['カブトムシのピーク！8月の採集攻略法','/guide/august','8月ガイドを読む'],
+             9:['9月もまだ間に合う！秋の採集ガイド','/guide/september','9月ガイドを読む'],
+             10:['10月の採集はコクワが主役。シーズン終盤戦','/guide/october','10月ガイドを読む']};
+  if(!map[m]) return;
+  var d=document.createElement('div');
+  d.innerHTML='<div style="background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.85rem;border-bottom:3px solid #4caf50"><span>📅 '+map[m][0]+'</span><a href="'+map[m][1]+'" style="background:#fff;color:#1b5e20;font-weight:700;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;font-size:.8rem">'+map[m][2]+'</a></div>';
+  var header=document.getElementById('site-header');
+  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
+  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
+})();
+</script>
 </body>
 </html>

@@ -34,7 +34,6 @@
     .report-result strong{color:#1b5e20}
     .read-btn{display:inline-block;background:#2e7d32;color:#fff!important;padding:8px 18px;border-radius:8px;font-size:.82rem;font-weight:700;text-decoration:none!important;align-self:flex-start}
     .read-btn:hover{background:#1b5e20}
-    footer{background:#1b2d1b;color:#81c784;text-align:center;padding:16px;font-size:.78rem;margin-top:40px}
     .intro-box{background:#fff;border-radius:12px;padding:20px 22px;margin-bottom:28px;box-shadow:0 1px 4px rgba(0,0,0,.07);font-size:.9rem;line-height:1.9}
     .intro-box h2{font-size:1rem;color:#1b5e20;margin-bottom:10px}
     .lesson-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}@media(max-width:480px){.lesson-grid{grid-template-columns:1fr}}
@@ -55,6 +54,16 @@
     .cta-box{background:linear-gradient(135deg,#2e7d32,#43a047);border-radius:14px;padding:22px 18px;text-align:center;margin:28px 0;color:#fff}
     .cta-box p{color:#c8e6c9;font-size:.85rem;margin-bottom:14px}
     .cta-btn{display:inline-block;background:#fff;color:#2e7d32;font-weight:700;padding:12px 28px;border-radius:30px;font-size:.95rem;text-decoration:none!important}
+  
+  /* ── フッターナビ ─────────────────────────────── */
+  footer{background:#1b2d1b;color:#81c784;padding:28px 16px 16px;font-size:.78rem;margin-top:40px}
+  .footer-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;max-width:800px;margin:0 auto 20px;padding:0 0 20px;border-bottom:1px solid #2e4e2e}
+  .footer-nav-group{display:flex;flex-direction:column;gap:6px}
+  .footer-nav-label{color:#a5d6a7;font-weight:700;font-size:.8rem;margin-bottom:2px}
+  .footer-nav a{color:#81c784;text-decoration:none;font-size:.78rem;line-height:1.6}
+  .footer-nav a:hover{color:#fff;text-decoration:underline}
+  .footer-bottom{text-align:center;color:#4a7a4a}
+  .footer-bottom a{color:#81c784}
   </style>
 <script type="application/ld+json">
 {
@@ -88,7 +97,7 @@
 </head>
 <body>
 <header id="site-header">
-  <h1>🪲 クワガタ採集スポット検索</h1>
+  <h1>🪲 クワガタ<a href="/app" style="color:#388e3c;font-weight:700;text-decoration:underline">採集スポット</a>検索</h1>
   <a href="/app" class="nav-btn">🗺 スポット検索</a>
   <a href="/guide" class="nav-btn">📖 ガイド</a>
 </header>
@@ -122,8 +131,8 @@
         <ellipse cx="380" cy="100" rx="55" ry="48" fill="#0a1a08"/><rect x="374" y="126" width="12" height="34" fill="#0a1a08"/>
         <ellipse cx="530" cy="105" rx="60" ry="50" fill="#0c1d0a"/><rect x="522" y="130" width="14" height="30" fill="#0c1d0a"/>
         <rect x="0" y="120" width="780" height="40" fill="rgba(0,0,0,0.5)"/>
-        <text x="20" y="142" font-family="'Hiragino Sans','Meiryo',sans-serif" font-size="15" fill="white" font-weight="700">奥多摩 ミヤマクワガタ夜間採集</text>
-        <text x="20" y="155" font-family="'Hiragino Sans','Meiryo',sans-serif" font-size="10" fill="#a5d6a7">月齢3 | 気温24℃ | 2025年7月13日</text>
+        <text x="20" y="142" font-family="'Hiragino Sans','Meiryo',sans-serif" font-size="15" fill="white" font-weight="700">奥多摩 <a href="/guide/miyama" style="color:#388e3c;font-weight:700;text-decoration:underline">ミヤマクワガタ</a><a href="/guide/night" style="color:#388e3c;font-weight:700;text-decoration:underline">夜間採集</a></text>
+        <text x="20" y="155" font-family="'Hiragino Sans','Meiryo',sans-serif" font-size="10" fill="#a5d6a7">月齢3 | 気温24℃ | 2025年<a href="/guide/july" style="color:#388e3c;font-weight:700;text-decoration:underline">7月</a>13日</text>
       </svg>
       <div class="report-card-body">
         <span class="report-tag">🌙 夜間採集</span>
@@ -133,7 +142,7 @@
           <span>📍 東京都奥多摩町</span>
           <span>✍️ NT</span>
         </div>
-        <p class="report-desc">月齢3の暗い夜を狙ってクヌギ林へ。雨上がり翌日の湿度82%という好条件が重なり、22時台にミヤマのピークが到来。タイムライン・採集条件・装備を詳しく公開。</p>
+        <p class="report-desc">月齢3の暗い夜を狙って<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">クヌギ</a>林へ。<a href="/guide/rain" style="color:#388e3c;font-weight:700;text-decoration:underline">雨上がり</a>翌日の湿度82%という好条件が重なり、22時台にミヤマのピークが到来。タイムライン・採集条件・装備を詳しく公開。</p>
         <div class="report-result">🪲 結果：<strong>ミヤマクワガタ5匹</strong>（オス最大63mm）</div>
         <a href="/guide/report/okutama" class="read-btn">レポートを読む →</a>
       </div>
@@ -155,7 +164,7 @@
         <ellipse cx="290" cy="148" rx="35" ry="7" fill="#1a3a6b" opacity="0.6"/>
         <rect x="0" y="118" width="780" height="42" fill="rgba(0,0,0,0.5)"/>
         <text x="20" y="140" font-family="'Hiragino Sans','Meiryo',sans-serif" font-size="15" fill="white" font-weight="700">秩父 雨上がり翌夜 里山採集</text>
-        <text x="20" y="153" font-family="'Hiragino Sans','Meiryo',sans-serif" font-size="10" fill="#ffcc80">前日大雨 | 気温28℃ | 湿度88% | 2025年8月2日</text>
+        <text x="20" y="153" font-family="'Hiragino Sans','Meiryo',sans-serif" font-size="10" fill="#ffcc80">前日大雨 | 気温28℃ | 湿度88% | 2025年<a href="/guide/august" style="color:#388e3c;font-weight:700;text-decoration:underline">8月</a>2日</text>
       </svg>
       <div class="report-card-body">
         <span class="report-tag">🌧 雨上がり採集</span>
@@ -166,7 +175,7 @@
           <span>✍️ NT</span>
         </div>
         <p class="report-desc">前日の大雨（31mm）翌夜の採集で大当たり。「雨上がり翌夜が最強」という経験則を数字で実証。ノコギリ7匹・ヒラタ3匹の採集記録と採集の流れを公開。</p>
-        <div class="report-result">🪲 結果：<strong>ノコギリ7匹・ヒラタ3匹</strong>＋カブトムシ多数</div>
+        <div class="report-result">🪲 結果：<strong>ノコギリ7匹・ヒラタ3匹</strong>＋<a href="/guide/kabuto" style="color:#388e3c;font-weight:700;text-decoration:underline">カブトムシ</a>多数</div>
         <a href="/guide/report/chichibu" class="read-btn">レポートを読む →</a>
       </div>
     </div>
@@ -197,7 +206,7 @@
       </svg>
       <div class="report-card-body">
         <span class="report-tag family">👨‍👧 ファミリー採集</span>
-        <h2>高尾山エリアで子供と一緒にクワガタ採集｜6歳でもコクワガタGET【2025年7月】</h2>
+        <h2>高尾山エリアで子供と一緒にクワガタ採集｜6歳でも<a href="/guide/kokuwagata" style="color:#388e3c;font-weight:700;text-decoration:underline">コクワガタ</a>GET【2025年7月】</h2>
         <div class="report-meta">
           <span>📅 2025年7月19日</span>
           <span>📍 東京都八王子市（高尾山周辺）</span>
@@ -232,8 +241,8 @@
       気温が20℃を下回ると、クワガタの動きが急に鈍くなります。特に標高が高い山地では、7月でも深夜に17℃まで下がることがあります。奥多摩レポートでも23時以降に気温が下がってから採集ペースが落ちました。
     </div>
     <div class="lesson-card">
-      <div class="lesson-title">👨‍👧 子連れはライトトラップが現実的</div>
-      6歳の子供と夜の林を歩くのは危険が多いです。駐車場脇の街灯・水銀灯を活用するライトトラップのほうが安全で、子供も「飛んできたコクワを拾う」体験ができます。高尾山レポートで詳しく解説しています。
+      <div class="lesson-title">👨‍👧 子連れはライト<a href="/guide/trap" style="color:#388e3c;font-weight:700;text-decoration:underline">トラップ</a>が現実的</div>
+      6歳の子供と夜の林を歩くのは危険が多いです。駐車場脇の街灯・水銀灯を活用する<a href="/guide/light" style="color:#388e3c;font-weight:700;text-decoration:underline">ライトトラップ</a>のほうが安全で、子供も「飛んできたコクワを拾う」体験ができます。高尾山レポートで詳しく解説しています。
     </div>
     <div class="lesson-card">
       <div class="lesson-title">📍 ポイントは複数持つ</div>
@@ -264,11 +273,11 @@
     標高900mのブナ林でのライトトラップ採集。ミヤマの大型個体が連続して飛来した夜の記録。気温18℃という低温でも活性が高かった理由を考察予定。
   </div>
   <div class="next-card">
-    <div class="next-title">🏕 山梨・道志渓谷のオオクワガタ探し（2025年8月）</div>
+    <div class="next-title">🏕 山梨・道志渓谷の<a href="/guide/ookuwa" style="color:#388e3c;font-weight:700;text-decoration:underline">オオクワガタ</a>探し（2025年8月）</div>
     樹液から離れ、立ち枯れ木・洞（うろ）を徹底的に叩き回った採集。残念ながら不発に終わりましたが、「なぜ採れなかったのか」を反省とともに記録します。失敗レポートも参考になるはずです。
   </div>
   <div class="next-card">
-    <div class="next-title">🌄 早朝採集（朝5時スタート）で大台ケ原へ（2025年9月）</div>
+    <div class="next-title">🌄 <a href="/guide/morning" style="color:#388e3c;font-weight:700;text-decoration:underline">早朝採集</a>（朝5時スタート）で大台ケ原へ（2025年<a href="/guide/september" style="color:#388e3c;font-weight:700;text-decoration:underline">9月</a>）</div>
     夜ではなく早朝に焦点を当てた採集。朝露が残る時間帯はクワガタが樹液付近に残りやすく、写真も撮りやすい。ファミリー向けの「夜更かしなし採集」として実験しました。
   </div>
 
@@ -280,14 +289,14 @@
   </div>
   <div class="faq-box">
     <p class="faq-q">採集した個体はどうしていますか？</p>
-    <p class="faq-a">採集後は自宅で1〜2週間飼育して観察します。記録写真を撮り終えたら、採集したエリアの同じ木の近くに放虫（リリース）しています。生体販売・交換は一切しておらず、趣味の記録としてのみ採集しています。</p>
+    <p class="faq-a"><a href="/guide/aftercare" style="color:#388e3c;font-weight:700;text-decoration:underline">採集後</a>は自宅で1〜2週間<a href="/guide/breeding" style="color:#388e3c;font-weight:700;text-decoration:underline">飼育</a>して観察します。記録写真を撮り終えたら、採集したエリアの同じ木の近くに放虫（リリース）しています。生体販売・交換は一切しておらず、趣味の記録としてのみ採集しています。</p>
   </div>
   <div class="faq-box">
     <p class="faq-q">採集レポートは毎年更新しますか？</p>
     <p class="faq-a">はい。毎年6〜9月のシーズン中に採集した記録を、10〜11月にかけてレポートとして公開する予定です。気温・環境の変化でクワガタの出没状況も年ごとに変わるため、最新シーズンのデータを継続して蓄積していきます。</p>
   </div>
   <div class="faq-box">
-    <p class="faq-q">初心者でもレポートを参考にして採集できますか？</p>
+    <p class="faq-q"><a href="/guide/beginners" style="color:#388e3c;font-weight:700;text-decoration:underline">初心者</a>でもレポートを参考にして採集できますか？</p>
     <p class="faq-a">できます。特に「高尾山ファミリー採集レポート」は、初めて採集に行く方・お子さん連れの方向けに書いています。装備・準備・当日の流れをステップごとに解説していますので、まずそちらから読んでみてください。</p>
   </div>
 
@@ -310,8 +319,76 @@
 
 </div>
 <footer>
-  <p>🪲 <a href="/" style="color:#81c784">クワガタ採集スポット検索 beetle-finder</a> ｜ <a href="/guide" style="color:#81c784">採集ガイド一覧</a></p>
-  <p style="margin-top:6px;font-size:.72rem"><a href="/privacy" style="color:#81c784">プライバシーポリシー</a> ｜ <a href="/contact" style="color:#81c784">お問い合わせ</a></p>
+  <nav class="footer-nav">
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🪲 種別ガイド</span>
+      <a href="/guide/kabuto">カブトムシ</a>
+      <a href="/guide/miyama">ミヤマクワガタ</a>
+      <a href="/guide/nokogiri">ノコギリクワガタ</a>
+      <a href="/guide/hirata">ヒラタクワガタ</a>
+      <a href="/guide/kokuwagata">コクワガタ</a>
+      <a href="/guide/ookuwa">オオクワガタ</a>
+      <a href="/guide/akaashi">アカアシクワガタ</a>
+      <a href="/guide/suji">スジクワガタ</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📅 月別ガイド</span>
+      <a href="/guide/may">5月</a>
+      <a href="/guide/june">6月</a>
+      <a href="/guide/july">7月</a>
+      <a href="/guide/august">8月</a>
+      <a href="/guide/september">9月</a>
+      <a href="/guide/october">10月</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📖 採集テクニック</span>
+      <a href="/guide/beginners">初心者ガイド</a>
+      <a href="/guide/night">夜間採集</a>
+      <a href="/guide/rain">雨上がり採集</a>
+      <a href="/guide/morning">早朝採集</a>
+      <a href="/guide/trap">トラップ採集</a>
+      <a href="/guide/light">ライト採集</a>
+      <a href="/guide/tools">採集道具</a>
+      <a href="/guide/tree">採集木図鑑</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🗾 都道府県ガイド</span>
+      <a href="/guide/pref/tokyo">東京都</a>
+      <a href="/guide/pref/kanagawa">神奈川県</a>
+      <a href="/guide/pref/saitama">埼玉県</a>
+      <a href="/guide/pref/chiba">千葉県</a>
+      <a href="/guide/pref/nagano">長野県</a>
+      <a href="/guide/pref/yamanashi">山梨県</a>
+      <a href="/guide/pref/hokkaido">北海道</a>
+      <a href="/guide/pref">全都道府県一覧 →</a>
+    </div>
+  </nav>
+  <div class="footer-bottom">
+    <a href="/">クワガタ採集スポット検索 beetle-finder</a> ｜
+    <a href="/app">🗺 スポット検索</a> ｜
+    <a href="/guide">📖 ガイド一覧</a> ｜
+    <a href="/about">サービスについて</a> ｜
+    <a href="/privacy">プライバシーポリシー</a> ｜
+    <a href="/terms">利用規約</a>
+  </div>
 </footer>
+
+<script>
+(function(){
+  var m = new Date().getMonth()+1;
+  var map = {5:['6月の採集準備を今から！コクワガタが動き出す季節','/guide/june','6月の採集ガイドを読む'],
+             6:['クワガタシーズン開幕！6月の採集ガイド','/guide/june','今すぐ読む →'],
+             7:['🔥 採集最盛期！7月は全種が揃うベストシーズン','/guide/july','7月ガイドを読む'],
+             8:['カブトムシのピーク！8月の採集攻略法','/guide/august','8月ガイドを読む'],
+             9:['9月もまだ間に合う！秋の採集ガイド','/guide/september','9月ガイドを読む'],
+             10:['10月の採集はコクワが主役。シーズン終盤戦','/guide/october','10月ガイドを読む']};
+  if(!map[m]) return;
+  var d=document.createElement('div');
+  d.innerHTML='<div style="background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.85rem;border-bottom:3px solid #4caf50"><span>📅 '+map[m][0]+'</span><a href="'+map[m][1]+'" style="background:#fff;color:#1b5e20;font-weight:700;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;font-size:.8rem">'+map[m][2]+'</a></div>';
+  var header=document.getElementById('site-header');
+  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
+  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
+})();
+</script>
 </body>
 </html>

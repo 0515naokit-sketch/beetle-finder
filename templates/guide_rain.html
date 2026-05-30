@@ -109,12 +109,21 @@
     .related-links{display:flex;flex-wrap:wrap;gap:8px}
     .related-links a{background:#fff;border:1px solid #81c784;border-radius:6px;padding:6px 12px;font-size:.78rem;color:#2e7d32;font-weight:600;text-decoration:none}
     .related-links a:hover{background:#c8e6c9}
-    footer{background:#1b2d1b;color:#81c784;text-align:center;padding:16px;font-size:.78rem;margin-top:40px}
+  
+  /* ── フッターナビ ─────────────────────────────── */
+  footer{background:#1b2d1b;color:#81c784;padding:28px 16px 16px;font-size:.78rem;margin-top:40px}
+  .footer-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;max-width:800px;margin:0 auto 20px;padding:0 0 20px;border-bottom:1px solid #2e4e2e}
+  .footer-nav-group{display:flex;flex-direction:column;gap:6px}
+  .footer-nav-label{color:#a5d6a7;font-weight:700;font-size:.8rem;margin-bottom:2px}
+  .footer-nav a{color:#81c784;text-decoration:none;font-size:.78rem;line-height:1.6}
+  .footer-nav a:hover{color:#fff;text-decoration:underline}
+  .footer-bottom{text-align:center;color:#4a7a4a}
+  .footer-bottom a{color:#81c784}
   </style>
 </head>
 <body>
 <header id="site-header">
-  <h1><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> クワガタ採集スポット検索</h1>
+  <h1><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> クワガタ<a href="/app" style="color:#388e3c;font-weight:700;text-decoration:underline">採集スポット</a>検索</h1>
   <a href="/app" class="home-btn">🗺 スポット検索</a>
   <a href="/guide" class="home-btn">📖 ガイド一覧</a>
 </header>
@@ -147,7 +156,7 @@
     <div class="weather-card good">
       <div class="score-tag score-good">採集できる</div>
       <h3>🌥 曇り</h3>
-      <p>月明かりがなく採集に適した条件。気温が25°C以上あれば通常通り採れる。夜間採集のベター条件。</p>
+      <p>月明かりがなく採集に適した条件。気温が25°C以上あれば通常通り採れる。<a href="/guide/night" style="color:#388e3c;font-weight:700;text-decoration:underline">夜間採集</a>のベター条件。</p>
     </div>
     <div class="weather-card best">
       <div class="score-tag score-best">最高条件！</div>
@@ -162,7 +171,7 @@
     <div class="reason-title">🔬 雨上がりがゴールデンタイムになる3つの理由</div>
     <ol style="margin-left:18px;color:#333">
       <li style="margin-bottom:8px"><strong>気温＋湿度が最適になる</strong><br>梅雨明け直後や夕立の後は蒸し暑く、クワガタが最も活発に活動する「27〜32°C・湿度70%以上」の条件が揃う</li>
-      <li style="margin-bottom:8px"><strong>樹液が活性化する</strong><br>雨で木が水分を吸収し、翌日に樹液の分泌量が増えることがある。特にクヌギ・コナラで顕著</li>
+      <li style="margin-bottom:8px"><strong>樹液が活性化する</strong><br>雨で木が水分を吸収し、翌日に樹液の分泌量が増えることがある。特に<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">クヌギ</a>・<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">コナラ</a>で顕著</li>
       <li style="margin-bottom:8px"><strong>雨中に外に出られなかった分、活動が集中する</strong><br>雨が数日続いた後の晴れは、それまで我慢していたクワガタが一斉に活動し始める「大量発生」のような状態になることがある</li>
     </ol>
   </div>
@@ -211,7 +220,7 @@
     <li>✅ 防水ヘッドライト（IP54以上の防水等級）</li>
     <li>✅ 防水スマートフォンケース</li>
     <li>✅ タオル（手・道具を拭く）</li>
-    <li>❌ ライトトラップは雨天不可（機材が濡れる・昆虫が飛ばない）</li>
+    <li>❌ ライト<a href="/guide/trap" style="color:#388e3c;font-weight:700;text-decoration:underline">トラップ</a>は雨天不可（機材が濡れる・昆虫が飛ばない）</li>
   </ul>
 
   <h3 class="sub">雨上がり採集の注意点</h3>
@@ -398,15 +407,79 @@
 
 </div>
 <footer>
-  <p>🪲 <a href="/" style="color:#81c784">クワガタ採集スポット検索 beetle-finder</a> ｜ <a href="/guide" style="color:#81c784">採集ガイド一覧</a></p>
-  <p style="margin-top:6px;font-size:.72rem">
-    <a href="https://note.com/beetle_finder" target="_blank" rel="noopener" style="color:#81c784">📝 noteでも採集情報発信中</a>
-    ｜ <a href="/privacy" style="color:#81c784">プライバシーポリシー</a>
-    ｜ <a href="/contact" style="color:#81c784">お問い合わせ</a>
-  </p>
+  <nav class="footer-nav">
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🪲 種別ガイド</span>
+      <a href="/guide/kabuto">カブトムシ</a>
+      <a href="/guide/miyama">ミヤマクワガタ</a>
+      <a href="/guide/nokogiri">ノコギリクワガタ</a>
+      <a href="/guide/hirata">ヒラタクワガタ</a>
+      <a href="/guide/kokuwagata">コクワガタ</a>
+      <a href="/guide/ookuwa">オオクワガタ</a>
+      <a href="/guide/akaashi">アカアシクワガタ</a>
+      <a href="/guide/suji">スジクワガタ</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📅 月別ガイド</span>
+      <a href="/guide/may">5月</a>
+      <a href="/guide/june">6月</a>
+      <a href="/guide/july">7月</a>
+      <a href="/guide/august">8月</a>
+      <a href="/guide/september">9月</a>
+      <a href="/guide/october">10月</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📖 採集テクニック</span>
+      <a href="/guide/beginners">初心者ガイド</a>
+      <a href="/guide/night">夜間採集</a>
+      <a href="/guide/rain">雨上がり採集</a>
+      <a href="/guide/morning">早朝採集</a>
+      <a href="/guide/trap">トラップ採集</a>
+      <a href="/guide/light">ライト採集</a>
+      <a href="/guide/tools">採集道具</a>
+      <a href="/guide/tree">採集木図鑑</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🗾 都道府県ガイド</span>
+      <a href="/guide/pref/tokyo">東京都</a>
+      <a href="/guide/pref/kanagawa">神奈川県</a>
+      <a href="/guide/pref/saitama">埼玉県</a>
+      <a href="/guide/pref/chiba">千葉県</a>
+      <a href="/guide/pref/nagano">長野県</a>
+      <a href="/guide/pref/yamanashi">山梨県</a>
+      <a href="/guide/pref/hokkaido">北海道</a>
+      <a href="/guide/pref">全都道府県一覧 →</a>
+    </div>
+  </nav>
+  <div class="footer-bottom">
+    <a href="/">クワガタ採集スポット検索 beetle-finder</a> ｜
+    <a href="/app">🗺 スポット検索</a> ｜
+    <a href="/guide">📖 ガイド一覧</a> ｜
+    <a href="/about">サービスについて</a> ｜
+    <a href="/privacy">プライバシーポリシー</a> ｜
+    <a href="/terms">利用規約</a>
+  </div>
 </footer>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+
+<script>
+(function(){
+  var m = new Date().getMonth()+1;
+  var map = {5:['6月の採集準備を今から！コクワガタが動き出す季節','/guide/june','6月の採集ガイドを読む'],
+             6:['クワガタシーズン開幕！6月の採集ガイド','/guide/june','今すぐ読む →'],
+             7:['🔥 採集最盛期！7月は全種が揃うベストシーズン','/guide/july','7月ガイドを読む'],
+             8:['カブトムシのピーク！8月の採集攻略法','/guide/august','8月ガイドを読む'],
+             9:['9月もまだ間に合う！秋の採集ガイド','/guide/september','9月ガイドを読む'],
+             10:['10月の採集はコクワが主役。シーズン終盤戦','/guide/october','10月ガイドを読む']};
+  if(!map[m]) return;
+  var d=document.createElement('div');
+  d.innerHTML='<div style="background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.85rem;border-bottom:3px solid #4caf50"><span>📅 '+map[m][0]+'</span><a href="'+map[m][1]+'" style="background:#fff;color:#1b5e20;font-weight:700;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;font-size:.8rem">'+map[m][2]+'</a></div>';
+  var header=document.getElementById('site-header');
+  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
+  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
+})();
+</script>
 </body>
 </html>

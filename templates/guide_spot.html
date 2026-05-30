@@ -11,7 +11,7 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ name }}のクワガタ採集スポット｜採れる種類・時期・おすすめ場所ガイド</title>
+  <title>{{ name }}のクワガタ<a href="/app" style="color:#388e3c;font-weight:700;text-decoration:underline">採集スポット</a>｜採れる種類・時期・おすすめ場所ガイド</title>
   <meta name="description" content="{{ name }}のクワガタ採集ガイド。{{ species }}が採れる{{ name }}のおすすめ採集スポット・場所・時期・コツを徹底解説。">
   <meta name="keywords" content="{{ name }} クワガタ 採集 スポット {{ species }} {{ spots }}">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9675243685208925" crossorigin="anonymous"></script>
@@ -67,7 +67,6 @@
     .prod-card .prod-btn{display:block;background:#ff9900;color:#fff !important;font-size:.73rem;font-weight:700;padding:5px 4px;border-radius:5px;text-decoration:none !important}
     .prod-card .prod-btn:hover{background:#e68900 !important}
     .amz-note2{font-size:.68rem;color:#aaa;margin-top:4px}
-    footer{background:#1b2d1b;color:#81c784;text-align:center;padding:16px;font-size:.78rem;margin-top:40px}
   
     /* ── おすすめ商品ブロック ─────────────────────── */
     .rec-box{background:#fffbf0;border:2px solid #f0c040;border-radius:10px;padding:14px 16px;margin:22px 0}
@@ -98,6 +97,16 @@
     .yah-btn{display:inline-block;background:#ff0033;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
     .yah-btn:hover{background:#cc0029 !important;color:#fff !important}
     .amz-note{font-size:.7rem;color:#999;margin:0}
+  
+  /* ── フッターナビ ─────────────────────────────── */
+  footer{background:#1b2d1b;color:#81c784;padding:28px 16px 16px;font-size:.78rem;margin-top:40px}
+  .footer-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;max-width:800px;margin:0 auto 20px;padding:0 0 20px;border-bottom:1px solid #2e4e2e}
+  .footer-nav-group{display:flex;flex-direction:column;gap:6px}
+  .footer-nav-label{color:#a5d6a7;font-weight:700;font-size:.8rem;margin-bottom:2px}
+  .footer-nav a{color:#81c784;text-decoration:none;font-size:.78rem;line-height:1.6}
+  .footer-nav a:hover{color:#fff;text-decoration:underline}
+  .footer-bottom{text-align:center;color:#4a7a4a}
+  .footer-bottom a{color:#81c784}
   </style>
 <script type="application/ld+json">
 {
@@ -258,16 +267,16 @@
     {% for sp in species_list %}
     <li><strong>{{ sp }}</strong></li>
     {% endfor %}
-    <li>コクワガタ（{{ name }}全域で比較的採集しやすい）</li>
+    <li><a href="/guide/kokuwagata" style="color:#388e3c;font-weight:700;text-decoration:underline">コクワガタ</a>（{{ name }}全域で比較的採集しやすい）</li>
   </ul>
 
   <h2 class="section">② {{ name }}でのおすすめ採集場所</h2>
 
   <h3 class="sub">{{ alt }}エリア（山地・標高{{ elev }}）</h3>
-  <p>{{ name }}の採集の中心は<strong>{{ alt }}</strong>。標高{{ elev }}の山地にはブナ・ミズナラ・コナラが分布しており、ミヤマクワガタが生息する涼しい環境が整っています。峠道の街灯を{{ best_month }}の夜間に確認するのが効果的です。</p>
+  <p>{{ name }}の採集の中心は<strong>{{ alt }}</strong>。標高{{ elev }}の山地にはブナ・ミズナラ・<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">コナラ</a>が分布しており、<a href="/guide/miyama" style="color:#388e3c;font-weight:700;text-decoration:underline">ミヤマクワガタ</a>が生息する涼しい環境が整っています。峠道の街灯を{{ best_month }}の夜間に確認するのが効果的です。</p>
 
   <h3 class="sub">里山・雑木林エリア</h3>
-  <p>{{ spots }}周辺の里山にはクヌギ・コナラ林があり、ノコギリクワガタ・コクワガタ・カブトムシが生息します。標高100〜300mの農村部の雑木林を夜間に懐中電灯で探索しましょう。</p>
+  <p>{{ spots }}周辺の里山には<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">クヌギ</a>・コナラ林があり、<a href="/guide/nokogiri" style="color:#388e3c;font-weight:700;text-decoration:underline">ノコギリクワガタ</a>・コクワガタ・<a href="/guide/kabuto" style="color:#388e3c;font-weight:700;text-decoration:underline">カブトムシ</a>が生息します。標高100〜300mの農村部の雑木林を夜間に懐中電灯で探索しましょう。</p>
 
   <div class="tip-box">
     <div class="tip-title">💡 {{ name }}採集のコツ</div>
@@ -277,7 +286,7 @@
   <h2 class="section">③ {{ name }}の採集シーズンと時間帯</h2>
 
   <h3 class="sub">ベストシーズン：{{ best_month }}</h3>
-  <p>{{ name }}でのクワガタ採集は<strong>{{ best_month }}</strong>が最盛期です。6月下旬〜8月中旬の全体シーズン中、この時期が最も多くの個体が活動します。</p>
+  <p>{{ name }}でのクワガタ採集は<strong>{{ best_month }}</strong>が最盛期です。<a href="/guide/june" style="color:#388e3c;font-weight:700;text-decoration:underline">6月</a>下旬〜<a href="/guide/august" style="color:#388e3c;font-weight:700;text-decoration:underline">8月</a>中旬の全体シーズン中、この時期が最も多くの個体が活動します。</p>
 
   <h3 class="sub">採集に適した時間帯</h3>
   <ul>
@@ -288,13 +297,13 @@
 
   <div class="warn-box">
     <div class="warn-title">ℹ️ {{ name }}での採集時の注意事項</div>
-    <p>夜間採集では必ずヘッドライトを2つ（メインと予備）持参し、スマートフォンの充電も確認してください。山地では熊が生息する地域もあるため、熊鈴を携帯するか、複数人で行動しましょう。</p>
+    <p><a href="/guide/night" style="color:#388e3c;font-weight:700;text-decoration:underline">夜間採集</a>では必ずヘッドライトを2つ（メインと予備）持参し、スマートフォンの充電も確認してください。山地では熊が生息する地域もあるため、熊鈴を携帯するか、複数人で行動しましょう。</p>
   </div>
 
   <h2 class="section">④ {{ name }}の採集環境・特徴</h2>
 
   <h3 class="sub">地形と採集フィールドの関係</h3>
-  <p>{{ name }}の採集環境は大きく「<strong>山地（標高{{ elev }}）</strong>」と「<strong>平地の里山・河川沿い</strong>」に分かれます。ミヤマクワガタやアカアシクワガタは山地を好み、ヒラタクワガタ・ノコギリクワガタ・コクワガタは里山〜低地の樹液木に集まります。</p>
+  <p>{{ name }}の採集環境は大きく「<strong>山地（標高{{ elev }}）</strong>」と「<strong>平地の里山・河川沿い</strong>」に分かれます。ミヤマクワガタや<a href="/guide/akaashi" style="color:#388e3c;font-weight:700;text-decoration:underline">アカアシクワガタ</a>は山地を好み、<a href="/guide/hirata" style="color:#388e3c;font-weight:700;text-decoration:underline">ヒラタクワガタ</a>・ノコギリクワガタ・コクワガタは里山〜低地の樹液木に集まります。</p>
 
   <h3 class="sub">採集に適した木の見分け方</h3>
   <ul>
@@ -306,7 +315,7 @@
 
   <h2 class="section">⑤ {{ name }}採集のよくある質問（FAQ）</h2>
 
-  <h3 class="sub">Q. {{ name }}でオオクワガタは採れますか？</h3>
+  <h3 class="sub">Q. {{ name }}で<a href="/guide/ookuwa" style="color:#388e3c;font-weight:700;text-decoration:underline">オオクワガタ</a>は採れますか？</h3>
   <p>オオクワガタは非常に希少で、{{ name }}でも生息している可能性はありますが採集確率は極めて低いです。もし狙うなら、標高200〜700mの古い広葉樹林の中の太い朽木周辺を丹念に探す必要があります。</p>
 
   <h3 class="sub">Q. {{ name }}でクワガタ採集に車は必要ですか？</h3>
@@ -316,7 +325,7 @@
   <p>はい、里山エリアなら子供でも安全に楽しめます。ただし夜間採集のため、子供の場合は保護者同伴は必須です。{{ spots }}周辺の平坦な里山から始めると安心です。</p>
 
   <h3 class="sub">Q. {{ name }}のクワガタ採集ベストシーズンに向けた準備は？</h3>
-  <p>{{ best_month }}のシーズン本番に備えて、5〜6月中に採集スポットの下見・ヘッドライトや虫かごの準備・採集道具の点検を済ませておきましょう。事前に木の場所を把握しておくと、採集当日の成功率が大幅に上がります。</p>
+  <p>{{ best_month }}のシーズン本番に備えて、5〜6月中に採集スポットの下見・ヘッドライトや虫かごの準備・<a href="/guide/tools" style="color:#388e3c;font-weight:700;text-decoration:underline">採集道具</a>の点検を済ませておきましょう。事前に木の場所を把握しておくと、採集当日の成功率が大幅に上がります。</p>
 
   <h2 class="section">他の都道府県ガイド</h2>
   <div class="pref-links">
@@ -365,14 +374,77 @@
   </div>
 </div>
 <footer>
-  © 2026 クワガタ採集スポット検索 |
-  <a href="/">トップ</a> |
-  <a href="/app">スポット検索</a> |
-  <a href="/guide">採集ガイド</a> |
-  <a href="/about">サービスについて</a> |
-  <a href="/privacy">プライバシーポリシー</a> |
-  <a href="/terms">利用規約</a>
+  <nav class="footer-nav">
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🪲 種別ガイド</span>
+      <a href="/guide/kabuto">カブトムシ</a>
+      <a href="/guide/miyama">ミヤマクワガタ</a>
+      <a href="/guide/nokogiri">ノコギリクワガタ</a>
+      <a href="/guide/hirata">ヒラタクワガタ</a>
+      <a href="/guide/kokuwagata">コクワガタ</a>
+      <a href="/guide/ookuwa">オオクワガタ</a>
+      <a href="/guide/akaashi">アカアシクワガタ</a>
+      <a href="/guide/suji">スジクワガタ</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📅 月別ガイド</span>
+      <a href="/guide/may">5月</a>
+      <a href="/guide/june">6月</a>
+      <a href="/guide/july">7月</a>
+      <a href="/guide/august">8月</a>
+      <a href="/guide/september">9月</a>
+      <a href="/guide/october">10月</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📖 採集テクニック</span>
+      <a href="/guide/beginners">初心者ガイド</a>
+      <a href="/guide/night">夜間採集</a>
+      <a href="/guide/rain">雨上がり採集</a>
+      <a href="/guide/morning">早朝採集</a>
+      <a href="/guide/trap">トラップ採集</a>
+      <a href="/guide/light">ライト採集</a>
+      <a href="/guide/tools">採集道具</a>
+      <a href="/guide/tree">採集木図鑑</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🗾 都道府県ガイド</span>
+      <a href="/guide/pref/tokyo">東京都</a>
+      <a href="/guide/pref/kanagawa">神奈川県</a>
+      <a href="/guide/pref/saitama">埼玉県</a>
+      <a href="/guide/pref/chiba">千葉県</a>
+      <a href="/guide/pref/nagano">長野県</a>
+      <a href="/guide/pref/yamanashi">山梨県</a>
+      <a href="/guide/pref/hokkaido">北海道</a>
+      <a href="/guide/pref">全都道府県一覧 →</a>
+    </div>
+  </nav>
+  <div class="footer-bottom">
+    <a href="/">クワガタ採集スポット検索 beetle-finder</a> ｜
+    <a href="/app">🗺 スポット検索</a> ｜
+    <a href="/guide">📖 ガイド一覧</a> ｜
+    <a href="/about">サービスについて</a> ｜
+    <a href="/privacy">プライバシーポリシー</a> ｜
+    <a href="/terms">利用規約</a>
+  </div>
 </footer>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+
+<script>
+(function(){
+  var m = new Date().getMonth()+1;
+  var map = {5:['6月の採集準備を今から！コクワガタが動き出す季節','/guide/june','6月の採集ガイドを読む'],
+             6:['クワガタシーズン開幕！6月の採集ガイド','/guide/june','今すぐ読む →'],
+             7:['🔥 採集最盛期！7月は全種が揃うベストシーズン','/guide/july','7月ガイドを読む'],
+             8:['カブトムシのピーク！8月の採集攻略法','/guide/august','8月ガイドを読む'],
+             9:['9月もまだ間に合う！秋の採集ガイド','/guide/september','9月ガイドを読む'],
+             10:['10月の採集はコクワが主役。シーズン終盤戦','/guide/october','10月ガイドを読む']};
+  if(!map[m]) return;
+  var d=document.createElement('div');
+  d.innerHTML='<div style="background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.85rem;border-bottom:3px solid #4caf50"><span>📅 '+map[m][0]+'</span><a href="'+map[m][1]+'" style="background:#fff;color:#1b5e20;font-weight:700;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;font-size:.8rem">'+map[m][2]+'</a></div>';
+  var header=document.getElementById('site-header');
+  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
+  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
+})();
+</script>
 </body>
 </html>

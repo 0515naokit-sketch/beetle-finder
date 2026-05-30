@@ -112,11 +112,21 @@
     .cta-box p{color:#c8e6c9;font-size:.83rem;margin-bottom:14px}
     .cta-btn{display:inline-block;background:#fff;color:#2e7d32;font-weight:700;padding:11px 26px;border-radius:30px;font-size:.9rem;text-decoration:none}
     .svg-caption{font-size:.72rem;color:#888;text-align:center;margin-top:4px;margin-bottom:16px}
+  
+  /* ── フッターナビ ─────────────────────────────── */
+  footer{background:#1b2d1b;color:#81c784;padding:28px 16px 16px;font-size:.78rem;margin-top:40px}
+  .footer-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;max-width:800px;margin:0 auto 20px;padding:0 0 20px;border-bottom:1px solid #2e4e2e}
+  .footer-nav-group{display:flex;flex-direction:column;gap:6px}
+  .footer-nav-label{color:#a5d6a7;font-weight:700;font-size:.8rem;margin-bottom:2px}
+  .footer-nav a{color:#81c784;text-decoration:none;font-size:.78rem;line-height:1.6}
+  .footer-nav a:hover{color:#fff;text-decoration:underline}
+  .footer-bottom{text-align:center;color:#4a7a4a}
+  .footer-bottom a{color:#81c784}
   </style>
 </head>
 <body>
 <header id="site-header">
-  <h1>🪲 クワガタ採集スポット検索</h1>
+  <h1>🪲 クワガタ<a href="/app" style="color:#388e3c;font-weight:700;text-decoration:underline">採集スポット</a>検索</h1>
   <a href="/app" class="nav-btn">🗺 スポット検索</a>
   <a href="/guide" class="nav-btn">📖 ガイド</a>
 </header>
@@ -159,7 +169,7 @@
   <!-- ── 月齢補正 ── -->
   <h2 class="section">② 月齢補正：新月が最強な理由</h2>
   <p>採集経験者なら誰もが感じている「新月前後によく採れる」という法則。これは<strong>月明かりと昆虫の行動の関係</strong>に由来します。</p>
-  <p>クワガタ・カブトムシは天敵（コウモリ・フクロウなど）から身を守るため、林内が明るい夜は活動を控える傾向があると考えられています。新月前後の暗い夜は外に出やすく、樹液に集まる個体数が増えます。</p>
+  <p>クワガタ・<a href="/guide/kabuto" style="color:#388e3c;font-weight:700;text-decoration:underline">カブトムシ</a>は天敵（コウモリ・フクロウなど）から身を守るため、林内が明るい夜は活動を控える傾向があると考えられています。新月前後の暗い夜は外に出やすく、樹液に集まる個体数が増えます。</p>
 
   <!-- 月齢vs補正係数グラフ（SVG） -->
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 200" style="width:100%;max-width:720px;display:block;margin:16px auto;background:#fff;border-radius:10px;border:1px solid #e0e0e0" role="img" aria-label="月齢と採集スコア補正係数の関係グラフ">
@@ -209,7 +219,7 @@
 
   <div class="tip-box">
     <div class="tip-title">🌙 月齢スコアの実体験での検証</div>
-    <p style="margin:0;font-size:.88rem">2025年7月の奥多摩採集（月齢3）では22時台に5匹確認。翌月、満月の夜に同じ場所へ行ったところ1匹も見つからなかった。これはたった一例ではなく、10年間の経験で繰り返し確認してきたパターンです。月齢の影響は採集者の間で広く知られた経験則であり、このスコアに反映しています。</p>
+    <p style="margin:0;font-size:.88rem">2025年<a href="/guide/july" style="color:#388e3c;font-weight:700;text-decoration:underline">7月</a>の奥多摩採集（月齢3）では22時台に5匹確認。翌月、満月の夜に同じ場所へ行ったところ1匹も見つからなかった。これはたった一例ではなく、10年間の経験で繰り返し確認してきたパターンです。月齢の影響は採集者の間で広く知られた経験則であり、このスコアに反映しています。</p>
   </div>
 
   <!-- ── 気温補正 ── -->
@@ -319,15 +329,15 @@
     <!-- 注釈 -->
     <text x="360" y="225" text-anchor="middle" font-family="'Hiragino Sans','Meiryo',sans-serif" font-size="10" fill="#aaa">各帯の高さが採集しやすい標高レンジを示す（帯が長い＝広い標高に分布）</text>
   </svg>
-  <p class="svg-caption">ミヤマ・アカアシは高標高、ヒラタ・カブトムシは低標高。コクワガタは最も幅広い標高に対応</p>
+  <p class="svg-caption">ミヤマ・アカアシは高標高、ヒラタ・カブトムシは低標高。<a href="/guide/kokuwagata" style="color:#388e3c;font-weight:700;text-decoration:underline">コクワガタ</a>は最も幅広い標高に対応</p>
 
   <table class="data-table">
     <tr><th>種類</th><th>最適標高</th><th>分布の特徴</th></tr>
-    <tr><td>ミヤマクワガタ</td><td>600〜1500m</td><td>ブナ・ミズナラ帯。夏でも涼しい山地が中心</td></tr>
-    <tr><td>アカアシクワガタ</td><td>500〜1200m</td><td>ブナ原生林のある山地。東北・北海道で低標高でも採れる</td></tr>
-    <tr><td>オオクワガタ</td><td>200〜800m</td><td>コナラ・クヌギの古木林。河川沿いの中山地</td></tr>
-    <tr><td>ノコギリクワガタ</td><td>〜600m</td><td>里山の平地〜低山。最も幅広いエリアに分布</td></tr>
-    <tr><td>ヒラタクワガタ</td><td>〜300m</td><td>河川沿いの低地。西日本で個体数が多い</td></tr>
+    <tr><td><a href="/guide/miyama" style="color:#388e3c;font-weight:700;text-decoration:underline">ミヤマクワガタ</a></td><td>600〜1500m</td><td>ブナ・ミズナラ帯。夏でも涼しい山地が中心</td></tr>
+    <tr><td><a href="/guide/akaashi" style="color:#388e3c;font-weight:700;text-decoration:underline">アカアシクワガタ</a></td><td>500〜1200m</td><td>ブナ原生林のある山地。東北・北海道で低標高でも採れる</td></tr>
+    <tr><td><a href="/guide/ookuwa" style="color:#388e3c;font-weight:700;text-decoration:underline">オオクワガタ</a></td><td>200〜800m</td><td><a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">コナラ</a>・<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">クヌギ</a>の古木林。河川沿いの中山地</td></tr>
+    <tr><td><a href="/guide/nokogiri" style="color:#388e3c;font-weight:700;text-decoration:underline">ノコギリクワガタ</a></td><td>〜600m</td><td>里山の平地〜低山。最も幅広いエリアに分布</td></tr>
+    <tr><td><a href="/guide/hirata" style="color:#388e3c;font-weight:700;text-decoration:underline">ヒラタクワガタ</a></td><td>〜300m</td><td>河川沿いの低地。西日本で個体数が多い</td></tr>
     <tr><td>コクワガタ</td><td>〜900m</td><td>全国の広い標高帯に分布。最も見つけやすい</td></tr>
     <tr><td>カブトムシ</td><td>〜500m</td><td>クヌギ林の平地〜低山。個体数が最も多い</td></tr>
   </table>
@@ -356,12 +366,12 @@
     <line x1="48" y1="147" x2="700" y2="147" stroke="#f0f0f0" stroke-width="1"/>
     <!-- X軸（5月〜10月を表示） -->
     <!-- 5月=x55, 6月=x156, 7月=x257, 8月=x358, 9月=x459, 10月=x560 -->
-    <text x="82"  y="172" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888">5月</text>
-    <text x="183" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#388e3c" font-weight="700">6月</text>
+    <text x="82"  y="172" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888"><a href="/guide/may" style="color:#388e3c;font-weight:700;text-decoration:underline">5月</a></text>
+    <text x="183" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#388e3c" font-weight="700"><a href="/guide/june" style="color:#388e3c;font-weight:700;text-decoration:underline">6月</a></text>
     <text x="284" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#1b5e20" font-weight="700">7月</text>
-    <text x="385" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#1b5e20" font-weight="700">8月</text>
-    <text x="486" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#388e3c" font-weight="700">9月</text>
-    <text x="587" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888">10月</text>
+    <text x="385" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#1b5e20" font-weight="700"><a href="/guide/august" style="color:#388e3c;font-weight:700;text-decoration:underline">8月</a></text>
+    <text x="486" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#388e3c" font-weight="700"><a href="/guide/september" style="color:#388e3c;font-weight:700;text-decoration:underline">9月</a></text>
+    <text x="587" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888"><a href="/guide/october" style="color:#388e3c;font-weight:700;text-decoration:underline">10月</a></text>
     <text x="688" y="172" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#888">11月</text>
     <!-- 縦区切り線 -->
     <line x1="82"  y1="38" x2="82"  y2="155" stroke="#f0f0f0" stroke-width="1"/>
@@ -475,5 +485,23 @@
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+
+<script>
+(function(){
+  var m = new Date().getMonth()+1;
+  var map = {5:['6月の採集準備を今から！コクワガタが動き出す季節','/guide/june','6月の採集ガイドを読む'],
+             6:['クワガタシーズン開幕！6月の採集ガイド','/guide/june','今すぐ読む →'],
+             7:['🔥 採集最盛期！7月は全種が揃うベストシーズン','/guide/july','7月ガイドを読む'],
+             8:['カブトムシのピーク！8月の採集攻略法','/guide/august','8月ガイドを読む'],
+             9:['9月もまだ間に合う！秋の採集ガイド','/guide/september','9月ガイドを読む'],
+             10:['10月の採集はコクワが主役。シーズン終盤戦','/guide/october','10月ガイドを読む']};
+  if(!map[m]) return;
+  var d=document.createElement('div');
+  d.innerHTML='<div style="background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.85rem;border-bottom:3px solid #4caf50"><span>📅 '+map[m][0]+'</span><a href="'+map[m][1]+'" style="background:#fff;color:#1b5e20;font-weight:700;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;font-size:.8rem">'+map[m][2]+'</a></div>';
+  var header=document.getElementById('site-header');
+  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
+  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
+})();
+</script>
 </body>
 </html>

@@ -53,7 +53,6 @@
     .cta-box h2{font-size:1.1rem;margin-bottom:8px;color:#fff}
     .cta-box p{font-size:.85rem;color:#81c784;margin-bottom:16px}
     .cta-btn{display:inline-block;background:#43a047;color:#fff;padding:12px 28px;border-radius:8px;font-weight:700;font-size:.92rem}
-    footer{background:#1b2d1b;color:#81c784;text-align:center;padding:16px;font-size:.78rem;margin-top:40px}
   
     /* ── おすすめ商品ブロック ─────────────────────── */
     .rec-box{background:#fffbf0;border:2px solid #f0c040;border-radius:10px;padding:14px 16px;margin:22px 0}
@@ -84,6 +83,16 @@
     .yah-btn{display:inline-block;background:#ff0033;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
     .yah-btn:hover{background:#cc0029 !important;color:#fff !important}
     .amz-note{font-size:.7rem;color:#999;margin:0}
+  
+  /* ── フッターナビ ─────────────────────────────── */
+  footer{background:#1b2d1b;color:#81c784;padding:28px 16px 16px;font-size:.78rem;margin-top:40px}
+  .footer-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;max-width:800px;margin:0 auto 20px;padding:0 0 20px;border-bottom:1px solid #2e4e2e}
+  .footer-nav-group{display:flex;flex-direction:column;gap:6px}
+  .footer-nav-label{color:#a5d6a7;font-weight:700;font-size:.8rem;margin-bottom:2px}
+  .footer-nav a{color:#81c784;text-decoration:none;font-size:.78rem;line-height:1.6}
+  .footer-nav a:hover{color:#fff;text-decoration:underline}
+  .footer-bottom{text-align:center;color:#4a7a4a}
+  .footer-bottom a{color:#81c784}
   </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
@@ -134,7 +143,7 @@
 </head>
 <body>
 <header id="site-header">
-  <h1>🪲 クワガタ採集スポット検索</h1>
+  <h1>🪲 クワガタ<a href="/app" style="color:#388e3c;font-weight:700;text-decoration:underline">採集スポット</a>検索</h1>
   <a href="/app" class="home-btn">🗺 スポット検索</a>
   <a href="/guide" class="home-btn">📖 ガイド一覧</a>
 </header>
@@ -197,27 +206,27 @@
   </div>
 
   <h2 class="section">① 5月の採集状況</h2>
-  <p>5月はクワガタ採集の「プレシーズン」です。本格的なシーズンは6月下旬からですが、<strong>越冬した成虫</strong>が4月下旬〜5月に活動を再開します。</p>
+  <p>5月はクワガタ採集の「プレシーズン」です。本格的なシーズンは<a href="/guide/june" style="color:#388e3c;font-weight:700;text-decoration:underline">6月</a>下旬からですが、<strong>越冬した成虫</strong>が4月下旬〜5月に活動を再開します。</p>
   <p>採集できる種類と数は限られますが、長い冬を越えた個体を見つけた時の感動は格別です。また6月以降の本番に向けて、採集フィールドの下見や道具の準備確認にも最適な時期です。</p>
 
   <div class="warn-box">
     <div class="warn-title">✅ 5月を活用するポイント</div>
-    <p>採集できる量は少ないですが、6月以降の「当たり木」を昼間に探しておくのが最大の活用法です。樹液が出ているクヌギ・コナラの場所をメモしておくと、シーズン本番に迷わず動けます。</p>
+    <p>採集できる量は少ないですが、6月以降の「当たり木」を昼間に探しておくのが最大の活用法です。樹液が出ている<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">クヌギ</a>・<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">コナラ</a>の場所をメモしておくと、シーズン本番に迷わず動けます。</p>
   </div>
 
   <h2 class="section">② 5月に採れる種類</h2>
   <h3 class="sub">越冬できる種（5月から採集可能）</h3>
   <ul>
-    <li><strong>コクワガタ</strong>：5月から最も採集しやすい。朽木や根元で越冬個体が見つかる</li>
-    <li><strong>ヒラタクワガタ</strong>：河川沿いの朽木・土中で越冬。5月下旬から夜間の樹液にも出始める</li>
-    <li><strong>スジクワガタ</strong>：コクワガタと同様に越冬。朽木の中で見つかることがある</li>
+    <li><strong><a href="/guide/kokuwagata" style="color:#388e3c;font-weight:700;text-decoration:underline">コクワガタ</a></strong>：5月から最も採集しやすい。朽木や根元で越冬個体が見つかる</li>
+    <li><strong><a href="/guide/hirata" style="color:#388e3c;font-weight:700;text-decoration:underline">ヒラタクワガタ</a></strong>：河川沿いの朽木・土中で越冬。5月下旬から夜間の樹液にも出始める</li>
+    <li><strong><a href="/guide/suji" style="color:#388e3c;font-weight:700;text-decoration:underline">スジクワガタ</a></strong>：コクワガタと同様に越冬。朽木の中で見つかることがある</li>
   </ul>
   <h3 class="sub">越冬できない種（6月以降に出始める）</h3>
   <ul>
-    <li>ミヤマクワガタ：6月下旬〜</li>
-    <li>ノコギリクワガタ：6月〜</li>
-    <li>カブトムシ：7月〜</li>
-    <li>オオクワガタ：6月〜</li>
+    <li><a href="/guide/miyama" style="color:#388e3c;font-weight:700;text-decoration:underline">ミヤマクワガタ</a>：6月下旬〜</li>
+    <li><a href="/guide/nokogiri" style="color:#388e3c;font-weight:700;text-decoration:underline">ノコギリクワガタ</a>：6月〜</li>
+    <li><a href="/guide/kabuto" style="color:#388e3c;font-weight:700;text-decoration:underline">カブトムシ</a>：<a href="/guide/july" style="color:#388e3c;font-weight:700;text-decoration:underline">7月</a>〜</li>
+    <li><a href="/guide/ookuwa" style="color:#388e3c;font-weight:700;text-decoration:underline">オオクワガタ</a>：6月〜</li>
   </ul>
 
   <h2 class="section">③ 5月の採集方法</h2>
@@ -225,7 +234,7 @@
   <ul>
     <li>クヌギ・コナラの適度に腐食した倒木を探す</li>
     <li>木の皮をめくると越冬個体が見つかることがある</li>
-    <li>採集後は必ず木を元に戻す（翌年以降のために）</li>
+    <li><a href="/guide/aftercare" style="color:#388e3c;font-weight:700;text-decoration:underline">採集後</a>は必ず木を元に戻す（翌年以降のために）</li>
   </ul>
   <h3 class="sub">樹液採集（5月下旬から）</h3>
   <ul>
@@ -246,7 +255,7 @@
     <li><strong>クヌギ・コナラの場所</strong>：葉が出そろった状態で木を特定する。どんぐりの殻斗がある木の根元を探す</li>
     <li><strong>樹液の出具合</strong>：すでに樹液が出ている木があれば最有望候補。樹皮のひび割れやコブも将来の樹液スポットの目印</li>
     <li><strong>コクワガタの確認</strong>：5月下旬は越冬したコクワガタが活動開始。見つかればその木は本番でも有望</li>
-    <li><strong>アクセス・駐車場</strong>：夜間採集は暗闇の中を歩くため、明るいうちにルートを把握しておく</li>
+    <li><strong>アクセス・駐車場</strong>：<a href="/guide/night" style="color:#388e3c;font-weight:700;text-decoration:underline">夜間採集</a>は暗闇の中を歩くため、明るいうちにルートを把握しておく</li>
     <li><strong>スズメバチの巣</strong>：木の穴・地面・軒下などを確認。5月はまだ小さいが6月には大きくなる</li>
     <li><strong>隣の林道・林縁</strong>：1本の木だけでなく、周辺に広がるクヌギ林全体の規模を把握する</li>
   </ul>
@@ -259,10 +268,10 @@
     </thead>
     <tbody>
       <tr><td>照明</td><td>ヘッドライト（単3電池またはUSB充電式）・予備電池</td><td>□</td></tr>
-      <tr><td>採集道具</td><td>採集ケース・虫網・ピンセット・軍手</td><td>□</td></tr>
+      <tr><td><a href="/guide/tools" style="color:#388e3c;font-weight:700;text-decoration:underline">採集道具</a></td><td>採集ケース・虫網・ピンセット・軍手</td><td>□</td></tr>
       <tr><td>服装</td><td>長袖シャツ・長ズボン・帽子・運動靴（滑りにくいもの）</td><td>□</td></tr>
       <tr><td>安全対策</td><td>スズメバチスプレー・虫よけスプレー・ファーストエイドキット</td><td>□</td></tr>
-      <tr><td>飼育準備</td><td>飼育ケース・昆虫マット・昆虫ゼリー（持ち帰る場合）</td><td>□</td></tr>
+      <tr><td><a href="/guide/breeding" style="color:#388e3c;font-weight:700;text-decoration:underline">飼育</a>準備</td><td>飼育ケース・昆虫マット・昆虫ゼリー（持ち帰る場合）</td><td>□</td></tr>
       <tr><td>スポット</td><td>採集候補地を3か所以上リストアップ・アクセスルート確認</td><td>□</td></tr>
       <tr><td>情報収集</td><td>採集予定日の天気・気温・月明かりを確認（新月前後が好条件）</td><td>□</td></tr>
     </tbody>
@@ -378,7 +387,78 @@
     <a href="/app" class="cta-btn">無料でスポット検索</a>
   </div>
 </div>
-<footer>© 2026 クワガタ採集スポット検索 | <a href="/">トップ</a> | <a href="/app">スポット検索</a> | <a href="/guide">採集ガイド</a> | <a href="/privacy">プライバシーポリシー</a></footer>
+<footer>
+  <nav class="footer-nav">
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🪲 種別ガイド</span>
+      <a href="/guide/kabuto">カブトムシ</a>
+      <a href="/guide/miyama">ミヤマクワガタ</a>
+      <a href="/guide/nokogiri">ノコギリクワガタ</a>
+      <a href="/guide/hirata">ヒラタクワガタ</a>
+      <a href="/guide/kokuwagata">コクワガタ</a>
+      <a href="/guide/ookuwa">オオクワガタ</a>
+      <a href="/guide/akaashi">アカアシクワガタ</a>
+      <a href="/guide/suji">スジクワガタ</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📅 月別ガイド</span>
+      <a href="/guide/may">5月</a>
+      <a href="/guide/june">6月</a>
+      <a href="/guide/july">7月</a>
+      <a href="/guide/august">8月</a>
+      <a href="/guide/september">9月</a>
+      <a href="/guide/october">10月</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📖 採集テクニック</span>
+      <a href="/guide/beginners">初心者ガイド</a>
+      <a href="/guide/night">夜間採集</a>
+      <a href="/guide/rain">雨上がり採集</a>
+      <a href="/guide/morning">早朝採集</a>
+      <a href="/guide/trap">トラップ採集</a>
+      <a href="/guide/light">ライト採集</a>
+      <a href="/guide/tools">採集道具</a>
+      <a href="/guide/tree">採集木図鑑</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🗾 都道府県ガイド</span>
+      <a href="/guide/pref/tokyo">東京都</a>
+      <a href="/guide/pref/kanagawa">神奈川県</a>
+      <a href="/guide/pref/saitama">埼玉県</a>
+      <a href="/guide/pref/chiba">千葉県</a>
+      <a href="/guide/pref/nagano">長野県</a>
+      <a href="/guide/pref/yamanashi">山梨県</a>
+      <a href="/guide/pref/hokkaido">北海道</a>
+      <a href="/guide/pref">全都道府県一覧 →</a>
+    </div>
+  </nav>
+  <div class="footer-bottom">
+    <a href="/">クワガタ採集スポット検索 beetle-finder</a> ｜
+    <a href="/app">🗺 スポット検索</a> ｜
+    <a href="/guide">📖 ガイド一覧</a> ｜
+    <a href="/about">サービスについて</a> ｜
+    <a href="/privacy">プライバシーポリシー</a> ｜
+    <a href="/terms">利用規約</a>
+  </div>
+</footer>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+
+<script>
+(function(){
+  var m = new Date().getMonth()+1;
+  var map = {5:['6月の採集準備を今から！コクワガタが動き出す季節','/guide/june','6月の採集ガイドを読む'],
+             6:['クワガタシーズン開幕！6月の採集ガイド','/guide/june','今すぐ読む →'],
+             7:['🔥 採集最盛期！7月は全種が揃うベストシーズン','/guide/july','7月ガイドを読む'],
+             8:['カブトムシのピーク！8月の採集攻略法','/guide/august','8月ガイドを読む'],
+             9:['9月もまだ間に合う！秋の採集ガイド','/guide/september','9月ガイドを読む'],
+             10:['10月の採集はコクワが主役。シーズン終盤戦','/guide/october','10月ガイドを読む']};
+  if(!map[m]) return;
+  var d=document.createElement('div');
+  d.innerHTML='<div style="background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.85rem;border-bottom:3px solid #4caf50"><span>📅 '+map[m][0]+'</span><a href="'+map[m][1]+'" style="background:#fff;color:#1b5e20;font-weight:700;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;font-size:.8rem">'+map[m][2]+'</a></div>';
+  var header=document.getElementById('site-header');
+  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
+  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
+})();
+</script>
 </body>
 </html>

@@ -73,7 +73,6 @@
     .amz-btn:hover{background:#e68900 !important;color:#fff !important}
     .amz-note{font-size:.7rem;color:#999;margin:0}
     .cta-btn:hover{background:#388e3c;text-decoration:none;color:#fff}
-    footer{background:#1b2d1b;color:#81c784;text-align:center;padding:16px;font-size:.78rem;margin-top:40px}
   
     /* ── おすすめ商品ブロック ─────────────────────── */
     .rec-box{background:#fffbf0;border:2px solid #f0c040;border-radius:10px;padding:14px 16px;margin:22px 0}
@@ -104,6 +103,16 @@
     .yah-btn{display:inline-block;background:#ff0033;color:#fff !important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none !important}
     .yah-btn:hover{background:#cc0029 !important;color:#fff !important}
     .amz-note{font-size:.7rem;color:#999;margin:0}
+  
+  /* ── フッターナビ ─────────────────────────────── */
+  footer{background:#1b2d1b;color:#81c784;padding:28px 16px 16px;font-size:.78rem;margin-top:40px}
+  .footer-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;max-width:800px;margin:0 auto 20px;padding:0 0 20px;border-bottom:1px solid #2e4e2e}
+  .footer-nav-group{display:flex;flex-direction:column;gap:6px}
+  .footer-nav-label{color:#a5d6a7;font-weight:700;font-size:.8rem;margin-bottom:2px}
+  .footer-nav a{color:#81c784;text-decoration:none;font-size:.78rem;line-height:1.6}
+  .footer-nav a:hover{color:#fff;text-decoration:underline}
+  .footer-bottom{text-align:center;color:#4a7a4a}
+  .footer-bottom a{color:#81c784}
   </style>
 <script type="application/ld+json">
 {
@@ -199,7 +208,7 @@
 </head>
 <body>
 <header id="site-header">
-  <h1><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> クワガタ採集スポット検索</h1>
+  <h1><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ"> クワガタ<a href="/app" style="color:#388e3c;font-weight:700;text-decoration:underline">採集スポット</a>検索</h1>
   <a href="/app" class="home-btn">🗺 スポット検索</a>
   <a href="/guide" class="home-btn">📖 ガイド一覧</a>
 </header>
@@ -217,9 +226,9 @@
       <div class="spec-item"><span>学名</span>Dorcus hopei binodulosus</div>
       <div class="spec-item"><span>体長（オス）</span>25〜77mm（大型は非常に希少）</div>
       <div class="spec-item"><span>生息標高</span>200〜800m（中山地）</div>
-      <div class="spec-item"><span>採集シーズン</span>7月〜8月</div>
+      <div class="spec-item"><span>採集シーズン</span><a href="/guide/july" style="color:#388e3c;font-weight:700;text-decoration:underline">7月</a>〜<a href="/guide/august" style="color:#388e3c;font-weight:700;text-decoration:underline">8月</a></div>
       <div class="spec-item"><span>採集難易度</span>★★★★★（上級）</div>
-      <div class="spec-item"><span>主な生息地</span>コナラ・クヌギ・ブナ帯</div>
+      <div class="spec-item"><span>主な生息地</span><a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">コナラ</a>・<a href="/guide/tree" style="color:#388e3c;font-weight:700;text-decoration:underline">クヌギ</a>・ブナ帯</div>
     </div>
   </div>
 
@@ -233,7 +242,7 @@
 
   <h3 class="sub">外見の特徴</h3>
   <ul>
-    <li>全身が<strong>真っ黒で強い光沢</strong>を持つ（コクワガタに似るが大型）</li>
+    <li>全身が<strong>真っ黒で強い光沢</strong>を持つ（<a href="/guide/kokuwagata" style="color:#388e3c;font-weight:700;text-decoration:underline">コクワガタ</a>に似るが大型）</li>
     <li>大顎は太く、内歯が大きい</li>
     <li>上翅（ひいては全体）に縦スジ（条溝）がある</li>
     <li>コクワガタとの違い：体の幅が広く、大顎の付け根が太い</li>
@@ -292,7 +301,7 @@
 
   <div class="tip-box">
     <div class="tip-title">💡 採集より「繁殖」を楽しむ選択も</div>
-    <p>現在では野生のオオクワガタを採集するより、ブリード（人工繁殖）個体を購入して飼育・繁殖させる楽しみ方が主流です。80mmを超える超大型個体を育て上げる「累代飼育」は多くのマニアに親しまれています。</p>
+    <p>現在では野生のオオクワガタを採集するより、ブリード（人工繁殖）個体を購入して<a href="/guide/breeding" style="color:#388e3c;font-weight:700;text-decoration:underline">飼育</a>・繁殖させる楽しみ方が主流です。80mmを超える超大型個体を育て上げる「累代飼育」は多くのマニアに親しまれています。</p>
   </div>
 
   <h2 class="section" id="conservation">④ オオクワガタと自然保護</h2>
@@ -320,7 +329,7 @@
   </div>
 
   <h2 class="section" id="identification">⑥ オオクワガタとコクワガタの見分け方</h2>
-  <p>初心者がよく間違えるのが「オオクワガタ」と「コクワガタ」の識別です。野外でまず出会うのはほぼコクワガタで、オオクワガタは非常に希少です。</p>
+  <p><a href="/guide/beginners" style="color:#388e3c;font-weight:700;text-decoration:underline">初心者</a>がよく間違えるのが「オオクワガタ」と「コクワガタ」の識別です。野外でまず出会うのはほぼコクワガタで、オオクワガタは非常に希少です。</p>
 
   <h3 class="sub">主な識別ポイント</h3>
   <ul>
@@ -333,7 +342,7 @@
 
   <div class="warn-box">
     <div class="warn-title">⚠️ コクワガタと間違えないために</div>
-    <p>野外で「オオクワガタを採った！」と思ったらコクワガタだった、というケースが非常に多いです。採集後は必ず大きさ・体幅・大顎の形を確認しましょう。大きなコクワガタ（35〜40mm）はオオクワガタと誤認しやすいため注意が必要です。</p>
+    <p>野外で「オオクワガタを採った！」と思ったらコクワガタだった、というケースが非常に多いです。<a href="/guide/aftercare" style="color:#388e3c;font-weight:700;text-decoration:underline">採集後</a>は必ず大きさ・体幅・大顎の形を確認しましょう。大きなコクワガタ（35〜40mm）はオオクワガタと誤認しやすいため注意が必要です。</p>
   </div>
 
   <h2 class="section" id="faq">⑦ よくある質問（FAQ）</h2>
@@ -351,7 +360,7 @@
   <p>一般的な野外採集には特別な許可は不要です。ただし、国立公園・国定公園内や都道府県が指定する自然保護区では採集禁止の場合があります。また地域によっては天然記念物に準ずる扱いで規制されている場合があるため、事前に各地の条例を確認することを推奨します。</p>
 
   <h3 class="sub">Q. オオクワガタはペットとして飼育しやすいですか？</h3>
-  <p>クワガタの中では<strong>最も飼育しやすい種の一つ</strong>です。温度管理は20〜28°Cが適正で（ミヤマクワガタほど温度に神経質でない）、越冬する長寿種のため長期間楽しめます。攻撃性もそれほど高くないため（ヒラタクワガタより扱いやすい）、初心者でも十分に楽しめます。</p>
+  <p>クワガタの中では<strong>最も飼育しやすい種の一つ</strong>です。温度管理は20〜28°Cが適正で（<a href="/guide/miyama" style="color:#388e3c;font-weight:700;text-decoration:underline">ミヤマクワガタ</a>ほど温度に神経質でない）、越冬する長寿種のため長期間楽しめます。攻撃性もそれほど高くないため（<a href="/guide/hirata" style="color:#388e3c;font-weight:700;text-decoration:underline">ヒラタクワガタ</a>より扱いやすい）、初心者でも十分に楽しめます。</p>
 
   <h3 class="sub">Q. オオクワガタの「フラス」とは何ですか？</h3>
   <p>フラスとは、オオクワガタ（特に幼虫）が朽木を食べた際に排出する木くず状の排泄物・削り粉のことです。フラスが木の根元に落ちているコナラ・クヌギの大木は、オオクワガタ（または他のクワガタ）の幼虫が中にいるサインです。採集時はフラスの存在を必ず確認しましょう。</p>
@@ -430,14 +439,77 @@
   </div>
 </div>
 <footer>
-  © 2026 クワガタ採集スポット検索 |
-  <a href="/">トップ</a> |
-  <a href="/app">スポット検索</a> |
-  <a href="/guide">採集ガイド</a> |
-  <a href="/about">サービスについて</a> |
-  <a href="/privacy">プライバシーポリシー</a> |
-  <a href="/terms">利用規約</a>
+  <nav class="footer-nav">
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🪲 種別ガイド</span>
+      <a href="/guide/kabuto">カブトムシ</a>
+      <a href="/guide/miyama">ミヤマクワガタ</a>
+      <a href="/guide/nokogiri">ノコギリクワガタ</a>
+      <a href="/guide/hirata">ヒラタクワガタ</a>
+      <a href="/guide/kokuwagata">コクワガタ</a>
+      <a href="/guide/ookuwa">オオクワガタ</a>
+      <a href="/guide/akaashi">アカアシクワガタ</a>
+      <a href="/guide/suji">スジクワガタ</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📅 月別ガイド</span>
+      <a href="/guide/may">5月</a>
+      <a href="/guide/june">6月</a>
+      <a href="/guide/july">7月</a>
+      <a href="/guide/august">8月</a>
+      <a href="/guide/september">9月</a>
+      <a href="/guide/october">10月</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">📖 採集テクニック</span>
+      <a href="/guide/beginners">初心者ガイド</a>
+      <a href="/guide/night">夜間採集</a>
+      <a href="/guide/rain">雨上がり採集</a>
+      <a href="/guide/morning">早朝採集</a>
+      <a href="/guide/trap">トラップ採集</a>
+      <a href="/guide/light">ライト採集</a>
+      <a href="/guide/tools">採集道具</a>
+      <a href="/guide/tree">採集木図鑑</a>
+    </div>
+    <div class="footer-nav-group">
+      <span class="footer-nav-label">🗾 都道府県ガイド</span>
+      <a href="/guide/pref/tokyo">東京都</a>
+      <a href="/guide/pref/kanagawa">神奈川県</a>
+      <a href="/guide/pref/saitama">埼玉県</a>
+      <a href="/guide/pref/chiba">千葉県</a>
+      <a href="/guide/pref/nagano">長野県</a>
+      <a href="/guide/pref/yamanashi">山梨県</a>
+      <a href="/guide/pref/hokkaido">北海道</a>
+      <a href="/guide/pref">全都道府県一覧 →</a>
+    </div>
+  </nav>
+  <div class="footer-bottom">
+    <a href="/">クワガタ採集スポット検索 beetle-finder</a> ｜
+    <a href="/app">🗺 スポット検索</a> ｜
+    <a href="/guide">📖 ガイド一覧</a> ｜
+    <a href="/about">サービスについて</a> ｜
+    <a href="/privacy">プライバシーポリシー</a> ｜
+    <a href="/terms">利用規約</a>
+  </div>
 </footer>
 
+
+<script>
+(function(){
+  var m = new Date().getMonth()+1;
+  var map = {5:['6月の採集準備を今から！コクワガタが動き出す季節','/guide/june','6月の採集ガイドを読む'],
+             6:['クワガタシーズン開幕！6月の採集ガイド','/guide/june','今すぐ読む →'],
+             7:['🔥 採集最盛期！7月は全種が揃うベストシーズン','/guide/july','7月ガイドを読む'],
+             8:['カブトムシのピーク！8月の採集攻略法','/guide/august','8月ガイドを読む'],
+             9:['9月もまだ間に合う！秋の採集ガイド','/guide/september','9月ガイドを読む'],
+             10:['10月の採集はコクワが主役。シーズン終盤戦','/guide/october','10月ガイドを読む']};
+  if(!map[m]) return;
+  var d=document.createElement('div');
+  d.innerHTML='<div style="background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.85rem;border-bottom:3px solid #4caf50"><span>📅 '+map[m][0]+'</span><a href="'+map[m][1]+'" style="background:#fff;color:#1b5e20;font-weight:700;padding:6px 14px;border-radius:20px;text-decoration:none;white-space:nowrap;font-size:.8rem">'+map[m][2]+'</a></div>';
+  var header=document.getElementById('site-header');
+  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
+  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
+})();
+</script>
 </body>
 </html>
