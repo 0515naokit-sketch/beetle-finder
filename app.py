@@ -668,6 +668,11 @@ def guide_breeding():
     return render_template("guide_breeding.html")
 
 
+@app.route("/guide/larva")
+def guide_larva():
+    return render_template("guide_larva.html")
+
+
 @app.route("/guide/case")
 def guide_case():
     return render_template("guide_case.html")
@@ -1254,6 +1259,7 @@ def sitemap():
         ("https://beetle-finder.onrender.com/guide/trap",      "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/calendar",  "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/breeding",  "monthly", "0.8", today),
+        ("https://beetle-finder.onrender.com/guide/larva",     "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/case",      "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/jiyukenkyu",        "monthly", "0.8", today),
         ("https://beetle-finder.onrender.com/guide/jiyukenkyu-kabuto", "monthly", "0.8", today),
