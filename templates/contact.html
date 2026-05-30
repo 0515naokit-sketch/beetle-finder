@@ -11,6 +11,15 @@
  </script>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#2e7d32">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="クワガタ検索">
+ <link rel="manifest" href="/manifest.json">
+ <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
   <link rel="canonical" href="https://beetle-finder.onrender.com/contact">
  <link rel="alternate" type="application/rss+xml" title="クワガタ採集スポット検索" href="https://beetle-finder.onrender.com/feed.xml">
  <title>お問い合わせ | クワガタ採集スポット検索</title>
@@ -202,5 +211,14 @@
  <div>© 2024 クワガタ採集スポット検索</div>
 </footer>
 
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .catch(e=>console.warn('[SW] 登録失敗:',e));
+  });
+}
+</script>
 </body>
 </html>

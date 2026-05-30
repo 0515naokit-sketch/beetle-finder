@@ -1,0 +1,58 @@
+{
+  "name": "クワガタ採集スポット検索",
+  "short_name": "クワガタ検索",
+  "description": "月齢・気象・標高データでクワガタ・カブトムシの採集スポットを絞り込む無料サービス。全国47都道府県対応。",
+  "start_url": "/app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#1b5e20",
+  "theme_color": "#2e7d32",
+  "lang": "ja",
+  "categories": ["lifestyle", "navigation", "education"],
+  "icons": [
+    {
+      "src": "/static/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/static/ogp_main.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "採集スポット検索画面"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "採集スポット検索",
+      "short_name": "検索",
+      "description": "今夜の採集スポットをすぐに検索",
+      "url": "/app",
+      "icons": [{ "src": "/static/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "採集ガイド",
+      "short_name": "ガイド",
+      "description": "クワガタ採集ガイドを読む",
+      "url": "/guide",
+      "icons": [{ "src": "/static/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

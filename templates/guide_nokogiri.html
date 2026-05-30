@@ -11,6 +11,15 @@
  </script>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#2e7d32">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="クワガタ検索">
+ <link rel="manifest" href="/manifest.json">
+ <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
  <link rel="preload" as="image" href="/static/img/photo-1441974231531-c6227db76b6e.jpg" fetchpriority="high">
  <title>ノコギリクワガタ採集 時期・場所・コツ｜<a href="/guide/july" style="color:#388e3c;font-weight:700;text-decoration:underline">7月</a>がピーク！平地〜低山地での見つけ方【2026年】</title>
  <meta name="description" content="ノコギリクワガタの採集ガイド。平地〜低山地で最も身近なクワガタ、6〜9月が採集シーズンで7月がピーク。採集場所・コツ・ミヤマとの見分け方を初心者向けに徹底解説。">
@@ -628,6 +637,15 @@
  var h=document.getElementById('site-header');
  if(h&&h.nextSibling)h.parentNode.insertBefore(d.firstChild,h.nextSibling);
 })();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .catch(e=>console.warn('[SW] 登録失敗:',e));
+  });
+}
 </script>
 </body>
 </html>

@@ -11,6 +11,15 @@
  </script>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#2e7d32">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="クワガタ検索">
+ <link rel="manifest" href="/manifest.json">
+ <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
  <link rel="preload" as="image" href="/static/img/photo-1542273917363-3b1817f69a2d.jpg" fetchpriority="high">
  <title>スジクワガタ採集ガイド【2026年最新】| 生息地・時期・採集方法・コクワとの違いを解説</title>
  <meta name="description" content="スジクワガタの採集ガイド。翅鞘の縦筋が特徴の小型クワガタ。生息地・採集時期・採集のコツ・コクワガタとの見分け方・飼育方法を初心者向けに解説。">
@@ -621,6 +630,15 @@
  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
 })();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .catch(e=>console.warn('[SW] 登録失敗:',e));
+  });
+}
 </script>
 </body>
 </html>

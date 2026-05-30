@@ -1307,6 +1307,31 @@ def ogp_png():
     return send_from_directory("static", "ogp.png", mimetype="image/png")
 
 
+@app.route("/manifest.json")
+def manifest():
+    """PWA Web App Manifest"""
+    from flask import send_from_directory
+    return send_from_directory("static", "manifest.json", mimetype="application/manifest+json")
+
+
+@app.route("/sw.js")
+def service_worker():
+    """Service Worker（キャッシュ制御）"""
+    from flask import send_from_directory, make_response
+    resp = make_response(send_from_directory("static", "sw.js", mimetype="application/javascript"))
+    resp.headers["Service-Worker-Allowed"] = "/"
+    resp.headers["Cache-Control"] = "no-cache"
+    return resp
+
+
+@app.route("/apple-touch-icon.png")
+@app.route("/apple-touch-icon-precomposed.png")
+def apple_touch_icon():
+    """iOS ホーム画面アイコン"""
+    from flask import send_from_directory
+    return send_from_directory("static", "apple-touch-icon.png", mimetype="image/png")
+
+
 @app.route("/sitemap.xml")
 def sitemap():
     # lastmod は各ページの実際の最終更新日を固定値で設定する（動的 date.today() は使わない）

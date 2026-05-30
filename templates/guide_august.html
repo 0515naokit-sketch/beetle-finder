@@ -11,6 +11,15 @@
  </script>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#2e7d32">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="クワガタ検索">
+ <link rel="manifest" href="/manifest.json">
+ <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
  <title>8月のクワガタ採集ガイド【2026年最新】｜後半シーズン・ヒラタ・ノコギリ狙い目</title>
  <meta name="description" content="8月のクワガタ採集ガイド。ヒラタ・ノコギリが継続するシーズン後半の攻略法。ミヤマが減少する8月の種別採集作戦・場所・時間帯を解説。">
  <meta name="keywords" content="8月 クワガタ 採集 ヒラタ ノコギリ シーズン後半 熱帯夜 カブトムシ">
@@ -496,6 +505,15 @@
  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
 })();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .catch(e=>console.warn('[SW] 登録失敗:',e));
+  });
+}
 </script>
 </body>
 </html>

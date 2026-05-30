@@ -11,6 +11,15 @@
  </script>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#2e7d32">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="クワガタ検索">
+ <link rel="manifest" href="/manifest.json">
+ <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
  <link rel="preload" as="image" href="/static/img/photo-1506905925346-21bda4d32df4.jpg" fetchpriority="high">
  <title>アカアシクワガタ採集ガイド【2026年最新】| 生息地・時期・採集方法を徹底解説</title>
  <meta name="description" content="アカアシクワガタの採集ガイド。脚が赤い特徴的な山地性クワガタ。ブナ帯・ミズナラ林での採集時期・場所・採集テクニック・ミヤマとの違いを詳しく解説。">
@@ -596,6 +605,15 @@
  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
 })();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .catch(e=>console.warn('[SW] 登録失敗:',e));
+  });
+}
 </script>
 </body>
 </html>

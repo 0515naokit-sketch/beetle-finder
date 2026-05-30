@@ -4,6 +4,15 @@
  <script async src="https://www.googletagmanager.com/gtag/js?id=G-D50YSSYFKN"></script>
  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D50YSSYFKN');</script>
  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#2e7d32">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="クワガタ検索">
+ <link rel="manifest" href="/manifest.json">
+ <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
  <title>愛媛県のクワガタ<a href="/app" style="color:#388e3c;font-weight:700;text-decoration:underline">採集スポット</a>｜石鎚山・久万高原・肱川で採れる種・時期・場所まとめ【2026年】</title>
  <meta name="description" content="愛媛県でクワガタ・カブトムシが採れる場所を徹底解説。石鎚山・久万高原・面河渓・肱川ヒラタ。ミヤマ・アカアシ・ノコギリの採れる場所・時期・コツを徹底解説。松山市・宇和島から日帰り可能。">
  <meta name="keywords" content="愛媛県 クワガタ 採集 石鎚山 久万高原 肱川 ミヤマクワガタ アカアシクワガタ 松山 採れる場所">
@@ -465,6 +474,15 @@
  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
 })();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .catch(e=>console.warn('[SW] 登録失敗:',e));
+  });
+}
 </script>
 </body>
 </html>

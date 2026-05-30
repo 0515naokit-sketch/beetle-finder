@@ -5,6 +5,15 @@
  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D50YSSYFKN');</script>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#2e7d32">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="クワガタ検索">
+ <link rel="manifest" href="/manifest.json">
+ <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
  <title>京都府のクワガタ<a href="/app" style="color:#388e3c;font-weight:700;text-decoration:underline">採集スポット</a>｜美山・京都北山・丹波で採れる種・時期・場所まとめ【2026年】</title>
  <meta name="description" content="京都府でクワガタ・カブトムシが採れる場所を徹底解説。美山・京都北山・丹波高地・由良川ヒラタ。ノコギリ・コクワ・ヒラタ・ミヤマの採れる場所・時期・コツを徹底解説。京都市内から日帰り可能。">
  <meta name="keywords" content="京都府 クワガタ 採集 美山 京都北山 丹波 由良川 ノコギリクワガタ ヒラタクワガタ ミヤマクワガタ 採れる場所">
@@ -456,6 +465,15 @@
  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
 })();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .catch(e=>console.warn('[SW] 登録失敗:',e));
+  });
+}
 </script>
 </body>
 </html>

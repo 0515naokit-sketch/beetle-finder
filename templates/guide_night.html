@@ -11,6 +11,15 @@
  </script>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#2e7d32">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="クワガタ検索">
+ <link rel="manifest" href="/manifest.json">
+ <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
  <title>クワガタ・<a href="/guide/kabuto" style="color:#388e3c;font-weight:700;text-decoration:underline">カブトムシ</a> 夜採集 何時から出る？｜時間帯・場所・コツを完全解説【2026年】</title>
  <meta name="description" content="クワガタ・カブトムシの夜間採集ガイド。何時から出てくる？ベストは21〜23時。月齢・気温・天気・場所の選び方から安全対策まで、初心者でもわかりやすく完全解説。">
  <meta name="keywords" content="夜間採集 クワガタ カブトムシ 時間帯 コツ 何時 夜 採集 方法">
@@ -518,6 +527,15 @@
  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
 })();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .catch(e=>console.warn('[SW] 登録失敗:',e));
+  });
+}
 </script>
 </body>
 </html>

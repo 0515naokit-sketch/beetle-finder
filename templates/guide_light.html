@@ -11,6 +11,15 @@
  </script>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#2e7d32">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="クワガタ検索">
+ <link rel="manifest" href="/manifest.json">
+ <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
  <link rel="preload" as="image" href="/static/img/photo-1419242902214-272b3f66ee7a.jpg" fetchpriority="high">
  <title>街灯採集 やり方・場所選び｜クワガタ・<a href="/guide/kabuto" style="color:#388e3c;font-weight:700;text-decoration:underline">カブトムシ</a>を光に集める<a href="/guide/night" style="color:#388e3c;font-weight:700;text-decoration:underline">夜間採集</a>ガイド【2026年】</title>
  <meta name="description" content="街灯採集・ライトトラップ採集の完全ガイド。クワガタやカブトムシを光に集める方法、新月が最適な理由、場所選びのコツ、ヘッドライト・白いシートの使い方まで解説。">
@@ -602,6 +611,15 @@
  if(header&&header.nextSibling){header.parentNode.insertBefore(d.firstChild,header.nextSibling);}
  else{document.body.insertBefore(d.firstChild,document.body.firstChild);}
 })();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .catch(e=>console.warn('[SW] 登録失敗:',e));
+  });
+}
 </script>
 </body>
 </html>

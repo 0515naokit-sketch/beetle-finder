@@ -11,6 +11,15 @@
  </script>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#2e7d32">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="クワガタ検索">
+ <link rel="manifest" href="/manifest.json">
+ <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
   <link rel="canonical" href="https://beetle-finder.onrender.com/">
  <title>クワガタ・カブトムシ採集スポット検索 | 採れる場所を地図で探せる無料サービス</title>
  <meta name="description" content="出発地を入力するだけ。クワガタ・カブトムシが採れる採集スポットを地図で表示。標高・月齢・気象データで全国の採集ポイントをランキング。全国対応・完全無料。">
@@ -853,6 +862,15 @@ window.addEventListener('load',function(){
  });
  }catch(e){}
 });
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .catch(e=>console.warn('[SW] 登録失敗:',e));
+  });
+}
 </script>
 </body>
 </html>

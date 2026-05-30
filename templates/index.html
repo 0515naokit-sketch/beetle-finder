@@ -11,6 +11,15 @@
  </script>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+ <meta name="theme-color" content="#2e7d32">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="クワガタ検索">
+ <link rel="manifest" href="/manifest.json">
+ <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
  <title>クワガタ採集スポット検索 | 今夜採れる場所を地図で表示</title>
  <meta name="description" content="出発地と時間を入力するだけ。クワガタ・カブトムシが採れる山林ゾーンを地図に表示。標高・河川・月齢・気象データで採集スポットを本格スコアリング。全国対応・無料。">
  <meta name="keywords" content="クワガタ 採集 スポット 場所 地図 ミヤマクワガタ オオクワガタ ノコギリクワガタ ヒラタクワガタ カブトムシ 採集場所 採集ポイント">
@@ -3190,6 +3199,15 @@ function _initSidebarTopAd(){
  }
  });
 })();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .catch(e=>console.warn('[SW] 登録失敗:',e));
+  });
+}
 </script>
 </body>
 </html>

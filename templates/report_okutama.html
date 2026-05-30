@@ -5,6 +5,15 @@
  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-D50YSSYFKN');</script>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#2e7d32">
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="クワガタ検索">
+ <link rel="manifest" href="/manifest.json">
+ <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+ <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+ <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
  <title>奥多摩でミヤマクワガタ採集レポート｜夜間樹液採集で5匹GET【2025年7月】</title>
  <meta name="description" content="2025年7月、奥多摩のクヌギ林で夜間採集を実施。月齢3の暗い夜を狙い、ミヤマクワガタのオス3匹・メス2匹を確認。場所選び・時間帯・装備を詳しくレポート。">
  <meta property="og:title" content="奥多摩でミヤマクワガタ採集レポート｜夜間樹液採集で5匹GET【2025年7月】">
@@ -450,5 +459,14 @@
 </footer>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
 <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .catch(e=>console.warn('[SW] 登録失敗:',e));
+  });
+}
+</script>
 </body>
 </html>
