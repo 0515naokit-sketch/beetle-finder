@@ -737,6 +737,16 @@ def guide_overwinter():
     return render_template("guide_overwinter.html")
 
 
+@app.route("/guide/november")
+def guide_november():
+    return render_template("guide_november.html")
+
+
+@app.route("/guide/spring")
+def guide_spring():
+    return render_template("guide_spring.html")
+
+
 SPOT_DATA = {
     # 北海道・東北
     "hokkaido":  {"name": "北海道",   "alt": "道内各山地",             "elev": "0〜800m",    "species": "ミヤマ・ノコギリ・コクワ",         "spots": "道南・道央の雑木林",               "best_month": "7〜8月"},
@@ -1077,6 +1087,16 @@ def rss_feed():
     # カテゴリ: 採集ガイド / 飼育ガイド / 種類ガイド / 採集レポート / 都道府県
     items = [
         # ── 2026-05-31 新規公開 ──
+        {"title": "春（3〜5月）のクワガタ採集ガイド｜越冬個体・材割り・シーズン開幕準備",
+         "link": f"{BASE}/guide/spring",
+         "desc": "春3〜5月のクワガタ採集ガイド。越冬から目覚めたコクワガタ・ヒラタクワガタが狙えます。月別の採集方法・種別活動時期一覧・シーズン開幕前チェックリスト・材割り採集のコツまで完全解説。",
+         "date": "Sat, 31 May 2026 12:00:00 +0900",
+         "cat": "採集ガイド"},
+        {"title": "11月のクワガタ採集ガイド｜材割り採集・越冬個体探し・来シーズン準備",
+         "link": f"{BASE}/guide/november",
+         "desc": "11月のクワガタ採集ガイド。シーズンオフでも材割り採集でコクワガタ・オオクワガタが狙えます。越冬管理チェックリスト・幼虫飼育・来シーズンの準備まで完全解説。",
+         "date": "Sat, 31 May 2026 11:00:00 +0900",
+         "cat": "採集ガイド"},
         {"title": "クワガタの越冬方法【完全ガイド2026年版】冬の管理・春の起こし方まで",
          "link": f"{BASE}/guide/overwinter",
          "desc": "クワガタの越冬方法を完全解説。越冬できる種・できない種の一覧、越冬セットの作り方（マット・温度・湿度管理）、10月〜4月の月別管理カレンダー、よくある失敗と対策、春の起こし方まで採集歴20年のプロが詳しく解説。",
@@ -1403,12 +1423,14 @@ def sitemap():
 
         # ── 月別採集カレンダー（シーズンコンテンツ → yearly） ──
         (f"{BASE}/guide/calendar",   "yearly", "0.8", D_TODAY),
+        (f"{BASE}/guide/spring",     "yearly", "0.8", D_TODAY),
         (f"{BASE}/guide/may",        "yearly", "0.7", D_TODAY),
         (f"{BASE}/guide/june",       "yearly", "0.7", D_TODAY),
         (f"{BASE}/guide/july",       "yearly", "0.8", D_TODAY),
         (f"{BASE}/guide/august",     "yearly", "0.8", D_TODAY),
         (f"{BASE}/guide/september",  "yearly", "0.7", D_TODAY),
         (f"{BASE}/guide/october",    "yearly", "0.7", D_TODAY),
+        (f"{BASE}/guide/november",   "yearly", "0.8", D_TODAY),
 
         # ── 採集レポート（yearly） ──
         (f"{BASE}/guide/reports",           "yearly", "0.7", D_TODAY),
