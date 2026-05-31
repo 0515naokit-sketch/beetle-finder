@@ -1,7 +1,7 @@
 import sys
 sys.setrecursionlimit(10000)   # gevent + SSL ハンドシェイクの深い再帰に対応
 
-from flask import Flask, render_template, Response, jsonify, request, stream_with_context, abort
+from flask import Flask, render_template, Response, jsonify, request, stream_with_context, abort, redirect
 from pref_data import PREF_DATA as PREF_GUIDE_DATA
 import requests
 from requests.adapters import HTTPAdapter
@@ -852,11 +852,10 @@ def guide_rain():
 
 @app.route("/guide/spot/<pref>")
 def guide_spot(pref):
-    data = SPOT_DATA.get(pref)
-    if not data:
-        from flask import abort
-        abort(404)
-    return render_template("guide_spot.html", pref=pref, **data)
+    # /guide/pref/<pref> に統一（重複コンテンツ解消）
+    if pref in SPOT_DATA:
+        return redirect(f"/guide/pref/{pref}", 301)
+    abort(404)
 
 
 @app.route("/about")
@@ -880,6 +879,11 @@ def contact():
 
 
 # ── 都道府県別ガイド ──────────────────────────────────────────
+@app.route("/guide/pref")
+def guide_pref_index():
+    return render_template("guide_pref_index.html")
+
+
 @app.route("/guide/pref/tokyo")
 def guide_pref_tokyo():
     return render_template("guide_pref_tokyo.html")
@@ -1451,56 +1455,8 @@ def sitemap():
         (f"{BASE}/guide/report/takao",      "yearly", "0.7", D_TODAY),
         (f"{BASE}/guide/report/tsukuba",    "yearly", "0.7", D_TODAY),
 
-        # ── 都道府県別スポットガイド（/guide/spot/<pref> / 47ページ / yearly） ──
-        (f"{BASE}/guide/spot/hokkaido",  "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/aomori",    "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/iwate",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/miyagi",    "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/akita",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/yamagata",  "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/fukushima", "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/ibaraki",   "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/tochigi",   "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/gunma",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/saitama",   "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/chiba",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/tokyo",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/kanagawa",  "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/niigata",   "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/toyama",    "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/ishikawa",  "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/fukui",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/yamanashi", "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/nagano",    "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/gifu",      "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/shizuoka",  "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/aichi",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/mie",       "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/shiga",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/kyoto",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/osaka",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/hyogo",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/nara",      "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/wakayama",  "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/tottori",   "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/shimane",   "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/okayama",   "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/hiroshima", "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/yamaguchi", "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/tokushima", "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/kagawa",    "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/ehime",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/kochi",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/fukuoka",   "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/saga",      "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/nagasaki",  "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/kumamoto",  "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/oita",      "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/miyazaki",  "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/kagoshima", "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/spot/okinawa",   "yearly", "0.7", D_STABLE),
-
-        # ── 都道府県別採集ガイド（/guide/pref/<pref> / 47ページ / yearly） ──
+        # ── 都道府県別採集ガイド（/guide/pref/<pref> / 47ページ）
+        # ※ /guide/spot/<pref> は /guide/pref/<pref> へ301リダイレクト済み・サイトマップから除外 ──
         (f"{BASE}/guide/pref/hokkaido",  "yearly", "0.7", D_STABLE),
         (f"{BASE}/guide/pref/aomori",    "yearly", "0.7", D_STABLE),
         (f"{BASE}/guide/pref/iwate",     "yearly", "0.7", D_STABLE),
@@ -1511,6 +1467,7 @@ def sitemap():
         (f"{BASE}/guide/pref/ibaraki",   "yearly", "0.7", D_STABLE),
         (f"{BASE}/guide/pref/tochigi",   "yearly", "0.7", D_STABLE),
         (f"{BASE}/guide/pref/gunma",     "yearly", "0.7", D_STABLE),
+        (f"{BASE}/guide/pref",           "yearly", "0.8", D_TODAY),
         (f"{BASE}/guide/pref/saitama",   "yearly", "0.7", D_STABLE),
         (f"{BASE}/guide/pref/chiba",     "yearly", "0.7", D_STABLE),
         (f"{BASE}/guide/pref/tokyo",     "yearly", "0.7", D_STABLE),
