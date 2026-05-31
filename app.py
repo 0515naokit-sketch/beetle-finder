@@ -598,6 +598,11 @@ def report_takao():
     return render_template("report_takao.html")
 
 
+@app.route("/guide/report/tsukuba")
+def report_tsukuba():
+    return render_template("report_tsukuba.html")
+
+
 @app.route("/guide/scoring")
 def guide_scoring():
     return render_template("guide_scoring.html")
@@ -1149,6 +1154,13 @@ def rss_feed():
          "date": "Fri, 30 May 2026 04:30:00 +0900",
          "cat": "飼育ガイド"},
 
+        # ── 2026-05-30 公開 ──
+        {"title": "筑波山麓 ヒラタクワガタ採集レポート2025年8月｜65mmオス含む7匹",
+         "link": f"{BASE}/guide/report/tsukuba",
+         "desc": "筑波山麓での夜間採集レポート。ヒラタクワガタ♂65mm含む7匹（ヒラタ2・コクワ5）を採集。低標高里山のヤナギ狙いで好成果。時間別グラフ・タイムライン・ギアリスト掲載。",
+         "date": "Sat, 30 May 2026 10:00:00 +0900",
+         "cat": "採集レポート"},
+
         # ── 2026-05-28 公開 ──
         {"title": "奥多摩 ミヤマクワガタ夜間採集レポート2025年7月｜ミヤマ5匹・最大63mm",
          "link": f"{BASE}/guide/report/okutama",
@@ -1437,6 +1449,7 @@ def sitemap():
         (f"{BASE}/guide/report/okutama",    "yearly", "0.7", D_TODAY),
         (f"{BASE}/guide/report/chichibu",   "yearly", "0.7", D_TODAY),
         (f"{BASE}/guide/report/takao",      "yearly", "0.7", D_TODAY),
+        (f"{BASE}/guide/report/tsukuba",    "yearly", "0.7", D_TODAY),
 
         # ── 都道府県別スポットガイド（/guide/spot/<pref> / 47ページ / yearly） ──
         (f"{BASE}/guide/spot/hokkaido",  "yearly", "0.7", D_STABLE),
