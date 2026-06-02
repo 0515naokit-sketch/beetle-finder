@@ -628,6 +628,11 @@ def guide_tools():
     return render_template("guide_tools.html")
 
 
+@app.route("/guide/beginner-kit")
+def guide_beginner_kit():
+    return render_template("guide_beginner_kit.html")
+
+
 @app.route("/guide/nokogiri")
 def guide_nokogiri():
     return render_template("guide_nokogiri.html")
@@ -1397,7 +1402,8 @@ def sitemap():
         (f"{BASE}/guide", "monthly", "0.8", D_TODAY),
 
         # ── 採集技術・初心者向けガイド（年数回更新想定 → monthly） ──
-        (f"{BASE}/guide/beginners", "monthly", "0.8", D_TODAY),
+        (f"{BASE}/guide/beginners",    "monthly", "0.8", D_TODAY),
+        (f"{BASE}/guide/beginner-kit", "monthly", "0.8", "2026-05-31"),
         (f"{BASE}/guide/scoring",   "monthly", "0.7", D_TODAY),
         (f"{BASE}/guide/trap",      "monthly", "0.8", D_TODAY),
         (f"{BASE}/guide/light",     "monthly", "0.7", D_TODAY),
