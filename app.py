@@ -1388,8 +1388,8 @@ def apple_touch_icon():
 def sitemap():
     # lastmod は各ページの実際の最終更新日を固定値で設定する（動的 date.today() は使わない）
     # ※ コンテンツ更新時は該当URLの日付を修正してpushすること
-    # 最終一括更新: 2026-05-30（OGP/構造化データ/E-E-A-T/alt整備）
-    D_TODAY   = "2026-05-30"  # 本日一括更新したページ
+    # 最終一括更新: 2026-06-03（AdSense審査対策・コンテンツ大幅増量・noindex整備）
+    D_TODAY   = "2026-06-03"  # 本日一括更新したページ
     D_STABLE  = "2026-05-30"  # 公開時から安定しているページ（初回公開日）
 
     BASE = "https://beetle-finder.onrender.com"
@@ -1403,7 +1403,7 @@ def sitemap():
 
         # ── 採集技術・初心者向けガイド（年数回更新想定 → monthly） ──
         (f"{BASE}/guide/beginners",    "monthly", "0.8", D_TODAY),
-        (f"{BASE}/guide/beginner-kit", "monthly", "0.8", "2026-05-31"),
+        (f"{BASE}/guide/beginner-kit", "monthly", "0.8", D_TODAY),
         (f"{BASE}/guide/scoring",   "monthly", "0.7", D_TODAY),
         (f"{BASE}/guide/trap",      "monthly", "0.8", D_TODAY),
         (f"{BASE}/guide/light",     "monthly", "0.7", D_TODAY),
@@ -1474,10 +1474,10 @@ def sitemap():
         (f"{BASE}/guide/pref/tochigi",   "yearly", "0.7", D_STABLE),
         (f"{BASE}/guide/pref/gunma",     "yearly", "0.7", D_STABLE),
         (f"{BASE}/guide/pref",           "yearly", "0.8", D_TODAY),
-        (f"{BASE}/guide/pref/saitama",   "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/pref/chiba",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/pref/tokyo",     "yearly", "0.7", D_STABLE),
-        (f"{BASE}/guide/pref/kanagawa",  "yearly", "0.7", D_STABLE),
+        (f"{BASE}/guide/pref/saitama",   "monthly", "0.8", D_TODAY),
+        (f"{BASE}/guide/pref/chiba",     "monthly", "0.8", D_TODAY),
+        (f"{BASE}/guide/pref/tokyo",     "monthly", "0.8", D_TODAY),
+        (f"{BASE}/guide/pref/kanagawa",  "monthly", "0.8", D_TODAY),
         (f"{BASE}/guide/pref/niigata",   "yearly", "0.7", D_STABLE),
         (f"{BASE}/guide/pref/toyama",    "yearly", "0.7", D_STABLE),
         (f"{BASE}/guide/pref/ishikawa",  "yearly", "0.7", D_STABLE),
