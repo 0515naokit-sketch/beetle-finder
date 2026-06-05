@@ -583,6 +583,11 @@ def guide_reports():
     return render_template("guide_reports.html")
 
 
+@app.route("/guide/experiences")
+def guide_experiences():
+    return render_template("guide_experiences.html")
+
+
 @app.route("/guide/report/okutama")
 def report_okutama():
     return render_template("report_okutama.html")
@@ -1456,6 +1461,7 @@ def sitemap():
 
         # ── 採集レポート（yearly） ──
         (f"{BASE}/guide/reports",           "yearly", "0.7", D_TODAY),
+        (f"{BASE}/guide/experiences",       "monthly", "0.8", D_TODAY),
         (f"{BASE}/guide/report/okutama",    "yearly", "0.7", D_TODAY),
         (f"{BASE}/guide/report/chichibu",   "yearly", "0.7", D_TODAY),
         (f"{BASE}/guide/report/takao",      "yearly", "0.7", D_TODAY),
