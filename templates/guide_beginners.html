@@ -124,7 +124,25 @@
  .share-x:hover{background:#333!important}
  .share-hb{background:#00a4de;color:#fff!important;padding:7px 16px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none!important}
  .share-hb:hover{background:#0083b3!important}
- </style>
+ 
+/* ── Pochipp 型商品カード ─────────────────────────────── */
+.pochipp-card{background:#fff;border:1px solid #e0e0e0;border-radius:8px;
+  padding:16px;margin:28px 0;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.pochipp-inner{display:flex;gap:16px;align-items:center;
+  margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}
+.pochipp-img{width:80px;height:80px;object-fit:contain;flex-shrink:0;border-radius:4px}
+.pochipp-info{flex:1;min-width:0}
+.pochipp-name{font-weight:700;font-size:.95rem;color:#333;margin-bottom:6px;line-height:1.4}
+.pochipp-price{font-size:.72rem;color:#888}
+.pochipp-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.pochipp-btn{display:block;text-align:center;padding:10px 4px;border-radius:4px;
+  font-size:.78rem;font-weight:700;text-decoration:none!important;color:#fff!important;line-height:1.2}
+.pochipp-btn:hover{opacity:.85;text-decoration:none!important;color:#fff!important}
+.pochipp-amz{background:#c8a870}
+.pochipp-rkt{background:#c08080}
+.pochipp-yah{background:#7a9ab8}
+.pochipp-note{font-size:.6rem;color:#bbb;text-align:right}
+</style>
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -387,9 +405,63 @@
  <p>最初は街灯採集がおすすめです。山の街灯に集まるクワガタを探すだけなので、特別な道具が不要で、子供でも安全に楽しめます。</p>
  </div>
 
- <!-- 商品カード：初心者向け道具 -->
- <div style="background:#f1f8e9;border:2px solid #aed581;border-radius:12px;padding:16px;margin:24px 0">
- <div style="font-size:.82rem;font-weight:700;color:#558b2f;margin-bottom:12px">🛒 初心者が最初に揃える道具（おすすめ商品）</div>
+ <div class="amz-section">
+<p class="amz-section-title">🛒 初心者が最初に揃える道具</p>
+<div class="pochipp-card">
+  <div class="pochipp-inner">
+    <img class="pochipp-img" src="/static/img/products/gentos_gh200rg.jpg" alt="GENTOS GH-200RG ヘッドライト 充電式 1200ルーメン" loading="lazy">
+    <div class="pochipp-info">
+      <div class="pochipp-name">GENTOS GH-200RG ヘッドライト 充電式 1200ルーメン</div>
+      <div class="pochipp-price">¥4,980 <span>（2026/06時点 | Amazon調べ）</span></div>
+    </div>
+  </div>
+  <div class="pochipp-btns">
+    <a class="pochipp-btn pochipp-amz" href="https://www.amazon.co.jp/dp/B09MT2GZDF?tag=beetlefinder-22" target="_blank" rel="noopener sponsored"
+       onclick="gtag&&gtag('event','affiliate_click',{shop:'amazon',item_name:'GH-200RG',page_path:'/guide/beginners'})">Amazon</a>
+    <a class="pochipp-btn pochipp-rkt" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2FGENTOS+GH-200RG%2F" target="_blank" rel="noopener sponsored"
+       onclick="gtag&&gtag('event','affiliate_click',{shop:'rakuten',item_name:'GH-200RG',page_path:'/guide/beginners'})">楽天市場</a>
+    <a class="pochipp-btn pochipp-yah" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=1225&pc_id=1925&pl_id=27061&url=https%3A%2F%2Fshopping.yahoo.co.jp%2Fsearch%3Fp%3DGENTOS%2BGH-200RG" target="_blank" rel="noopener sponsored"
+       onclick="gtag&&gtag('event','affiliate_click',{shop:'yahoo',item_name:'GH-200RG',page_path:'/guide/beginners'})">Yahooショッピング</a>
+  </div>
+  <div class="pochipp-note">※ 価格・在庫は変動する場合があります</div>
+</div>
+<div class="pochipp-card">
+  <div class="pochipp-inner">
+    <img class="pochipp-img" src="/static/img/products/mushitori_net.jpg" alt="伸縮式 虫取り網（38〜86cm）コンパクト収納" loading="lazy">
+    <div class="pochipp-info">
+      <div class="pochipp-name">伸縮式 虫取り網（38〜86cm）コンパクト収納</div>
+      <div class="pochipp-price">¥1,280 <span>（2026/06時点 | Amazon調べ）</span></div>
+    </div>
+  </div>
+  <div class="pochipp-btns">
+    <a class="pochipp-btn pochipp-amz" href="https://www.amazon.co.jp/dp/B07H8K5TCT?tag=beetlefinder-22" target="_blank" rel="noopener sponsored"
+       onclick="gtag&&gtag('event','affiliate_click',{shop:'amazon',item_name:'mushitori_net',page_path:'/guide/beginners'})">Amazon</a>
+    <a class="pochipp-btn pochipp-rkt" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E8%99%AB%E5%8F%96%E3%82%8A%E7%B6%B2+%E4%BC%B8%E7%B8%AE%2F" target="_blank" rel="noopener sponsored"
+       onclick="gtag&&gtag('event','affiliate_click',{shop:'rakuten',item_name:'mushitori_net',page_path:'/guide/beginners'})">楽天市場</a>
+    <a class="pochipp-btn pochipp-yah" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=1225&pc_id=1925&pl_id=27061&url=https%3A%2F%2Fshopping.yahoo.co.jp%2Fsearch%3Fp%3D%E8%99%AB%E5%8F%96%E3%82%8A%E7%B6%B2+%E4%BC%B8%E7%B8%AE" target="_blank" rel="noopener sponsored"
+       onclick="gtag&&gtag('event','affiliate_click',{shop:'yahoo',item_name:'mushitori_net',page_path:'/guide/beginners'})">Yahooショッピング</a>
+  </div>
+  <div class="pochipp-note">※ 価格・在庫は変動する場合があります</div>
+</div>
+<div class="pochipp-card">
+  <div class="pochipp-inner">
+    <img class="pochipp-img" src="/static/img/products/mushikago_loupe.jpg" alt="虫かご ルーペ付き観察ケース クワガタ・カブトムシ" loading="lazy">
+    <div class="pochipp-info">
+      <div class="pochipp-name">虫かご ルーペ付き観察ケース クワガタ・カブトムシ</div>
+      <div class="pochipp-price">¥980 <span>（2026/06時点 | Amazon調べ）</span></div>
+    </div>
+  </div>
+  <div class="pochipp-btns">
+    <a class="pochipp-btn pochipp-amz" href="https://www.amazon.co.jp/dp/B08BJ8YC84?tag=beetlefinder-22" target="_blank" rel="noopener sponsored"
+       onclick="gtag&&gtag('event','affiliate_click',{shop:'amazon',item_name:'mushikago',page_path:'/guide/beginners'})">Amazon</a>
+    <a class="pochipp-btn pochipp-rkt" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E8%99%AB%E3%81%8B%E3%81%94+%E3%83%AB%E3%83%BC%E3%83%9A%2F" target="_blank" rel="noopener sponsored"
+       onclick="gtag&&gtag('event','affiliate_click',{shop:'rakuten',item_name:'mushikago',page_path:'/guide/beginners'})">楽天市場</a>
+    <a class="pochipp-btn pochipp-yah" href="https://af.moshimo.com/af/c/click?a_id=5563449&p_id=1225&pc_id=1925&pl_id=27061&url=https%3A%2F%2Fshopping.yahoo.co.jp%2Fsearch%3Fp%3D%E8%99%AB%E3%81%8B%E3%81%94+%E3%83%AB%E3%83%BC%E3%83%9A" target="_blank" rel="noopener sponsored"
+       onclick="gtag&&gtag('event','affiliate_click',{shop:'yahoo',item_name:'mushikago',page_path:'/guide/beginners'})">Yahooショッピング</a>
+  </div>
+  <div class="pochipp-note">※ 価格・在庫は変動する場合があります</div>
+</div>
+</div>
  <div style="display:flex;flex-direction:column;gap:10px">
 
  <div style="display:flex;align-items:center;gap:12px;background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #dcedc8">
