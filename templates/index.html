@@ -1216,27 +1216,30 @@ function inlineAdHtml(){
 
 // ── スポットリスト末尾に表示するAmazon採集グッズバー ─────────────
 function _amazonBottomBar(){
- const sp = currentSp || 'miyama';
- const tag = 'beetlefinder-22';
- const spLabel = {miyama:'ミヤマ',okuwagata:'オオクワ',nokogiri:'ノコギリ',
- kokuwagata:'コクワ',hirata:'ヒラタ',akaashi:'アカアシ',suji:'スジクワ',kabuto:'カブト'}[sp] || 'クワガタ';
- const products = [
- { label:'🔦 ヘッドライト', kw:'%E3%83%98%E3%83%83%E3%83%89%E3%83%A9%E3%82%A4%E3%83%88+LED+%E7%99%BB%E5%B1%B1' },
- { label:'🕷 捕虫網', kw:'%E6%8D%95%E8%99%AB%E7%B6%B2' },
- { label:'🪲 飼育ケース', kw:`${encodeURIComponent(spLabel+'飼育ケース')}` },
- { label:'👟 長靴', kw:'%E6%8B%B7%E9%95%B7%E9%9D%B4+%E8%BE%B2%E4%BD%9C%E6%A5%AD' },
+ const prods = [
+   { img:'/static/img/products/gentos_gh200rg.jpg', label:'🔦 ヘッドライト', sub:'GENTOS GH-200RG', amz:'https://www.amazon.co.jp/dp/B09MT2GZDF?tag=beetlefinder-22', rkt:'https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2FGENTOS+GH-200RG%2F', ev:'GH-200RG' },
+   { img:'/static/img/products/mushitori_net.jpg', label:'🥅 虫取り網', sub:'伸縮式 38〜86cm', amz:'https://www.amazon.co.jp/dp/B07H8K5TCT?tag=beetlefinder-22', rkt:'https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E8%99%AB%E5%8F%96%E3%82%8A%E7%B6%B2+%E4%BC%B8%E7%B8%AE%2F', ev:'mushitori_net' },
+   { img:'/static/img/products/mushikago_loupe.jpg', label:'🧺 虫かご', sub:'ルーペ付き観察ケース', amz:'https://www.amazon.co.jp/dp/B08BJ8YC84?tag=beetlefinder-22', rkt:'https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E8%99%AB%E3%81%8B%E3%81%94+%E3%83%AB%E3%83%BC%E3%83%9A%2F', ev:'mushikago' },
+   { img:'/static/img/products/prozeri.jpg', label:'🍬 昆虫ゼリー', sub:'KBファーム プロゼリー', amz:'https://www.amazon.co.jp/dp/B00X7LCXBS?tag=beetlefinder-22', rkt:'https://af.moshimo.com/af/c/click?a_id=5563449&p_id=54&pc_id=54&pl_id=616&url=https%3A%2F%2Fsearch.rakuten.co.jp%2Fsearch%2Fmall%2F%E3%83%97%E3%83%AD%E3%82%BC%E3%83%AA%E3%83%BC+%E6%98%86%E8%99%AB%2F', ev:'prozeri' },
  ];
- const links = products.map(p=>
- `<a href="https://www.amazon.co.jp/s?k=${p.kw}&tag=${tag}" target="_blank" rel="noopener"
- style="flex:1;min-width:60px;display:flex;flex-direction:column;align-items:center;gap:2px;background:#1a0c00;border:1px solid #c47000;border-radius:8px;padding:7px 5px;text-decoration:none;font-size:.64rem;color:#ff9900;font-weight:600;text-align:center">
- ${p.label}
- </a>`).join('');
+ const cards = prods.map(p=>`
+   <div style="background:#1a0c00;border:1px solid #c47000;border-radius:8px;padding:7px 5px;text-align:center">
+     <img src="${p.img}" alt="${p.label}" style="width:44px;height:44px;object-fit:contain;display:block;margin:0 auto 3px">
+     <div style="font-size:.6rem;color:#ffcc80;font-weight:700;margin-bottom:2px">${p.label}</div>
+     <div style="font-size:.52rem;color:#a1887f;margin-bottom:5px">${p.sub}</div>
+     <div style="display:flex;gap:3px;justify-content:center">
+       <a href="${p.amz}" target="_blank" rel="noopener sponsored"
+          onclick="gtag&&gtag('event','affiliate_click',{shop:'amazon',item_name:'${p.ev}',page_path:'/app',trigger:'bottom_bar'})"
+          style="display:inline-block;background:#ff9900;color:#fff;text-decoration:none;padding:2px 7px;border-radius:4px;font-size:.55rem;font-weight:700">Amazon</a>
+       <a href="${p.rkt}" target="_blank" rel="noopener sponsored"
+          onclick="gtag&&gtag('event','affiliate_click',{shop:'rakuten',item_name:'${p.ev}',page_path:'/app',trigger:'bottom_bar'})"
+          style="display:inline-block;background:#bf0000;color:#fff;text-decoration:none;padding:2px 7px;border-radius:4px;font-size:.55rem;font-weight:700">楽天</a>
+     </div>
+   </div>`).join('');
  return `<div style="margin:0;padding:10px 14px 14px;background:#110a00;border-top:2px solid #c47000">
- <div style="font-size:.6rem;color:#c47000;font-weight:700;margin-bottom:7px;text-align:center">
- 🛒 採集に持っていくグッズ — Amazonで確認
- </div>
- <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px">${links}</div>
- <div style="font-size:.5rem;color:#5a3a00;text-align:center;margin-top:5px">Amazonアソシエイト参加中</div>
+ <div style="font-size:.6rem;color:#c47000;font-weight:700;margin-bottom:7px;text-align:center">🛒 採集に持っていくグッズ（Amazon・楽天）</div>
+ <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px">${cards}</div>
+ <div style="font-size:.5rem;color:#5a3a00;text-align:center;margin-top:5px">Amazon・楽天アソシエイト参加中</div>
 </div>`;
 }
 
