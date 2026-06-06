@@ -104,11 +104,21 @@
 
 ---
 
+## ✅ 2026-06-06（3回目）に追加で完了した対策
+
+21. **4ページのフッターを完全版に統一**（about/privacy/contact リンクが欠けていたページを修正）
+    - guide_beginner_kit.html、guide_experiences.html、guide_manner.html、report_chichibu.html
+22. **terms.html の noindex → index,follow 変更**（審査対象ページに含める）
+23. **contact.html に Google Forms iframe 埋め込み**（問い合わせ導線を強化）
+24. **favicon 全サイズをクワガタシルエットアイコンに更新**（favicon-16, favicon-32, apple-touch-icon）
+
+---
+
 ## 🚀 次にやるとよいこと（未実施の強化候補）
 
 優先度順:
 
-1. **AdSense再申請**（対策が整ったのでいつでもリクエスト可能）
+1. **AdSense再申請**（対策が整ったのでいつでもリクエスト可能）← **今すぐできる**
 2. **Search Console でのインデックス登録リクエスト**（主要ページ）
 3. **SVG図解の追加**（樹木の見分け方など・画像での差別化）
 4. **terms.html の広告開示強化**（privacy.html 同様の内容を追記）
