@@ -1917,10 +1917,89 @@ function _updateShowMoreBar(shown, total, action){
  }
 }
 
+// ── 採集道具モーダル（もっと見るボタン後に1回表示）──────────────────
+function _showGearModal(action){
+ // セッション中1回のみ
+ if(sessionStorage.getItem('gear_modal_shown')){
+   closeAdModal(true);
+   return;
+ }
+ sessionStorage.setItem('gear_modal_shown','1');
+
+ const overlay = document.createElement('div');
+ overlay.id = 'gear-modal-overlay';
+ overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
+
+ overlay.innerHTML = `
+<div style="background:#fff;border-radius:16px;max-width:400px;width:100%;padding:20px 18px;box-shadow:0 8px 32px rgba(0,0,0,.4);max-height:90vh;overflow-y:auto">
+  <div style="text-align:center;margin-bottom:14px">
+    <div style="font-size:.7rem;color:#888;margin-bottom:4px">スポットを表示する前に</div>
+    <div style="font-size:1.05rem;font-weight:700;color:#1b5e20">🎒 今夜の採集に持っていくもの</div>
+    <div style="font-size:.72rem;color:#666;margin-top:4px">このエリアに行く前に確認しておきたい必需品</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+    <!-- ヘッドライト -->
+    <div style="display:flex;align-items:center;gap:12px;background:#f9f9f9;border-radius:10px;padding:10px 12px;border:1px solid #e0e0e0">
+      <img src="/static/img/products/gentos_gh200rg.jpg" alt="ヘッドライト" style="width:56px;height:56px;object-fit:contain;border-radius:6px;flex-shrink:0">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:.78rem;font-weight:700;color:#333">GENTOS GH-200RG ヘッドライト</div>
+        <div style="font-size:.68rem;color:#888;margin:2px 0">夜間採集の必需品 ｜ 充電式 1200lm</div>
+        <a href="https://www.amazon.co.jp/dp/B09MT2GZDF?tag=beetlefinder-22" target="_blank" rel="noopener sponsored"
+           onclick="gtag&&gtag('event','affiliate_click',{shop:'amazon',item_name:'GH-200RG',page_path:'/app',trigger:'gear_modal'})"
+           style="display:inline-block;background:#ff9900;color:#fff;text-decoration:none;padding:4px 12px;border-radius:5px;font-size:.7rem;font-weight:700;margin-top:4px">Amazonで見る →</a>
+      </div>
+    </div>
+
+    <!-- 虫かご -->
+    <div style="display:flex;align-items:center;gap:12px;background:#f9f9f9;border-radius:10px;padding:10px 12px;border:1px solid #e0e0e0">
+      <img src="/static/img/products/mushikago_loupe.jpg" alt="虫かご" style="width:56px;height:56px;object-fit:contain;border-radius:6px;flex-shrink:0">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:.78rem;font-weight:700;color:#333">虫かご ルーペ付き 観察ケース</div>
+        <div style="font-size:.68rem;color:#888;margin:2px 0">採集した虫をその場で観察できる</div>
+        <a href="https://www.amazon.co.jp/dp/B08BJ8YC84?tag=beetlefinder-22" target="_blank" rel="noopener sponsored"
+           onclick="gtag&&gtag('event','affiliate_click',{shop:'amazon',item_name:'mushikago',page_path:'/app',trigger:'gear_modal'})"
+           style="display:inline-block;background:#ff9900;color:#fff;text-decoration:none;padding:4px 12px;border-radius:5px;font-size:.7rem;font-weight:700;margin-top:4px">Amazonで見る →</a>
+      </div>
+    </div>
+
+    <!-- 採集セット -->
+    <div style="display:flex;align-items:center;gap:12px;background:#f9f9f9;border-radius:10px;padding:10px 12px;border:1px solid #e0e0e0">
+      <img src="/static/img/products/konchu_set.jpg" alt="採集セット" style="width:56px;height:56px;object-fit:contain;border-radius:6px;flex-shrink:0">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:.78rem;font-weight:700;color:#333">昆虫採集セット（ケース・網・ピンセット）</div>
+        <div style="font-size:.68rem;color:#888;margin:2px 0">初心者・お子様に最適なオールインワン</div>
+        <a href="https://www.amazon.co.jp/dp/B0CDCQ4X8Y?tag=beetlefinder-22" target="_blank" rel="noopener sponsored"
+           onclick="gtag&&gtag('event','affiliate_click',{shop:'amazon',item_name:'konchu_set',page_path:'/app',trigger:'gear_modal'})"
+           style="display:inline-block;background:#ff9900;color:#fff;text-decoration:none;padding:4px 12px;border-radius:5px;font-size:.7rem;font-weight:700;margin-top:4px">Amazonで見る →</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:.58rem;color:#aaa;text-align:center;margin-bottom:12px">
+    ※ Amazonアソシエイトリンク。クリックで商品価格は変わりません。
+  </div>
+
+  <button onclick="document.getElementById('gear-modal-overlay').remove();closeAdModal(true);"
+    style="width:100%;padding:13px;background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;border:none;border-radius:10px;font-size:.92rem;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(76,175,80,.4)">
+    👁 スポットを見る →
+  </button>
+  <div style="text-align:center;margin-top:8px">
+    <button onclick="document.getElementById('gear-modal-overlay').remove();closeAdModal(true);"
+      style="background:none;border:none;color:#aaa;font-size:.68rem;cursor:pointer;text-decoration:underline">スキップして直接見る</button>
+  </div>
+</div>`;
+
+ document.body.appendChild(overlay);
+ // 背景クリックで閉じる
+ overlay.addEventListener('click', e => {
+   if(e.target === overlay){ overlay.remove(); closeAdModal(true); }
+ });
+}
+
 function requestShowMore(action){
  _adModalAction = action;
- // モーダルなしで直接追加表示
- closeAdModal(true);
+ _showGearModal(action);
 }
 
 // ── 家族モード 描画ヘルパー ───────────────────────────────────────
