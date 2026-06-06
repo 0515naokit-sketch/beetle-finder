@@ -1246,10 +1246,13 @@ function _guideBottomBanner(){
  kokuwagata:'コクワ',hirata:'ヒラタ',akaashi:'アカアシ',suji:'スジクワ',kabuto:'カブト'}[sp] || 'クワガタ';
  const activeBtn = document.querySelector(`.sp-btn[data-sp="${sp}"]`);
  const guideUrl = activeBtn?.dataset.guide || '/guide';
- return `<div style="margin:10px 0 0;padding:14px 16px;background:#e8f5e9;border:1px solid #81c784;border-radius:10px;text-align:center">
- <div style="font-size:.72rem;color:#2e7d32;font-weight:700;margin-bottom:7px">📖 採集前に読みたい：${spLabel}クワガタ採集ガイド</div>
- <a href="${guideUrl}" style="display:inline-block;background:#2e7d32;color:#fff;text-decoration:none;padding:8px 22px;border-radius:8px;font-size:.8rem;font-weight:700">ガイドを読む →</a>
- <div style="font-size:.6rem;color:#66bb6a;margin-top:6px">場所・時期・道具を徹底解説 — 無料</div>
+ return `<div style="margin:10px 0 0;padding:14px 16px;background:#e8f5e9;border:1px solid #81c784;border-radius:10px">
+ <div style="font-size:.72rem;color:#2e7d32;font-weight:700;margin-bottom:8px;text-align:center">📖 採集前に確認しよう</div>
+ <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+  <a href="${guideUrl}" style="display:inline-block;background:#2e7d32;color:#fff;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:.78rem;font-weight:700">${spLabel}ガイドを読む →</a>
+  <a href="/guide/tools" style="display:inline-block;background:#ff6f00;color:#fff;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:.78rem;font-weight:700">🎒 採集道具を揃える →</a>
+ </div>
+ <div style="font-size:.6rem;color:#66bb6a;margin-top:6px;text-align:center">場所・時期・道具を徹底解説 — 無料</div>
 </div>`;
 }
 
