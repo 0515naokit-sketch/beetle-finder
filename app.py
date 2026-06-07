@@ -1398,8 +1398,8 @@ def apple_touch_icon():
 def sitemap():
     # lastmod は各ページの実際の最終更新日を固定値で設定する（動的 date.today() は使わない）
     # ※ コンテンツ更新時は該当URLの日付を修正してpushすること
-    # 最終一括更新: 2026-06-03（AdSense審査対策・コンテンツ大幅増量・noindex整備）
-    D_TODAY   = "2026-06-03"  # 本日一括更新したページ
+    # 最終一括更新: 2026-06-07（msmaflink全ページ展開・container崩れ修正・WebP化）
+    D_TODAY   = "2026-06-07"  # 本日一括更新したページ
     D_STABLE  = "2026-05-30"  # 公開時から安定しているページ（初回公開日）
 
     BASE = "https://beetle-finder.onrender.com"
