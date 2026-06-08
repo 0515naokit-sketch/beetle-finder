@@ -31,7 +31,7 @@
  a{color:#388e3c;text-decoration:none}
  a:hover{text-decoration:underline}
  #site-header{background:#1b2d1b;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
- #site-header h1{color:#a5d6a7;font-size:1rem;font-weight:700}
+ #site-header h1,#site-header .site-logo{color:#a5d6a7;font-size:1rem;font-weight:700;margin:0}
  .kw-i{height:1.2em;width:auto;vertical-align:-.2em;display:inline-block;object-fit:contain}
  /* 暗いヘッダー内：白反転で虫を白く表示 */
  #site-header .kw-i{filter:invert(1) brightness(1.1);mix-blend-mode:normal}
@@ -272,7 +272,7 @@
 </head>
 <body>
 <header id="site-header">
- <h1><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ" width="120" height="120" loading="lazy"> クワガタ<a href="/app" style="color:#388e3c;font-weight:700;text-decoration:underline">採集スポット</a>検索</h1>
+ <p class="site-logo"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ" width="120" height="120" loading="lazy"> クワガタ<a href="/app" style="color:#388e3c;font-weight:700;text-decoration:underline">採集スポット</a>検索</p>
  <a href="/app" class="home-btn">🗺 スポット検索</a>
  <a href="/guide" class="home-btn">📖 ガイド一覧</a>
 </header>

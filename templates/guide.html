@@ -42,7 +42,7 @@
  a:hover{text-decoration:underline}
 
  #site-header{background:#1b2d1b;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
- #site-header h1{color:#a5d6a7;font-size:1rem;font-weight:700}
+ #site-header h1,#site-header .site-logo{color:#a5d6a7;font-size:1rem;font-weight:700;margin:0}
  .kw-i{height:1.2em;width:auto;vertical-align:-.2em;display:inline-block;object-fit:contain}
  /* 実写アイコン：正方形クロップ */
  .kw-i.sp-i{height:1.6em;width:1.6em;object-fit:cover;border-radius:4px;vertical-align:-.4em}
@@ -236,7 +236,7 @@
 <body>
 
 <header id="site-header">
- <h1><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ" width="120" height="120" loading="lazy"> クワガタ採集スポット検索</h1>
+ <p class="site-logo"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ" width="120" height="120" loading="lazy"> クワガタ採集スポット検索</p>
  <a href="/app" class="home-btn">🗺 スポット検索に戻る</a>
 </header>
 

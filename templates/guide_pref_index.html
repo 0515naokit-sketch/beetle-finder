@@ -39,7 +39,7 @@
  body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#f1f8e9;color:#333;line-height:1.8}
  a{color:#388e3c;text-decoration:none}a:hover{text-decoration:underline}
  #site-header{background:linear-gradient(135deg,#2e7d32,#43a047);padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
- #site-header h1{color:#fff;font-size:1rem;font-weight:700;flex:1}
+ #site-header h1,#site-header .site-logo{color:#fff;font-size:1rem;font-weight:700;flex:1;margin:0}
  .kw-i{height:1.2em;width:auto;vertical-align:-.2em;display:inline-block;object-fit:contain;filter:brightness(10)}
  .home-btn{background:rgba(255,255,255,.2);color:#fff!important;padding:7px 14px;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none!important;white-space:nowrap;border:1px solid rgba(255,255,255,.35)}
  .home-btn:hover{background:rgba(255,255,255,.3);text-decoration:none!important}
@@ -96,7 +96,7 @@
 </head>
 <body>
 <header id="site-header">
- <h1><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ" width="24" height="24" loading="lazy"> クワガタ<a href="/app" style="color:#fff;font-weight:700">採集スポット</a>検索</h1>
+ <p class="site-logo"><img src="/static/img/icon-kuwagata.jpg" class="kw-i" alt="クワガタ" width="24" height="24" loading="lazy"> クワガタ<a href="/app" style="color:#fff;font-weight:700">採集スポット</a>検索</h1>
  <a href="/app" class="home-btn">🗺 スポット検索</a>
  <a href="/guide" class="home-btn">📖 ガイド一覧</a>
 </header>

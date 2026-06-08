@@ -25,7 +25,7 @@
  body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#f5f5f5;color:#333;line-height:2.0}
  a{color:#388e3c;text-decoration:none}a:hover{text-decoration:underline}
  #site-header{background:linear-gradient(135deg,#2e7d32,#43a047);padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
- #site-header h1{color:#fff;font-size:1rem;font-weight:700;flex:1}
+ #site-header h1,#site-header .site-logo{color:#fff;font-size:1rem;font-weight:700;flex:1;margin:0}
  .nav-btn{background:rgba(255,255,255,.2);color:#fff;padding:6px 14px;border-radius:6px;font-size:.82rem;border:1px solid rgba(255,255,255,.35)}
  .nav-btn:hover{background:rgba(255,255,255,.3);text-decoration:none;color:#fff}
  .hero-band{background:linear-gradient(135deg,#1b5e20,#2e7d32);padding:32px 20px;text-align:center;color:#fff}
@@ -208,7 +208,7 @@
 </head>
 <body>
 <header id="site-header">
- <h1>🪲 クワガタ採集スポット検索</h1>
+ <p class="site-logo">🪲 クワガタ採集スポット検索</p>
  <a href="/app" class="nav-btn">🗺 検索アプリ</a>
  <a href="/guide" class="nav-btn">📖 ガイド一覧</a>
 </header>
