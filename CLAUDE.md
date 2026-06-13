@@ -46,7 +46,9 @@ git push origin main
 ## AdSense
 - Publisher ID: ca-pub-9675243685208925（審査中・過去2回「有用性の低いコンテンツ」で不承認）
 - **審査対策の全履歴・現状・次の施策は `HANDOFF.md` を参照すること**
-- 非コンテンツページ（contact/index/landing/terms等）にはAdSenseを載せない
+- 非コンテンツページ（contact/terms等）にはAdSenseを載せない
+- landing.html（トップページ）にはAdSenseを追加済み（2026-06-13）
+- index.html（/appツールページ）は noindex,follow 設定済み（2026-06-13）
 - 都道府県47ページは noindex 中（主要4県=東京・神奈川・埼玉・千葉のみ解除済み）
 
 ## 著者プロフィール（架空の統一キャラクター）
