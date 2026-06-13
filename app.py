@@ -1520,9 +1520,7 @@ def sitemap():
 
         # ── サービス情報ページ ──
         (f"{BASE}/about",   "monthly", "0.6", D_TODAY),
-        (f"{BASE}/contact", "yearly",  "0.4", D_STABLE),
-        (f"{BASE}/privacy", "yearly",  "0.3", D_STABLE),
-        (f"{BASE}/terms",   "yearly",  "0.3", D_STABLE),
+        # contact / privacy / terms は noindex のためサイトマップから除外
     ]
     entries = "\n".join(
         f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lmod}</lastmod>\n    <changefreq>{freq}</changefreq>\n    <priority>{pri}</priority>\n  </url>"
