@@ -1399,14 +1399,14 @@ def sitemap():
     # lastmod は各ページの実際の最終更新日を固定値で設定する（動的 date.today() は使わない）
     # ※ コンテンツ更新時は該当URLの日付を修正してpushすること
     # 最終一括更新: 2026-06-07（msmaflink全ページ展開・container崩れ修正・WebP化）
-    D_TODAY   = "2026-06-09"  # 本日一括更新したページ
+    D_TODAY   = "2026-06-13"  # 本日一括更新したページ
     D_STABLE  = "2026-05-30"  # 公開時から安定しているページ（初回公開日）
 
     BASE = "https://beetle-finder.onrender.com"
     urls = [
         # ── コアページ（weekly: 機能更新の可能性あり） ──
         (f"{BASE}/",    "weekly",  "1.0", D_TODAY),
-        (f"{BASE}/app", "weekly",  "0.9", D_TODAY),
+        # /app は noindex のためサイトマップから除外
 
         # ── ガイドトップ ──
         (f"{BASE}/guide", "monthly", "0.8", D_TODAY),
