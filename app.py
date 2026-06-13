@@ -1443,15 +1443,9 @@ def sitemap():
         (f"{BASE}/guide/overwinter",        "yearly", "0.8", D_TODAY),
         (f"{BASE}/guide/jelly",             "yearly", "0.8", D_TODAY),
         (f"{BASE}/guide/jiyukenkyu",        "yearly", "0.7", D_TODAY),
-        (f"{BASE}/guide/jiyukenkyu-kabuto", "yearly", "0.7", D_TODAY),
 
-        # ── 種別飼育記事 (yearly) ──
-        (f"{BASE}/guide/iku/kokuwagata", "yearly", "0.8", D_TODAY),
-        (f"{BASE}/guide/iku/nokogiri",   "yearly", "0.8", D_TODAY),
-        (f"{BASE}/guide/iku/miyama",     "yearly", "0.8", D_TODAY),
-        (f"{BASE}/guide/iku/hirata",     "yearly", "0.8", D_TODAY),
-        (f"{BASE}/guide/iku/ookuwa",     "yearly", "0.8", D_TODAY),
-        (f"{BASE}/guide/iku/akaashi",    "yearly", "0.7", D_TODAY),
+        # 注: guide/jiyukenkyu-kabuto と guide/iku/* (種別飼育6本) は
+        #     重複コンテンツ対策で noindex 化したためサイトマップから除外（2026-06-13）
 
         # ── 月別採集カレンダー（シーズンコンテンツ → yearly） ──
         (f"{BASE}/guide/calendar",   "yearly", "0.8", D_TODAY),
