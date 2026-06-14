@@ -1409,8 +1409,8 @@ def apple_touch_icon():
 def sitemap():
     # lastmod は各ページの実際の最終更新日を固定値で設定する（動的 date.today() は使わない）
     # ※ コンテンツ更新時は該当URLの日付を修正してpushすること
-    # 最終一括更新: 2026-06-07（msmaflink全ページ展開・container崩れ修正・WebP化）
-    D_TODAY   = "2026-06-13"  # 本日一括更新したページ
+    # 最終一括更新: 2026-06-14（全コンテンツページ拡充・FAQ整合・sitemap修正）
+    D_TODAY   = "2026-06-14"  # 本日一括更新したページ
     D_PREF    = "2026-06-13"  # 都道府県ページ全noindex解除・AdSense追加（2026-06-13）
     D_STABLE  = "2026-05-30"  # 公開時から安定しているページ（初回公開日）
 
@@ -1480,56 +1480,13 @@ def sitemap():
         (f"{BASE}/guide/report/tsukuba",    "yearly", "0.7", D_TODAY),
         (f"{BASE}/guide/report/fukabe",     "yearly", "0.8", D_TODAY),
 
-        # ── 都道府県別採集ガイド（/guide/pref/<pref> / 47ページ）
-        # ※ /guide/spot/<pref> は /guide/pref/<pref> へ301リダイレクト済み・サイトマップから除外 ──
-        (f"{BASE}/guide/pref/hokkaido",  "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/aomori",    "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/iwate",     "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/miyagi",    "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/akita",     "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/yamagata",  "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/fukushima", "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/ibaraki",   "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/tochigi",   "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/gunma",     "yearly", "0.7", D_PREF),
+        # ── 都道府県別採集ガイド（index,follow の4県のみ掲載）
+        # 残り43都道府県は noindex,follow のためサイトマップから除外 ──
         (f"{BASE}/guide/pref",           "yearly", "0.8", D_TODAY),
         (f"{BASE}/guide/pref/saitama",   "monthly", "0.8", D_TODAY),
         (f"{BASE}/guide/pref/chiba",     "monthly", "0.8", D_TODAY),
         (f"{BASE}/guide/pref/tokyo",     "monthly", "0.8", D_TODAY),
         (f"{BASE}/guide/pref/kanagawa",  "monthly", "0.8", D_TODAY),
-        (f"{BASE}/guide/pref/niigata",   "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/toyama",    "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/ishikawa",  "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/fukui",     "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/yamanashi", "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/nagano",    "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/gifu",      "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/shizuoka",  "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/aichi",     "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/mie",       "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/shiga",     "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/kyoto",     "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/osaka",     "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/hyogo",     "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/nara",      "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/wakayama",  "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/tottori",   "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/shimane",   "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/okayama",   "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/hiroshima", "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/yamaguchi", "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/tokushima", "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/kagawa",    "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/ehime",     "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/kochi",     "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/fukuoka",   "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/saga",      "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/nagasaki",  "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/kumamoto",  "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/oita",      "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/miyazaki",  "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/kagoshima", "yearly", "0.7", D_PREF),
-        (f"{BASE}/guide/pref/okinawa",   "yearly", "0.7", D_PREF),
 
         # ── サービス情報ページ ──
         (f"{BASE}/about",   "monthly", "0.6", D_TODAY),
