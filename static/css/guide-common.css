@@ -121,3 +121,34 @@
 .pochipp-rkt{background:#c08080}
 .pochipp-yah{background:#7a9ab8}
 .pochipp-note{font-size:.6rem;color:#bbb;text-align:right}
+
+/* ── テーブル基本スタイル ─────────────────────────────── */
+table{width:100%;border-collapse:collapse;font-size:.9rem;margin:20px 0}
+th,td{padding:8px 10px;border:1px solid #c8e6c9;text-align:left;vertical-align:middle}
+th{background:#e8f5e9;font-weight:700;color:#1b5e20}
+tr:nth-child(even) td{background:#f9fbe7}
+
+/* ── time-table（夜間・月別ページ等） ── */
+.time-table{width:100%;border-collapse:collapse}
+.time-table th{background:#1b5e20;color:#fff;padding:8px 10px}
+.time-table td{padding:8px 10px;border:1px solid #c8e6c9}
+.badge{display:inline-block;padding:3px 8px;border-radius:12px;font-size:.75rem;font-weight:700}
+.badge-best{background:#e8f5e9;color:#1b5e20}
+.badge-good{background:#fff8e1;color:#f57f17}
+.badge-ok{background:#f3e5f5;color:#7b1fa2}
+
+/* ── 広告空白防止 ── */
+ins.adsbygoogle:empty{display:none!important}
+
+/* ── スマホ対応 ─────────────────────────────── */
+@media(max-width:600px){
+ /* 4列以上テーブルは横スクロール */
+ .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+ .table-scroll table{min-width:480px}
+ table{font-size:.82rem}
+ th,td{padding:6px 8px}
+ /* ヘッダーボタン縮小 */
+ #site-header{padding:10px 12px;gap:8px}
+ #site-header .site-logo,#site-header h1{font-size:.85rem;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .home-btn{font-size:.72rem;padding:5px 10px;white-space:nowrap;flex-shrink:0}
+}
