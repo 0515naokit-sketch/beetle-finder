@@ -1533,7 +1533,8 @@ def sitemap():
 
         # ── サービス情報ページ ──
         (f"{BASE}/about",   "monthly", "0.6", D_TODAY),
-        # contact / privacy / terms は noindex のためサイトマップから除外
+        (f"{BASE}/contact", "monthly", "0.5", D_TODAY),
+        # privacy / terms は noindex のためサイトマップから除外
     ]
     entries = "\n".join(
         f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lmod}</lastmod>\n    <changefreq>{freq}</changefreq>\n    <priority>{pri}</priority>\n  </url>"
