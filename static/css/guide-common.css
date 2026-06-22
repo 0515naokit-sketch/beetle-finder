@@ -140,6 +140,62 @@ tr:nth-child(even) td{background:#f9fbe7}
 /* ── 広告空白防止 ── */
 ins.adsbygoogle:empty{display:none!important}
 
+/* ── 都道府県ページ専用スタイル ─────────────────────────────── */
+.hero-band{background:linear-gradient(135deg,#1b5e20,#2e7d32);padding:32px 20px;text-align:center;color:#fff}
+.hero-band h1{font-size:1.5rem;margin-bottom:8px;line-height:1.4;color:#fff}
+.hero-band h2{font-size:1.5rem;margin-bottom:8px;line-height:1.4;color:#fff}
+.hero-band p{font-size:.95rem;color:#c8e6c9;max-width:600px;margin:0 auto}
+.pref-badge{display:inline-block;background:#fff;color:#1b5e20;font-size:.8rem;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:14px}
+
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:20px 0}
+.summary-card{background:#fff;border:1px solid #c8e6c9;border-radius:10px;padding:14px;text-align:center}
+.summary-card .icon{font-size:1.6rem;margin-bottom:5px}
+.summary-card .label{font-size:.7rem;color:#888;margin-bottom:3px}
+.summary-card .value{font-size:.88rem;font-weight:700;color:#1b5e20;line-height:1.4}
+
+.area-card{background:#fff;border:1px solid #c8e6c9;border-radius:10px;padding:20px;margin:14px 0}
+.area-card h3{color:#1b5e20;font-size:1rem;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;line-height:1.5}
+.area-tag{display:inline-block;font-size:.7rem;padding:2px 9px;border-radius:10px;font-weight:700;white-space:nowrap}
+.tag-easy{background:#e8f5e9;color:#2e7d32}
+.tag-mid{background:#fff8e1;color:#f57f17}
+.tag-hard{background:#fce4ec;color:#c62828}
+
+.sp-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.88rem}
+.sp-table th{background:#2e7d32;color:#fff;padding:8px 10px;text-align:left}
+.sp-table td{padding:8px 10px;border-bottom:1px solid #e8f5e9}
+.sp-table tr:nth-child(even) td{background:#f9fdf9}
+.rare{color:#c62828;font-weight:700}
+
+.fv-cta{background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:2px solid #a5d6a7;border-radius:12px;padding:20px;margin:20px 0;text-align:center}
+.fv-cta-label{display:inline-block;background:#2e7d32;color:#fff;font-size:.72rem;font-weight:700;padding:3px 12px;border-radius:20px;margin-bottom:10px}
+.fv-cta-text{font-size:.88rem;color:#1a2e1a;margin-bottom:14px;line-height:1.7}
+.fv-cta-btn{display:inline-block;background:#2e7d32;color:#fff!important;padding:12px 28px;border-radius:8px;font-weight:700;font-size:.92rem;text-decoration:none!important}
+.fv-cta-btn:hover{background:#1b5e20!important}
+
+.warn-box{background:#e3f2fd;border:1px solid #90caf9;border-radius:8px;padding:18px 22px;margin:16px 0}
+.warn-title{font-weight:700;color:#1565c0;margin-bottom:6px;font-size:.88rem}
+.info-box{background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:18px 22px;margin:16px 0}
+.info-title{font-weight:700;color:#2e7d32;margin-bottom:8px;font-size:.88rem}
+.cta-box{background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;border-radius:12px;padding:26px;text-align:center;margin:40px 0}
+.cta-box h2{font-size:1.1rem;margin-bottom:8px;border:none;padding:0;color:#fff}
+.cta-box p{font-size:.85rem;color:#c8e6c9;margin-bottom:18px}
+.cta-btn{display:inline-block;background:#fff;color:#1b5e20!important;padding:13px 32px;border-radius:8px;font-weight:700;font-size:.95rem;text-decoration:none!important}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:16px 0}
+.related-card{background:#fff;border:1px solid #c8e6c9;border-radius:8px;padding:14px}
+.related-card a{font-weight:700;color:#2e7d32;font-size:.88rem}
+.related-card p{font-size:.75rem;color:#666;margin:5px 0 0}
+.nearby-box{background:#e8f5e9;border-radius:10px;padding:14px 18px;margin:24px 0;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.nearby-label{font-size:.82rem;font-weight:700;color:#1b5e20;white-space:nowrap}
+.nearby-links{display:flex;flex-wrap:wrap;gap:8px}
+.nearby-btn{display:inline-block;background:#fff;border:1px solid #a5d6a7;color:#2e7d32;padding:5px 12px;border-radius:20px;font-size:.8rem;font-weight:700;text-decoration:none}
+.nearby-btn:hover{background:#2e7d32;color:#fff;text-decoration:none}
+.author-note{background:#fff;border:2px solid #c8e6c9;border-radius:12px;padding:18px 20px;margin:28px 0;position:relative}
+.author-note::before{content:"✍️ 著者メモ";position:absolute;top:-12px;left:16px;background:#2e7d32;color:#fff;font-size:.72rem;font-weight:700;padding:2px 10px;border-radius:10px}
+.author-note p{font-size:.9rem;color:#333;margin:0;line-height:1.9}
+.caution-unique{background:#fff3e0;border-left:4px solid #ff9800;border-radius:8px;padding:16px 20px;margin:28px 0}
+.caution-unique h4{color:#e65100;font-size:.9rem;font-weight:700;margin-bottom:8px}
+.caution-unique p{font-size:.88rem;color:#555;margin:0;line-height:2.0}
+
 /* ── スマホ対応 ─────────────────────────────── */
 @media(max-width:600px){
  /* 4列以上テーブルは横スクロール */
@@ -151,4 +207,21 @@ ins.adsbygoogle:empty{display:none!important}
  #site-header{padding:10px 12px;gap:8px}
  #site-header .site-logo,#site-header h1{font-size:.85rem;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  .home-btn{font-size:.72rem;padding:5px 10px;white-space:nowrap;flex-shrink:0}
+ /* 都道府県ヒーロー */
+ .hero-band{padding:24px 16px}
+ .hero-band h1,.hero-band h2{font-size:1.2rem}
+ .hero-band p{font-size:.85rem}
+ /* サマリーグリッド：スマホで2列 */
+ .summary-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+ .summary-card{padding:10px 8px}
+ .summary-card .icon{font-size:1.3rem}
+ .summary-card .value{font-size:.82rem}
+ /* エリアカード */
+ .area-card{padding:14px}
+ .area-card h3{font-size:.95rem}
+ /* CTAボタン */
+ .fv-cta{padding:16px}
+ .fv-cta-btn{padding:10px 20px;font-size:.85rem;display:block;width:100%}
+ /* 関連グリッド */
+ .related-grid{grid-template-columns:1fr}
 }
