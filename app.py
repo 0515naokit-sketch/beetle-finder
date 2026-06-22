@@ -893,9 +893,23 @@ def terms():
     return render_template("terms.html")
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html")
+    sent = False
+    if request.method == "POST":
+        category = request.form.get("category", "")
+        email    = request.form.get("email", "").strip()
+        message  = request.form.get("message", "").strip()
+        if message:
+            try:
+                _os.makedirs("data", exist_ok=True)
+                with open("data/contact_messages.txt", "a", encoding="utf-8") as f:
+                    ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    f.write(f"[{ts}] category={category} email={email}\n{message}\n---\n")
+            except Exception:
+                pass
+            sent = True
+    return render_template("contact.html", sent=sent)
 
 
 # ── 都道府県別ガイド ──────────────────────────────────────────

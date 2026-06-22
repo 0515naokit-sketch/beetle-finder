@@ -140,26 +140,50 @@
 
 <div class="container">
 
- <!-- メインCTA + 埋め込みフォーム -->
+ <!-- お問い合わせフォーム -->
  <div class="card">
  <div class="card-title">📝 お問い合わせフォーム</div>
- <p style="font-size:.88rem;color:#388e3c;margin-bottom:16px;line-height:1.7">
+ <p style="font-size:.88rem;color:#388e3c;margin-bottom:20px;line-height:1.7">
  バグ報告・ご意見・ご要望など、お気軽にどうぞ。匿名でお送りいただけます。<br>
- 返信が必要な場合はフォーム内にメールアドレスをご記入ください。
+ 返信が必要な場合はメールアドレスをご記入ください。
  </p>
- <!-- Googleフォーム埋め込み -->
- <div style="position:relative;width:100%;margin-bottom:16px">
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfD2YN8CZdAEVhDzNc9/viewform?embedded=true"
-   width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0"
-   style="border-radius:8px;border:1px solid #c8e6c9;display:block"
-   title="お問い合わせフォーム">読み込んでいます…</iframe>
+
+ {% if sent %}
+ <div style="background:#e8f5e9;border:2px solid #43a047;border-radius:10px;padding:20px 24px;text-align:center;margin-bottom:16px">
+  <div style="font-size:2rem;margin-bottom:8px">✅</div>
+  <div style="font-weight:700;color:#1b5e20;font-size:1rem;margin-bottom:6px">送信が完了しました</div>
+  <div style="font-size:.88rem;color:#388e3c">ご意見ありがとうございます。内容を確認のうえ、サービス改善に活用します。</div>
  </div>
- <p style="font-size:.78rem;color:#81c784;text-align:center;margin-bottom:8px">
-  ↑ 上のフォームが表示されない場合は下のボタンをご利用ください
- </p>
- <a href="https://forms.gle/D2YN8CZdAEVhDzNc9" target="_blank" rel="noopener" class="cta-btn">
- 📝 フォームを別タブで開く
- </a>
+ {% else %}
+ <form method="POST" action="/contact" style="display:flex;flex-direction:column;gap:16px">
+  <div>
+   <label style="display:block;font-size:.85rem;font-weight:700;color:#1b5e20;margin-bottom:6px">お問い合わせ種別</label>
+   <select name="category" required style="width:100%;padding:10px 12px;border:1px solid #c8e6c9;border-radius:8px;font-size:.9rem;color:#333;background:#fff;appearance:none">
+    <option value="">-- 選択してください --</option>
+    <option value="bug">🐛 バグ・不具合報告</option>
+    <option value="feature">💡 機能追加のご要望</option>
+    <option value="spot">📍 スポット情報の修正</option>
+    <option value="collab">🤝 掲載・コラボのご相談</option>
+    <option value="usage">❓ 使い方のご質問</option>
+    <option value="other">📖 その他</option>
+   </select>
+  </div>
+  <div>
+   <label style="display:block;font-size:.85rem;font-weight:700;color:#1b5e20;margin-bottom:6px">メールアドレス <span style="font-weight:400;color:#888">（返信不要の場合は空欄）</span></label>
+   <input type="email" name="email" placeholder="example@email.com"
+    style="width:100%;padding:10px 12px;border:1px solid #c8e6c9;border-radius:8px;font-size:.9rem;color:#333">
+  </div>
+  <div>
+   <label style="display:block;font-size:.85rem;font-weight:700;color:#1b5e20;margin-bottom:6px">お問い合わせ内容 <span style="color:#e53935">*</span></label>
+   <textarea name="message" rows="6" required placeholder="お問い合わせ内容をご記入ください"
+    style="width:100%;padding:10px 12px;border:1px solid #c8e6c9;border-radius:8px;font-size:.9rem;color:#333;resize:vertical;font-family:inherit"></textarea>
+  </div>
+  <button type="submit"
+   style="background:linear-gradient(135deg,#2e7d32,#43a047);color:#fff;border:none;border-radius:10px;padding:14px 24px;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(46,125,50,.3)">
+   📨 送信する
+  </button>
+ </form>
+ {% endif %}
  </div>
 
  <!-- お問い合わせカテゴリ -->
