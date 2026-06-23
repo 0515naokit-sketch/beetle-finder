@@ -673,6 +673,10 @@ def guide_light():
     return render_template("guide_light.html")
 
 
+@app.route("/guide/night-guide")
+def guide_night_redirect():
+    return redirect("/guide/night", 301)
+
 @app.route("/guide/night")
 def guide_night():
     return render_template("guide_night.html")
