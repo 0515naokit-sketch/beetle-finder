@@ -15,8 +15,11 @@ app = Flask(__name__)
 @app.before_request
 def redirect_onrender():
     if request.host == "beetle-finder.onrender.com":
-        url = request.url.replace("beetle-finder.onrender.com", "beetle-finder.com", 1)
-        return redirect(url, 301)
+        # /static/ はリダイレクトしない（画像・CSS・JSが壊れるのを防ぐ）
+        if request.path.startswith("/static/"):
+            return
+        path = request.full_path if request.query_string else request.path
+        return redirect("https://beetle-finder.com" + path, 301)
 
 # gevent 環境での requests セッション（接続プールを無効化してSSL再帰を回避）
 _session = requests.Session()
