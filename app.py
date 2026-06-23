@@ -1123,7 +1123,7 @@ def guide_pref_dynamic(slug):
 @app.route("/rss")
 def rss_feed():
     """RSS 2.0フィード（ブログ村・RSSリーダー・Google News連携用）"""
-    BASE = "https://beetle-finder.onrender.com"
+    BASE = "https://beetle-finder.com"
     AUTHOR = "森山春樹（クワガタ採集スポット検索）"
 
     # ── 記事リスト（新しい順）──
@@ -1428,7 +1428,7 @@ def sitemap():
     D_PREF    = "2026-06-13"  # 都道府県ページ全noindex解除・AdSense追加（2026-06-13）
     D_STABLE  = "2026-05-30"  # 公開時から安定しているページ（初回公開日）
 
-    BASE = "https://beetle-finder.onrender.com"
+    BASE = "https://beetle-finder.com"
     urls = [
         # ── コアページ（weekly: 機能更新の可能性あり） ──
         (f"{BASE}/",    "weekly",  "1.0", D_TODAY),
