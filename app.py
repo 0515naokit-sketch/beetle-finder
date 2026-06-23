@@ -12,6 +12,12 @@ import datetime
 
 app = Flask(__name__)
 
+@app.before_request
+def redirect_onrender():
+    if request.host == "beetle-finder.onrender.com":
+        url = request.url.replace("beetle-finder.onrender.com", "beetle-finder.com", 1)
+        return redirect(url, 301)
+
 # gevent 環境での requests セッション（接続プールを無効化してSSL再帰を回避）
 _session = requests.Session()
 _adapter = HTTPAdapter(pool_connections=1, pool_maxsize=1, max_retries=0)
