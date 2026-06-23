@@ -3159,29 +3159,103 @@ function _initSidebarTopAd(){ /* reserved */ }
 <div id="mobile-anchor-ad" style="display:none"></div>
 
 <!-- SEO向けテキストコンテンツ（クローラー用） -->
-<section id="seo-about" style="background:#f0f8f0;border-top:2px solid #c8e6c9;padding:32px 16px;font-family:'Hiragino Sans','Meiryo',sans-serif">
+<section id="seo-about" style="background:#f0f8f0;border-top:2px solid #c8e6c9;padding:40px 16px 48px;font-family:'Hiragino Sans','Meiryo',sans-serif">
   <div style="max-width:760px;margin:0 auto">
-    <h2 style="font-size:1.1rem;color:#1b5e20;margin-bottom:12px;font-weight:700">クワガタ採集スポット検索とは</h2>
-    <p style="font-size:.88rem;color:#2e4e2e;line-height:1.85;margin-bottom:16px">
-      クワガタ採集スポット検索は、現在地または地名から近くのクワガタ採集スポットを地図で探せる無料サービスです。ミヤマクワガタ・ノコギリクワガタ・ヒラタクワガタ・オオクワガタなど種類別に絞り込めるほか、採集のしやすさ・時期・標高などの条件でフィルタリングできます。関東・東北・近畿・中部など全国47都道府県に対応しており、初心者から経験者まで幅広くご利用いただけます。
+
+    <!-- サービス概要 -->
+    <h2 style="font-size:1.15rem;color:#1b5e20;margin-bottom:12px;font-weight:700">クワガタ採集スポット検索とは</h2>
+    <p style="font-size:.88rem;color:#2e4e2e;line-height:1.9;margin-bottom:20px">
+      クワガタ採集スポット検索は、現在地または地名から近くのクワガタ採集スポットを地図で探せる無料サービスです。ミヤマクワガタ・ノコギリクワガタ・ヒラタクワガタ・オオクワガタ・コクワガタ・カブトムシなど種類別に絞り込めるほか、採集のしやすさ・採集時期・標高・駐車場の有無などの条件でフィルタリングできます。関東・東北・近畿・中部・九州・北海道など全国47都道府県に対応しており、初心者から経験者まで幅広くご利用いただけます。採集歴20年以上の運営者が実際にフィールドで確認したスポット情報をもとに、データと実体験を組み合わせて採集成功率を高める情報を提供しています。
     </p>
-    <h3 style="font-size:1rem;color:#1b5e20;margin-bottom:10px;font-weight:700">使い方</h3>
-    <ol style="font-size:.85rem;color:#2e4e2e;line-height:1.9;padding-left:1.4em;margin-bottom:16px">
-      <li>「現在地を使う」または地名・郵便番号を入力して検索エリアを設定する</li>
-      <li>種類（ミヤマ・ノコギリ・ヒラタ・オオクワ・カブトムシなど）を選択する</li>
-      <li>地図上に採集スポットが表示されるので、詳細情報・アクセスを確認する</li>
-      <li>採集時のマナーを守り、安全に採集を楽しむ</li>
+
+    <!-- 使い方 -->
+    <h3 style="font-size:1rem;color:#1b5e20;margin-bottom:10px;font-weight:700">使い方（3ステップ）</h3>
+    <ol style="font-size:.86rem;color:#2e4e2e;line-height:2;padding-left:1.4em;margin-bottom:24px">
+      <li>「現在地を使う」または地名・市区町村名・郵便番号を入力して検索エリアを設定する</li>
+      <li>狙う種類（ミヤマ・ノコギリ・ヒラタ・オオクワ・カブトムシなど）と採集方法（ライト採集・トラップ・早朝採集など）を選択する</li>
+      <li>地図上に表示されたスポットをタップして、採集適期・難易度・アクセス・駐車場情報を確認し、現地へ向かう</li>
     </ol>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px">
-      <a href="/guide/beginners" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:8px 14px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">🔰 初心者ガイド</a>
-      <a href="/guide/night" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:8px 14px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">🔦 夜間採集ガイド</a>
-      <a href="/guide/trap" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:8px 14px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">🍌 バナナトラップの作り方</a>
-      <a href="/guide/calendar" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:8px 14px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">📅 採集カレンダー</a>
-      <a href="/guide/tools" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:8px 14px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">🎒 採集道具の選び方</a>
-      <a href="/guide" style="background:#2e7d32;border:1px solid #2e7d32;border-radius:8px;padding:8px 14px;font-size:.8rem;color:#fff;text-decoration:none;font-weight:700">📖 全ガイド一覧を見る</a>
+
+    <!-- スコアの仕組み -->
+    <h3 style="font-size:1rem;color:#1b5e20;margin-bottom:10px;font-weight:700">採集スコアの仕組み</h3>
+    <p style="font-size:.86rem;color:#2e4e2e;line-height:1.9;margin-bottom:10px">
+      各スポットには「採集スコア」が表示されます。これは、以下の要素を総合して算出した独自の採集適性指標です。スコアが高いほど、その日・その場所でクワガタが採れやすいと判断できます。
+    </p>
+    <ul style="font-size:.84rem;color:#2e4e2e;line-height:2;padding-left:1.4em;margin-bottom:8px">
+      <li><strong>標高・気温</strong>：種ごとの生息適温と現在の気温・最低気温の差分</li>
+      <li><strong>月齢・暗さ</strong>：ライト採集に有利な新月前後は加点、満月前後は減点</li>
+      <li><strong>採集時期の一致度</strong>：各種の採集最盛期との月別マッチ度</li>
+      <li><strong>アクセス・環境スコア</strong>：駐車場・街灯有無・クヌギ林の密度など現地環境</li>
+      <li><strong>実績データ</strong>：過去の採集報告・目撃情報の蓄積値</li>
+    </ul>
+    <p style="font-size:.82rem;color:#4a7a4a;line-height:1.7;margin-bottom:24px">
+      スコアはあくまで参考指標です。実際の採集成果は当日の天候・温度変化・個体の活動量によって変わります。現地では必ず安全を最優先にし、複数のスポットを比較しながら判断してください。
+    </p>
+
+    <!-- 対応種 -->
+    <h3 style="font-size:1rem;color:#1b5e20;margin-bottom:10px;font-weight:700">対応しているクワガタ・カブトムシの種類</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:24px">
+      <div style="background:#fff;border:1px solid #c8e6c9;border-radius:8px;padding:10px 12px;font-size:.82rem;color:#1b5e20">
+        <strong>ミヤマクワガタ</strong><br><span style="font-size:.75rem;color:#4a7a4a">6月下旬〜8月上旬 / 標高400m以上</span>
+      </div>
+      <div style="background:#fff;border:1px solid #c8e6c9;border-radius:8px;padding:10px 12px;font-size:.82rem;color:#1b5e20">
+        <strong>ノコギリクワガタ</strong><br><span style="font-size:.75rem;color:#4a7a4a">6月〜9月 / 平地〜山地</span>
+      </div>
+      <div style="background:#fff;border:1px solid #c8e6c9;border-radius:8px;padding:10px 12px;font-size:.82rem;color:#1b5e20">
+        <strong>ヒラタクワガタ</strong><br><span style="font-size:.75rem;color:#4a7a4a">6月〜9月 / 平地・河川沿い</span>
+      </div>
+      <div style="background:#fff;border:1px solid #c8e6c9;border-radius:8px;padding:10px 12px;font-size:.82rem;color:#1b5e20">
+        <strong>オオクワガタ</strong><br><span style="font-size:.75rem;color:#4a7a4a">7月〜8月 / 雑木林・希少</span>
+      </div>
+      <div style="background:#fff;border:1px solid #c8e6c9;border-radius:8px;padding:10px 12px;font-size:.82rem;color:#1b5e20">
+        <strong>コクワガタ</strong><br><span style="font-size:.75rem;color:#4a7a4a">6月〜9月 / 全国・最多</span>
+      </div>
+      <div style="background:#fff;border:1px solid #c8e6c9;border-radius:8px;padding:10px 12px;font-size:.82rem;color:#1b5e20">
+        <strong>カブトムシ</strong><br><span style="font-size:.75rem;color:#4a7a4a">7月〜8月 / 平地・腐葉土</span>
+      </div>
     </div>
-    <p style="font-size:.78rem;color:#4a7a4a;line-height:1.7">
-      ※採集の際は土地の所有者の許可を得て、自然環境に配慮した採集をおこなってください。採集禁止区域・国立公園内での採集は法律で禁止されています。
+
+    <!-- FAQ -->
+    <h3 style="font-size:1rem;color:#1b5e20;margin-bottom:14px;font-weight:700">よくある質問（FAQ）</h3>
+    <div style="border:1px solid #c8e6c9;border-radius:10px;overflow:hidden;margin-bottom:24px">
+      <div style="padding:14px 16px;border-bottom:1px solid #e8f5e9">
+        <div style="font-size:.86rem;font-weight:700;color:#1b5e20;margin-bottom:6px">Q. 無料で使えますか？</div>
+        <div style="font-size:.83rem;color:#2e4e2e;line-height:1.8">はい、完全無料でご利用いただけます。会員登録・アプリのインストールも不要で、ブラウザから直接お使いいただけます。スマートフォンのホーム画面に追加すると、アプリのように使えて便利です。</div>
+      </div>
+      <div style="padding:14px 16px;border-bottom:1px solid #e8f5e9">
+        <div style="font-size:.86rem;font-weight:700;color:#1b5e20;margin-bottom:6px">Q. 採集スポットは何件掲載されていますか？</div>
+        <div style="font-size:.83rem;color:#2e4e2e;line-height:1.8">全国47都道府県にわたる数百件以上のスポット情報を掲載しています。クヌギ・コナラなどの広葉樹林・河川敷・山岳公園・里山など、さまざまなタイプのスポットを網羅しています。スポットは随時追加・更新しています。</div>
+      </div>
+      <div style="padding:14px 16px;border-bottom:1px solid #e8f5e9">
+        <div style="font-size:.86rem;font-weight:700;color:#1b5e20;margin-bottom:6px">Q. クワガタはいつ採れますか？</div>
+        <div style="font-size:.83rem;color:#2e4e2e;line-height:1.8">種類によって異なりますが、一般的に6月下旬〜8月が最盛期です。ミヤマクワガタは7月が最も活発で、標高400m以上の山間部でよく見られます。ノコギリクワガタとコクワガタは平地でも6月から採集でき、シーズンが長いのが特徴です。詳しくは<a href="/guide/calendar" style="color:#2e7d32;font-weight:700">採集カレンダー</a>をご参照ください。</div>
+      </div>
+      <div style="padding:14px 16px;border-bottom:1px solid #e8f5e9">
+        <div style="font-size:.86rem;font-weight:700;color:#1b5e20;margin-bottom:6px">Q. 夜間採集と早朝採集はどちらがよいですか？</div>
+        <div style="font-size:.83rem;color:#2e4e2e;line-height:1.8">どちらも有効で、目的や状況によって使い分けるのがおすすめです。夜間採集（21時〜深夜）はライトで木を照らすことでクワガタが集まり、短時間で多くの個体を確認できます。早朝採集（4時〜7時）は懐中電灯が不要で子連れにも向いており、樹液に来た個体をそのまま採集できます。<a href="/guide/night" style="color:#2e7d32;font-weight:700">夜間採集ガイド</a>・<a href="/guide/morning" style="color:#2e7d32;font-weight:700">早朝採集ガイド</a>も参考にしてください。</div>
+      </div>
+      <div style="padding:14px 16px">
+        <div style="font-size:.86rem;font-weight:700;color:#1b5e20;margin-bottom:6px">Q. 採集禁止の場所はありますか？</div>
+        <div style="font-size:.83rem;color:#2e4e2e;line-height:1.8">国立公園・国定公園の特別保護地区、および一部の自然公園では昆虫の採集が法律で禁止されています。また、私有地や管理地では土地所有者の許可が必要です。本サービスのスポット情報には採集の可否・注意事項を記載していますが、必ず現地の看板・管理者の指示に従ってください。</div>
+      </div>
+    </div>
+
+    <!-- ガイドリンク -->
+    <h3 style="font-size:1rem;color:#1b5e20;margin-bottom:10px;font-weight:700">採集ガイド記事（40本以上・無料）</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">
+      <a href="/guide/beginners" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:7px 13px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">🔰 初心者完全ガイド</a>
+      <a href="/guide/night" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:7px 13px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">🔦 夜間採集ガイド</a>
+      <a href="/guide/trap" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:7px 13px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">🍌 バナナトラップの作り方</a>
+      <a href="/guide/calendar" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:7px 13px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">📅 採集カレンダー</a>
+      <a href="/guide/tools" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:7px 13px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">🎒 採集道具の選び方</a>
+      <a href="/guide/miyama" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:7px 13px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">🦌 ミヤマクワガタ</a>
+      <a href="/guide/nokogiri" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:7px 13px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">🪲 ノコギリクワガタ</a>
+      <a href="/guide/morning" style="background:#fff;border:1px solid #a5d6a7;border-radius:8px;padding:7px 13px;font-size:.8rem;color:#2e7d32;text-decoration:none;font-weight:700">🌅 早朝採集ガイド</a>
+      <a href="/guide" style="background:#2e7d32;border:1px solid #2e7d32;border-radius:8px;padding:7px 13px;font-size:.8rem;color:#fff;text-decoration:none;font-weight:700">📖 全ガイド一覧を見る →</a>
+    </div>
+
+    <p style="font-size:.76rem;color:#4a7a4a;line-height:1.7;border-top:1px solid #c8e6c9;padding-top:14px">
+      ※採集の際は土地の所有者の許可を得て、自然環境に配慮した採集をおこなってください。採集禁止区域・国立公園の特別保護地区内での採集は法律で禁止されています。採集した個体の野外放逐・他地域への持ち込みも生態系保護の観点からお控えください。
     </p>
   </div>
 </section>
