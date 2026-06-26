@@ -652,6 +652,11 @@ def guide_tools():
     return render_template("guide_tools.html")
 
 
+@app.route("/guide/breeding-tools")
+def guide_breeding_tools():
+    return render_template("guide_breeding_tools.html")
+
+
 @app.route("/guide/beginner-kit")
 def guide_beginner_kit():
     return render_template("guide_beginner_kit.html")
