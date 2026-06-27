@@ -736,8 +736,39 @@ def guide_iku(species):
 
 
 @app.route("/guide/case")
+@app.route("/guide/cage")
 def guide_case():
     return render_template("guide_case.html")
+
+
+@app.route("/guide/kabuto-breeding")
+def guide_kabuto_breeding():
+    return render_template("guide_kabuto_breeding.html")
+
+
+@app.route("/guide/miyama-breeding")
+def guide_miyama_breeding():
+    return render_template("guide_miyama_breeding.html")
+
+
+@app.route("/guide/hirata-breeding")
+def guide_hirata_breeding():
+    return render_template("guide_hirata_breeding.html")
+
+
+@app.route("/guide/mat")
+def guide_mat():
+    return render_template("guide_mat.html")
+
+
+@app.route("/guide/spawn")
+def guide_spawn():
+    return render_template("guide_spawn.html")
+
+
+@app.route("/guide/mushroom-bottle")
+def guide_mushroom_bottle():
+    return render_template("guide_mushroom_bottle.html")
 
 
 @app.route("/guide/aftercare")
